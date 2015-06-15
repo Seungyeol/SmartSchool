@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="parent_drawer_menu">
+        <item>@string/drawer_notice</item>
+        <item>@string/drawer_my_page</item>
+        <item>@string/drawer_settings</item>
+        <item>@string/drawer_dev_info</item>
+    </string-array>
+
+    <string-array name="child_drawer_menu">
+        <item>@string/drawer_notice</item>
+        <item>@string/drawer_my_page</item>
+        <item>@string/drawer_settings</item>
+        <item>@string/drawer_dev_info</item>
+    </string-array>
+</resources>
