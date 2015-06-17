@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aura.smartschool.R;
+
 import java.util.ArrayList;
 
 /**
@@ -30,8 +32,8 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater vi = LayoutInflater.from(viewGroup.getContext());
-        View v = vi.inflate(android.R.layout.test_list_item, viewGroup, false);
-        TextView tv = (TextView) v.findViewById(android.R.id.text1);
+        View v = vi.inflate(R.layout.drawer_menu_item, viewGroup, false);
+        TextView tv = (TextView) v.findViewById(R.id.tv_menu_item);
         return new ViewHolder(tv);
     }
 
