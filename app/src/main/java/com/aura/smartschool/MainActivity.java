@@ -327,6 +327,7 @@ public class MainActivity extends FragmentActivity {
 			//자기 정보 저장
 			if(Util.getMdn(this).equals(member.mdn)) {
 				PreferenceUtil.getInstance(this).putHomeId(member.home_id);
+				PreferenceUtil.getInstance(this).putMemberId(member.member_id);
 				PreferenceUtil.getInstance(this).putParent(member.is_parent==1 ? true:false );
 				PreferenceUtil.getInstance(this).putName(member.name);
 			}

@@ -56,4 +56,12 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		return get("isParent", false);
 	}
 
+	//mobile id 저장
+	public void putMemberId(int member_id) {
+		put("member_id", member_id);
+	}
+	public int getMemberId() {
+		return get("member_id", 0);
+	}
+
 }
