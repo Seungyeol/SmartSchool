@@ -37,8 +37,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 	public static final int REQ_DIALOG_SIGNUP = 100;
@@ -236,75 +234,82 @@ public class MainActivity extends FragmentActivity {
 	
 	private void getLogin(MemberVO member) {
 		LoadingDialog.showLoading(this);
-        String url = Constant.HOST + Constant.API_SIGNIN;
+		try {
+			String url = Constant.HOST + Constant.API_SIGNIN;
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("home_id", member.home_id);
-        params.put("mdn", member.home_id);
+			JSONObject json = new JSONObject();
+			json.put("home_id", member.home_id);
+			json.put("mdn", member.mdn);
 
-        Log.d("LDK", "url:" + url);
-        Log.d("LDK", "input parameter:" + params.toString());
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", "input parameter:" + json.toString(1));
 
-        mAq.ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>(){
-            @Override
-            public void callback(String url, JSONObject object, AjaxStatus status) {
-                LoadingDialog.hideLoading();
-                try {
-                    if(status.getCode() != 200) {
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					LoadingDialog.hideLoading();
+					try {
+						if(status.getCode() != 200) {
 
-                        return;
-                    }
+							return;
+						}
 
-                    Log.d("LDK", "result:" + object.toString(1));
+						Log.d("LDK", "result:" + object.toString(1));
 
-                    if("0".equals(object.getString("result"))) {
-                        hideLoginDialog();
-                        JSONArray array = object.getJSONArray("data");
-                        displayMemberList(array);
-                    } else {
+						if("0".equals(object.getString("result"))) {
+							hideLoginDialog();
+							JSONArray array = object.getJSONArray("data");
+							displayMemberList(array);
+						} else {
 
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void getMemberList() {
 		LoadingDialog.showLoading(this);
-        String url = Constant.HOST + Constant.API_GET_MEMBERLIST;
+		try {
+			String url = Constant.HOST + Constant.API_GET_MEMBERLIST;
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("home_id", PreferenceUtil.getInstance(MainActivity.this).getHomeId());
+			JSONObject json = new JSONObject();
+			json.put("home_id", PreferenceUtil.getInstance(MainActivity.this).getHomeId());
 
-        Log.d("LDK", "url:" + url);
-        Log.d("LDK", "input parameter:" + params.toString());
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", "input parameter:" + json.toString(1));
 
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					LoadingDialog.hideLoading();
+					try {
+						Log.d("LDK", "result:" + object.toString(1));
 
-        mAq.ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
-            @Override
-            public void callback(String url, JSONObject object, AjaxStatus status) {
-                LoadingDialog.hideLoading();
-                try {
-                    Log.d("LDK", "result:" + object.toString(1));
+						if(status.getCode() != 200) {
 
-                    if (status.getCode() != 200) {
+							return;
+						}
 
-                        return;
-                    }
+						if("0".equals(object.getString("result"))) {
+							JSONArray array = object.getJSONArray("data");
+							displayMemberList(array);
+						} else {
 
-                    if ("0".equals(object.getString("result"))) {
-                        JSONArray array = object.getJSONArray("data");
-                        displayMemberList(array);
-                    } else {
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void displayMemberList(JSONArray array) throws JSONException {

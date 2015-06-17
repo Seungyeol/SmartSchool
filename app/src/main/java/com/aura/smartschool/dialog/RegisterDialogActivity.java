@@ -35,8 +35,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterDialogActivity extends Activity {
 	private Context mContext;
@@ -112,50 +110,54 @@ public class RegisterDialogActivity extends Activity {
     
     private void getRegister(MemberVO member) {
 		LoadingDialog.showLoading(this);
-        String url = Constant.HOST + Constant.API_SIGNUP;
+		try {
+			String url = Constant.HOST + Constant.API_SIGNUP;
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("home_id", member.home_id);
-        params.put("mdn", member.mdn);
-        params.put("is_parent", member.is_parent);
-        params.put("name", member.name);
-        params.put("relation", member.relation);
-        params.put("photo", imageDataString);
-        if(mIs_parent==0) {
-            params.put("school_name", member.school_name);
-            params.put("school_grade", member.school_grade);
-            params.put("school_ban", member.school_ban);
-        }
+			JSONObject json = new JSONObject();
+			json.put("home_id", member.home_id);
+			json.put("mdn", member.mdn);
+			json.put("is_parent", member.is_parent);
+			json.put("name", member.name);
+			json.put("relation", member.relation);
+			json.put("photo", imageDataString);
+			if(mIs_parent==0) {
+				json.put("school_name", member.school_name);
+				json.put("school_grade", member.school_grade);
+				json.put("school_ban", member.school_ban);
+			}
 
-        Log.d("LDK", "url:" + url);
-        Log.d("LDK", "input parameter:" + params.toString());
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", "input parameter:" + json.toString(1));
 
-        mAq.ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
-            @Override
-            public void callback(String url, JSONObject object, AjaxStatus status) {
-                LoadingDialog.hideLoading();
-                try {
-                    Log.d("LDK", "result:" + object.toString(1));
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					LoadingDialog.hideLoading();
+					try {
+						Log.d("LDK", "result:" + object.toString(1));
 
-                    if (status.getCode() != 200) {
+						if(status.getCode() != 200) {
 
-                        return;
-                    }
+							return;
+						}
 
-                    if ("0".equals(object.getString("result"))) {
-                        //home id 저장
-                        PreferenceUtil.getInstance(mContext).putHomeId(et_id.getText().toString());
-                        //
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
+						if("0".equals(object.getString("result"))) {
+							//home id 저장
+							PreferenceUtil.getInstance(mContext).putHomeId(et_id.getText().toString());
+							//
+							setResult(RESULT_OK);
+							finish();
+						} else {
 
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
     private Uri getTempUri() {

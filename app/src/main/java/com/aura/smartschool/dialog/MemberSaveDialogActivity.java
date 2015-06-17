@@ -34,8 +34,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MemberSaveDialogActivity extends Activity {
 	private int mMode; //0: add, 1:update
@@ -105,7 +103,7 @@ public class MemberSaveDialogActivity extends Activity {
 				et_school_name.setText(mMember.school_name);
 				et_school_grade.setText(mMember.school_grade);
 				et_school_class.setText(mMember.school_ban);
-				tvStudent.callOnClick(); //학생탭 선택
+				tvStudent.performClick(); //학생탭 선택
 			} 
 			
 		} else {
@@ -137,57 +135,61 @@ public class MemberSaveDialogActivity extends Activity {
     }
     
     private void getSave() {
-    	LoadingDialog.showLoading(this);
-		String url;
+		LoadingDialog.showLoading(this);
+		try {
+			String url;
+			JSONObject json = new JSONObject();
 
-		Map<String, Object> params = new HashMap<>();
-		if(mMode == MainActivity.MOD_ADD) {
-			url = Constant.HOST + Constant.API_ADD_MEMBER;
-			params.put("home_id", mMember.home_id);
+			if(mMode == MainActivity.MOD_ADD) {
+				url = Constant.HOST + Constant.API_ADD_MEMBER;
+				json.put("home_id", mMember.home_id);
 
-		} else {
-			url = Constant.HOST + Constant.API_UPDATE_MEMBER;
-			params.put("member_id", mMember.member_id);
-		}
-
-		params.put("mdn", mMember.mdn);
-		params.put("is_parent", mMember.is_parent);
-		params.put("name", mMember.name);
-		params.put("relation", mMember.relation);
-		params.put("photo", mMember.photo);
-
-		if(mMember.is_parent == 0) {
-			params.put("school_name", mMember.school_name);
-			params.put("school_grade", mMember.school_grade);
-			params.put("school_ban", mMember.school_ban);
-		}
-
-		Log.d("LDK", "url:" + url);
-		Log.d("LDK", "input parameter:" + params.toString());
-
-		mAq.ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>(){
-			@Override
-			public void callback(String url, JSONObject object, AjaxStatus status) {
-				LoadingDialog.hideLoading();
-				try {
-					if(status.getCode() != 200) {
-
-						return;
-					}
-
-					Log.d("LDK", "result:" + object.toString(1));
-
-					if("0".equals(object.getString("result"))) {
-						setResult(RESULT_OK);
-						finish();
-					} else {
-
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+			} else {
+				url = Constant.HOST + Constant.API_UPDATE_MEMBER;
+				json.put("member_id", mMember.member_id);
 			}
-		});
+
+			json.put("mdn", mMember.mdn);
+			json.put("is_parent", mMember.is_parent);
+			json.put("name", mMember.name);
+			json.put("relation", mMember.relation);
+			json.put("photo", mMember.photo);
+
+			if(mMember.is_parent == 0) {
+				json.put("school_name", mMember.school_name);
+				json.put("school_grade", mMember.school_grade);
+				json.put("school_ban", mMember.school_ban);
+			}
+
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", "input parameter:" + json.toString(1));
+
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					LoadingDialog.hideLoading();
+					try {
+						if(status.getCode() != 200) {
+
+							return;
+						}
+
+						Log.d("LDK", "result:" + object.toString(1));
+
+						if("0".equals(object.getString("result"))) {
+							setResult(RESULT_OK);
+							finish();
+						} else {
+
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
     }
 	
     private Uri getTempUri() {
