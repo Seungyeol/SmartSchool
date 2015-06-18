@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -57,9 +56,8 @@ public class MainActivity extends FragmentActivity {
 	private LoginDialog mLoginDialog;
 	
 	private AQuery mAq;
-	
-	private FragmentManager mFm;
-    private Fragment mFragment;
+
+    private FragmentManager mFm;
 	private FamilyMembersFragment mFamilyMemberFragment;
 
     private ArrayList<MemberVO> mMemberList = new ArrayList<MemberVO>();
@@ -68,15 +66,21 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		mAq = new AQuery(this);
+		mFamilyMemberFragment = new FamilyMembersFragment();
+
 		mFm = getSupportFragmentManager();
+		mFm.beginTransaction().replace(R.id.content_frame, mFamilyMemberFragment).commit();
 
-        mFamilyMemberFragment = new FamilyMembersFragment();
-        mFm.beginTransaction().replace(R.id.content_frame, mFamilyMemberFragment).commit();
+		initDrawerView();
+		initActionBar();
 
-        initDrawerView();
+		//checkLogin();
+	}
 
+
+	private void initActionBar() {
 		//액션바 처리
 		ActionBar mActionBar = getActionBar();
 		mActionBar.setDisplayShowHomeEnabled(false);
@@ -85,85 +89,71 @@ public class MainActivity extends FragmentActivity {
 		tvTitle = (TextView) mCustomView.findViewById(R.id.tvTitle);
 		ivHome = (ImageView) mCustomView.findViewById(R.id.logo);
 		ivHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mFragment != null) {
-                    showMainMenu();
-                }
-            }
-        });
-		final View actionbar_fl_more = mCustomView.findViewById(R.id.fl_more);
-		mCustomView.findViewById(R.id.fl_more).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				PopupMenu popupMenu = new PopupMenu(MainActivity.this, actionbar_fl_more);
-				if (PreferenceUtil.getInstance(MainActivity.this).isParent()) {
-					//popupMenu.getMenu().findItem(R.id.action_usermanage).setVisible(false);
-					popupMenu.getMenuInflater().inflate(R.menu.main, popupMenu.getMenu());
-				} else {
-					popupMenu.getMenuInflater().inflate(R.menu.menu_child, popupMenu.getMenu());
-				}
-			    //popupMenu.getMenuInflater().inflate(R.menu.main, popupMenu.getMenu());
-			    popupMenu.setOnMenuItemClickListener(mMoreMenuItemClickListener);
-			    popupMenu.show();
+                if(mFm.getBackStackEntryCount() > 0) {
+                    mFm.popBackStack();
+                }
 			}
 		});
 
-        ivShowDrawerMenu = mCustomView.findViewById(R.id.btn_drawer_menu);
-        ivShowDrawerMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mDrawerLayout.isDrawerOpen(mDrawerList)) {
-                    mDrawerLayout.closeDrawer(mDrawerList);
-                } else {
-                    mDrawerLayout.openDrawer(mDrawerList);
-                }
-            }
-        });
+		mCustomView.findViewById(R.id.fl_more).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+					mDrawerLayout.closeDrawer(mDrawerList);
+				} else {
+					mDrawerLayout.openDrawer(mDrawerList);
+				}
+			}
+		});
 
-        mActionBar.setCustomView(mCustomView);
+		mActionBar.setCustomView(mCustomView);
 		mActionBar.setDisplayShowCustomEnabled(true);
-		
-		checkLogin();
 	}
 
-    private void initDrawerView() {
+	private void initDrawerView() {
+		String[] menu;
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (RecyclerView) findViewById(R.id.left_drawer);
+        mDrawerList = (RecyclerView) findViewById(R.id.drawer_menu);
 
         mDrawerList.setHasFixedSize(true);
         mDrawerList.setLayoutManager(new LinearLayoutManager(this));
+		if (PreferenceUtil.getInstance(MainActivity.this).isParent()) {
+			menu = getResources().getStringArray(R.array.parent_drawer_menu);
+		} else {
+			menu = getResources().getStringArray(R.array.child_drawer_menu);
+		}
 
-        String[] parentMenu = getResources().getStringArray(R.array.parent_drawer_menu);
-
-        mDrawerList.setAdapter(new DrawerAdapter(parentMenu));
+        mDrawerList.setAdapter(new DrawerAdapter(menu));
     }
 
     @Override
 	public void onBackPressed() {
-		if(mFragment == null) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("Smart School")
-				.setMessage("종료하시겠습니까?")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int arg1) {
-						dialog.dismiss();
-						if(mLoginDialog != null) {
-							mLoginDialog.dismiss();
-						}
-						finish();
-					}
-				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				})
-				.show();
-		} else {
-			showMainMenu();
+		if(mFm.getBackStackEntryCount() > 0) {
+            mFm.popBackStack();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Smart School")
+                    .setMessage("종료하시겠습니까?")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            dialog.dismiss();
+                            if(mLoginDialog != null) {
+                                mLoginDialog.dismiss();
+                            }
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
 		}
 	}
 	
@@ -178,28 +168,6 @@ public class MainActivity extends FragmentActivity {
             }
             break;
         }
-    }
-    
-    private void showSubMenu() {
-    	ivHome.setImageResource(R.drawable.btn_pre);
-    	tvTitle.setText(PreferenceUtil.getInstance(this).getName());
-//    	mainMenu.setVisibility(View.GONE);
-    }
-    
-    private void showSubMenu(String name) {
-    	tvTitle.setText(name);
-    	showSubMenu();
-    }
-    
-    private void showMainMenu() {
-    	ivHome.setImageResource(R.drawable.home);
-    	tvTitle.setText(PreferenceUtil.getInstance(this).getHomeId());
-//    	mainMenu.setVisibility(View.VISIBLE);
-    	
-    	if(mFragment != null) {
-	    	mFm.beginTransaction().remove(mFragment).commit();
-			mFragment = null;
-    	}
     }
 	
 	private void checkLogin() {
@@ -339,7 +307,6 @@ public class MainActivity extends FragmentActivity {
 		}
 
         mFamilyMemberFragment.setFamilyMemberList(mMemberList);
-		showMainMenu();
 	}
 
 	//more menu

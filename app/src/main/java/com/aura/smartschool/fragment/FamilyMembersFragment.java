@@ -3,11 +3,10 @@ package com.aura.smartschool.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2015-06-16.
  */
-public class FamilyMembersFragment extends Fragment {
+public class FamilyMembersFragment extends BaseFragment {
 
     private View mFamilyListView;
 
@@ -34,6 +33,7 @@ public class FamilyMembersFragment extends Fragment {
     private MemberListAdapter mAdapter;
 
     public FamilyMembersFragment() {
+        super();
     }
 
     @Nullable
@@ -62,6 +62,15 @@ public class FamilyMembersFragment extends Fragment {
         return mFamilyListView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //TODO :: Test Code 차후 삭제!!!!! ----START
+        setFamilyMemberList(getTestFamilyList());
+        //TODO :: Test Code 차후 삭제!!!!! ----END
+        setActionbar(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
+    }
+
     public void setFamilyMemberList(ArrayList<MemberVO> members) {
         mAdapter.setData(members);
         mAdapter.notifyDataSetChanged();
@@ -71,9 +80,7 @@ public class FamilyMembersFragment extends Fragment {
     MemberListListener mMemberListListener = new MemberListListener() {
         @Override
         public void onSelected(int position) {
-//            mFragment = new MainFragment(mMemberList.get(position));
-//            mFm.beginTransaction().replace(R.id.container, mFragment).commit();
-//            showSubMenu(mMemberList.get(position).name);
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, HealthMainFragment.newInstance(mAdapter.getItem(position))).addToBackStack(null).commit();
         }
 
         @Override
@@ -89,4 +96,24 @@ public class FamilyMembersFragment extends Fragment {
 
         }
     };
+
+
+    //---------------------------------- test code start----------------------------------//
+    private ArrayList<MemberVO> getTestFamilyList() {
+        ArrayList<MemberVO> testList = new ArrayList<>();
+        MemberVO testMember = new MemberVO();
+        testMember.member_id =1 ;
+        testMember.home_id ="test";
+        testMember.mdn ="01010101010";
+        testMember.name="홍길동";
+        testMember.relation="아들";
+        testMember.is_parent=0;
+        testMember.photo=null;
+        testMember.school_name="초등학교";
+        testMember.school_grade="1학년";
+        testMember.school_ban="1반";
+        testList.add(testMember);
+        return testList;
+    }
+    //---------------------------------- test code end----------------------------------//
 }
