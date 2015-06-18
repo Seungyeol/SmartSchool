@@ -1,0 +1,83 @@
+*회원가입--------------------------------------
+http://210.127.55.205:9000/api/signUp
+{
+	"home_id" : "happy",
+	"mdn" : "01012345678",
+	"is_parent" : 1,
+	"name" : "홍길동",
+	"relation" : "아빠"
+}
+
+{
+    "result": 0,
+    "msg": "success"
+}
+
+* 로그인------------------------------------------
+http://210.127.55.205:9000/api/signIn
+{
+	"home_id" : "happy",
+	"mdn" : "01012345678"
+}
+
+{
+    "result": 0,
+    "msg": "success",
+    "data":[{
+            "home_id": "happy",
+            "member_id": 1,
+            "mdn": "01012345678",
+            "is_parent": 1,
+            "name": "홍길동",
+            "relation" : "아빠",
+            "photo": null,
+            "school_name": null,
+            "school_grade": null,
+            "school_ban": null
+        }, {
+            "home_id": "happy",
+            "member_id": 3,
+            "mdn": "01011112222",
+            "is_parent": 0,
+            "name": "홍하나",
+            "relation" : "아들"
+            "photo": null,
+            "school_name": "광명초등학교",
+            "school_grade": "3",
+            "school_ban": "5"
+        }]
+    }
+}
+
+* 가족등록(학생)----------------------------------------------
+http://210.127.55.205:9000/api/addMember
+{
+	"home_id" : "happy",
+	"mdn": "01011112222",
+	"is_parent": 0,
+	"name": "홍하나",
+	"relation" : "아들",
+	"photo": null,
+	"school_name": "광명초등학교",
+	"school_grade": "3",
+	"school_ban": "4"
+}
+
+{
+    "result": 0,
+    "msg": "success"
+}
+
+* 가족 수정-----------------------------------------------------
+http://210.127.55.205:9000/api/updateMember
+{
+	"member_id" : 3,
+	"school_ban": "5"
+}
+
+{
+	"member_id" : 3,
+	"school_ban": "5"
+}
+
+자녀 위치 트래킹--------------------------------------------------
