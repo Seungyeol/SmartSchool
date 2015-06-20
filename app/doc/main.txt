@@ -14,20 +14,7 @@
   녹음하기, 위치정보 보내기 등의 서비스
 
 * todo
-- API 연동하여 학교명 입력하기
-참고 사이트
-https://www.career.go.kr/cnet/front/openapi/openApiSchoolCenter.do
-프로토콜 및 파라메터
-http://www.career.go.kr/cnet/openapi/getOpenApi.json
-apiKey=fd3124bc20f09c3f5b2fc7bb5fe6388a
-svcType=api
-svcCode=SCHOOL
-gubun=elem_list
-  초등학교 : elem_list,
-  중학교 :midd_list,
-  고등학교 : high_list,
-  대학교 : univ_list,
-  특수/각종기타학교 : seet_list,
-  대안학교 : alte_list
-searchSchulNm=검색어
-예)http://www.career.go.kr/cnet/openapi/getOpenApi.json?apiKey=fd3124bc20f09c3f5b2fc7bb5fe6388a&svcType=api&svcCode=SCHOOL&gubun=elem_list&searchSchulNm=가
+- 학교명 터치시 학교명 입력하기
+API: rest.txt의 학교정보 가져오기 API 참고
+화면에 학교명과 주소를 뿌려주고, 선택시에는 schoo_id 저장
+아이앰스쿨의 학교등록하는 화면 참고
