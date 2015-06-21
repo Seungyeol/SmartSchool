@@ -230,7 +230,7 @@ public class MainActivity extends FragmentActivity {
 							JSONArray array = object.getJSONArray("data");
 							displayMemberList(array);
 						} else {
-
+							showLoginDialog();
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();

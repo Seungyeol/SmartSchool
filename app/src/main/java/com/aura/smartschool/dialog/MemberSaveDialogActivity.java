@@ -156,9 +156,9 @@ public class MemberSaveDialogActivity extends Activity {
 			json.put("photo", mMember.photo);
 
 			if(mMember.is_parent == 0) {
-				json.put("school_name", mMember.mSchoolVO.school_name);
+				json.put("school_id", mMember.mSchoolVO.school_id);
 				json.put("school_grade", mMember.mSchoolVO.school_grade);
-				json.put("school_ban", mMember.mSchoolVO.school_class);
+				json.put("school_class", mMember.mSchoolVO.school_class);
 			}
 
 			Log.d("LDK", "url:" + url);

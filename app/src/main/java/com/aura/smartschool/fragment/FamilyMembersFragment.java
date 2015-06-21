@@ -66,7 +66,7 @@ public class FamilyMembersFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         //TODO :: Test Code 차후 삭제!!!!! ----START
-        setFamilyMemberList(getTestFamilyList());
+        //setFamilyMemberList(getTestFamilyList());
         //TODO :: Test Code 차후 삭제!!!!! ----END
         setActionbar(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
     }
