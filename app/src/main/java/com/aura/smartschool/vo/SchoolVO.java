@@ -1,9 +1,11 @@
 package com.aura.smartschool.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by eastflag on 2015-06-21.
  */
-public class SchoolVO {
+public class SchoolVO  implements Serializable {
     public int school_id;
     public String school_name;
     public String school_grade;
