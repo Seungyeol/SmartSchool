@@ -46,6 +46,13 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <activity
+            android:name=".FindSchoolActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+
         <service
             android:name=".service.MyLocationService"
             android:enabled="true"
