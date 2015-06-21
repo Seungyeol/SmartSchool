@@ -17,6 +17,7 @@ import com.aura.smartschool.adapter.MemberListAdapter;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolVO;
 
 import java.util.ArrayList;
 
@@ -109,6 +110,7 @@ public class FamilyMembersFragment extends BaseFragment {
         testMember.relation="아들";
         testMember.is_parent=0;
         testMember.photo=null;
+        testMember.mSchoolVO = new SchoolVO();
         testMember.mSchoolVO.school_name="초등학교";
         testMember.mSchoolVO.school_grade="1학년";
         testMember.mSchoolVO.school_class="1반";
