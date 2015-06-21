@@ -30,6 +30,7 @@ import com.aura.smartschool.fragment.FamilyMembersFragment;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolVO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +77,7 @@ public class MainActivity extends FragmentActivity {
 		initDrawerView();
 		initActionBar();
 
-		//checkLogin();
+		checkLogin();
 	}
 
 
@@ -293,9 +294,21 @@ public class MainActivity extends FragmentActivity {
 			member.name = json.getString("name");
 			member.relation = json.getString("relation");
 			member.photo = json.getString("photo");
-			member.school_name = json.getString("school_name");
-			member.school_grade = json.getString("school_grade");
-			member.school_ban = json.getString("school_ban");
+
+			//자녀 정보
+			SchoolVO school = new SchoolVO();
+			school.school_id = json.getInt("school_id");
+			school.school_grade = json.getString("school_grade");
+			school.school_class = json.getString("school_class");
+			school.school_name =  json.getString("school_name");
+			school.lat = json.getString("lat");
+			school.lng = json.getString("lng");
+			school.address = json.getString("address");
+			school.new_address = json.getString("new_address");
+			school.contact = json.getString("contact");
+			school.homepage = json.getString("homepage");
+			member.mSchoolVO = school;
+
 			mMemberList.add(member);
 			//자기 정보 저장
 			if(Util.getMdn(this).equals(member.mdn)) {

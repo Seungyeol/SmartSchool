@@ -6,6 +6,8 @@ package com.aura.smartschool.vo;
 public class SchoolVO {
     public int school_id;
     public String school_name;
+    public String school_grade;
+    public String school_class;
     public String gubun1;
     public String gubun2;
     public String zipcode;

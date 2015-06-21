@@ -100,9 +100,9 @@ public class MemberSaveDialogActivity extends Activity {
 				iv_user_image.setImageBitmap(Util.StringToBitmap(mMember.photo));
 			}
 			if(mMember.is_parent == 0) {
-				et_school_name.setText(mMember.school_name);
-				et_school_grade.setText(mMember.school_grade);
-				et_school_class.setText(mMember.school_ban);
+				et_school_name.setText(mMember.mSchoolVO.school_name);
+				et_school_grade.setText(mMember.mSchoolVO.school_grade);
+				et_school_class.setText(mMember.mSchoolVO.school_class);
 				tvStudent.performClick(); //학생탭 선택
 			} 
 			
@@ -156,9 +156,9 @@ public class MemberSaveDialogActivity extends Activity {
 			json.put("photo", mMember.photo);
 
 			if(mMember.is_parent == 0) {
-				json.put("school_name", mMember.school_name);
-				json.put("school_grade", mMember.school_grade);
-				json.put("school_ban", mMember.school_ban);
+				json.put("school_name", mMember.mSchoolVO.school_name);
+				json.put("school_grade", mMember.mSchoolVO.school_grade);
+				json.put("school_ban", mMember.mSchoolVO.school_class);
 			}
 
 			Log.d("LDK", "url:" + url);
@@ -290,9 +290,9 @@ public class MemberSaveDialogActivity extends Activity {
 				mMember.name = et_name.getText().toString();
 				mMember.relation = et_relation.getText().toString();
 				//mMember.mdn = Util.getMdn(mContext);
-				mMember.school_name = et_school_name.toString();
-				mMember.school_grade = et_school_grade.toString();
-				mMember.school_ban = et_school_class.toString();
+				mMember.mSchoolVO.school_name = et_school_name.toString();
+				mMember.mSchoolVO.school_grade = et_school_grade.toString();
+				mMember.mSchoolVO.school_class = et_school_class.toString();
 				
 				getSave();
 				

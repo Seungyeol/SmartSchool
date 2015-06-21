@@ -109,9 +109,9 @@ public class FamilyMembersFragment extends BaseFragment {
         testMember.relation="아들";
         testMember.is_parent=0;
         testMember.photo=null;
-        testMember.school_name="초등학교";
-        testMember.school_grade="1학년";
-        testMember.school_ban="1반";
+        testMember.mSchoolVO.school_name="초등학교";
+        testMember.mSchoolVO.school_grade="1학년";
+        testMember.mSchoolVO.school_class="1반";
         testList.add(testMember);
         return testList;
     }

@@ -121,9 +121,9 @@ public class RegisterDialogActivity extends Activity {
 			json.put("relation", member.relation);
 			json.put("photo", imageDataString);
 			if(mIs_parent==0) {
-				json.put("school_name", member.school_name);
-				json.put("school_grade", member.school_grade);
-				json.put("school_ban", member.school_ban);
+				json.put("school_name", member.mSchoolVO.school_name);
+				json.put("school_grade", member.mSchoolVO.school_grade);
+				json.put("school_ban", member.mSchoolVO.school_class);
 			}
 
 			Log.d("LDK", "url:" + url);
@@ -260,9 +260,9 @@ public class RegisterDialogActivity extends Activity {
 				member.relation = et_relation.getText().toString();
 				member.mdn = Util.getMdn(mContext);
 				member.is_parent = mIs_parent;
-				member.school_name = et_school_name.toString();
-				member.school_grade = et_school_grade.toString();
-				member.school_ban = et_school_class.toString();
+				member.mSchoolVO.school_name = et_school_name.toString();
+				member.mSchoolVO.school_grade = et_school_grade.toString();
+				member.mSchoolVO.school_class = et_school_class.toString();
 				
 				getRegister(member);
 				

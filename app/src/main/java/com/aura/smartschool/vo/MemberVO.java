@@ -12,8 +12,6 @@ public class MemberVO implements Serializable {
 	public String photo;
 
 	//자녀 정보
-	public String school_grade;
-	public String school_ban;
 	public SchoolVO mSchoolVO;
 	
 	private static final long serialVersionUID = 6631779405103025795L;
