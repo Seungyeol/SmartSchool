@@ -10,9 +10,11 @@ public class MemberVO implements Serializable {
 	public String relation;
 	public int is_parent = 1; //0:학생, 1:부모
 	public String photo;
-	public String school_name;
+
+	//자녀 정보
 	public String school_grade;
 	public String school_ban;
+	public SchoolVO mSchoolVO;
 	
 	private static final long serialVersionUID = 6631779405103025795L;
 	
