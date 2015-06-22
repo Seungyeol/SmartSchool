@@ -2,8 +2,6 @@ package com.aura.smartschool.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -22,12 +20,6 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class MyLocationService extends Service {
 
@@ -70,7 +62,7 @@ public class MyLocationService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             mLastLocation = location;
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             postLocation();
         }
     };
@@ -90,7 +82,7 @@ public class MyLocationService extends Service {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000 * 60 * 10); //10 minutes
         //mLocationRequest.setFastestInterval(1000 * 60);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
         return START_STICKY;
     }
@@ -111,13 +103,16 @@ public class MyLocationService extends Service {
         JSONObject json = new JSONObject();
         try {
             int member_id = PreferenceUtil.getInstance(this).getMemberId();
+            if (member_id == 0) {
+                return;
+            }
+
             json.put("member_id", member_id);
+            json.put("lat", String.valueOf(mLastLocation.getLatitude()));
+            json.put("lng", String.valueOf(mLastLocation.getLongitude()));
+            //json.put("created_date", System.currentTimeMillis()); //timestamp
 
-            json.put("lat", mLastLocation.getLatitude());
-            json.put("lng", mLastLocation.getLongitude());
-            json.put("created_date", System.currentTimeMillis()); //timestamp
-
-            List<Address> addresses = null;
+            /*List<Address> addresses = null;
             try {
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 addresses = geocoder.getFromLocation(
@@ -134,7 +129,7 @@ public class MyLocationService extends Service {
                 json.put("address", addresses.get(0).getAddressLine(0));
             } else {
                 json.put("address", "");
-            }
+            }*/
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", json.toString(1));

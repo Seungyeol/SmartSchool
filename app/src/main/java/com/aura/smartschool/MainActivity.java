@@ -27,6 +27,7 @@ import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
+import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
@@ -227,6 +228,8 @@ public class MainActivity extends FragmentActivity {
 
 						if("0".equals(object.getString("result"))) {
 							hideLoginDialog();
+							//location tracking
+							startService(new Intent(MainActivity.this, MyLocationService.class));
 							JSONArray array = object.getJSONArray("data");
 							displayMemberList(array);
 						} else {
