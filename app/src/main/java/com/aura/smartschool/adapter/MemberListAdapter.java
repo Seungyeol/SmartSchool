@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.Interface.MemberListListener;
@@ -58,6 +59,10 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvMdn = (TextView) convertView.findViewById(R.id.tvMdn);
 			holder.btnModify = (Button) convertView.findViewById(R.id.btnModify);
 			holder.btnView = (Button) convertView.findViewById(R.id.btnView);
+			holder.school_info = (LinearLayout) convertView.findViewById(R.id.school_info);
+			holder.tvSchool = (TextView) convertView.findViewById(R.id.tv_school);
+			holder.tvSchoolHomepage = (TextView) convertView.findViewById(R.id.tv_school_homepage);
+			holder.tvSchoolContact = (TextView) convertView.findViewById(R.id.tv_school_contact);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -72,6 +77,19 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.iv_user_image.setImageBitmap(Util.StringToBitmap(userImage));
 		}else{
 			holder.iv_user_image.setImageBitmap(null);
+		}
+
+		if(mMemberList.get(position).is_parent > 0) {
+			holder.school_info.setVisibility(View.GONE);
+		} else {
+			holder.school_info.setVisibility(View.VISIBLE);
+			holder.tvSchool.setText(mMemberList.get(position).mSchoolVO.school_name);
+			holder.tvSchool.append("  ");
+			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_grade);
+			holder.tvSchool.append(" - ");
+			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_class);
+			holder.tvSchoolHomepage.append(mMemberList.get(position).mSchoolVO.homepage);
+			holder.tvSchoolContact.append(mMemberList.get(position).mSchoolVO.contact);
 		}
 		
 		holder.btnModify.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +114,10 @@ public class MemberListAdapter extends BaseAdapter {
 		TextView tvName;
 		TextView tvRelation;
 		TextView tvMdn;
+		LinearLayout school_info;
+		TextView tvSchool;
+		TextView tvSchoolHomepage;
+		TextView tvSchoolContact;
 		Button btnModify;
 		Button btnView;
 	}
