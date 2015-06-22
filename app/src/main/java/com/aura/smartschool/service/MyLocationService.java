@@ -81,7 +81,7 @@ public class MyLocationService extends Service {
 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000 * 60 * 10); //10 minutes
-        //mLocationRequest.setFastestInterval(1000 * 60);
+        mLocationRequest.setFastestInterval(1000 * 60 * 10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
         return START_STICKY;

@@ -88,8 +88,8 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_grade);
 			holder.tvSchool.append(" - ");
 			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_class);
-			holder.tvSchoolHomepage.append(mMemberList.get(position).mSchoolVO.homepage);
-			holder.tvSchoolContact.append(mMemberList.get(position).mSchoolVO.contact);
+			holder.tvSchoolHomepage.setText(mMemberList.get(position).mSchoolVO.homepage);
+			holder.tvSchoolContact.setText(mMemberList.get(position).mSchoolVO.contact);
 		}
 		
 		holder.btnModify.setOnClickListener(new View.OnClickListener() {

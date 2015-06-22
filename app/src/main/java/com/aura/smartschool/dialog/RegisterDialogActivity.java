@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.CallLog;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -116,6 +117,7 @@ public class RegisterDialogActivity extends Activity {
 			JSONObject json = new JSONObject();
 			json.put("home_id", member.home_id);
 			json.put("mdn", member.mdn);
+			json.put("gcm_id", PreferenceUtil.getInstance(RegisterDialogActivity.this).getRegID());
 			json.put("is_parent", member.is_parent);
 			json.put("name", member.name);
 			json.put("relation", member.relation);
