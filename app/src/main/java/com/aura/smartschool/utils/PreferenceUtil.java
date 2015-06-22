@@ -64,4 +64,11 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		return get("member_id", 0);
 	}
 
+	public void putAppVersion(int appVersion) {
+		put("appVersion", appVersion);
+	}
+	public int appVersion() {
+		return get("appVersion", Integer.MIN_VALUE);
+	}
+
 }

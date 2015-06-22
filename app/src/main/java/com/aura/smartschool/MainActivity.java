@@ -2,8 +2,12 @@ package com.aura.smartschool;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -32,11 +36,15 @@ import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolVO;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
@@ -44,9 +52,13 @@ public class MainActivity extends FragmentActivity {
 	public static final int REQ_DIALOG_MEMBER_UPDATE = 101;
 	public static final int REQ_DIALOG_MEMBER_ADD = 102;
 	public static final int REQ_CODE_PICK_IMAGE = 200;
+	private final static int REQ_PLAY_SERVICES_RESOLUTION = 9000;
+
 	public static final String TEMP_PHOTO_FILE = "temp.jpg";       // 임시 저장파일
 	public static final int MOD_ADD = 0;
 	public static final int MOD_UPDATE = 1;
+
+	private static final String SENDER_ID = "345146841450";
 	
 	private TextView tvTitle;
 	private ImageView ivHome;
@@ -64,6 +76,9 @@ public class MainActivity extends FragmentActivity {
 
     private ArrayList<MemberVO> mMemberList = new ArrayList<MemberVO>();
 
+	private GoogleCloudMessaging _gcm;
+	private String _regId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,6 +92,12 @@ public class MainActivity extends FragmentActivity {
 
 		initDrawerView();
 		initActionBar();
+
+		if(checkPlayServices()){
+			if(TextUtils.isEmpty(getRegistrationId())) {
+				registerInBackground();
+			}
+		}
 
 		checkLogin();
 	}
@@ -93,9 +114,9 @@ public class MainActivity extends FragmentActivity {
 		ivHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                if(mFm.getBackStackEntryCount() > 0) {
-                    mFm.popBackStack();
-                }
+				if (mFm.getBackStackEntryCount() > 0) {
+					mFm.popBackStack();
+				}
 			}
 		});
 
@@ -171,6 +192,101 @@ public class MainActivity extends FragmentActivity {
             break;
         }
     }
+
+	//GCM----------------------------------------------------------------------------------------------
+	// google play service가 사용가능한가
+	private boolean checkPlayServices() {
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+				Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, REQ_PLAY_SERVICES_RESOLUTION);
+				dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						finish();
+					}
+				});
+				dialog.show();
+
+			} else {
+				Log.i("MainActivity.java | checkPlayService",
+						"|This device is not supported.|");
+				// _textStatus.append("\n This device is not supported.\n");
+				finish();
+			}
+			return false;
+		}
+		return true;
+	}
+
+	// registration id를 가져온다.
+	private String getRegistrationId() {
+		String registrationId = PreferenceUtil.getInstance(getApplicationContext()).getRegID();
+		if (TextUtils.isEmpty(registrationId)) {
+			Log.e("LDK", "|Registration not found.|");
+			return "";
+		}
+
+		int registeredVersion = PreferenceUtil.getInstance(getApplicationContext()).appVersion();
+		int currentVersion = getAppVersion();
+		if (registeredVersion != currentVersion) {
+			Log.i("LDK", "|App version changed.|");
+			// _textStatus.append("\n App version changed.\n");
+			return "";
+		}
+		Log.i("LDK", "registrationId:" + registrationId);
+		return registrationId;
+	}
+
+	// gcm 서버에 접속해서 registration id를 발급받는다.
+	private void registerInBackground() {
+		new AsyncTask<Void, Void, String>() {
+			@Override
+			protected String doInBackground(Void... params) {
+				String msg = "";
+				try {
+					if (_gcm == null) {
+						_gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+					}
+					_regId = _gcm.register(SENDER_ID);
+					msg = "Device registered, registration ID=" + _regId;
+					storeRegistrationId(_regId);
+				} catch (IOException ex) {
+					msg = "Error :" + ex.getMessage();
+					// If there is an error, don't just keep trying to register.
+					// Require the user to click a button again, or perform
+					// exponential back-off.
+				}
+
+				return msg;
+			}
+
+			@Override
+			protected void onPostExecute(String msg) {
+				Log.e("LDK", "|" + msg + "|");
+			}
+		}.execute(null, null, null);
+	}
+
+	// app version을 가져온다.
+	private int getAppVersion() {
+		try {
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			return packageInfo.versionCode;
+		} catch (PackageManager.NameNotFoundException e) {
+			// should never happen
+			throw new RuntimeException("Could not get package name: " + e);
+		}
+	}
+
+	// registraion id를 preference에 저장한다.
+	private void storeRegistrationId(String regId) {
+		int appVersion = getAppVersion();
+		PreferenceUtil.getInstance(getApplicationContext()).putRegID(regId);
+		PreferenceUtil.getInstance(getApplicationContext()).putAppVersion(appVersion);
+	}
+	//GCM 로직 끝--------------------------------------------------------------------------------------------------
 	
 	private void checkLogin() {
 		String id = PreferenceUtil.getInstance(this).getHomeId();
@@ -203,6 +319,13 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	private void getLogin(MemberVO member) {
+		String gcmRegId = PreferenceUtil.getInstance(this).getRegID();
+		if(gcmRegId == null){
+			// gcm reg id를 못가져오는 경우 네트워크 상태 메시지 출력
+			Util.showToast(this, "network error");
+			return;
+		}
+
 		LoadingDialog.showLoading(this);
 		try {
 			String url = Constant.HOST + Constant.API_SIGNIN;
@@ -210,6 +333,7 @@ public class MainActivity extends FragmentActivity {
 			JSONObject json = new JSONObject();
 			json.put("home_id", member.home_id);
 			json.put("mdn", member.mdn);
+			json.put("gcm_id", gcmRegId);
 
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", "input parameter:" + json.toString(1));
