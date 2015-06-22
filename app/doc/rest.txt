@@ -96,6 +96,59 @@ http://210.127.55.205:9000/api/updateMember
 	"school_ban": "5"
 }
 
+* 위치 등록------------------------------------------------------
+http://210.127.55.205:9000/api/addLocation
+{
+"member_id" : 8,
+"lat" : "37.123127",
+"lng" : "1237.123459"
+}
+
+* 가장 최근 위치 가져오기---------------------------------------------
+http://210.127.55.205:9000/api/getLastLocation
+{
+"member_id" : 8
+}
+결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": {
+        "location_id": 0,
+        "member_id": 8,
+        "lat": 37.123127,
+        "lng": 1237.123459,
+        "address": null,
+        "created_date": "2015-06-22 20:47:46.0"
+    }
+}
+
+* 오늘날짜의 모든 위치정보 가져오기--------------------------------------
+http://210.127.55.205:9000/api/getLocationList
+{
+"member_id" : 8
+}
+결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": [{
+        "location_id": 0,
+        "member_id": 0,
+        "lat": 37.123123,
+        "lng": 1237.123456,
+        "address": null,
+        "created_date": "2015-06-22 20:19:15.0"
+    }, {
+        "location_id": 0,
+        "member_id": 0,
+        "lat": 37.123127,
+        "lng": 1237.123459,
+        "address": null,
+        "created_date": "2015-06-22 20:47:46.0"
+    }]
+}
+
 * 학교 정보 가져오기 --------------------------------------------
 http://210.127.55.205:9000/api/getSchoolList
 {
