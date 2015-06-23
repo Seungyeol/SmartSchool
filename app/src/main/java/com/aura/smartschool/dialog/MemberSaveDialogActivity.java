@@ -24,11 +24,13 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.FindSchoolActivity;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolVO;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,10 +49,12 @@ public class MemberSaveDialogActivity extends Activity {
 	FrameLayout fl_user_image;
 	EditText et_id, et_name, et_relation;
 	ImageView iv_user_image;
-	EditText et_school_name, et_school_grade, et_school_class;
+	TextView tvSchoolName;
+	EditText et_school_grade, et_school_class;
 	Button btn_register;
 	
 	private MemberVO mMember;
+    private SchoolVO mSchoolVO;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +79,14 @@ public class MemberSaveDialogActivity extends Activity {
 		et_id = (EditText) findViewById(R.id.et_id);
 		et_name = (EditText) findViewById(R.id.et_name);
 		et_relation = (EditText) findViewById(R.id.et_relation);
-		et_school_name = (EditText) findViewById(R.id.et_school_name);
+		tvSchoolName = (TextView) findViewById(R.id.et_school_name);
 		et_school_grade = (EditText) findViewById(R.id.et_school_grade);
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
 		
 		tvParent.setOnClickListener(mClick);
 		tvStudent.setOnClickListener(mClick);
+        tvSchoolName.setOnClickListener(mClick);
 		btn_register.setOnClickListener(mClick);
 		fl_user_image.setOnClickListener(mClick);
 		
@@ -101,7 +106,7 @@ public class MemberSaveDialogActivity extends Activity {
 				iv_user_image.setImageBitmap(Util.StringToBitmap(mMember.photo));
 			}
 			if(mMember.is_parent == 0) {
-				et_school_name.setText(mMember.mSchoolVO.school_name);
+				tvSchoolName.setText(mMember.mSchoolVO.school_name);
 				et_school_grade.setText(mMember.mSchoolVO.school_grade);
 				et_school_class.setText(mMember.mSchoolVO.school_class);
 				tvStudent.performClick(); //학생탭 선택
@@ -113,13 +118,13 @@ public class MemberSaveDialogActivity extends Activity {
 	}
 	
     protected void onActivityResult(int requestCode, int resultCode,
-            Intent imageData) {
-        super.onActivityResult(requestCode, resultCode, imageData);
+            Intent resultIntent) {
+        super.onActivityResult(requestCode, resultCode, resultIntent);
  
         switch (requestCode) {
         case MainActivity.REQ_CODE_PICK_IMAGE:
             if (resultCode == RESULT_OK) {
-                if (imageData != null) {
+                if (resultIntent != null) {
                     String filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
 
                     Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
@@ -132,6 +137,13 @@ public class MemberSaveDialogActivity extends Activity {
                 }
             }
             break;
+        case MainActivity.REQ_CODE_FIND_SCHOOL:
+            if (resultCode == RESULT_OK) {
+                mSchoolVO = (SchoolVO) resultIntent.getSerializableExtra("school");
+                tvSchoolName.setText(mSchoolVO.school_name);
+            }
+            break;
+
         }
     }
     
@@ -258,7 +270,10 @@ public class MemberSaveDialogActivity extends Activity {
 
 	            startActivityForResult(intent, MainActivity.REQ_CODE_PICK_IMAGE);
 	            break;
-				
+            case R.id.et_school_name :
+                Intent findSchoolIntent = new Intent(MemberSaveDialogActivity.this, FindSchoolActivity.class);
+                startActivityForResult(findSchoolIntent, MainActivity.REQ_CODE_FIND_SCHOOL);
+                break;
 			case R.id.btn_register:
 				String id = et_id.getText().toString();
 				if(TextUtils.isEmpty(et_id.getText().toString())){
@@ -274,7 +289,7 @@ public class MemberSaveDialogActivity extends Activity {
 					return;
 				}
 				if(mMember.is_parent == 0) {
-					if(TextUtils.isEmpty(et_school_name.getText().toString())){
+					if(TextUtils.isEmpty(mMember.mSchoolVO.school_name)){
 						Util.showToast(mContext, "학교명을 입력하세요.");
 						return;
 					}
@@ -292,9 +307,11 @@ public class MemberSaveDialogActivity extends Activity {
 				mMember.name = et_name.getText().toString();
 				mMember.relation = et_relation.getText().toString();
 				//mMember.mdn = Util.getMdn(mContext);
-				mMember.mSchoolVO.school_name = et_school_name.toString();
-				mMember.mSchoolVO.school_grade = et_school_grade.toString();
-				mMember.mSchoolVO.school_class = et_school_class.toString();
+                if(mSchoolVO != null) {
+                    mMember.mSchoolVO = mSchoolVO;
+                }
+				mMember.mSchoolVO.school_grade = et_school_grade.getText().toString();
+				mMember.mSchoolVO.school_class = et_school_class.getText().toString();
 				
 				getSave();
 				

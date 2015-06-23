@@ -1,13 +1,16 @@
 package com.aura.smartschool;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 
 import com.androidquery.AQuery;
@@ -54,6 +57,15 @@ public class FindSchoolActivity extends Activity {
         mSchoolListView.setLayoutManager(new LinearLayoutManager(this));
         mSchoolListAdapter = new SchoolListAdapter();
         mSchoolListView.setAdapter(mSchoolListAdapter);
+        mSchoolListAdapter.setOnItemClickListener(new SchoolListAdapter.SchoolItemClickListener() {
+            @Override
+            public void onItemClicked(SchoolVO school) {
+                Intent intent = new Intent();
+                intent.putExtra("school", school);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
 
         mSearchSchool.addTextChangedListener(mWatcher);
     }
@@ -71,14 +83,16 @@ public class FindSchoolActivity extends Activity {
                 mHandler.removeCallbacks(mTask);
             }
 
-            mTask = new Runnable() {
-                @Override
-                public void run() {
-                    doSearchSchool(s.toString());
-                }
-            };
+            if (!s.toString().isEmpty()) {
+                mTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        doSearchSchool(s.toString());
+                    }
+                };
 
-            mHandler.postDelayed(mTask, 500);
+                mHandler.postDelayed(mTask, 1000);
+            }
         }
     };
 
@@ -101,7 +115,6 @@ public class FindSchoolActivity extends Activity {
                         if(status.getCode() != 200) {
                             return;
                         }
-
                         Log.d(TAG, "doSearchSchool >> result :" + object.toString(1));
 
                         showSchoolList(parseSchoolList(object.getJSONArray("data")));
@@ -131,12 +144,13 @@ public class FindSchoolActivity extends Activity {
                 school.gubun1 = obj.getString("gubun1");
                 school.gubun2 = obj.getString("gubun2");
                 school.zipcode = obj.getString("zipcode");
+                school.address = obj.getString("address");
+                school.new_address = obj.getString("new_address");
                 school.lat = obj.getString("lat");
                 school.lng = obj.getString("lng");
                 school.homepage = obj.getString("homepage");
                 school.fax = obj.getString("fax");
                 school.contact = obj.getString("contact");
-
                 schoolList.add(school);
             } catch (JSONException e) {
                 e.printStackTrace();

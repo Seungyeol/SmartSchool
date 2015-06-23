@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.CallLog;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,11 +24,13 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.FindSchoolActivity;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolVO;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class RegisterDialogActivity extends Activity {
-	private Context mContext;
+    private Context mContext;
 	private AQuery mAq;
 	//private LoginListener mListener;
 	
@@ -47,11 +48,14 @@ public class RegisterDialogActivity extends Activity {
 	FrameLayout fl_user_image;
 	EditText et_id, et_name, et_relation;
 	ImageView iv_user_image;
-	EditText et_school_name, et_school_grade, et_school_class;
+	TextView tvSchoolName;
+	EditText et_school_grade, et_school_class;
 	Button btn_register;
 	
 	private int mIs_parent = 1; //default: 부모
 	private String imageDataString ="";
+
+    private SchoolVO mSchoolVO;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,37 +79,43 @@ public class RegisterDialogActivity extends Activity {
 		et_id = (EditText) findViewById(R.id.et_id);
 		et_name = (EditText) findViewById(R.id.et_name);
 		et_relation = (EditText) findViewById(R.id.et_relation);
-		et_school_name = (EditText) findViewById(R.id.et_school_name);
+		tvSchoolName = (TextView) findViewById(R.id.et_school_name);
 		et_school_grade = (EditText) findViewById(R.id.et_school_grade);
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
-		
+
 		tvParent.setOnClickListener(mClick);
 		tvStudent.setOnClickListener(mClick);
+
+        tvSchoolName.setOnClickListener(mClick);
+
 		btn_register.setOnClickListener(mClick);
 		fl_user_image.setOnClickListener(mClick);
 	}
 	
     protected void onActivityResult(int requestCode, int resultCode,
-            Intent imageData) {
-        super.onActivityResult(requestCode, resultCode, imageData);
- 
-        switch (requestCode) {
-        case MainActivity.REQ_CODE_PICK_IMAGE:
-            if (resultCode == RESULT_OK) {
-                if (imageData != null) {
-                    String filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
+            Intent resultIntent) {
+        super.onActivityResult(requestCode, resultCode, resultIntent);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case MainActivity.REQ_CODE_PICK_IMAGE:
+                    if (resultIntent != null) {
+                        String filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
 
-                    Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
-                    // temp.jpg파일을 Bitmap으로 디코딩한다.
-                    imageDataString = Util.BitmapToString(selectedImage);
+                        Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+                        // temp.jpg파일을 Bitmap으로 디코딩한다.
+                        imageDataString = Util.BitmapToString(selectedImage);
 
-                    //iv_user_image.setImageBitmap(selectedImage); 
-                    iv_user_image.setImageBitmap(selectedImage);
-                    //temp.jpg파일을 이미지뷰에 씌운다.
-                }
+                        //iv_user_image.setImageBitmap(selectedImage);
+                        iv_user_image.setImageBitmap(selectedImage);
+                        //temp.jpg파일을 이미지뷰에 씌운다.
+                    }
+                    break;
+                case MainActivity.REQ_CODE_FIND_SCHOOL:
+                    mSchoolVO = (SchoolVO) resultIntent.getSerializableExtra("school");
+                    tvSchoolName.setText(mSchoolVO.school_name);
+                    break;
             }
-            break;
         }
     }
     
@@ -208,6 +218,11 @@ public class RegisterDialogActivity extends Activity {
 				tvStudent.setTextColor(0xFFF0F0F0);
 				school_info.setVisibility(View.VISIBLE);
 				break;
+
+            case R.id.et_school_name:
+                Intent findSchoolIntent = new Intent(RegisterDialogActivity.this, FindSchoolActivity.class);
+                startActivityForResult(findSchoolIntent, MainActivity.REQ_CODE_FIND_SCHOOL);
+                break;
 				
 			case R.id.fl_user_image:
 				Intent intent = new Intent(Intent.ACTION_PICK,
@@ -242,7 +257,7 @@ public class RegisterDialogActivity extends Activity {
 					return;
 				}
 				if(mIs_parent==0) {
-					if(TextUtils.isEmpty(et_school_name.getText().toString())){
+					if(mSchoolVO == null){
 						Util.showToast(mContext, "학교명을 입력하세요.");
 						return;
 					}
@@ -262,12 +277,13 @@ public class RegisterDialogActivity extends Activity {
 				member.relation = et_relation.getText().toString();
 				member.mdn = Util.getMdn(mContext);
 				member.is_parent = mIs_parent;
-				member.mSchoolVO.school_name = et_school_name.toString();
-				member.mSchoolVO.school_grade = et_school_grade.toString();
-				member.mSchoolVO.school_class = et_school_class.toString();
+                if(mSchoolVO != null) {
+                    member.mSchoolVO = mSchoolVO;
+                }
+				member.mSchoolVO.school_grade = et_school_grade.getText().toString();
+				member.mSchoolVO.school_class = et_school_class.getText().toString();
 				
 				getRegister(member);
-				
 				break;
 				
 			default:

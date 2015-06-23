@@ -17,7 +17,7 @@ public class MemberVO implements Serializable {
 	private static final long serialVersionUID = 6631779405103025795L;
 	
 	public MemberVO () {
-		
+		mSchoolVO = new SchoolVO();
 	}
 	
 	public MemberVO(String home_id, String mdn) {

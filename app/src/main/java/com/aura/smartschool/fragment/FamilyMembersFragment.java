@@ -1,5 +1,6 @@
 package com.aura.smartschool.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -64,11 +65,21 @@ public class FamilyMembersFragment extends BaseFragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
+            case MainActivity.REQ_DIALOG_MEMBER_ADD:
+                if (resultCode == Activity.RESULT_OK) {
+                    ((MainActivity)getActivity()).getMemberList();
+                }
+                break;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        //TODO :: Test Code 차후 삭제!!!!! ----START
-        //setFamilyMemberList(getTestFamilyList());
-        //TODO :: Test Code 차후 삭제!!!!! ----END
         setActionbar(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
     }
 
@@ -97,25 +108,4 @@ public class FamilyMembersFragment extends BaseFragment {
 
         }
     };
-
-
-    //---------------------------------- test code start----------------------------------//
-    private ArrayList<MemberVO> getTestFamilyList() {
-        ArrayList<MemberVO> testList = new ArrayList<>();
-        MemberVO testMember = new MemberVO();
-        testMember.member_id =1 ;
-        testMember.home_id ="test";
-        testMember.mdn ="01010101010";
-        testMember.name="홍길동";
-        testMember.relation="아들";
-        testMember.is_parent=0;
-        testMember.photo=null;
-        testMember.mSchoolVO = new SchoolVO();
-        testMember.mSchoolVO.school_name="초등학교";
-        testMember.mSchoolVO.school_grade="1학년";
-        testMember.mSchoolVO.school_class="1반";
-        testList.add(testMember);
-        return testList;
-    }
-    //---------------------------------- test code end----------------------------------//
 }

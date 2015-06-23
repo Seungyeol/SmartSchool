@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
@@ -16,6 +17,10 @@ import java.util.ArrayList;
  */
 public class SchoolListAdapter extends RecyclerView.Adapter<SchoolListAdapter.ViewHolder> {
     private ArrayList<SchoolVO> mSchoolList;
+    private SchoolItemClickListener listener;
+    public interface SchoolItemClickListener {
+        void onItemClicked(SchoolVO school);
+    }
 
     public SchoolListAdapter() {
         mSchoolList = new ArrayList<>();
@@ -28,14 +33,26 @@ public class SchoolListAdapter extends RecyclerView.Adapter<SchoolListAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater vi = LayoutInflater.from(viewGroup.getContext());
-        View v = vi.inflate(R.layout.school_list_item, viewGroup, false);
-        TextView tv = (TextView) v.findViewById(R.id.tv_school_item);
-        return new ViewHolder(tv);
+        View itemView = vi.inflate(R.layout.school_list_item, viewGroup, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.mTextView.setText(mSchoolList.get(i).school_name);
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        viewHolder.mSchoolName.setText(mSchoolList.get(position).school_name);
+        viewHolder.mSchoolAddr.setText(mSchoolList.get(position).new_address);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClicked(mSchoolList.get(position));
+                }
+            }
+        });
+    }
+
+    public void setOnItemClickListener(SchoolItemClickListener listener)  {
+        this.listener = listener;
     }
 
     @Override
@@ -44,11 +61,13 @@ public class SchoolListAdapter extends RecyclerView.Adapter<SchoolListAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mTextView;
+        public final TextView mSchoolName;
+        public final TextView mSchoolAddr;
 
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            mSchoolName = (TextView) itemView.findViewById(R.id.tv_school_name);
+            mSchoolAddr = (TextView) itemView.findViewById(R.id.tv_school_addr);
         }
     }
 }

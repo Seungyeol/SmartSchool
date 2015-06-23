@@ -52,6 +52,7 @@ public class MainActivity extends FragmentActivity {
 	public static final int REQ_DIALOG_MEMBER_UPDATE = 101;
 	public static final int REQ_DIALOG_MEMBER_ADD = 102;
 	public static final int REQ_CODE_PICK_IMAGE = 200;
+	public static final int REQ_CODE_FIND_SCHOOL = 201;
 	private final static int REQ_PLAY_SERVICES_RESOLUTION = 9000;
 
 	public static final String TEMP_PHOTO_FILE = "temp.jpg";       // 임시 저장파일
@@ -184,8 +185,6 @@ public class MainActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
         case REQ_DIALOG_SIGNUP:
-        case REQ_DIALOG_MEMBER_UPDATE:
-        case REQ_DIALOG_MEMBER_ADD:
             if (resultCode == RESULT_OK) {
             	getMemberList();
             }
@@ -210,8 +209,8 @@ public class MainActivity extends FragmentActivity {
 				dialog.show();
 
 			} else {
-				Log.i("MainActivity.java | checkPlayService",
-						"|This device is not supported.|");
+				Log.i("MainActivity.java ",
+						"| checkPlayService |This device is not supported.|");
 				// _textStatus.append("\n This device is not supported.\n");
 				finish();
 			}
@@ -369,7 +368,7 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 	
-	private void getMemberList() {
+	public void getMemberList() {
 		LoadingDialog.showLoading(this);
 		try {
 			String url = Constant.HOST + Constant.API_GET_MEMBERLIST;
