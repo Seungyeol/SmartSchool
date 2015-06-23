@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:background="@drawable/bg_yellow">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:text="건강"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="5dp"
-        android:background="#000000"/>
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="2dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:background="@drawable/bg_darkyellow">
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textSize="20sp" android:textStyle="bold" android:textColor="#FFFFFF"
+            android:text="건강지킴이"/>
+    </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:padding="3dp"
+        android:background="@drawable/bg_yellow">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -38,34 +35,30 @@
                     android:layout_weight="1"
                     android:layout_marginRight="@dimen/health_container_item_margin"
                     android:padding="@dimen/health_container_item_padding"
-                    android:background="#000033">
+                    android:background="#455664">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
                         style="@style/HeathItemTitleTxt"
                         android:text="신장"/>
                     <TextView
                         android:id="@+id/tv_height_class"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:gravity="center"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                         style="@style/HeathItemContentSub"
                         android:text="표준"/>
                     <TextView
-                        android:layout_above="@id/tv_height_class"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:id="@+id/tv_height_state"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_above="@id/tv_height_class" android:layout_alignParentRight="true"
                         style="@style/HeathItemContentMain_A"
-                        android:text="177"/>
+                        android:text="177cm"/>
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                    <FrameLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -73,17 +66,17 @@
                         android:padding="@dimen/health_container_item_padding"
                         android:background="#3399ff">
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_weight"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
                             style="@style/HeathItemTitleTxt"
                             android:text="체중"/>
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:id="@+id/tv_weight_state"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                             style="@style/HeathItemContentMain_A"
                             android:text="72.1"/>
-                    </FrameLayout>
+                    </RelativeLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -91,32 +84,26 @@
                         android:padding="@dimen/health_container_item_padding"
                         android:background="#ff3399">
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
                             style="@style/HeathItemTitleTxt"
                             android:text="흡연"/>
                         <TextView
                             android:id="@+id/tv_smoking_type"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:gravity="center"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                             style="@style/HeathItemContentSub"
                             android:text="비흡연"/>
                         <TextView
                             android:id="@+id/tv_smoking_cohb"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@id/tv_smoking_type"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_above="@id/tv_smoking_type" android:layout_alignParentRight="true"
                             android:gravity="center"
                             style="@style/HeathItemContentMain_B"
                             android:text="0 COHb"/>
                         <TextView
                             android:id="@+id/tv_smoking_ppm"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@id/tv_smoking_cohb"
-                            android:gravity="center"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_above="@id/tv_smoking_cohb" android:layout_alignParentRight="true"
                             style="@style/HeathItemContentMain_B"
                             android:text="0 ppm"/>
                     </RelativeLayout>
@@ -127,7 +114,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -135,54 +122,51 @@
                     android:padding="@dimen/health_container_item_padding"
                     android:background="#ff8000">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
                         style="@style/HeathItemTitleTxt"
                         android:text="BMI"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        style="@style/HeathItemContentMain_A"
-                        android:text="27.97"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:textStyle="bold"
+                        android:id="@+id/tv_bmi_state"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                         style="@style/HeathItemContentSub"
                         android:text="비만 C"/>
-                </FrameLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    <TextView
+                        android:id="@+id/tv_bmi"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_above="@id/tv_bmi_state" android:layout_alignParentRight="true"
+                        style="@style/HeathItemContentMain_A"
+                        android:text="27.97"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent" android:layout_height="0dp"
                     android:layout_weight="1"
                     android:padding="@dimen/health_container_item_padding"
-                    android:orientation="vertical"
                     android:background="#b266ff">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_muscle_title"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
                         style="@style/HeathItemTitleTxt"
                         android:text="근육량"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_muscle"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_muscle_title" android:layout_alignParentLeft="true"
                         style="@style/HeathItemContentMain_B"
                         android:text="25Kg"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        style="@style/HeathItemTitleTxt"
-                        android:text="체지방"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:id="@+id/tv_fat"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                         style="@style/HeathItemContentMain_B"
                         android:text="30Kg"/>
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_fat_title"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_above="@+id/tv_fat" android:layout_alignParentRight="true"
+                        style="@style/HeathItemTitleTxt"
+                        android:text="체지방"/>
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -195,7 +179,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/health_container_item_margin"
                 android:layout_weight="2">
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -208,32 +192,28 @@
                         style="@style/HeathItemTitleTxt"
                         android:text="랭킹짱"/>
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:background="#ffffff"/>
-                </FrameLayout>
-                <FrameLayout
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+                <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="@dimen/health_container_item_padding"
                     android:background="#4c9900">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
                         style="@style/HeathItemTitleTxt"
-                        android:text="성장지수"/>
+                        android:text="성장\n지수"/>
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                         style="@style/HeathItemContentMain_A"
                         android:text="57"/>
-                </FrameLayout>
+                </RelativeLayout>
             </LinearLayout>
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -243,53 +223,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
-                    android:text="식단알림"/>
+                    android:text="식단\n알림"/>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:background="#ffffff"/>
-            </FrameLayout>
+            </RelativeLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:layout_marginRight="@dimen/health_container_item_margin"
                 android:padding="@dimen/health_container_item_padding"
-                android:background="#0000cc">
+                android:background="#3D8BBF">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
                     android:text="활동량측정"/>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:background="#ffffff"/>
-            </FrameLayout>
-            <FrameLayout
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="@dimen/health_container_item_padding"
                 android:background="#00cccc">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
                     android:text="맞춤형\nP.T."/>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:background="#ffffff"/>
-            </FrameLayout>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
