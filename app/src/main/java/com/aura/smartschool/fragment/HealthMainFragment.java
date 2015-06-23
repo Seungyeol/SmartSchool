@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.aura.smartschool.R;
@@ -16,6 +17,7 @@ public class HealthMainFragment extends BaseFragment {
 	private MemberVO mMember;
 
     private RelativeLayout rl_height, rl_weight, rl_bmi, rl_smoke, rl_fat, rl_ranking, rl_growth, rl_dining, rl_activity, rl_pt;
+    private ImageView iv_pin;
 
     private static String KEY_MEMBER = "member";
 
@@ -57,6 +59,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_dining = (RelativeLayout) mView.findViewById(R.id.rl_dining);
         rl_activity = (RelativeLayout) mView.findViewById(R.id.rl_activity);
         rl_pt = (RelativeLayout) mView.findViewById(R.id.rl_pt);
+        iv_pin = (ImageView) mView.findViewById(R.id.iv_pin);
 
         animateHealthMenu();
 		
@@ -67,16 +70,20 @@ public class HealthMainFragment extends BaseFragment {
         Animation aniLeftToRight = AnimationUtils.loadAnimation(getActivity(), R.anim.left_to_right);
         rl_height.startAnimation(aniLeftToRight);
         rl_ranking.startAnimation(aniLeftToRight);
+        rl_smoke.startAnimation(aniLeftToRight);
         Animation aniTopToBottom = AnimationUtils.loadAnimation(getActivity(), R.anim.top_to_bottom);
-        rl_weight.startAnimation(aniLeftToRight);
-        rl_bmi.startAnimation(aniLeftToRight);
+        rl_weight.startAnimation(aniTopToBottom);
+        rl_bmi.startAnimation(aniTopToBottom);
         Animation aniRightToLeft = AnimationUtils.loadAnimation(getActivity(), R.anim.right_to_left);
-        rl_fat.startAnimation(aniLeftToRight);
-        rl_dining.startAnimation(aniLeftToRight);
-        rl_pt.startAnimation(aniLeftToRight);
+        rl_fat.startAnimation(aniRightToLeft);
+        rl_dining.startAnimation(aniRightToLeft);
+        rl_pt.startAnimation(aniRightToLeft);
         Animation aniBottomToTop = AnimationUtils.loadAnimation(getActivity(), R.anim.bottom_to_top);
-        rl_activity.startAnimation(aniLeftToRight);
-        rl_growth.startAnimation(aniLeftToRight);
+        rl_activity.startAnimation(aniBottomToTop);
+        rl_growth.startAnimation(aniBottomToTop);
+
+        Animation aniZoomIn = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_zoom_in);
+        iv_pin.startAnimation(aniZoomIn);
     }
 
 }
