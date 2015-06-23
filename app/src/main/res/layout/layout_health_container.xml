@@ -30,9 +30,8 @@
                 android:layout_weight="2"
                 android:layout_marginRight="@dimen/health_container_item_margin">
                 <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:id="@+id/rl_height"
+                    android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
                     android:layout_marginRight="@dimen/health_container_item_margin"
                     android:padding="@dimen/health_container_item_padding"
                     android:background="#455664">
@@ -59,6 +58,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <RelativeLayout
+                        android:id="@+id/rl_weight"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -78,6 +78,7 @@
                             android:text="72.1"/>
                     </RelativeLayout>
                     <RelativeLayout
+                        android:id="@+id/rl_smoke"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -115,6 +116,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <RelativeLayout
+                    android:id="@+id/rl_bmi"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -139,6 +141,7 @@
                         android:text="27.97"/>
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/rl_fat"
                     android:layout_width="match_parent" android:layout_height="0dp"
                     android:layout_weight="1"
                     android:padding="@dimen/health_container_item_padding"
@@ -180,6 +183,7 @@
                 android:layout_marginRight="@dimen/health_container_item_margin"
                 android:layout_weight="2">
                 <RelativeLayout
+                    android:id="@+id/rl_ranking"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -196,6 +200,7 @@
                         android:layout_centerInParent="true" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/rl_growth"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -214,6 +219,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_dining"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -235,6 +241,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
             <RelativeLayout
+                android:id="@+id/rl_activity"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
@@ -251,6 +258,7 @@
                     android:background="#ffffff"/>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_pt"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
