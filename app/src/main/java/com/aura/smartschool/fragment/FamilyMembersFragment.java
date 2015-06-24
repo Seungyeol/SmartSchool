@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.aura.smartschool.adapter.MemberListAdapter;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.MemberVO;
-import com.aura.smartschool.vo.SchoolVO;
 
 import java.util.ArrayList;
 
@@ -60,6 +58,14 @@ public class FamilyMembersFragment extends BaseFragment {
                 startActivityForResult(intent, MainActivity.REQ_DIALOG_MEMBER_ADD);
             }
         });
+
+/*        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("LDK", "onItemClick");
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, HealthMainFragment.newInstance(mAdapter.getItem(position))).addToBackStack(null).commit();
+            }
+        });*/
 
         return mFamilyListView;
     }

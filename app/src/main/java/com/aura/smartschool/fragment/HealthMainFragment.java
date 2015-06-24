@@ -45,6 +45,8 @@ public class HealthMainFragment extends BaseFragment {
         setActionbar(R.drawable.btn_pre, mMember.name);
     }
 
+
+
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = View.inflate(getActivity(), R.layout.fragment_main, null);
