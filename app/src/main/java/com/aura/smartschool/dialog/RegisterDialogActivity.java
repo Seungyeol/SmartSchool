@@ -79,7 +79,7 @@ public class RegisterDialogActivity extends Activity {
 		et_id = (EditText) findViewById(R.id.et_id);
 		et_name = (EditText) findViewById(R.id.et_name);
 		et_relation = (EditText) findViewById(R.id.et_relation);
-		tvSchoolName = (TextView) findViewById(R.id.et_school_name);
+		tvSchoolName = (TextView) findViewById(R.id.tv_school_name);
 		et_school_grade = (EditText) findViewById(R.id.et_school_grade);
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
@@ -219,7 +219,7 @@ public class RegisterDialogActivity extends Activity {
 				school_info.setVisibility(View.VISIBLE);
 				break;
 
-            case R.id.et_school_name:
+            case R.id.tv_school_name:
                 Intent findSchoolIntent = new Intent(RegisterDialogActivity.this, FindSchoolActivity.class);
                 startActivityForResult(findSchoolIntent, MainActivity.REQ_CODE_FIND_SCHOOL);
                 break;
@@ -257,7 +257,7 @@ public class RegisterDialogActivity extends Activity {
 					return;
 				}
 				if(mIs_parent==0) {
-					if(mSchoolVO == null){
+					if(TextUtils.isEmpty(tvSchoolName.getText().toString())){
 						Util.showToast(mContext, "학교명을 입력하세요.");
 						return;
 					}

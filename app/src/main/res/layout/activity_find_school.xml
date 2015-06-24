@@ -4,31 +4,27 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/actionbar_height"
-        android:orientation="horizontal"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="5dp"
         android:layout_margin="0dp">
         <ImageButton
-            android:id="@+id/btn_pre"
+            android:id="@+id/btn_pre" style="@style/Button_woodred_fixed"
             android:layout_width="40dp" android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:background="@null"
             android:src="@drawable/btn_pre" />
         <EditText
             android:id="@+id/et_search_school"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:background="#00000000"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+            android:background="@drawable/btn_back_red_normal"
             android:hint="학교 명을 입력해주세요"
-            android:layout_weight="1"/>
+            android:paddingLeft="10dp" />
         <ImageButton
-            android:id="@+id/btn_clear"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/btn_clear" style="@style/Button_woodred_fixed"
+            android:layout_width="40dp" android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+            android:src="@drawable/btn_cancel"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent" android:layout_height="1dp"
@@ -36,7 +32,6 @@
         android:background="#FF930D03"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/school_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="match_parent" android:layout_height="match_parent" />
 
 </LinearLayout>

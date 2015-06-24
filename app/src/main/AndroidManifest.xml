@@ -57,8 +57,7 @@
         <activity
             android:name=".FindSchoolActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
         <service

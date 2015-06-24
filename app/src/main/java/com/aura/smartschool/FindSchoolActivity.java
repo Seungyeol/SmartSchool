@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 
 import com.androidquery.AQuery;
@@ -52,6 +50,7 @@ public class FindSchoolActivity extends Activity {
 
     private void initViews() {
         mSearchSchool = (EditText) findViewById(R.id.et_search_school);
+        mSearchSchool.requestFocus();
         mSchoolListView = (RecyclerView) findViewById(R.id.school_list);
 
         mSchoolListView.setLayoutManager(new LinearLayoutManager(this));
