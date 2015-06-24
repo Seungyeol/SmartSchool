@@ -64,23 +64,24 @@ public class FamilyMembersFragment extends BaseFragment {
         return mFamilyListView;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
-            case MainActivity.REQ_DIALOG_MEMBER_ADD:
-                if (resultCode == Activity.RESULT_OK) {
-                    ((MainActivity)getActivity()).getMemberList();
-                }
-                break;
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode) {
+//            case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
+//            case MainActivity.REQ_DIALOG_MEMBER_ADD:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    ((MainActivity)getActivity()).getMemberList();
+//                }
+//                break;
+//        }
+//    }
 
     @Override
     public void onResume() {
         super.onResume();
         setActionbar(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
+        ((MainActivity)getActivity()).getMemberList();
     }
 
     public void setFamilyMemberList(ArrayList<MemberVO> members) {

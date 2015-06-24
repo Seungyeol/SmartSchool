@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -39,6 +40,7 @@ public class FindSchoolActivity extends Activity {
 
     private EditText mSearchSchool;
     private RecyclerView mSchoolListView;
+    private ProgressBar mProgressbar;
 
     private SchoolListAdapter mSchoolListAdapter;
 
@@ -53,6 +55,7 @@ public class FindSchoolActivity extends Activity {
     private void initViews() {
         mSearchSchool = (EditText) findViewById(R.id.et_search_school);
         mSchoolListView = (RecyclerView) findViewById(R.id.school_list);
+        mProgressbar = (ProgressBar) findViewById(R.id.progressbar);
 
         mSchoolListView.setLayoutManager(new LinearLayoutManager(this));
         mSchoolListAdapter = new SchoolListAdapter();
@@ -97,7 +100,7 @@ public class FindSchoolActivity extends Activity {
     };
 
     private void doSearchSchool(String s) {
-        LoadingDialog.showLoading(this);
+        mProgressbar.setVisibility(View.VISIBLE);
         try {
             String url = Constant.HOST + Constant.API_GET_SCHOOLLIST;
 
@@ -110,7 +113,7 @@ public class FindSchoolActivity extends Activity {
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
-                    LoadingDialog.hideLoading();
+                    mProgressbar.setVisibility(View.GONE);
                     try {
                         if(status.getCode() != 200) {
                             return;
@@ -157,5 +160,13 @@ public class FindSchoolActivity extends Activity {
             }
         }
         return schoolList;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTask != null) {
+            mHandler.removeCallbacks(mTask);
+        }
     }
 }

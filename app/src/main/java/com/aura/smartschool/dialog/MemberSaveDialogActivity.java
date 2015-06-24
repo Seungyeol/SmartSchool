@@ -289,7 +289,8 @@ public class MemberSaveDialogActivity extends Activity {
 					return;
 				}
 				if(mMember.is_parent == 0) {
-					if(TextUtils.isEmpty(mMember.mSchoolVO.school_name)){
+					if(TextUtils.isEmpty(mSchoolVO.school_name) &&
+							TextUtils.isEmpty(mMember.mSchoolVO.school_name)){
 						Util.showToast(mContext, "학교명을 입력하세요.");
 						return;
 					}

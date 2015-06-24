@@ -155,7 +155,9 @@ public class MainActivity extends FragmentActivity {
 
     @Override
 	public void onBackPressed() {
-		if(mFm.getBackStackEntryCount() > 0) {
+		if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+			mDrawerLayout.closeDrawer(mDrawerList);
+		} else if(mFm.getBackStackEntryCount() > 0) {
             mFm.popBackStack();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
