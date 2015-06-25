@@ -16,7 +16,7 @@
 
     <LinearLayout
         style="@style/Line"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="5dp"/>
 
     <ListView
         android:id="@+id/listview"

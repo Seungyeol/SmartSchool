@@ -58,10 +58,10 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvRelation = (TextView) convertView.findViewById(R.id.tvRelation);
 			holder.tvMdn = (TextView) convertView.findViewById(R.id.tvMdn);
 			holder.btnModify = (Button) convertView.findViewById(R.id.btnModify);
-			holder.btnView = (Button) convertView.findViewById(R.id.btnView);
+			//holder.btnView = (Button) convertView.findViewById(R.id.btnView);
 			holder.school_info = (LinearLayout) convertView.findViewById(R.id.school_info);
 			holder.tvSchool = (TextView) convertView.findViewById(R.id.tv_school);
-			holder.tvSchoolHomepage = (TextView) convertView.findViewById(R.id.tv_school_homepage);
+			//holder.tvSchoolHomepage = (TextView) convertView.findViewById(R.id.tv_school_homepage);
 			holder.tvSchoolContact = (TextView) convertView.findViewById(R.id.tv_school_contact);
 			convertView.setTag(holder);
 		} else {
@@ -88,7 +88,7 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_grade);
 			holder.tvSchool.append(" - ");
 			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_class);
-			holder.tvSchoolHomepage.setText(mMemberList.get(position).mSchoolVO.homepage);
+			//holder.tvSchoolHomepage.setText(mMemberList.get(position).mSchoolVO.homepage);
 			holder.tvSchoolContact.setText(mMemberList.get(position).mSchoolVO.contact);
 		}
 		
@@ -98,14 +98,21 @@ public class MemberListAdapter extends BaseAdapter {
 				mMemberListListener.onUpdateClicked(position);
 			}
 		});
-		
-		holder.btnView.setOnClickListener(new View.OnClickListener() {
+
+		convertView.findViewById(R.id.ll_member_info).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mMemberListListener.onSelected(position);
 			}
 		});
 		
+		/*holder.btnView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mMemberListListener.onSelected(position);
+			}
+		});*/
+
 		return convertView;
 	}
 
@@ -116,9 +123,9 @@ public class MemberListAdapter extends BaseAdapter {
 		TextView tvMdn;
 		LinearLayout school_info;
 		TextView tvSchool;
-		TextView tvSchoolHomepage;
+		//TextView tvSchoolHomepage;
 		TextView tvSchoolContact;
 		Button btnModify;
-		Button btnView;
+		//Button btnView;
 	}
 }

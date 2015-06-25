@@ -79,7 +79,7 @@ public class MemberSaveDialogActivity extends Activity {
 		et_id = (EditText) findViewById(R.id.et_id);
 		et_name = (EditText) findViewById(R.id.et_name);
 		et_relation = (EditText) findViewById(R.id.et_relation);
-		tvSchoolName = (TextView) findViewById(R.id.et_school_name);
+		tvSchoolName = (TextView) findViewById(R.id.tv_school_name);
 		et_school_grade = (EditText) findViewById(R.id.et_school_grade);
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
@@ -270,7 +270,7 @@ public class MemberSaveDialogActivity extends Activity {
 
 	            startActivityForResult(intent, MainActivity.REQ_CODE_PICK_IMAGE);
 	            break;
-            case R.id.et_school_name :
+            case R.id.tv_school_name :
                 Intent findSchoolIntent = new Intent(MemberSaveDialogActivity.this, FindSchoolActivity.class);
                 startActivityForResult(findSchoolIntent, MainActivity.REQ_CODE_FIND_SCHOOL);
                 break;
@@ -289,8 +289,7 @@ public class MemberSaveDialogActivity extends Activity {
 					return;
 				}
 				if(mMember.is_parent == 0) {
-					if(TextUtils.isEmpty(mSchoolVO.school_name) &&
-							TextUtils.isEmpty(mMember.mSchoolVO.school_name)){
+					if(TextUtils.isEmpty(tvSchoolName.getText().toString())){
 						Util.showToast(mContext, "학교명을 입력하세요.");
 						return;
 					}
