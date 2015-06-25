@@ -10,6 +10,9 @@ public class MemberVO implements Serializable {
 	public String relation;
 	public int is_parent = 1; //0:학생, 1:부모
 	public String photo;
+	//위치정보
+	public double lat;
+	public double lng;
 
 	//자녀 정보
 	public SchoolVO mSchoolVO;

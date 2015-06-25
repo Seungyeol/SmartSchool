@@ -23,7 +23,7 @@
             android:background="@drawable/bg_darkpink">
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textSize="18sp" android:textStyle="bold" android:textColor="#FFFFFF"
+                android:textSize="12sp" android:textColor="#FFFFFF"
                 android:text="실시간 모바일 상담센터"/>
         </LinearLayout>
         <LinearLayout

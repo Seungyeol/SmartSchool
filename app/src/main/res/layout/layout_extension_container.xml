@@ -16,6 +16,7 @@
                 android:text="안전지킴이"/>
         </LinearLayout>
         <RelativeLayout
+            android:id="@+id/rl_map"
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:background="@drawable/bg_skyblue">
             <ImageView
@@ -25,10 +26,17 @@
                 android:src="@drawable/map"/>
             <ImageView
                 android:id="@+id/iv_pin"
-                android:layout_width="40dp" android:layout_height="50dp"
+                android:layout_width="30dp" android:layout_height="45dp"
                 android:layout_centerInParent="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/pin"/>
+            <TextView
+                android:id="@+id/tv_current_location"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"
+                android:textSize="18sp" android:textStyle="bold" android:textColor="#666666"
+                android:padding="5dp"
+                android:text="aaa"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
@@ -44,10 +52,23 @@
                 android:textSize="18sp" android:textStyle="bold" android:textColor="#FFFFFF"
                 android:text="학교알리미"/>
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rl_school_info"
             android:layout_width="match_parent" android:layout_height="match_parent"
-            android:orientation="vertical" android:padding="5dp"
+            android:paddingTop="10dp" android:paddingBottom="10dp"
             android:background="@drawable/bg_green">
-        </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/school"/>
+            <ImageView
+                android:id="@+id/iv_email"
+                android:layout_width="40dp" android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp" android:layout_marginTop="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/email"/>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

@@ -25,10 +25,12 @@
             android:layout_weight="1"/>
         <ImageButton
             android:id="@+id/btn_clear"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="25dp" android:layout_height="25dp"
             android:layout_gravity="center"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:src="@drawable/btn_cancel"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent" android:layout_height="1dp"

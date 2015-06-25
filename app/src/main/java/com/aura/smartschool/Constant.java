@@ -10,4 +10,6 @@ public final class Constant {
 	public static final String API_GET_MEMBERLIST= "/api/getMemberList";
 	public static final String API_ADD_LOCATION = "/api/addLocation";
 	public static final String API_GET_SCHOOLLIST = "/api/getSchoolList";
+	public static final String API_GET_LASTLOCATION = "/api/getLastLocation";
+	public static final String API_GET_LOCATIONLIST = "/api/getLocationList";
 }
