@@ -19,8 +19,12 @@ import com.aura.smartschool.vo.LocationVO;
 import com.aura.smartschool.vo.MemberVO;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
@@ -37,7 +41,7 @@ import java.util.Comparator;
 public class LocationFragment extends BaseFragment {
     private View mView;
 
-    private Fragment mMapFragment;
+    private SupportMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
 
     private AQuery mAq;
@@ -69,11 +73,7 @@ public class LocationFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        try {
-            mView = View.inflate(getActivity(), R.layout.fragment_location, null);
-        } catch (InflateException e) {
-
-        }
+        mView = View.inflate(getActivity(), R.layout.fragment_location, null);
         mAq = new AQuery(mView);
 
         setUpMapIfNeeded();
@@ -91,17 +91,15 @@ public class LocationFragment extends BaseFragment {
     private void setUpMapIfNeeded() {
         // check if we have got the googleMap already
         if (mGoogleMap == null) {
-            mGoogleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+            mMapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
+            mGoogleMap = mMapFragment.getMap();
         }
     }
 
     @Override
     public void onDestroyView() {
-        if (mView != null) {
-            ViewGroup parent = (ViewGroup) mView.getParent();
-            if (parent != null) {
-                parent.removeView(mView);
-            }
+        if(mMapFragment != null) {
+            getFragmentManager().beginTransaction().remove(mMapFragment).commit();
         }
         super.onDestroy();
     }
@@ -172,10 +170,26 @@ public class LocationFragment extends BaseFragment {
     private void drawPath() {
         //출발지부터 현재지점부터 라인 그리기
         for(int i = 0; i < mLocationList.size() - 1; ++i) {
+            if(i==0) {
+                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng))
+                                .title("start")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_start)));
+                startMarker.showInfoWindow();
+            }
+
             mGoogleMap.addPolyline(new PolylineOptions()
                     .add(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng),
                             new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng))
                     .width(15).color(Color.RED).geodesic(true));
+
+            if(i==(mLocationList.size()-2)) {
+                Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(mLocationList.get(i+1).lat, mLocationList.get(i+1).lng))
+                        .title("now")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_start)));
+                endMarker.showInfoWindow();
+            }
         }
     }
 }
