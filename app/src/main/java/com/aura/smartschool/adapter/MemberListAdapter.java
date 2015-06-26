@@ -2,6 +2,7 @@ package com.aura.smartschool.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,10 +11,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.Interface.MemberListListener;
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -49,7 +57,7 @@ public class MemberListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
+		final ViewHolder holder;
 		if(convertView == null){
 			holder = new ViewHolder();
 			convertView = View.inflate(mContext, R.layout.adapter_member_list, null);
@@ -63,6 +71,7 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvSchool = (TextView) convertView.findViewById(R.id.tv_school);
 			//holder.tvSchoolHomepage = (TextView) convertView.findViewById(R.id.tv_school_homepage);
 			holder.tvSchoolContact = (TextView) convertView.findViewById(R.id.tv_school_contact);
+			holder.tv_current_location = (TextView) convertView.findViewById(R.id.tv_current_location);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -113,6 +122,51 @@ public class MemberListAdapter extends BaseAdapter {
 			}
 		});*/
 
+		AQuery aq = new AQuery(convertView);
+		try {
+			String url = Constant.HOST + Constant.API_GET_LASTLOCATION;
+
+			JSONObject json = new JSONObject();
+			json.put("member_id", mMemberList.get(position).member_id);
+
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", "input parameter:" + json.toString(1));
+
+			aq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					try {
+						if (status.getCode() != 200) {
+							return;
+						}
+						Log.d("LDK", "result:" + object.toString(1));
+
+						if ("0".equals(object.getString("result"))) {
+							JSONObject data = object.getJSONObject("data");
+							double lat = 0;
+							double lng = 0;
+							if(data != null) {
+								lat = Double.parseDouble(data.getString("lat"));
+								lng = Double.parseDouble(data.getString("lng"));
+								mMemberList.get(position).lat = lat;
+								mMemberList.get(position).lng = lng;
+							}
+							long term = Util.getLastedMinuteToCurrent(data.getString("created_date"));
+
+							holder.tv_current_location.setText(Util.getAddress(mContext, lat, lng));
+							holder.tv_current_location.append(String.format(" (%d분 전)", term));
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		return convertView;
 	}
 
@@ -127,5 +181,6 @@ public class MemberListAdapter extends BaseAdapter {
 		TextView tvSchoolContact;
 		Button btnModify;
 		//Button btnView;
+		TextView tv_current_location;
 	}
 }

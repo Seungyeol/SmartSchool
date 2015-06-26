@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +14,11 @@ import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.LocationVO;
 import com.aura.smartschool.vo.MemberVO;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -172,9 +171,10 @@ public class LocationFragment extends BaseFragment {
         for(int i = 0; i < mLocationList.size() - 1; ++i) {
             if(i==0) {
                 Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng))
-                                .title("start")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_start)));
+                        .position(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng))
+                        .title("start")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
+                        .snippet(Util.getAddress(getActivity(), mLocationList.get(i).lat, mLocationList.get(i).lng)));
                 startMarker.showInfoWindow();
             }
 
@@ -187,7 +187,8 @@ public class LocationFragment extends BaseFragment {
                 Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(mLocationList.get(i+1).lat, mLocationList.get(i+1).lng))
                         .title("now")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_start)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
+                        .snippet(Util.getAddress(getActivity(), mLocationList.get(i+1).lat, mLocationList.get(i+1).lng)));
                 endMarker.showInfoWindow();
             }
         }
