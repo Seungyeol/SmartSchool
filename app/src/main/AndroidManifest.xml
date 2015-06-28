@@ -72,6 +72,11 @@
             android:enabled="true"
             android:exported="false" >
         </service>
+        <service
+            android:name=".service.StepCounterService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
-public class HealthMainFragment extends BaseFragment {
+public class HealthMainFragment extends BaseFragment implements View.OnClickListener {
 	private View mView;
 	private MemberVO mMember;
     private AQuery mAq;
@@ -61,6 +62,8 @@ public class HealthMainFragment extends BaseFragment {
         iv_pin = (ImageView) mView.findViewById(R.id.iv_pin);
         iv_email = (ImageView) mView.findViewById(R.id.iv_email);
 
+
+        rl_activity.setOnClickListener(this);
         animateHealthMenu();
 
         rl_map = (RelativeLayout) mView.findViewById(R.id.rl_map);
@@ -124,4 +127,15 @@ public class HealthMainFragment extends BaseFragment {
         });*/
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+            case R.id.rl_activity:
+                Log.d("test", "onClick >> rl_activity");
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingAmountFragment.newInstance(mMember)).addToBackStack(null).commit();
+                break;
+        }
+    }
 }
