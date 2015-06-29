@@ -33,7 +33,7 @@ public final class Util {
 		//2015-06-29 전화번호가 +82로 시작하는 경우 보정
 		String number = tMgr.getLine1Number();
 		if(number.startsWith("+82")) {
-			number.replace("+82", "0");
+			number = number.replace("+82", "0");
 		}
 	    return number;
 	}
