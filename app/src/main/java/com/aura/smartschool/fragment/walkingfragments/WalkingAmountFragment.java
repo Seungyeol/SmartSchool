@@ -1,4 +1,4 @@
-package com.aura.smartschool.fragment;
+package com.aura.smartschool.fragment.walkingfragments;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,10 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
+import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.vo.MemberVO;
-
-import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2015-06-28.
@@ -97,6 +96,7 @@ public class WalkingAmountFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setActionbar(R.drawable.btn_pre, mMember.name);
+
         Intent serviceIntent = new Intent(getActivity(), StepCounterService.class);
         getActivity().startService(serviceIntent);
         getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);

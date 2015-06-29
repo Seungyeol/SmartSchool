@@ -134,7 +134,7 @@ public class HealthMainFragment extends BaseFragment implements View.OnClickList
         switch (id) {
             case R.id.rl_activity:
                 Log.d("test", "onClick >> rl_activity");
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingAmountFragment.newInstance(mMember)).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
                 break;
         }
     }
