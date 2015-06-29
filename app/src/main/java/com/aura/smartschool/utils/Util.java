@@ -30,7 +30,12 @@ public final class Util {
 	
 	public static String getMdn(Context context) {
 		TelephonyManager tMgr =(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-	    return tMgr.getLine1Number();
+		//2015-06-29 전화번호가 +82로 시작하는 경우 보정
+		String number = tMgr.getLine1Number();
+		if(number.startsWith("+82")) {
+			number.replace("+82", "0");
+		}
+	    return number;
 	}
 	
     private static Toast m_toast = null;
