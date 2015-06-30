@@ -48,18 +48,33 @@ public class WalkingAmountFragment extends BaseFragment {
     private final Handler mStepCounterHandler = new Handler() {
         @Override
         public void handleMessage(Message message) {
-            int steps = message.arg1;
-            int bigSteps = message.arg2;
-            if (steps > 0) {
-                mTvWalkingCount.setText(String.valueOf(steps));
+//            int steps = message.arg1;
+//            int bigSteps = message.arg2;
+
+            Bundle data = message.getData();
+            int steps = data.getInt("steps");
+            int totalSteps = data.getInt("totalSteps");
+
+            int walkingTime = data.getInt("walkingTime");
+            int totalWalkingTime = data.getInt("totalWalkingTime");
+
+            if (totalSteps > 0) {
+                mTvWalkingCount.setText(String.valueOf(totalSteps));
             }
 
+            int hours = totalWalkingTime / 3600;
+            int minutes = (totalWalkingTime % 3600) / 60;
+            int seconds = totalWalkingTime % 60;
+
+            mTvWalkingTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+
+
             //Change mode walking or running
-            if(bigSteps >= (int)(steps/2)){
-                ACTIVITY_COEFFICIENT = 1.725f;
-            }else{
-                ACTIVITY_COEFFICIENT = 1.55f;
-            }
+//            if(bigSteps >= (int)(steps/2)){
+//                ACTIVITY_COEFFICIENT = 1.725f;
+//            }else{
+//                ACTIVITY_COEFFICIENT = 1.55f;
+//            }
         }
     };
 

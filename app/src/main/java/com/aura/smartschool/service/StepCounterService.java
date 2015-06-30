@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -30,17 +31,59 @@ public class StepCounterService extends Service {
     private Handler mStepCounterHandler;
     private StepListener mStepListener;
 
+    private volatile long mStartWalkingTime;
+    private volatile int mCurrentWalkingTime;
+    private volatile int mMaxWalkingTime;
+    private volatile int mTotalWalkingTime;
+
+    private volatile int mCurrentWalkingCount;
+    private volatile int mTotalWalkingCount;
+
+    private volatile int mLastWalkingCount;
+
+    private volatile int count;
+    private volatile boolean isWalking;
+
+    private static final int WALKING_THRESHOLD = 5;
+
     private IBinder mBinder = new StepCounterBinder();
     private Handler mStepUpdateHandler  = new Handler();
     private Runnable StepUpdateTask = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG, "StepUpdateTask >> step count  = " + mStepListener.getSteps());
+            //5초 이내 움직임은 무시, 5초이상 변화없음 운동 초기화
             if (mStepCounterHandler != null) {
-                Message message = Message.obtain();
-                message.arg1 = mStepListener.getSteps();
-                message.arg2 = mStepListener.getBigsteps();
-                mStepCounterHandler.sendMessage(message);
+                mCurrentWalkingCount = mStepListener.getSteps();
+                if(mLastWalkingCount < mCurrentWalkingCount && count < WALKING_THRESHOLD) {
+                    count++;
+                    if(count == WALKING_THRESHOLD && !isWalking) {
+                        mStartWalkingTime = System.currentTimeMillis();
+                        isWalking = true;
+                    }
+                } else if (mLastWalkingCount == mCurrentWalkingCount && count > 0){
+                    count--;
+                    if(count == 0 && isWalking) {
+                        isWalking = false;
+                        mTotalWalkingTime += mCurrentWalkingTime;
+                        mTotalWalkingCount += mCurrentWalkingCount;
+                        mCurrentWalkingTime = 0;
+                        mCurrentWalkingCount = 0;
+                        mStepListener.initSteps();
+                    }
+                }
+                if(isWalking) {
+                    Message message = Message.obtain();
+                    Bundle data = new Bundle();
+                    data.putInt("steps", mCurrentWalkingCount);
+                    data.putInt("totalSteps", mTotalWalkingCount + mCurrentWalkingCount);
+                    mCurrentWalkingTime = 5 + (int)((System.currentTimeMillis() - mStartWalkingTime)/1000);
+                    data.putInt("walkingTime", mCurrentWalkingTime);
+                    data.putInt("totalWalkingTime", mTotalWalkingTime + mCurrentWalkingTime);
+
+                    message.setData(data);
+                    mStepCounterHandler.sendMessage(message);
+                }
+                mLastWalkingCount = mStepListener.getSteps();
             }
             mStepUpdateHandler.postDelayed(this, 1000);
         }

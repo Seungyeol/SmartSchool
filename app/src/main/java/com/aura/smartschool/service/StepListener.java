@@ -14,7 +14,6 @@ public class StepListener implements SensorEventListener {
     private long lastTime;
     public static int steps;
     public static int bigSteps;
-    private int tempCount;
 
     public StepListener(Context context) {
         this.context = context;
@@ -53,15 +52,11 @@ public class StepListener implements SensorEventListener {
         if (actualTime - lastTime > 300) {
             if(accelerationSquareRoot < -0.45f){
                 steps++;
-                tempCount++;
                 if(accelerationSquareRoot < -1.0f){
                     bigSteps++;
                 }
                 if(steps%50==0){
                     steps++;
-                }
-                if(tempCount==4){
-                    steps = 0;
                 }
                 lastTime = actualTime;
             }
@@ -69,11 +64,16 @@ public class StepListener implements SensorEventListener {
 
     }
 
-    public  int getSteps(){
+    public int getSteps(){
         return steps;
     }
 
     public int getBigsteps(){
         return bigSteps;
+    }
+
+    public void initSteps() {
+        steps = 0;
+        bigSteps = 0;
     }
 }
