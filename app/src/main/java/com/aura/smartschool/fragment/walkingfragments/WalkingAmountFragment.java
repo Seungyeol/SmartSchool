@@ -53,20 +53,8 @@ public class WalkingAmountFragment extends BaseFragment {
 
             Bundle data = message.getData();
             int steps = data.getInt("steps");
-            int totalSteps = data.getInt("totalSteps");
 
-            int walkingTime = data.getInt("walkingTime");
-            int totalWalkingTime = data.getInt("totalWalkingTime");
-
-            if (totalSteps > 0) {
-                mTvWalkingCount.setText(String.valueOf(totalSteps));
-            }
-
-            int hours = totalWalkingTime / 3600;
-            int minutes = (totalWalkingTime % 3600) / 60;
-            int seconds = totalWalkingTime % 60;
-
-            mTvWalkingTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+            mTvWalkingCount.setText(String.valueOf(steps));
 
 
             //Change mode walking or running

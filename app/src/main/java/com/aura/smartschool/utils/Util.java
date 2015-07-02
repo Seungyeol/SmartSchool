@@ -1,6 +1,7 @@
 package com.aura.smartschool.utils;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -111,5 +112,12 @@ public final class Util {
 		} else {
 			return "";
 		}
+	}
+
+	public static boolean isKitkatWithStepSensor(Context context) {
+		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		PackageManager packageManager = context.getPackageManager();
+		return currentApiVersion >= android.os.Build.VERSION_CODES.KITKAT
+				&& packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER);
 	}
 }

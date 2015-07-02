@@ -1,11 +1,20 @@
 package com.aura.smartschool.service;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -21,73 +30,65 @@ import com.aura.smartschool.utils.Util;
 /**
  * Created by Administrator on 2015-06-28.
  */
-public class StepCounterService extends Service {
+public class StepCounterService extends Service implements SensorEventListener {
 
     private static final String TAG = StepCounterService.class.getSimpleName();
 
-    private final int RUNNING_NOTI_ID = 1001;
-    private final int RUNNING_NOTI_REQUEST_CODE = 5001;
+    private static final int RESTART_DELAY = 1000;
+//    private static final int STEPCOUNTER_DELAYY = 5 * 60 * 1000000;  //5분
+    private static final int STEPCOUNTER_DELAY = 1000000;  //1초
 
     private Handler mStepCounterHandler;
-    private StepListener mStepListener;
-
-    private volatile long mStartWalkingTime;
-    private volatile int mCurrentWalkingTime;
-    private volatile int mMaxWalkingTime;
-    private volatile int mTotalWalkingTime;
-
-    private volatile int mCurrentWalkingCount;
-    private volatile int mTotalWalkingCount;
-
-    private volatile int mLastWalkingCount;
-
-    private volatile int count;
-    private volatile boolean isWalking;
-
-    private static final int WALKING_THRESHOLD = 5;
 
     private IBinder mBinder = new StepCounterBinder();
-    private Handler mStepUpdateHandler  = new Handler();
-    private Runnable StepUpdateTask = new Runnable() {
-        @Override
-        public void run() {
-            //5초 이내 움직임은 무시, 5초이상 변화없음 운동 초기화
-            if (mStepCounterHandler != null) {
-                mCurrentWalkingCount = mStepListener.getSteps();
-                if(mLastWalkingCount < mCurrentWalkingCount && count < WALKING_THRESHOLD) {
-                    count++;
-                    if(count == WALKING_THRESHOLD && !isWalking) {
-                        mStartWalkingTime = System.currentTimeMillis();
-                        isWalking = true;
-                    }
-                } else if (mLastWalkingCount == mCurrentWalkingCount && count > 0){
-                    count--;
-                    if(count == 0 && isWalking) {
-                        isWalking = false;
-                        mTotalWalkingTime += mCurrentWalkingTime;
-                        mTotalWalkingCount += mCurrentWalkingCount;
-                        mCurrentWalkingTime = 0;
-                        mCurrentWalkingCount = 0;
-                        mStepListener.initSteps();
-                    }
-                }
-                if(isWalking) {
-                    Message message = Message.obtain();
-                    Bundle data = new Bundle();
-                    data.putInt("steps", mCurrentWalkingCount);
-                    data.putInt("totalSteps", mTotalWalkingCount + mCurrentWalkingCount);
-                    mCurrentWalkingTime = 5 + (int)((System.currentTimeMillis() - mStartWalkingTime)/1000);
-                    data.putInt("walkingTime", mCurrentWalkingTime);
-                    data.putInt("totalWalkingTime", mTotalWalkingTime + mCurrentWalkingTime);
 
-                    message.setData(data);
-                    mStepCounterHandler.sendMessage(message);
-                }
-                mLastWalkingCount = mStepListener.getSteps();
-            }
-            mStepUpdateHandler.postDelayed(this, 1000);
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        Message message = Message.obtain();
+        Bundle data = new Bundle();
+        data.putInt("steps", (int) event.values[0]);
+        Log.d("TEST", "StepCounter >> counter = " + (int) event.values[0]);
+        message.setData(data);
+        if(mStepCounterHandler != null) {
+            mStepCounterHandler.sendMessage(message);
         }
-    } ;
+    }
+
+    /*
+            if (event.values[0] > Integer.MAX_VALUE) {
+            if (BuildConfig.DEBUG) Logger.log("probably not a real value: " + event.values[0]);
+            return;
+        } else {
+            steps = (int) event.values[0];
+            if (WAIT_FOR_VALID_STEPS && steps > 0) {
+                WAIT_FOR_VALID_STEPS = false;
+                Database db = Database.getInstance(this);
+                if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE) {
+                    int pauseDifference = steps -
+                            getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS)
+                                    .getInt("pauseCount", steps);
+                    db.insertNewDay(Util.getToday(), steps - pauseDifference);
+                    if (pauseDifference > 0) {
+                        // update pauseCount for the new day
+                        getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS).edit()
+                                .putInt("pauseCount", steps).commit();
+                    }
+                    reRegisterSensor();
+                }
+                db.saveCurrentSteps(steps);
+                db.close();
+                updateNotificationState();
+                startService(new Intent(this, WidgetUpdateService.class));
+            }
+        }
+     */
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
 
     public class StepCounterBinder extends Binder {
         public void setStepCounterHandler(Handler handler) {
@@ -109,41 +110,39 @@ public class StepCounterService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mStepUpdateHandler.removeCallbacks(StepUpdateTask);
-        mStepListener.stop();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mStepListener = new StepListener(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        if (isLogin()) {
-            mStepListener.start();
-            showRunningNotification();
-            mStepUpdateHandler.post(StepUpdateTask);
+        if (Util.isKitkatWithStepSensor(this)) {
+            registerEventListener(STEPCOUNTER_DELAY, null);
         }
         return START_STICKY;
     }
 
-    private void showRunningNotification() {
-        Notification notification = new Notification(R.drawable.home, null, System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, RUNNING_NOTI_REQUEST_CODE, new Intent(this, MainActivity.class), 0);
-        notification.setLatestEventInfo(this, getText(R.string.app_name), "",contentIntent);
-        startForeground(RUNNING_NOTI_ID, notification);
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void registerEventListener(int maxdelay, Handler stepCounterHandler) {
+        SensorManager sensorManager = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
+        try {
+            sensorManager.unregisterListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL, maxdelay);
     }
 
-    private boolean isLogin() {
-        String id = PreferenceUtil.getInstance(this).getHomeId();
-        String mdn = Util.getMdn(this);
-
-        if(TextUtils.isEmpty(id) || TextUtils.isEmpty(mdn)) {
-            return false;
-        }
-        return true;
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
+                .set(AlarmManager.RTC, System.currentTimeMillis() + RESTART_DELAY,
+                        PendingIntent.getService(this, 3, new Intent(this, StepCounterService.class), 0));
     }
 }
