@@ -11,7 +11,7 @@ public class SchoolVO  implements Serializable {
     public String school_grade;
     public String school_class;
     public String gubun1;
-    public String gubun2;
+    public String gubun2; //초등학교,
     public String zipcode;
     public String address;
     public String new_address;
