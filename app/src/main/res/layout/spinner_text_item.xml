@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_spinner_item"
+    style="@style/InputBox"
+    android:padding="0dp"
+    android:background="@android:color/transparent"/>

@@ -76,7 +76,8 @@ public class LoginDialog extends Dialog {
 				}
 				
 				//로그인 버튼 클릭시 id는 항상 저장
-				PreferenceUtil.getInstance(mContext).putHomeId(id);
+				//로그인 이후 저장해야함
+				//PreferenceUtil.getInstance(mContext).putHomeId(id);
 				
 				MemberVO member = new MemberVO();
 				member.home_id = et_id.getText().toString();

@@ -1,6 +1,7 @@
 package com.aura.smartschool.dialog;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,11 +14,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -37,6 +41,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class MemberSaveDialogActivity extends Activity {
 	private int mMode; //0: add, 1:update
@@ -49,9 +55,12 @@ public class MemberSaveDialogActivity extends Activity {
 	FrameLayout fl_user_image;
 	EditText et_id, et_name, et_relation;
 	ImageView iv_user_image;
+	TextView tvBirthDay;
 	TextView tvSchoolName;
 	EditText et_school_grade, et_school_class;
+	Spinner spinnerSex;
 	Button btn_register;
+	ArrayAdapter<CharSequence> spinnerAdapter;
 	
 	private MemberVO mMember;
     private SchoolVO mSchoolVO;
@@ -79,11 +88,26 @@ public class MemberSaveDialogActivity extends Activity {
 		et_id = (EditText) findViewById(R.id.et_id);
 		et_name = (EditText) findViewById(R.id.et_name);
 		et_relation = (EditText) findViewById(R.id.et_relation);
-		tvSchoolName = (TextView) findViewById(R.id.tv_school_name);
+        tvBirthDay = (TextView) findViewById(R.id.tv_birthday);
+        tvSchoolName = (TextView) findViewById(R.id.tv_school_name);
 		et_school_grade = (EditText) findViewById(R.id.et_school_grade);
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
-		
+        spinnerSex = (Spinner) findViewById(R.id.spinner_sex);
+        spinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.spinner_sex, R.layout.spinner_text_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSex.setAdapter(spinnerAdapter);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        tvBirthDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(MemberSaveDialogActivity.this, dateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 		tvParent.setOnClickListener(mClick);
 		tvStudent.setOnClickListener(mClick);
         tvSchoolName.setOnClickListener(mClick);
@@ -116,7 +140,16 @@ public class MemberSaveDialogActivity extends Activity {
 			tvTitle.setText("가족 구성원 추가");
 		}
 	}
-	
+
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            tvBirthDay.setText(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth));
+        }
+    };
+
     protected void onActivityResult(int requestCode, int resultCode,
             Intent resultIntent) {
         super.onActivityResult(requestCode, resultCode, resultIntent);
@@ -289,24 +322,35 @@ public class MemberSaveDialogActivity extends Activity {
 					return;
 				}
 				if(mMember.is_parent == 0) {
-					if(TextUtils.isEmpty(tvSchoolName.getText().toString())){
-						Util.showToast(mContext, "학교명을 입력하세요.");
-						return;
-					}
-					if(TextUtils.isEmpty(et_school_grade.getText().toString())){
-						Util.showToast(mContext, "학년을 입력하세요.");
-						return;
-					}
-					if(TextUtils.isEmpty(et_school_class.getText().toString())){
-						Util.showToast(mContext, "반을 입력하세요.");
-						return;
-					}
+                    if(TextUtils.isEmpty(tvBirthDay.getText().toString())){
+                        Util.showToast(mContext, "생년월일을 입력하세요.");
+                        return;
+                    }
+                    if(TextUtils.isEmpty(tvSchoolName.getText().toString())){
+                        Util.showToast(mContext, "학교명을 입력하세요.");
+                        return;
+                    }
+                    if(TextUtils.isEmpty(et_school_grade.getText().toString())){
+                        Util.showToast(mContext, "학년을 입력하세요.");
+                        return;
+                    }
+                    if(TextUtils.isEmpty(et_school_class.getText().toString())){
+                        Util.showToast(mContext, "반을 입력하세요.");
+                        return;
+                    }
+                    if(spinnerSex.getSelectedItemPosition() == 0){
+                        Util.showToast(mContext, "성별을 입력하세요.");
+                        return;
+                    }
 				}
 				
 				mMember.mdn= et_id.getText().toString();
 				mMember.name = et_name.getText().toString();
 				mMember.relation = et_relation.getText().toString();
-				//mMember.mdn = Util.getMdn(mContext);
+//				mMember.mdn = Util.getMdn(mContext);
+                mMember.birth_date = tvBirthDay.getText().toString();
+                //TODO :차후 관계를 spinner 로 변경해서 성별을 가져오도록 수정
+                mMember.sex = (spinnerSex.getSelectedItemPosition() == 1 ? "M": "F");
                 if(mSchoolVO != null) {
                     mMember.mSchoolVO = mSchoolVO;
                 }

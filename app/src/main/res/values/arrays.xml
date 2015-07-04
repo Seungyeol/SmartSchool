@@ -13,4 +13,10 @@
         <item>@string/drawer_settings</item>
         <item>@string/drawer_dev_info</item>
     </string-array>
+
+    <string-array name="spinner_sex">
+        <item>"성별"</item>
+        <item>"남"</item>
+        <item>"여"</item>
+    </string-array>
 </resources>

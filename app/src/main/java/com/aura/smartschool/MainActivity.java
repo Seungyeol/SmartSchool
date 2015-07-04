@@ -422,6 +422,8 @@ public class MainActivity extends FragmentActivity {
 			member.name = json.getString("name");
 			member.relation = json.getString("relation");
 			member.photo = json.getString("photo");
+			member.sex = json.getString("sex");
+			member.birth_date = json.getString("birth_date");
 
 			//자녀 정보
 			SchoolVO school = new SchoolVO();
