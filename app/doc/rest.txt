@@ -146,7 +146,7 @@ http://210.127.55.205:9000/api/getSchoolList
 {
 "school_name" : "광명"
 }
-결과: 아로 시작하는 학교 리스트
+결과: 광명으로로 시작하는 학교 리스트
 {
     "result": 0,
     "msg": "success",
@@ -183,6 +183,35 @@ http://210.127.55.205:9000/api/getSchoolList
         "gugun": "광명시",
         "support": "경기\r"
     }]
+ }
+
+ //가장 최근 측정 정보 가져오기
+ http://210.127.55.205:9000/api/getMeasureSummary
+ {
+    "member_id":31
+ }
+ 결과
+ {
+     "result": 0,
+     "msg": "success",
+     "data": {
+         "member_id": 31,
+         "measure_date": "2015-04-05", //측정일
+         "height": "157.8",
+         "heightStatus": "표준 이상",
+         "weight": "59.0",
+         "weigthStatus": "표준 이상",
+         "fat": "25", //체지방율
+         "muscle": "41.5", //근육량
+         "waist": "0.819", //복부비만율
+         "bmi": "23.70",
+         "bmiStatus": "과체중 B",
+         "bmiGradeId": "305",
+         "ppm": "1",
+         "cohd": "0.16",
+         "smokeStatus": "비흡연",
+         "growthGrade": "73" //성장점수
+     }
  }
 
 자녀 위치 트래킹--------------------------------------------------

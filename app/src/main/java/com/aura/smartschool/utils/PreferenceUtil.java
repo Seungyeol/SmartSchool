@@ -71,4 +71,12 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		return get("appVersion", Integer.MIN_VALUE);
 	}
 
+	//location time post time : second
+	public void setLocationTime(int timestamp) {
+		put("location_time", timestamp);
+	}
+	public int getLocationTime() {
+		return get("location_time", 0);
+	}
+
 }

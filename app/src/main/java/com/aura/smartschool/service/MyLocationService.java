@@ -63,7 +63,14 @@ public class MyLocationService extends Service {
         public void onLocationChanged(Location location) {
             mLastLocation = location;
             //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            postLocation();
+
+            //업로드 시간이 5분이 경과하지 않으면 서버에 업로드 하지 않는다.
+            int lastTime = PreferenceUtil.getInstance(MyLocationService.this).getLocationTime();
+            int currentTime = (int)(System.currentTimeMillis()/1000);
+            if ((currentTime-lastTime) > 60 * 5) {
+                PreferenceUtil.getInstance(MyLocationService.this).setLocationTime(currentTime);
+                postLocation();
+            }
         }
     };
 

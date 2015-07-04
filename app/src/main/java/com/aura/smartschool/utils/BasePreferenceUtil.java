@@ -99,6 +99,8 @@ public class BasePreferenceUtil {
 	   {
 	      return _sharedPreferences.getInt(key, defValue);
 	   }
+
+
 	   
 	   
 	   protected void put(String key, Set<String> set) {
