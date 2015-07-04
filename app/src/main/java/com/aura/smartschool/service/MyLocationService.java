@@ -75,7 +75,7 @@ public class MyLocationService extends Service {
     };
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public void onCreate() {
         mAq = new AQuery(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -90,6 +90,12 @@ public class MyLocationService extends Service {
         mLocationRequest.setInterval(1000 * 60 * 10); //10 minutes
         mLocationRequest.setFastestInterval(1000 * 60 * 10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         return START_STICKY;
     }
