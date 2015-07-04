@@ -27,8 +27,9 @@ http://210.127.55.205:9000/api/signIn
     "msg": "success",
     "data": [{
         "home_id": "길동이네집",
-        "member_id": 7,
+        "member_id": 30,
         "mdn": "01030101482",
+        "gcm_id": null,
         "is_parent": 1,
         "name": "홍길동",
         "relation": "아빠",
@@ -36,31 +37,17 @@ http://210.127.55.205:9000/api/signIn
         "school_id": 0,
         "school_grade": null,
         "school_class": null,
+        "sex": null,
+        "birth_date": null,
         "school_name": null,
         "address": null,
         "new_address": null,
         "lat": null,
         "lng": null,
         "homepage": null,
-        "contact": null
-    }, {
-        "home_id": "길동이네집",
-        "member_id": 8,
-        "mdn": "01012341234",
-        "is_parent": 0,
-        "name": "홍하나",
-        "relation": "큰딸",
-        "photo": null,
-        "school_id": 27,
-        "school_grade": "3",
-        "school_class": "4",
-        "school_name": "아림초등학교",
-        "address": "경상남도 거창군 거창읍 거열로 6길 12번지",
-        "new_address": null,
-        "lat": "35.689323",
-        "lng": "127.9046855",
-        "homepage": "http://www.arim.es.kr",
-        "contact": "055-941-0932"
+        "contact": null,
+        "sido": null,
+        "gugun": null
     }]
 }
 
@@ -75,7 +62,9 @@ http://210.127.55.205:9000/api/addMember
   	"relation" : "큰딸",
   	"school_id" : 27,  //아림초등학교
   	"school_grade" : "3", //학년
-  	"school_class" : "4" //반
+  	"school_class" : "4", //반
+  	"sex" : "F",  //성별 M or F
+  	"birth_date" : "1996-05-12" //생일
   }
 
 결과 : 성공시
@@ -85,15 +74,18 @@ http://210.127.55.205:9000/api/addMember
 }
 
 * 가족 수정-----------------------------------------------------
+자녀의 학교와 학년 반 수정
 http://210.127.55.205:9000/api/updateMember
 {
-	"member_id" : 3,
-	"school_ban": "5"
+	"member_id" : 31,
+	"school_id": 14892,
+	"school_grade" : "5",
+	"school_class" : "3"
 }
 
 {
-	"member_id" : 3,
-	"school_ban": "5"
+    "result": 0,
+    "msg": "success"
 }
 
 * 위치 등록------------------------------------------------------
@@ -152,78 +144,45 @@ http://210.127.55.205:9000/api/getLocationList
 * 학교 정보 가져오기 --------------------------------------------
 http://210.127.55.205:9000/api/getSchoolList
 {
-"school_name" : "아"
+"school_name" : "광명"
 }
 결과: 아로 시작하는 학교 리스트
 {
     "result": 0,
     "msg": "success",
     "data": [{
-        "school_id": 1346,
-        "school_name": "아랑유치원",
-        "gubun1": null,
-        "gubun2": "유치원",
-        "zipcode": null,
-        "address": null,
-        "new_address": "서울 성북구 북악산로 844 (돈암동)",
-        "lat": "37.5979659",
-        "lng": "127.0176255",
-        "homepage": null,
-        "fax": null,
-        "contact": "02)927-1636"
-    }, {
-        "school_id": 590,
-        "school_name": "아랑유치원",
+        "school_id": 18487,
+        "school_name": "광명고등학교",
         "gubun1": "사립",
-        "gubun2": "유치원",
-        "zipcode": null,
-        "address": null,
-        "new_address": "서울특별시 노원구 동일로 1127",
-        "lat": "37.6307699",
-        "lng": "127.06982",
-        "homepage": null,
-        "fax": null,
-        "contact": "02-976-3671"
+        "gubun2": "고등학교",
+        "zipcode": "606-806",
+        "address": "부산광역시 영도구 와치로 131 (동삼동_광명고등학교)",
+        "new_address": "",
+        "lat": "",
+        "lng": "",
+        "homepage": "http://www.km.hs.kr",
+        "fax": "051-405-6289",
+        "contact": "051-405-6302",
+        "sido": "부산",
+        "gugun": "영도구",
+        "support": "부산시\r"
     }, {
-        "school_id": 1112,
-        "school_name": "아랑유치원",
-        "gubun1": "사립",
-        "gubun2": "유치원",
-        "zipcode": null,
-        "address": null,
-        "new_address": "서울특별시 중랑구 중랑역로 47",
-        "lat": "37.5981362",
-        "lng": "127.0767135",
-        "homepage": null,
-        "fax": null,
-        "contact": "02-433-4976"
-    }, {
-        "school_id": 1347,
-        "school_name": "아름유치원",
-        "gubun1": null,
-        "gubun2": "유치원",
-        "zipcode": null,
-        "address": null,
-        "new_address": "서울 강북구 도봉로 88 (송중동)",
-        "lat": "37.6169637",
-        "lng": "127.0303808",
-        "homepage": null,
-        "fax": null,
-        "contact": "02)981-3465"
-    }, {
-        "school_id": 52,
-        "school_name": "아림고등학교",
+        "school_id": 18488,
+        "school_name": "광명고등학교",
         "gubun1": "공립",
         "gubun2": "고등학교",
-        "zipcode": null,
-        "address": "경상남도 거창군 거창읍 정장길 19번지",
-        "new_address": null,
-        "lat": "35.6771656",
-        "lng": "127.9129465",
-        "homepage": "http://sangsalmi.hs.kr",
-        "fax": null,
-        "contact": "055-942-3712"
+        "zipcode": "423-834",
+        "address": "경기도 광명시 오리로876번길 17 (철산동_광명고등학교)",
+        "new_address": "",
+        "lat": "",
+        "lng": "",
+        "homepage": "www.gmhs.hs.kr",
+        "fax": "02-2616-9258",
+        "contact": "02-2680-0507",
+        "sido": "경기",
+        "gugun": "광명시",
+        "support": "경기\r"
     }]
-}
+ }
 
 자녀 위치 트래킹--------------------------------------------------
