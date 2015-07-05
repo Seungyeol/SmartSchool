@@ -26,6 +26,7 @@
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
     <!-- 활동량 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-feature android:name="android.hardware.sensor.stepcounter" />
 
     <uses-permission
@@ -80,6 +81,12 @@
             android:enabled="true"
             android:exported="false" >
         </service>
+
+        <receiver android:name=".receiver.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -119,5 +120,20 @@ public final class Util {
 		PackageManager packageManager = context.getPackageManager();
 		return currentApiVersion >= android.os.Build.VERSION_CODES.KITKAT
 				&& packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER);
+	}
+
+	public static long getTodayTimeInMillis() {
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(System.currentTimeMillis());
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTimeInMillis();
+	}
+
+	public static long getYesterdayTimeInMillis() {
+		long dayTimeInMillis = 24 * 60 * 60 * 1000;
+		return getTodayTimeInMillis() - dayTimeInMillis;
 	}
 }

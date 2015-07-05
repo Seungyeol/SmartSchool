@@ -3,8 +3,6 @@ package com.aura.smartschool.service;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -19,12 +17,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.aura.smartschool.MainActivity;
-import com.aura.smartschool.R;
-import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.database.DBStepCounter;
+import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.utils.Util;
 
 /**
@@ -35,65 +31,105 @@ public class StepCounterService extends Service implements SensorEventListener {
     private static final String TAG = StepCounterService.class.getSimpleName();
 
     private static final int RESTART_DELAY = 1000;
-//    private static final int STEPCOUNTER_DELAYY = 5 * 60 * 1000000;  //5분
-    private static final int STEPCOUNTER_DELAY = 1000000;  //1초
+    private static final int STEPCOUNTER_DELAY_SEC = 1000000;  //1초
+    private static final int STEPCOUNTER_DELAY_5MIN = 5 * 60 * 1000000;  //5분
+
+    private volatile int currentSteps;
+    private volatile int lastSteps;
+    private volatile boolean isWalking;
+    private volatile long startWalkingTime;
+
+    public enum SENSOR_DELAY_TYPE {
+        WALKING_FRAGMENT_SHOW,
+        WALKING_FRAGMENT_DISAPPEAR
+    }
 
     private Handler mStepCounterHandler;
 
     private IBinder mBinder = new StepCounterBinder();
 
+    public class StepCounterBinder extends Binder {
+        public void setSensorDelay(SENSOR_DELAY_TYPE type, Handler stepCounterHandler) {
+            mStepCounterHandler = stepCounterHandler;
+            switch (type) {
+                case WALKING_FRAGMENT_SHOW:
+                    registerEventListener(STEPCOUNTER_DELAY_SEC);
+                    break;
+                case WALKING_FRAGMENT_DISAPPEAR:
+                    registerEventListener(STEPCOUNTER_DELAY_5MIN);
+                    break;
+            }
+        }
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
+        int mergeSteps = StepSharePrefrenceUtil.getMergeStepCount(this);
+        int diffSteps = StepSharePrefrenceUtil.getDiffStepCount(this);
+        int steps = (int) event.values[0];
+
+        int totalSteps = steps + mergeSteps - diffSteps;
+        checkWalkingTime(steps);
+
+        DBStepCounter db = DBStepCounter.getInstance(this);
+        int dbSteps = db.getSteps(Util.getTodayTimeInMillis());
+        if(dbSteps == -1) {
+            db.insertNewDate(Util.getTodayTimeInMillis());
+            if(db.getSteps(Util.getYesterdayTimeInMillis()) > 0) {   // 최초실행일땐 전날 steps 값 존재하지 않음
+                StepSharePrefrenceUtil.saveDiffStepCount(this, steps);
+                StepSharePrefrenceUtil.saveMergeStepCount(this, 0);
+                totalSteps = 0;
+            }
+        }
+
+        StepSharePrefrenceUtil.saveCurrentStepCount(this, totalSteps);
 
         Message message = Message.obtain();
         Bundle data = new Bundle();
-        data.putInt("steps", (int) event.values[0]);
-        Log.d("TEST", "StepCounter >> counter = " + (int) event.values[0]);
+        data.putInt("steps", totalSteps);
+        if (startWalkingTime > 0) {
+            data.putInt("time", db.getWalkingTime(Util.getTodayTimeInMillis()) + (int)((System.currentTimeMillis() - startWalkingTime) / 1000));
+        } else {
+            data.putInt("time", db.getWalkingTime(Util.getTodayTimeInMillis()));
+        }
         message.setData(data);
         if(mStepCounterHandler != null) {
             mStepCounterHandler.sendMessage(message);
         }
+        db.close();
     }
 
-    /*
-            if (event.values[0] > Integer.MAX_VALUE) {
-            if (BuildConfig.DEBUG) Logger.log("probably not a real value: " + event.values[0]);
-            return;
-        } else {
-            steps = (int) event.values[0];
-            if (WAIT_FOR_VALID_STEPS && steps > 0) {
-                WAIT_FOR_VALID_STEPS = false;
-                Database db = Database.getInstance(this);
-                if (db.getSteps(Util.getToday()) == Integer.MIN_VALUE) {
-                    int pauseDifference = steps -
-                            getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS)
-                                    .getInt("pauseCount", steps);
-                    db.insertNewDay(Util.getToday(), steps - pauseDifference);
-                    if (pauseDifference > 0) {
-                        // update pauseCount for the new day
-                        getSharedPreferences("pedometer", Context.MODE_MULTI_PROCESS).edit()
-                                .putInt("pauseCount", steps).commit();
-                    }
-                    reRegisterSensor();
+
+    private void checkWalkingTime(int steps) {
+        currentSteps = steps;
+        if(steps != 0 && lastSteps < steps && !isWalking) {
+            isWalking = true;
+            startWalkingTime = System.currentTimeMillis();
+            WalkingTimeCheckHandler.post(WalkingTimeCheckTask);
+        }
+    }
+
+    private Handler WalkingTimeCheckHandler  = new Handler();
+
+    private Runnable WalkingTimeCheckTask = new Runnable() {
+        @Override
+        public void run() {
+            if (lastSteps < currentSteps && isWalking) {
+                lastSteps = currentSteps;
+                WalkingTimeCheckHandler.postDelayed(this, 3000);
+            } else {
+                isWalking = false;
+                if(System.currentTimeMillis() - startWalkingTime > 5000) {
+                    DBStepCounter.getInstance(StepCounterService.this).updateSteps(Util.getTodayTimeInMillis(), currentSteps, (int) ((System.currentTimeMillis() - startWalkingTime) / 1000));
                 }
-                db.saveCurrentSteps(steps);
-                db.close();
-                updateNotificationState();
-                startService(new Intent(this, WidgetUpdateService.class));
+                startWalkingTime = 0;
             }
         }
-     */
+    } ;
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-
-    public class StepCounterBinder extends Binder {
-        public void setStepCounterHandler(Handler handler) {
-            mStepCounterHandler = handler;
-        }
     }
 
     @Override
@@ -121,13 +157,13 @@ public class StepCounterService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (Util.isKitkatWithStepSensor(this)) {
-            registerEventListener(STEPCOUNTER_DELAY, null);
+            registerEventListener(STEPCOUNTER_DELAY_5MIN);
         }
         return START_STICKY;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void registerEventListener(int maxdelay, Handler stepCounterHandler) {
+    private void registerEventListener(int maxdelay) {
         SensorManager sensorManager = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
         try {
             sensorManager.unregisterListener(this);
