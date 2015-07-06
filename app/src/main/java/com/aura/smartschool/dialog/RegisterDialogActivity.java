@@ -10,9 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -46,8 +43,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegisterDialogActivity extends Activity {
     private Context mContext;
@@ -172,6 +167,8 @@ public class RegisterDialogActivity extends Activity {
 				json.put("school_name", member.mSchoolVO.school_name);
 				json.put("school_grade", member.mSchoolVO.school_grade);
 				json.put("school_ban", member.mSchoolVO.school_class);
+				json.put("sex", member.sex);
+				json.put("birth_date", member.birth_date);
 			}
 
 			Log.d("LDK", "url:" + url);

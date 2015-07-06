@@ -208,6 +208,8 @@ public class MemberSaveDialogActivity extends Activity {
 				json.put("school_id", mMember.mSchoolVO.school_id);
 				json.put("school_grade", mMember.mSchoolVO.school_grade);
 				json.put("school_class", mMember.mSchoolVO.school_class);
+				json.put("sex", mMember.sex);
+				json.put("birth_date", mMember.birth_date);
 			}
 
 			Log.d("LDK", "url:" + url);
