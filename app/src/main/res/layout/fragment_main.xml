@@ -1,36 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="2dp"
+    android:padding="4dp"
     android:orientation="vertical" >
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2.4"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2"
         android:orientation="horizontal">
-        <include layout="@layout/layout_health_container"
-            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.6"/>
-        <include layout="@layout/layout_extension_container"
-            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+        <RelativeLayout
+            android:id="@+id/rl_height"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:padding="@dimen/health_container_item_padding"  android:background="#455664">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="신장"/>
+            <TextView
+                android:id="@+id/tv_height_class"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                style="@style/HeathItemContentSub"
+                android:text="표준"/>
+            <TextView
+                android:id="@+id/tv_height_state"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_above="@id/tv_height_class" android:layout_centerHorizontal="true"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="177cm"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_growth"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:padding="@dimen/health_container_item_padding" android:background="#4c9900">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="성장\n점수"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="57"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_dining"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:padding="@dimen/health_container_item_padding" android:background="#f5a000">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="식단"/>
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="#ffffff"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_pt"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:padding="@dimen/health_container_item_padding" android:background="#00cccc">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="개인별\n맞춤형\nP.T"/>
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="#ffffff"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-        android:layout_marginTop="1dp"
-        android:padding="2dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2"
+        android:layout_marginTop="@dimen/health_container_item_margin"
+        android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:background="@drawable/bg_darkpink">
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_weight"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:layout_marginBottom="@dimen/health_container_item_margin"
+                android:padding="@dimen/health_container_item_padding" android:background="#3399ff">
+                <TextView
+                    android:id="@+id/tv_weight"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="체중"/>
+                <TextView
+                    android:id="@+id/tv_weight_state"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemContentMain_A"
+                    android:text="72.1"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_bmi"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:padding="@dimen/health_container_item_padding" android:background="#ff8000">
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="BMI"/>
+                <TextView
+                    android:id="@+id/tv_bmi_state"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemContentSub"
+                    android:text="비만 C"/>
+                <TextView
+                    android:id="@+id/tv_bmi"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_bmi_state" android:layout_alignParentRight="true"
+                    style="@style/HeathItemContentMain_A"
+                    android:text="27.97"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_fat"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:layout_marginBottom="@dimen/health_container_item_margin"
+                android:padding="@dimen/health_container_item_padding" android:background="#b266ff">
+                <TextView
+                    android:id="@+id/tv_muscle_title"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    style="@style/HeathItemSmallTitleTxt"
+                    android:text="근육량"/>
+                <TextView
+                    android:id="@+id/tv_muscle"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_muscle_title" android:layout_alignParentLeft="true"
+                    style="@style/HeathItemContentMain_B"
+                    android:text="25Kg"/>
+                <TextView
+                    android:id="@+id/tv_fat"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemContentMain_B"
+                    android:text="30Kg"/>
+                <TextView
+                    android:id="@+id/tv_fat_title"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_above="@+id/tv_fat" android:layout_alignParentRight="true"
+                    style="@style/HeathItemSmallTitleTxt"
+                    android:text="체지방"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_ranking"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:padding="@dimen/health_container_item_padding" android:background="#00cc00">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="랭킹"/>
+                <ImageView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_smoke"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:layout_marginBottom="@dimen/health_container_item_margin"
+                android:padding="@dimen/health_container_item_padding" android:background="#ff3399">
+                <TextView
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="흡연"/>
+                <TextView
+                    android:id="@+id/tv_smoking_type"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemContentSub"
+                    android:text="비흡연"/>
+                <TextView
+                    android:id="@+id/tv_smoking_cohb"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_smoking_type" android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    style="@style/HeathItemContentMain_B"
+                    android:text="0 COHb"/>
+                <TextView
+                    android:id="@+id/tv_smoking_ppm"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_smoking_cohb" android:layout_alignParentRight="true"
+                    style="@style/HeathItemContentMain_B"
+                    android:text="0 ppm"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_activity"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:padding="@dimen/health_container_item_padding" android:background="#3D8BBF">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="활동량"/>
+                <ImageView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:background="#ffffff"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_mental"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:padding="@dimen/health_container_item_padding" android:background="#8fc320">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="심리\n검사"/>
+                <ImageView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:background="#ffffff"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.1"
+        android:layout_marginTop="@dimen/health_container_item_margin"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/rl_map"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:padding="@dimen/health_container_item_padding" android:background="#b5b5b5">
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="안전\n지킴이"/>
+            <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:textSize="18sp" android:textColor="#FFFFFF"
-                android:text="실시간 모바일 상담센터"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:orientation="vertical" android:padding="5dp"
-            android:background="@drawable/bg_pink">
-        </LinearLayout>
+                android:background="#ffffff"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_consult"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:padding="@dimen/health_container_item_padding" android:background="#66cc90">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="실시간 \n모바일상담"/>
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="#ffffff"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.1"
+        android:layout_marginTop="@dimen/health_container_item_margin"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/rl_noti"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:padding="@dimen/health_container_item_padding" android:background="#f099c0">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="학교정보\n알리미"/>
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="#ffffff"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_challenge"
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:padding="@dimen/health_container_item_padding" android:background="#7ecdf4">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/HeathItemLargeTitleTxt"
+                android:text="도전!! \n건강"/>
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="#ffffff"/>
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

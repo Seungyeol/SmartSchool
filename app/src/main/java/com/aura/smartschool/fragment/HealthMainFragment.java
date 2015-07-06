@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.androidquery.AQuery;
@@ -15,14 +14,15 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
-public class HealthMainFragment extends BaseFragment implements View.OnClickListener {
+public class HealthMainFragment extends BaseFragment {
 	private View mView;
 	private MemberVO mMember;
     private AQuery mAq;
 
-    private RelativeLayout rl_height, rl_weight, rl_bmi, rl_smoke, rl_fat, rl_ranking, rl_growth, rl_dining, rl_activity, rl_pt;
-    private ImageView iv_pin, iv_email;
-    private RelativeLayout rl_map, rl_school_info;
+    private RelativeLayout rl_height, rl_growth, rl_dining, rl_pt;
+    private RelativeLayout rl_weight, rl_fat, rl_smoke, rl_mental;
+    private RelativeLayout rl_bmi, rl_ranking, rl_activity;
+    private RelativeLayout rl_map, rl_consult, rl_noti, rl_challenge;
 
     private static String KEY_MEMBER = "member";
 
@@ -50,34 +50,28 @@ public class HealthMainFragment extends BaseFragment implements View.OnClickList
         mAq = new AQuery(mView);
 
         rl_height = (RelativeLayout) mView.findViewById(R.id.rl_height);
-        rl_weight = (RelativeLayout) mView.findViewById(R.id.rl_weight);
-        rl_bmi = (RelativeLayout) mView.findViewById(R.id.rl_bmi);
-        rl_smoke = (RelativeLayout) mView.findViewById(R.id.rl_smoke);
-        rl_fat = (RelativeLayout) mView.findViewById(R.id.rl_fat);
-        rl_ranking = (RelativeLayout) mView.findViewById(R.id.rl_ranking);
         rl_growth = (RelativeLayout) mView.findViewById(R.id.rl_growth);
         rl_dining = (RelativeLayout) mView.findViewById(R.id.rl_dining);
-        rl_activity = (RelativeLayout) mView.findViewById(R.id.rl_activity);
         rl_pt = (RelativeLayout) mView.findViewById(R.id.rl_pt);
-        iv_pin = (ImageView) mView.findViewById(R.id.iv_pin);
-        iv_email = (ImageView) mView.findViewById(R.id.iv_email);
 
+        rl_weight = (RelativeLayout) mView.findViewById(R.id.rl_weight);
+        rl_fat = (RelativeLayout) mView.findViewById(R.id.rl_fat);
+        rl_smoke = (RelativeLayout) mView.findViewById(R.id.rl_smoke);
+        rl_mental = (RelativeLayout) mView.findViewById(R.id.rl_mental);
 
-        rl_activity.setOnClickListener(this);
-        animateHealthMenu();
+        rl_bmi = (RelativeLayout) mView.findViewById(R.id.rl_bmi);
+        rl_ranking = (RelativeLayout) mView.findViewById(R.id.rl_ranking);
+        rl_activity = (RelativeLayout) mView.findViewById(R.id.rl_activity);
 
         rl_map = (RelativeLayout) mView.findViewById(R.id.rl_map);
-        rl_school_info = (RelativeLayout) mView.findViewById(R.id.rl_school_info);
-        rl_map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mMember.lat != 0) {
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, LocationFragment.newInstance(mMember)).addToBackStack(null).commit();
-                } else {
-                    Util.showToast(getActivity(), "위치정보가 없습니다");
-                }
-            }
-        });
+        rl_consult = (RelativeLayout) mView.findViewById(R.id.rl_consult);
+        rl_noti = (RelativeLayout) mView.findViewById(R.id.rl_noti);
+        rl_challenge = (RelativeLayout) mView.findViewById(R.id.rl_challenge);
+
+        rl_activity.setOnClickListener(mClick);
+        rl_map.setOnClickListener(mClick);
+
+        animateHealthMenu();
 
         return mView;
 	}
@@ -90,25 +84,22 @@ public class HealthMainFragment extends BaseFragment implements View.OnClickList
 
     private void animateHealthMenu() {
         Animation aniLeftToRight = AnimationUtils.loadAnimation(getActivity(), R.anim.left_to_right);
-        rl_height.startAnimation(aniLeftToRight);
-        rl_ranking.startAnimation(aniLeftToRight);
-        rl_smoke.startAnimation(aniLeftToRight);
         Animation aniTopToBottom = AnimationUtils.loadAnimation(getActivity(), R.anim.top_to_bottom);
-        rl_weight.startAnimation(aniTopToBottom);
-        rl_bmi.startAnimation(aniTopToBottom);
         Animation aniRightToLeft = AnimationUtils.loadAnimation(getActivity(), R.anim.right_to_left);
-        rl_fat.startAnimation(aniRightToLeft);
-        rl_dining.startAnimation(aniRightToLeft);
-        rl_pt.startAnimation(aniRightToLeft);
         Animation aniBottomToTop = AnimationUtils.loadAnimation(getActivity(), R.anim.bottom_to_top);
-        rl_activity.startAnimation(aniBottomToTop);
-        rl_growth.startAnimation(aniBottomToTop);
 
-        Animation aniTranslate = AnimationUtils.loadAnimation(getActivity(), R.anim.translate_bounce);
-        iv_pin.startAnimation(aniTranslate);
+        rl_height.startAnimation(aniLeftToRight);
+        rl_growth.startAnimation(aniTopToBottom);
+        rl_dining.startAnimation(aniRightToLeft);
+        rl_pt.startAnimation(aniBottomToTop);
+        rl_weight.startAnimation(aniRightToLeft);
+        rl_fat.startAnimation(aniTopToBottom);
+        rl_smoke.startAnimation(aniRightToLeft);
+        rl_mental.startAnimation(aniBottomToTop);
+        rl_bmi.startAnimation(aniBottomToTop);
+        rl_ranking.startAnimation(aniRightToLeft);
+        rl_activity.startAnimation(aniLeftToRight);
 
-        Animation aniZoomIn = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_zoom_in);
-        iv_email.startAnimation(aniZoomIn);
 
         /*aniZoomIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -127,15 +118,23 @@ public class HealthMainFragment extends BaseFragment implements View.OnClickList
         });*/
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    View.OnClickListener mClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.rl_activity:
+                    Log.d("test", "onClick >> rl_activity");
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
 
-        switch (id) {
-            case R.id.rl_activity:
-                Log.d("test", "onClick >> rl_activity");
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
-                break;
+                case R.id.rl_map:
+                    if(mMember.lat != 0) {
+                        getFragmentManager().beginTransaction().replace(R.id.content_frame, LocationFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    } else {
+                        Util.showToast(getActivity(), "위치정보가 없습니다");
+                    }
+                    break;
+            }
         }
-    }
+    };
 }

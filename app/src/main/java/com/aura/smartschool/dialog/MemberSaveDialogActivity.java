@@ -131,8 +131,10 @@ public class MemberSaveDialogActivity extends Activity {
 			}
 			if(mMember.is_parent == 0) {
 				tvSchoolName.setText(mMember.mSchoolVO.school_name);
+				tvBirthDay.setText(mMember.birth_date);
 				et_school_grade.setText(mMember.mSchoolVO.school_grade);
 				et_school_class.setText(mMember.mSchoolVO.school_class);
+				spinnerSex.setSelection(mMember.sex.equals("M") ? 1 : 2);
 				tvStudent.performClick(); //학생탭 선택
 			} 
 			
