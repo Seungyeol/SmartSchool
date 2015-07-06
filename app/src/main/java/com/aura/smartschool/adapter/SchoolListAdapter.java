@@ -1,10 +1,10 @@
 package com.aura.smartschool.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
@@ -40,7 +40,13 @@ public class SchoolListAdapter extends RecyclerView.Adapter<SchoolListAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.mSchoolName.setText(mSchoolList.get(position).school_name);
-        viewHolder.mSchoolAddr.setText(mSchoolList.get(position).new_address);
+
+        //구주소가 비어있으면 도로명주소로 대체
+        String address = mSchoolList.get(position).address;
+        if (TextUtils.isEmpty(address)) {
+            address = mSchoolList.get(position).new_address;
+        }
+        viewHolder.mSchoolAddr.setText(address);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
