@@ -132,6 +132,12 @@ public final class Util {
 		return c.getTimeInMillis();
 	}
 
+	public static long getFirstDayTimeOfMonthInMillis(int year, int month) {
+		Calendar c = Calendar.getInstance();
+		c.set(year, month, 1);
+		return c.getTimeInMillis();
+	}
+
 	public static long getYesterdayTimeInMillis() {
 		long dayTimeInMillis = 24 * 60 * 60 * 1000;
 		return getTodayTimeInMillis() - dayTimeInMillis;

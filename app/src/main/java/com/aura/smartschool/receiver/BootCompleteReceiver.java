@@ -15,6 +15,7 @@ import com.aura.smartschool.utils.Util;
 public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        //TODO Login Check
         if (Util.isKitkatWithStepSensor(context)) {
             StepSharePrefrenceUtil.saveMergeStepCount(context, StepSharePrefrenceUtil.getCurrentStepCount(context));
             StepSharePrefrenceUtil.saveDiffStepCount(context, 0);

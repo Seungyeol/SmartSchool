@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.fragment.walkingfragments.WalkingAmountFragment;
+import com.aura.smartschool.fragment.walkingfragments.WalkingHistoryFragment;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
  * Created by Administrator on 2015-06-14.
  */
-public class WalkingPagerFragment extends BaseFragment {
+public class WalkingPagerFragment extends BaseFragment implements View.OnClickListener{
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
@@ -54,6 +55,11 @@ public class WalkingPagerFragment extends BaseFragment {
         mTabWalkingCount = mView.findViewById(R.id.fl_tab_walking_count);
         mTabWalkingHistory = mView.findViewById(R.id.fl_tab_walking_history);
         mTabTracking = mView.findViewById(R.id.fl_tab_tracking);
+
+        mTabWalkingCount.setOnClickListener(this);
+        mTabWalkingHistory.setOnClickListener(this);
+        mTabTracking.setOnClickListener(this);
+
         mTabWalkingCount.setSelected(true);
 
         mVpPager = (ViewPager) mView.findViewById(R.id.vpPager);
@@ -89,8 +95,24 @@ public class WalkingPagerFragment extends BaseFragment {
         mVpPager.setCurrentItem(0);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fl_tab_walking_count:
+                mVpPager.setCurrentItem(0);
+                break;
+            case R.id.fl_tab_walking_history:
+                mVpPager.setCurrentItem(1);
+                break;
+            case R.id.fl_tab_tracking:
+                break;
+            default:
+                break;
+        }
+    }
+
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        private int NUM_ITEMS = 1;
+        private int NUM_ITEMS = 2;
         private MemberVO mMember;
         public MyPagerAdapter(FragmentManager fragmentManager, MemberVO memberVO) {
             super(fragmentManager);
@@ -107,7 +129,8 @@ public class WalkingPagerFragment extends BaseFragment {
             switch (position) {
                 case 0:
                     return WalkingAmountFragment.newInstance(mMember);
-
+                case 1:
+                    return WalkingHistoryFragment.newInstance(mMember);
                 default:
                     return null;
             }

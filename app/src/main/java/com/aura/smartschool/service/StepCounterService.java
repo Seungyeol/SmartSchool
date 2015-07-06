@@ -32,7 +32,7 @@ public class StepCounterService extends Service implements SensorEventListener {
 
     private static final int RESTART_DELAY = 1000;
     private static final int STEPCOUNTER_DELAY_SEC = 1000000;  //1초
-    private static final int STEPCOUNTER_DELAY_5MIN = 5 * 60 * 1000000;  //5분
+    private static final int STEPCOUNTER_DELAY_2S = 2 * 1000000;  //2초
 
     private volatile int currentSteps;
     private volatile int lastSteps;
@@ -56,7 +56,7 @@ public class StepCounterService extends Service implements SensorEventListener {
                     registerEventListener(STEPCOUNTER_DELAY_SEC);
                     break;
                 case WALKING_FRAGMENT_DISAPPEAR:
-                    registerEventListener(STEPCOUNTER_DELAY_5MIN);
+                    registerEventListener(STEPCOUNTER_DELAY_2S);
                     break;
             }
         }
@@ -69,7 +69,7 @@ public class StepCounterService extends Service implements SensorEventListener {
         int steps = (int) event.values[0];
 
         int totalSteps = steps + mergeSteps - diffSteps;
-        checkWalkingTime(steps);
+        checkWalkingTime(totalSteps);
 
         DBStepCounter db = DBStepCounter.getInstance(this);
         int dbSteps = db.getSteps(Util.getTodayTimeInMillis());
@@ -157,7 +157,7 @@ public class StepCounterService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (Util.isKitkatWithStepSensor(this)) {
-            registerEventListener(STEPCOUNTER_DELAY_5MIN);
+            registerEventListener(STEPCOUNTER_DELAY_2S);
         }
         return START_STICKY;
     }
