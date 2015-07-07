@@ -1,25 +1,18 @@
 package com.aura.smartschool.fragment.walkingfragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.adapter.SchoolListAdapter;
 import com.aura.smartschool.adapter.WalkingHistoryAdapter;
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
-import com.aura.smartschool.vo.SchoolVO;
 import com.aura.smartschool.vo.WalkingVO;
 
 import java.util.ArrayList;
