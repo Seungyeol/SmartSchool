@@ -50,7 +50,7 @@
                 android:background="@drawable/tab_selector_white"/>
         </FrameLayout>
         <FrameLayout
-            android:id="@+id/fl_tab_tracking"
+            android:id="@+id/fl_tab_setting"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -59,7 +59,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 style="@style/WalkingCountMenu"
-                android:text="트레킹"/>
+                android:text="설정"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="5dp"

@@ -20,13 +20,38 @@ import java.util.Calendar;
  */
 public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAdapter.WalkingHistoryViewHolder> {
 
-    private ArrayList<WalkingVO> mWalkingHistory;
+    private ArrayList<WalkingHistoryVO> mWalkingHistory;
+    private ArrayList<WalkingVO> mWalkingHistoryDay;
     private ArrayList<WalkingVO> mWalkingHistoryMonth;
 
+    private class WalkingHistoryVO {
+        private WalkingVO walkingVO;
+        private int viewType;
+        public WalkingHistoryVO(WalkingVO walkingVO, int viewType) {
+            this.walkingVO = walkingVO;
+            this.viewType = viewType;
+        }
+    }
+
     public WalkingHistoryAdapter(ArrayList<WalkingVO> walkingHistory) {
-        this.mWalkingHistory = walkingHistory;
+        this.mWalkingHistoryDay = walkingHistory;
         mWalkingHistoryMonth = new ArrayList<>();
         makeMonthHistory();
+        mergeWalkingHistory();
+    }
+
+    private void mergeWalkingHistory() {
+        mWalkingHistory = new ArrayList<>();
+        if (mWalkingHistoryMonth.size() > 0 && mWalkingHistoryDay.size() > 0) {
+            mWalkingHistory.add(new WalkingHistoryVO(mWalkingHistoryMonth.get(0), 0));
+            int addedHeaderSize = 1;
+            for (int i=0;i<mWalkingHistoryDay.size(); i++) {
+                if (mWalkingHistoryDay.get(i).date < mWalkingHistoryMonth.get(addedHeaderSize-1).date) {
+                    mWalkingHistory.add(new WalkingHistoryVO(mWalkingHistoryMonth.get(addedHeaderSize++), 0));
+                }
+                mWalkingHistory.add(new WalkingHistoryVO(mWalkingHistoryDay.get(i), 1));
+            }
+        }
     }
 
     private void makeMonthHistory() {
@@ -34,18 +59,28 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
-        mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0));
-        for(WalkingVO dayWalking : mWalkingHistory) {
+        mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0, 0));
+        for (WalkingVO dayWalking : mWalkingHistoryDay) {
             if (dayWalking.date > mWalkingHistoryMonth.get(i).date) {
-                mWalkingHistoryMonth.get(i).count = dayWalking.count;
+                mWalkingHistoryMonth.get(i).count += dayWalking.count;
+                mWalkingHistoryMonth.get(i).time += dayWalking.time;
             } else {
                 month --;
                 if (month < 0) {
                     year--;
                     month = 11;
                 }
-                mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0));
+                mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0, 0));
                 i++;
+            }
+        }
+        removeEmptyMonthHistory();
+    }
+
+    private void removeEmptyMonthHistory() {
+        for (int i = mWalkingHistoryMonth.size() -1; i >=0; i--) {
+            if (mWalkingHistoryMonth.get(i).count == 0) {
+                mWalkingHistoryMonth.remove(0);
             }
         }
     }
@@ -53,16 +88,36 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
     @Override
     public WalkingHistoryViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater vi = LayoutInflater.from(viewGroup.getContext());
-        View itemView = vi.inflate(R.layout.walking_history_item, viewGroup, false);
-        return new WalkingHistoryViewHolder(itemView);
+        if (viewType == 0) {
+            View itemView = vi.inflate(R.layout.walking_history_month_item, viewGroup, false);
+            return new WalkingHistoryMonthViewHolder(itemView);
+        } else {
+            View itemView = vi.inflate(R.layout.walking_history_item, viewGroup, false);
+            return new WalkingHistoryDayViewHolder(itemView);
+        }
     }
 
     @Override
     public void onBindViewHolder(WalkingHistoryViewHolder viewHolder, final int position) {
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(mWalkingHistory.get(position).date);
-        viewHolder.mDate.setText(String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
-        viewHolder.mWalkingCount.setText(mWalkingHistory.get(position).count + " 걸음");
+        cal.setTimeInMillis(mWalkingHistory.get(position).walkingVO.date);
+        if (getItemViewType(position) == 0) {
+            ((WalkingHistoryMonthViewHolder)viewHolder).mMonth.setText(String.format("%d년 %02d월", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1));
+            ((WalkingHistoryMonthViewHolder)viewHolder).mWalkingCount.setText("총 " + mWalkingHistory.get(position).walkingVO.count + " 걸음");
+        } else {
+            ((WalkingHistoryDayViewHolder)viewHolder).mDate.setText(String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
+            int hour = mWalkingHistory.get(position).walkingVO.time / 3600;
+            int min = (mWalkingHistory.get(position).walkingVO.time % 3600) / 60;
+            int sec = mWalkingHistory.get(position).walkingVO.time / 60;
+            ((WalkingHistoryDayViewHolder)viewHolder).mTime.setText(String.format("%02d:%02d:%02d", hour, min, sec));
+            ((WalkingHistoryDayViewHolder)viewHolder).mWalkingCount.setText(mWalkingHistory.get(position).walkingVO.count + " 걸음");
+        }
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mWalkingHistory.get(position).viewType;
     }
 
     @Override
@@ -71,19 +126,36 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
     }
 
     public static class WalkingHistoryViewHolder extends RecyclerView.ViewHolder {
+        public WalkingHistoryViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public static class WalkingHistoryDayViewHolder extends WalkingHistoryViewHolder {
         public final TextView mDate;
         public final TextView mWalkingCount;
         public final TextView mCalories;
         public final TextView mDistance;
         public final TextView mTime;
 
-        public WalkingHistoryViewHolder(View itemView) {
+        public WalkingHistoryDayViewHolder(View itemView) {
             super(itemView);
             mDate = (TextView) itemView.findViewById(R.id.tv_date);
             mWalkingCount = (TextView) itemView.findViewById(R.id.tv_step_count);
             mCalories = (TextView) itemView.findViewById(R.id.tv_calories);
             mDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             mTime = (TextView) itemView.findViewById(R.id.tv_walking_time);
+        }
+    }
+
+    public static class WalkingHistoryMonthViewHolder extends WalkingHistoryViewHolder {
+        public final TextView mMonth;
+        public final TextView mWalkingCount;
+
+        public WalkingHistoryMonthViewHolder(View itemView) {
+            super(itemView);
+            mMonth = (TextView) itemView.findViewById(R.id.tv_month);
+            mWalkingCount = (TextView) itemView.findViewById(R.id.tv_step_count);
         }
     }
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.aura.smartschool.R;
 import com.aura.smartschool.fragment.walkingfragments.WalkingAmountFragment;
 import com.aura.smartschool.fragment.walkingfragments.WalkingHistoryFragment;
+import com.aura.smartschool.fragment.walkingfragments.WalkingSettingFragment;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
@@ -28,7 +29,7 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
 
     private View mTabWalkingCount;
     private View mTabWalkingHistory;
-    private View mTabTracking;
+    private View mTabSetting;
 
     public static WalkingPagerFragment newInstance(MemberVO member) {
 
@@ -54,11 +55,11 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
 
         mTabWalkingCount = mView.findViewById(R.id.fl_tab_walking_count);
         mTabWalkingHistory = mView.findViewById(R.id.fl_tab_walking_history);
-        mTabTracking = mView.findViewById(R.id.fl_tab_tracking);
+        mTabSetting = mView.findViewById(R.id.fl_tab_setting);
 
         mTabWalkingCount.setOnClickListener(this);
         mTabWalkingHistory.setOnClickListener(this);
-        mTabTracking.setOnClickListener(this);
+        mTabSetting.setOnClickListener(this);
 
         mTabWalkingCount.setSelected(true);
 
@@ -72,13 +73,13 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
             public void onPageSelected(int position) {
                 mTabWalkingCount.setSelected(false);
                 mTabWalkingHistory.setSelected(false);
-                mTabTracking.setSelected(false);
+                mTabSetting.setSelected(false);
                 if (position == 0) {
                     mTabWalkingCount.setSelected(true);
                 } else if (position == 1) {
                     mTabWalkingHistory.setSelected(true);
                 } else {
-                    mTabTracking.setSelected(true);
+                    mTabSetting.setSelected(true);
                 }
             }
 
@@ -104,7 +105,8 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
             case R.id.fl_tab_walking_history:
                 mVpPager.setCurrentItem(1);
                 break;
-            case R.id.fl_tab_tracking:
+            case R.id.fl_tab_setting:
+                mVpPager.setCurrentItem(2);
                 break;
             default:
                 break;
@@ -112,7 +114,7 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        private int NUM_ITEMS = 2;
+        private int NUM_ITEMS = 3;
         private MemberVO mMember;
         public MyPagerAdapter(FragmentManager fragmentManager, MemberVO memberVO) {
             super(fragmentManager);
@@ -131,6 +133,8 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
                     return WalkingAmountFragment.newInstance(mMember);
                 case 1:
                     return WalkingHistoryFragment.newInstance(mMember);
+                case 2:
+                    return WalkingSettingFragment.newInstance(mMember);
                 default:
                     return null;
             }

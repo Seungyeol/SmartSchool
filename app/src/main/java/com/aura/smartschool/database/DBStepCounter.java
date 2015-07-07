@@ -72,32 +72,14 @@ public class DBStepCounter extends SQLiteOpenHelper {
 
     public ArrayList<WalkingVO> getAllSteps() {
         ArrayList<WalkingVO> result = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_STEPS, COL_DATE}, null, null, null, null, COL_DATE + " DESC" );
+        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_DATE, COL_STEPS, COL_WALKING_TIME}, null, null, null, null, COL_DATE + " DESC" );
         cursor.moveToFirst();
         do {
-            result.add(new WalkingVO(cursor.getLong(1), cursor.getInt(0)));
+            result.add(new WalkingVO(cursor.getLong(0), cursor.getInt(1), cursor.getInt(2)));
         } while (cursor.moveToNext());
         cursor.close();
         return result;
     }
-
-    /*
-    if (cursor != null) {
-            for(int j = 0; j < cursor.getColumnNames().length; j++){
-
-                //append the column value to the string builder and delimit by a pipe symbol
-                stringBuilder.append(cursor.getString(j) + "|");
-            }
-            //add a new line carriage return
-            stringBuilder.append("\n");
-
-            //move to the next row
-            cursor.moveToNext();
-        }
-        //close the cursor
-        cursor.close();
-    }
-     */
 
     public int getWalkingTime(long date) {
         int time;
