@@ -1,7 +1,6 @@
 package com.aura.smartschool.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
-import com.aura.smartschool.vo.SchoolVO;
 import com.aura.smartschool.vo.WalkingVO;
 
 import java.util.ArrayList;
@@ -59,18 +57,20 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
-        mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0, 0));
+        mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0, 0, 0, 0));
         for (WalkingVO dayWalking : mWalkingHistoryDay) {
             if (dayWalking.date > mWalkingHistoryMonth.get(i).date) {
                 mWalkingHistoryMonth.get(i).count += dayWalking.count;
-                mWalkingHistoryMonth.get(i).time += dayWalking.time;
+                mWalkingHistoryMonth.get(i).calories += dayWalking.calories;
+                mWalkingHistoryMonth.get(i).distance += dayWalking.distance;
+                mWalkingHistoryMonth.get(i).activeTime += dayWalking.activeTime;
             } else {
                 month --;
                 if (month < 0) {
                     year--;
                     month = 11;
                 }
-                mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0, 0));
+                mWalkingHistoryMonth.add(new WalkingVO(Util.getFirstDayTimeOfMonthInMillis(year, month), 0, 0, 0, 0));
                 i++;
             }
         }
@@ -101,16 +101,19 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
     public void onBindViewHolder(WalkingHistoryViewHolder viewHolder, final int position) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(mWalkingHistory.get(position).walkingVO.date);
-        if (getItemViewType(position) == 0) {
+        if (getItemViewType(position) == 0) { //Month
             ((WalkingHistoryMonthViewHolder)viewHolder).mMonth.setText(String.format("%d년 %02d월", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1));
             ((WalkingHistoryMonthViewHolder)viewHolder).mWalkingCount.setText("총 " + mWalkingHistory.get(position).walkingVO.count + " 걸음");
-        } else {
+        } else { //Day
             ((WalkingHistoryDayViewHolder)viewHolder).mDate.setText(String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
-            int hour = mWalkingHistory.get(position).walkingVO.time / 3600;
-            int min = (mWalkingHistory.get(position).walkingVO.time % 3600) / 60;
-            int sec = mWalkingHistory.get(position).walkingVO.time / 60;
-            ((WalkingHistoryDayViewHolder)viewHolder).mTime.setText(String.format("%02d:%02d:%02d", hour, min, sec));
             ((WalkingHistoryDayViewHolder)viewHolder).mWalkingCount.setText(mWalkingHistory.get(position).walkingVO.count + " 걸음");
+            ((WalkingHistoryDayViewHolder)viewHolder).mCalories.setText(mWalkingHistory.get(position).walkingVO.calories + " Kcal");
+            ((WalkingHistoryDayViewHolder)viewHolder).mDistance.setText(String.format("%.2f", mWalkingHistory.get(position).walkingVO.distance) + " Km");
+
+            int hour = mWalkingHistory.get(position).walkingVO.activeTime / 3600;
+            int min = (mWalkingHistory.get(position).walkingVO.activeTime % 3600) / 60;
+            int sec = mWalkingHistory.get(position).walkingVO.activeTime % 60;
+            ((WalkingHistoryDayViewHolder)viewHolder).mActiveTime.setText(String.format("%02d:%02d:%02d", hour, min, sec));
         }
 
     }
@@ -136,7 +139,7 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
         public final TextView mWalkingCount;
         public final TextView mCalories;
         public final TextView mDistance;
-        public final TextView mTime;
+        public final TextView mActiveTime;
 
         public WalkingHistoryDayViewHolder(View itemView) {
             super(itemView);
@@ -144,7 +147,7 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
             mWalkingCount = (TextView) itemView.findViewById(R.id.tv_step_count);
             mCalories = (TextView) itemView.findViewById(R.id.tv_calories);
             mDistance = (TextView) itemView.findViewById(R.id.tv_distance);
-            mTime = (TextView) itemView.findViewById(R.id.tv_walking_time);
+            mActiveTime = (TextView) itemView.findViewById(R.id.tv_walking_time);
         }
     }
 

@@ -6,13 +6,17 @@ package com.aura.smartschool.vo;
 public class WalkingVO {
     public long date;
     public int count;
-    public int time;
+    public int calories;
+    public double distance;
+    public int activeTime;
 
     public WalkingVO(){}
 
-    public WalkingVO(long date, int count, int time) {
+    public WalkingVO(long date, int count, int calories, double distance, int activeTime) {
         this.date = date;
         this.count = count;
-        this.time = time;
+        this.calories = calories;
+        this.distance = distance;
+        this.activeTime = activeTime;
     }
 }

@@ -17,18 +17,24 @@ import java.util.ArrayList;
 public class DBStepCounter extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "db_steps";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String COL_DATE = "date";
     private static final String COL_STEPS = "steps";
-    private static final String COL_WALKING_TIME = "time";
+    private static final String COL_CALORIES = "calories";
+    private static final String COL_DISTANCE = "distance";
+    private static final String COL_ACTIVE_TIME = "active_time";
     private static final String COL_SYNC = "sync";
 
     private static final String CREATE_STEP_TABLE = "CREATE TABLE " + DATABASE_NAME +
                                                             " (" + COL_DATE + " INTEGER, " +
                                                                 COL_STEPS + " INTEGER, " +
-                                                                COL_WALKING_TIME + " INTEGER, " +
+                                                                COL_CALORIES + " INTEGER, " +
+                                                                COL_DISTANCE + " INTEGER, " +
+                                                                COL_ACTIVE_TIME + " INTEGER, " +
                                                                 COL_SYNC + " INTEGER)";
+
+    private static final String DROP_STEP_TABLE = "DROP TABLE IF EXISTS '" + DATABASE_NAME +"'";
 
     private static DBStepCounter INSTANCE;
 
@@ -54,7 +60,8 @@ public class DBStepCounter extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(DROP_STEP_TABLE);
+        onCreate(db);
     }
 
     public int getSteps(long date) {
@@ -70,20 +77,9 @@ public class DBStepCounter extends SQLiteOpenHelper {
         return steps;
     }
 
-    public ArrayList<WalkingVO> getAllSteps() {
-        ArrayList<WalkingVO> result = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_DATE, COL_STEPS, COL_WALKING_TIME}, null, null, null, null, COL_DATE + " DESC" );
-        cursor.moveToFirst();
-        do {
-            result.add(new WalkingVO(cursor.getLong(0), cursor.getInt(1), cursor.getInt(2)));
-        } while (cursor.moveToNext());
-        cursor.close();
-        return result;
-    }
-
     public int getWalkingTime(long date) {
         int time;
-        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_WALKING_TIME}, COL_DATE + " = ?", new String[]{String.valueOf(date)}, null, null,null );
+        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_ACTIVE_TIME}, COL_DATE + " = ?", new String[]{String.valueOf(date)}, null, null,null );
         cursor.moveToFirst();
         if (cursor.getCount() == 0) {
             time = -1;
@@ -92,6 +88,19 @@ public class DBStepCounter extends SQLiteOpenHelper {
         }
         cursor.close();
         return time;
+    }
+
+    public ArrayList<WalkingVO> getAllSteps() {
+        ArrayList<WalkingVO> result = new ArrayList<>();
+        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_DATE, COL_STEPS, COL_CALORIES, COL_DISTANCE, COL_ACTIVE_TIME}, null, null, null, null, COL_DATE + " DESC" );
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                result.add(new WalkingVO(cursor.getLong(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getInt(4)));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return result;
     }
 
     public void insertNewDate(long date) {
@@ -103,7 +112,9 @@ public class DBStepCounter extends SQLiteOpenHelper {
                 ContentValues values = new ContentValues();
                 values.put(COL_DATE, date);
                 values.put(COL_STEPS, 0);
-                values.put(COL_WALKING_TIME, 0);
+                values.put(COL_CALORIES, 0);
+                values.put(COL_DISTANCE, 0);
+                values.put(COL_ACTIVE_TIME, 0);
                 values.put(COL_SYNC, -1);
                 getWritableDatabase().insert(DATABASE_NAME, null, values);
             }
@@ -116,10 +127,13 @@ public class DBStepCounter extends SQLiteOpenHelper {
 
 
 
-    public void updateSteps(long date, int steps, int time) {
+    public void updateSteps(long date, int steps, int calories, double distance, int activeTime) {
+        // 센서가 누적값을 올려주기 때문에 걸음걸이와 거리는 전달된 값으로 갱신한다.
         getWritableDatabase().execSQL("UPDATE " + DATABASE_NAME +
                 " SET " + COL_STEPS + " = " + steps + ", " +
-                           COL_WALKING_TIME + " = " + COL_WALKING_TIME + " + " + time +
+                           COL_CALORIES + " = " + COL_CALORIES + " + " + calories + ", " +
+                           COL_DISTANCE + " = " + distance + ", " +
+                           COL_ACTIVE_TIME + " = " + COL_ACTIVE_TIME + " + " + activeTime +
                 " WHERE " + COL_DATE + " = " + date);
     }
 

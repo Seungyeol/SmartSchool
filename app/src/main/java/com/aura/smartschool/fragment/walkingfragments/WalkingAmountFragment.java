@@ -28,8 +28,6 @@ public class WalkingAmountFragment extends BaseFragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
-    private static float WALKING_COEFFICIENT = 0.9F;
-
     private TextView mTvWalkingCount;
     private TextView mTvCalories;
     private TextView mTvDistance;
@@ -56,7 +54,9 @@ public class WalkingAmountFragment extends BaseFragment {
         public void handleMessage(Message message) {
             Bundle data = message.getData();
             int steps = data.getInt("steps");
-            int totalWalkingTime = data.getInt("time");
+            int calories = data.getInt("calories");
+            double distance = data.getDouble("distance");
+            int totalWalkingTime = data.getInt("activeTime");
 
             mTvWalkingCount.setText(String.valueOf(steps));
 
@@ -64,28 +64,11 @@ public class WalkingAmountFragment extends BaseFragment {
             int minutes = (totalWalkingTime % 3600) / 60;
             int seconds = totalWalkingTime % 60;
 
-            mTvCalories.setText(getCalories(totalWalkingTime) + " kcal");
-            mTvDistance.setText(String.format("%.2f Km", getDistance(steps)));
+            mTvCalories.setText(calories + " kcal");
+            mTvDistance.setText(String.format("%.2f Km", distance));
             mTvWalkingTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
         }
     };
-
-    private int getCalories(int second) {
-        int weight = 72;
-        int height = 177;
-        int age = 31;
-        return (int)(WALKING_COEFFICIENT*weight/15/60*second);
-    }
-
-    private double getDistance(int steps) {
-        /*
-        Men - you can multiply your height in cm by 0.415
-        Ladies - multiply your height in cm by 0.413
-         */
-        int height = 177;
-
-        return (height*0.415)*steps/100/1000;
-    }
 
     public static WalkingAmountFragment newInstance(MemberVO member) {
         WalkingAmountFragment instance = new WalkingAmountFragment();

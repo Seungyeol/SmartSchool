@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
@@ -30,11 +29,13 @@ public class StepCounterService extends Service implements SensorEventListener {
 
     private static final String TAG = StepCounterService.class.getSimpleName();
 
+    private static float WALKING_COEFFICIENT = 0.9F;
+
     private static final int RESTART_DELAY = 1000;
     private static final int STEPCOUNTER_DELAY_SEC = 1000000;  //1초
     private static final int STEPCOUNTER_DELAY_2S = 2 * 1000000;  //2초
 
-    private volatile int currentSteps;
+    private volatile int currentTotalSteps;
     private volatile int lastSteps;
     private volatile boolean isWalking;
     private volatile long startWalkingTime;
@@ -69,29 +70,35 @@ public class StepCounterService extends Service implements SensorEventListener {
         int steps = (int) event.values[0];
 
         int totalSteps = steps + mergeSteps - diffSteps;
-        checkWalkingTime(totalSteps);
 
         DBStepCounter db = DBStepCounter.getInstance(this);
         int dbSteps = db.getSteps(Util.getTodayTimeInMillis());
         if(dbSteps == -1) {
             db.insertNewDate(Util.getTodayTimeInMillis());
-            if(db.getSteps(Util.getYesterdayTimeInMillis()) > 0) {   // 최초실행일땐 전날 steps 값 존재하지 않음
-                StepSharePrefrenceUtil.saveDiffStepCount(this, steps);
+            if (db.getSteps(Util.getYesterdayTimeInMillis()) > 0) {   // 최초실행일땐 전날 steps 값 존재하지 않음
                 StepSharePrefrenceUtil.saveMergeStepCount(this, 0);
-                totalSteps = 0;
             }
+            lastSteps = 0;
+            totalSteps = 0;
+            StepSharePrefrenceUtil.saveDiffStepCount(this, steps);
         }
 
+        checkWalkingTime(totalSteps);
+
         StepSharePrefrenceUtil.saveCurrentStepCount(this, totalSteps);
+        int totalActiveTime = db.getWalkingTime(Util.getTodayTimeInMillis());
+        if (startWalkingTime > 0) {
+            totalActiveTime += (int) ((System.currentTimeMillis() - startWalkingTime) / 1000);
+        }
+        int calories = getCalories(totalActiveTime);
+        double distance = getDistance(totalSteps);
 
         Message message = Message.obtain();
         Bundle data = new Bundle();
         data.putInt("steps", totalSteps);
-        if (startWalkingTime > 0) {
-            data.putInt("time", db.getWalkingTime(Util.getTodayTimeInMillis()) + (int)((System.currentTimeMillis() - startWalkingTime) / 1000));
-        } else {
-            data.putInt("time", db.getWalkingTime(Util.getTodayTimeInMillis()));
-        }
+        data.putInt("calories", calories);
+        data.putDouble("distance", distance);
+        data.putInt("activeTime", totalActiveTime);
         message.setData(data);
         if(mStepCounterHandler != null) {
             mStepCounterHandler.sendMessage(message);
@@ -101,7 +108,7 @@ public class StepCounterService extends Service implements SensorEventListener {
 
 
     private void checkWalkingTime(int steps) {
-        currentSteps = steps;
+        currentTotalSteps = steps;
         if(steps != 0 && lastSteps < steps && !isWalking) {
             isWalking = true;
             startWalkingTime = System.currentTimeMillis();
@@ -114,18 +121,40 @@ public class StepCounterService extends Service implements SensorEventListener {
     private Runnable WalkingTimeCheckTask = new Runnable() {
         @Override
         public void run() {
-            if (lastSteps < currentSteps && isWalking) {
-                lastSteps = currentSteps;
+            if (lastSteps < currentTotalSteps && isWalking) {
+                lastSteps = currentTotalSteps;
                 WalkingTimeCheckHandler.postDelayed(this, 3000);
             } else {
                 isWalking = false;
-                if(System.currentTimeMillis() - startWalkingTime > 5000) {
-                    DBStepCounter.getInstance(StepCounterService.this).updateSteps(Util.getTodayTimeInMillis(), currentSteps, (int) ((System.currentTimeMillis() - startWalkingTime) / 1000));
+                if (System.currentTimeMillis() - startWalkingTime > 5000) {
+                    int activeTime = (int) ((System.currentTimeMillis() - startWalkingTime) / 1000);
+                    DBStepCounter.getInstance(StepCounterService.this).updateSteps(Util.getTodayTimeInMillis(),
+                                                                                    currentTotalSteps,
+                                                                                    getCalories(activeTime),
+                                                                                    getDistance(currentTotalSteps),
+                                                                                    activeTime);
                 }
                 startWalkingTime = 0;
             }
         }
     } ;
+
+    private int getCalories(int second) {
+        int weight = 72;
+        int height = 177;
+        int age = 31;
+        return (int)(WALKING_COEFFICIENT*weight/15/60*second);
+    }
+
+    private double getDistance(int steps) {
+        /*
+        Men - you can multiply your height in cm by 0.415
+        Ladies - multiply your height in cm by 0.413
+         */
+        int height = 177;
+
+        return (height*0.415)*steps/100/1000;
+    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
