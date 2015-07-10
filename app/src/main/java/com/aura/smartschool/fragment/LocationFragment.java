@@ -13,7 +13,6 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
-import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.LocationVO;
 import com.aura.smartschool.vo.MemberVO;
@@ -110,7 +109,7 @@ public class LocationFragment extends BaseFragment {
             String url = Constant.HOST + Constant.API_GET_LOCATIONLIST;
 
             JSONObject json = new JSONObject();
-            json.put("member_id", PreferenceUtil.getInstance(getActivity()).getMemberId());
+            json.put("member_id", mMember.member_id);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));

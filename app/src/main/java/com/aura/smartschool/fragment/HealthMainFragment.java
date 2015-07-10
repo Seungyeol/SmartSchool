@@ -68,6 +68,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_noti = (RelativeLayout) mView.findViewById(R.id.rl_noti);
         rl_challenge = (RelativeLayout) mView.findViewById(R.id.rl_challenge);
 
+        rl_height.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
 
@@ -122,6 +123,10 @@ public class HealthMainFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.rl_height:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
                 case R.id.rl_activity:
                     Log.d("test", "onClick >> rl_activity");
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();

@@ -214,4 +214,32 @@ http://210.127.55.205:9000/api/getSchoolList
      }
  }
 
-자녀 위치 트래킹--------------------------------------------------
+ //키 상세 정보 가져오기
+ http://210.127.55.205:9000/api/getHeight
+ {
+    "member_id":31
+ }
+결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": {
+        "value": "157.8",
+        "beforeValue": "154.1",
+        "gradeId": "42",
+        "gradeString": "표준 이상",
+        "date": "",
+        "schoolGrade": "1",
+        "beforeSchoolGrade": "1",
+        "totalNumberOfStudent": "1",
+        "averageOfClass": null,
+        "averageOfSchool": "157.8",
+        "averageOfLocal": "151.4",
+        "averageOfNation": "151.4",
+        "averageOfStandard": "151.1",
+        "percentageOfBodyFat": null,
+        "msGradeString": null,
+        "rank": "17",
+        "beforeRank": "29"
+    }
+}
