@@ -123,7 +123,7 @@ public class LocationFragment extends BaseFragment {
                         }
                         Log.d("LDK", "result:" + object.toString(1));
 
-                        if ("0".equals(object.getString("result"))) {
+                        if (object.getInt("result") == 0) {
                             JSONArray array = object.getJSONArray("data");
                             for (int i = 0; i < array.length(); ++i) {
                                 JSONObject json = array.getJSONObject(i);

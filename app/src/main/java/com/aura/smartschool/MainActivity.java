@@ -48,6 +48,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
+	//Handler
+	public static final int MSG_CHECK_ANIMATION = 0;
+	public static final int MSG_INCREASE_NUMBER = 1;
+
+	//ACTIVITY REQUEST
 	public static final int REQ_DIALOG_SIGNUP = 100;
 	public static final int REQ_DIALOG_MEMBER_UPDATE = 101;
 	public static final int REQ_DIALOG_MEMBER_ADD = 102;
