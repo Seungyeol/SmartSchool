@@ -3,6 +3,7 @@ package com.aura.smartschool.service;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -17,7 +18,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 
+import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.utils.Util;
@@ -81,9 +84,12 @@ public class StepCounterService extends Service implements SensorEventListener {
             lastSteps = 0;
             totalSteps = 0;
             StepSharePrefrenceUtil.saveDiffStepCount(this, steps);
+            StepSharePrefrenceUtil.saveTodayAchieved(this, false);
         }
 
         checkWalkingTime(totalSteps);
+
+        doCheckAchievedTarget(totalSteps);
 
         StepSharePrefrenceUtil.saveCurrentStepCount(this, totalSteps);
         int totalActiveTime = db.getWalkingTime(Util.getTodayTimeInMillis());
@@ -209,5 +215,25 @@ public class StepCounterService extends Service implements SensorEventListener {
         ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
                 .set(AlarmManager.RTC, System.currentTimeMillis() + RESTART_DELAY,
                         PendingIntent.getService(this, 3, new Intent(this, StepCounterService.class), 0));
+    }
+
+    private void doCheckAchievedTarget(int totalSteps) {
+        int targetSteps = StepSharePrefrenceUtil.getTargetSteps(this);
+        boolean isNotiOn = StepSharePrefrenceUtil.getNoticeOnOff(this);
+        boolean isTagetAchieved = StepSharePrefrenceUtil.getTodayAchieved(this);
+
+        if (isNotiOn && !isTagetAchieved && totalSteps >= targetSteps) {
+            StepSharePrefrenceUtil.saveTodayAchieved(this, true);
+            showAchieveNotification();
+        }
+    }
+
+    private void showAchieveNotification() {
+        NotificationManager mNotiManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(this);
+        notiBuilder.setContentTitle("목표량 달성")
+                .setContentText("목표량을 달성하였습니다.")
+        .setSmallIcon(R.drawable.home);
+        mNotiManger.notify(1001, notiBuilder.build());
     }
 }

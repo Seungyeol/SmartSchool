@@ -29,10 +29,18 @@
             android:textSize="15sp"
             android:text="걸   음"/>
         <EditText
+            android:id="@+id/et_setting_steps"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_selector_setting_input"
+            android:singleLine="true"
+            android:paddingRight="10dp"
+            android:inputType="numberDecimal"
+            android:gravity="right"
+            android:enabled="false"
             android:layout_weight="1"/>
         <CheckBox
+            android:id="@+id/cb_setting_steps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -53,10 +61,14 @@
             android:textSize="15sp"
             android:text="칼로리"/>
         <EditText
+            android:id="@+id/et_setting_calories"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:enabled="false"
             android:layout_weight="1"/>
         <CheckBox
+            android:id="@+id/cb_setting_calories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -77,10 +89,14 @@
             android:textSize="15sp"
             android:text="거   리"/>
         <EditText
+            android:id="@+id/et_setting_distance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:enabled="false"
             android:layout_weight="1"/>
         <CheckBox
+            android:id="@+id/cb_setting_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

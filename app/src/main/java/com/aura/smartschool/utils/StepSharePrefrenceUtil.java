@@ -7,9 +7,19 @@ import android.content.Context;
  */
 public class StepSharePrefrenceUtil {
     private static final String STEP_COUNTER_PREFERENCE_NAME = "step_counter";
+
+    //View
     private static final String KEY_CURRENT_STEPS = "current_steps";
     private static final String KEY_MERGE_STEPS = "merge_steps";
     private static final String KEY_DIFF_STEPS = "diff_steps";
+
+    //Settings
+    private static final String KEY_TARGET_NOTICE_ON_OFF = "notice_on_off";
+    private static final String KEY_STEP_COUNT_SERVICE_ON_OFF = "steps_on_off";
+
+    private static final String KEY_TARGET_STEPS = "target_steps";
+    private static final String KEY_TARGET_ON_OFF = "target_on_off";
+    private static final String KEY_TODAY_ACHIEVED = "today_achieved";
 
 
     public static void saveCurrentStepCount(Context context, int steps) {
@@ -34,5 +44,45 @@ public class StepSharePrefrenceUtil {
 
     public static int getDiffStepCount(Context context) {
         return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_DIFF_STEPS, 0);
+    }
+
+    public static void saveNoticeOnOff(Context context, boolean isOn) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putBoolean(KEY_TARGET_NOTICE_ON_OFF, isOn).commit();
+    }
+
+    public static boolean getNoticeOnOff(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getBoolean(KEY_TARGET_NOTICE_ON_OFF, false);
+    }
+
+    public static void saveCountServiceOnOff(Context context, boolean isOn) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putBoolean(KEY_STEP_COUNT_SERVICE_ON_OFF, isOn).commit();
+    }
+
+    public static boolean getCountServiceOnOff(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getBoolean(KEY_STEP_COUNT_SERVICE_ON_OFF, false);
+    }
+
+    public static void saveTargetSteps(Context context, int targetSteps) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putInt(KEY_TARGET_STEPS, targetSteps).commit();
+    }
+
+    public static int getTargetSteps(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_TARGET_STEPS, 0);
+    }
+
+    public static void saveTargetOnOff(Context context, boolean isOn) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putBoolean(KEY_TARGET_ON_OFF, isOn).commit();
+    }
+
+    public static boolean getTargetOnOff(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getBoolean(KEY_TARGET_ON_OFF, false);
+    }
+
+    public static void saveTodayAchieved(Context context, boolean isAchieved) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putBoolean(KEY_TODAY_ACHIEVED, isAchieved).commit();
+    }
+
+    public static boolean getTodayAchieved(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getBoolean(KEY_TODAY_ACHIEVED, false);
     }
 }

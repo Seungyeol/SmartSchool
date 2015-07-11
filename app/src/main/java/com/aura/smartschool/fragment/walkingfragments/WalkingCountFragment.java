@@ -9,21 +9,23 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.service.StepCounterService;
+import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
  * Created by Administrator on 2015-06-28.
  */
-public class WalkingAmountFragment extends BaseFragment {
+public class WalkingCountFragment extends BaseFragment {
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
@@ -32,6 +34,8 @@ public class WalkingAmountFragment extends BaseFragment {
     private TextView mTvCalories;
     private TextView mTvDistance;
     private TextView mTvWalkingTime;
+
+    private Switch mSwTaget;
 
 
     private IBinder mBinder;
@@ -70,8 +74,8 @@ public class WalkingAmountFragment extends BaseFragment {
         }
     };
 
-    public static WalkingAmountFragment newInstance(MemberVO member) {
-        WalkingAmountFragment instance = new WalkingAmountFragment();
+    public static WalkingCountFragment newInstance(MemberVO member) {
+        WalkingCountFragment instance = new WalkingCountFragment();
         Bundle args = new Bundle();
         args.putSerializable("member", member);
         instance.setArguments(args);
@@ -94,6 +98,15 @@ public class WalkingAmountFragment extends BaseFragment {
         mTvCalories = (TextView) view.findViewById(R.id.tv_calories);
         mTvDistance = (TextView) view.findViewById(R.id.tv_distance);
         mTvWalkingTime = (TextView) view.findViewById(R.id.tv_walking_time);
+
+        mSwTaget = (Switch) view.findViewById(R.id.sw_target);
+        mSwTaget.setChecked(StepSharePrefrenceUtil.getNoticeOnOff(getActivity()));
+        mSwTaget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                StepSharePrefrenceUtil.saveNoticeOnOff(getActivity(), isChecked);
+            }
+        });
 
         return view;
     }

@@ -1,5 +1,6 @@
 package com.aura.smartschool.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,9 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.fragment.walkingfragments.WalkingAmountFragment;
+import com.aura.smartschool.fragment.walkingfragments.WalkingCountFragment;
 import com.aura.smartschool.fragment.walkingfragments.WalkingHistoryFragment;
 import com.aura.smartschool.fragment.walkingfragments.WalkingSettingFragment;
 import com.aura.smartschool.vo.MemberVO;
@@ -74,6 +76,10 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
                 mTabWalkingCount.setSelected(false);
                 mTabWalkingHistory.setSelected(false);
                 mTabSetting.setSelected(false);
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                 if (position == 0) {
                     mTabWalkingCount.setSelected(true);
                 } else if (position == 1) {
@@ -130,7 +136,7 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return WalkingAmountFragment.newInstance(mMember);
+                    return WalkingCountFragment.newInstance(mMember);
                 case 1:
                     return WalkingHistoryFragment.newInstance(mMember);
                 case 2:

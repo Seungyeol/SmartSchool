@@ -55,13 +55,13 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             style="@style/WalkingCountMenu"
             android:text="목표량 달성 알림"/>
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <Switch
+            android:id="@+id/sw_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="#727272"/>
+            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
