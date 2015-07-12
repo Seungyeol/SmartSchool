@@ -282,6 +282,9 @@ public class HealthMainFragment extends BaseFragment {
                         Util.showToast(getActivity(), "위치정보가 없습니다");
                     }
                     break;
+                case R.id.rl_consult:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
             }
         }
     };
