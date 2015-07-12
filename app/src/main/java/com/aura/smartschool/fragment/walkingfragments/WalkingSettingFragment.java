@@ -68,38 +68,39 @@ public class WalkingSettingFragment extends BaseFragment {
             }
         });
 
-        mEtSteps.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                final int targetSteps = Integer.parseInt(s.toString());
-                if (mTask != null) {
-                    mHandler.removeCallbacks(mTask);
-                }
-
-                if (!s.toString().isEmpty()) {
-                    mTask = new Runnable() {
-                        @Override
-                        public void run() {
-                            saveTargetSteps(targetSteps);
-                        }
-
-                    };
-
-                    mHandler.postDelayed(mTask, 500);
-                }
-            }
-        });
+        mEtSteps.addTextChangedListener(mWatcher);
         return view;
     }
 
+    private TextWatcher mWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            final int targetSteps = Integer.parseInt(s.toString());
+            if (mTask != null) {
+                mHandler.removeCallbacks(mTask);
+            }
+
+            if (!s.toString().isEmpty()) {
+                mTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        saveTargetSteps(targetSteps);
+                    }
+
+                };
+
+                mHandler.postDelayed(mTask, 500);
+            }
+        }
+    };
 
     private void saveTargetSteps(int targetSteps) {
         if (targetSteps != StepSharePrefrenceUtil.getTargetSteps(getActivity())
@@ -121,5 +122,6 @@ public class WalkingSettingFragment extends BaseFragment {
         if (mTask != null) {
             mHandler.removeCallbacks(mTask);
         }
+        mEtSteps.removeTextChangedListener(mWatcher);
     }
 }

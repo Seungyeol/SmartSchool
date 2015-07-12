@@ -115,7 +115,6 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
             int sec = mWalkingHistory.get(position).walkingVO.activeTime % 60;
             ((WalkingHistoryDayViewHolder)viewHolder).mActiveTime.setText(String.format("%02d:%02d:%02d", hour, min, sec));
         }
-
     }
 
     @Override

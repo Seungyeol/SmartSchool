@@ -142,4 +142,22 @@ public final class Util {
 		long dayTimeInMillis = 24 * 60 * 60 * 1000;
 		return getTodayTimeInMillis() - dayTimeInMillis;
 	}
+
+	public static boolean isDifferentDay(Date date1, Date date2) {
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(date1);
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(date2);
+
+		if(c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR) != 0) {
+			return true;
+		}
+		if(c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH) != 0) {
+			return true;
+		}
+		if(c1.get(Calendar.DAY_OF_MONTH) - c2.get(Calendar.DAY_OF_MONTH) != 0) {
+			return true;
+		}
+		return false;
+	}
 }

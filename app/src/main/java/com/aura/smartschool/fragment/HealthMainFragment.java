@@ -112,6 +112,8 @@ public class HealthMainFragment extends BaseFragment {
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
 
+        rl_consult.setOnClickListener(mClick);
+
         animateHealthMenu();
 
         return mView;
@@ -280,6 +282,9 @@ public class HealthMainFragment extends BaseFragment {
                     } else {
                         Util.showToast(getActivity(), "위치정보가 없습니다");
                     }
+                    break;
+                case R.id.rl_consult:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
             }
         }
