@@ -105,7 +105,7 @@ public final class Util {
 
 		if(addresses != null && addresses.size() > 0) {
 			String address = addresses.get(0).getAddressLine(0);
-			if(address.startsWith("한국")) {
+			if(address.startsWith("한국") || address.startsWith("남한")) {
 				address = address.substring(3);
 			}
 

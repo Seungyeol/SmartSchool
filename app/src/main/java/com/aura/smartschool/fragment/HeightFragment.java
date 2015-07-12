@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -38,6 +39,8 @@ public class HeightFragment extends BaseFragment {
 
     private BarChart mChart;
 
+    private TextView tv_grade, tv_grade_desc;
+
     public HeightFragment() {
         // Required empty public constructor
     }
@@ -64,6 +67,9 @@ public class HeightFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = View.inflate(getActivity(), R.layout.fragment_height, null);
         mAq = new AQuery(mView);
+
+        tv_grade = (TextView) mView.findViewById(R.id.tv_grade);
+        tv_grade_desc = (TextView) mView.findViewById(R.id.tv_grade_desc);
 
         mChart = (BarChart) mView.findViewById(R.id.heightChart);
         mChart.setDrawBarShadow(false);
@@ -157,7 +163,8 @@ public class HeightFragment extends BaseFragment {
     }
 
     private void drawGraph() {
-        Log.d("LDK", "drawGraph");
+        tv_grade.setText(String.format("%s/100", mMeasureVO.rank));
+        tv_grade_desc.setText(mMeasureVO.gradeString);
         //Model Data--------------------------------------------------------
         //색깔
         ArrayList<Integer> colors = new ArrayList<Integer>();
