@@ -97,13 +97,13 @@
                     android:id="@+id/tv_weight_status"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemContentMain_A"
+                    style="@style/HeathItemContentSub"
                     android:text=" "/>
                 <TextView
                     android:id="@+id/tv_weight"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_above="@+id/tv_weight_status" android:layout_alignParentRight="true"
-                    style="@style/HeathItemSmallTitleTxt"
+                    style="@style/HeathItemTitleTxt"
                     android:text=" "/>
             </RelativeLayout>
             <RelativeLayout
@@ -119,13 +119,13 @@
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                     style="@style/HeathItemContentSub"
-                    android:text="비만 C"/>
+                    android:text=" "/>
                 <TextView
                     android:id="@+id/tv_bmi"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_above="@id/tv_bmi_status" android:layout_alignParentRight="true"
-                    style="@style/HeathItemSmallTitleTxt"
-                    android:text="27.97"/>
+                    style="@style/HeathItemTitleTxt"
+                    android:text=" "/>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
@@ -140,26 +140,14 @@
                 <TextView
                     android:id="@+id/tv_muscle_title"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    style="@style/HeathItemSmallTitleTxt"
-                    android:text="근육량"/>
-                <TextView
-                    android:id="@+id/tv_muscle"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_muscle_title" android:layout_alignParentLeft="true"
-                    style="@style/HeathItemContentMain_A"
-                    android:text=""/>
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="체지방"/>
                 <TextView
                     android:id="@+id/tv_fat"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemContentMain_A"
+                    style="@style/HeathItemLargeTitleTxt"
                     android:text=""/>
-                <TextView
-                    android:id="@+id/tv_fat_title"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_above="@+id/tv_fat" android:layout_alignParentRight="true"
-                    style="@style/HeathItemSmallTitleTxt"
-                    android:text="체지방"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_ranking"
@@ -192,21 +180,21 @@
                     android:id="@+id/tv_smoke_status"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemContentSub"
-                    android:text="비흡연"/>
+                    style="@style/HeathItemSmallTitleTxt"
+                    android:text=" "/>
                 <TextView
                     android:id="@+id/tv_smoke_cohb"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_above="@id/tv_smoke_status" android:layout_alignParentRight="true"
                     android:gravity="center"
                     style="@style/HeathItemContentMain_B"
-                    android:text="0 COHb"/>
+                    android:text=" "/>
                 <TextView
                     android:id="@+id/tv_smoke_ppm"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_above="@id/tv_smoke_cohb" android:layout_alignParentRight="true"
                     style="@style/HeathItemContentMain_B"
-                    android:text="0 ppm"/>
+                    android:text=" "/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_activity"

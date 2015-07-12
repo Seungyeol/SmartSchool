@@ -43,7 +43,7 @@ public class HealthMainFragment extends BaseFragment {
     private TextView tv_growth_grade;
     private TextView tv_weight, tv_weight_status;
     private TextView tv_bmi, tv_bmi_status;
-    private TextView tv_muscle, tv_fat;
+    private TextView tv_fat;
     private TextView tv_smoke_status, tv_smoke_cohb, tv_smoke_ppm;
 
     private static String KEY_MEMBER = "member";
@@ -102,7 +102,6 @@ public class HealthMainFragment extends BaseFragment {
         tv_weight_status = (TextView) mView.findViewById(R.id.tv_weight_status);
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
         tv_bmi_status = (TextView) mView.findViewById(R.id.tv_bmi_status);
-        tv_muscle = (TextView) mView.findViewById(R.id.tv_muscle);
         tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
         tv_smoke_status = (TextView) mView.findViewById(R.id.tv_smoke_status);
         tv_smoke_cohb = (TextView) mView.findViewById(R.id.tv_smoke_cohb);
@@ -112,8 +111,6 @@ public class HealthMainFragment extends BaseFragment {
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
 
-        animateHealthMenu();
-
         return mView;
 	}
 
@@ -122,7 +119,12 @@ public class HealthMainFragment extends BaseFragment {
         super.onResume();
         setActionbar(R.drawable.btn_pre, mMember.name);
 
-        getMeasureSummary();
+        if (!mAnimationEnd) {
+            animateHealthMenu();
+            getMeasureSummary();
+        } else {
+            displayData();
+        }
     }
 
     private void animateHealthMenu() {
@@ -231,7 +233,6 @@ public class HealthMainFragment extends BaseFragment {
         tv_smoke_status.setText(mSummaryVO.smokeStatus);
         tv_smoke_cohb.setText(String.format("%s COHb", mSummaryVO.cohd));
         tv_smoke_ppm.setText(String.format("%s ppm", mSummaryVO.ppm));
-        tv_muscle.setText(String.format("%skg", mSummaryVO.muscle));
         tv_fat.setText(mSummaryVO.fat + "%");
     }
 
