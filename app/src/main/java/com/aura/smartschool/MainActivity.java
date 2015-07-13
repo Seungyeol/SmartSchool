@@ -16,16 +16,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
-import com.aura.smartschool.Interface.LoginListener;
+import com.aura.smartschool.Interface.LoginDialogListener;
 import com.aura.smartschool.adapter.DrawerAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
@@ -456,24 +454,10 @@ public class MainActivity extends FragmentActivity {
 
         mFamilyMemberFragment.setFamilyMemberList(mMemberList);
 	}
-
-	//more menu
-	PopupMenu.OnMenuItemClickListener mMoreMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
-		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			switch (item.getItemId()) {
-			case R.id.action_settings:
-
-				break;
-			}
-			
-			return true;
-		}
-	};
 	
-	LoginListener mLoginListener = new LoginListener() {
+	LoginDialogListener mLoginListener = new LoginDialogListener() {
 		@Override
-		public void onLogin(MemberVO member) {
+		public void doLogin(MemberVO member) {
 			getLogin(member);
 		}
 

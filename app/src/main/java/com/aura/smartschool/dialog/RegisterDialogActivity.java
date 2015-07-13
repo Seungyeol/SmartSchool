@@ -47,8 +47,7 @@ import java.util.GregorianCalendar;
 public class RegisterDialogActivity extends Activity {
     private Context mContext;
 	private AQuery mAq;
-	//private LoginListener mListener;
-	
+
 	TextView tvParent, tvStudent;
 	LinearLayout school_info;
 	FrameLayout fl_user_image;

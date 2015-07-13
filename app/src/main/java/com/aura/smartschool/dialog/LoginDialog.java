@@ -10,10 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aura.smartschool.Interface.LoginListener;
+import com.aura.smartschool.Interface.LoginDialogListener;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
-import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
@@ -25,9 +24,9 @@ public class LoginDialog extends Dialog {
 	private EditText et_id;
 	
 	private Context mContext;
-	LoginListener mListener;
+	LoginDialogListener mListener;
 	
-	public LoginDialog(Context context, LoginListener listener) {
+	public LoginDialog(Context context, LoginDialogListener listener) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
 		mContext = context;
 		mListener = listener;
@@ -84,7 +83,7 @@ public class LoginDialog extends Dialog {
 				member.mdn = Util.getMdn(mContext);
 				
 				//로그인 처리
-				mListener.onLogin(member);
+				mListener.doLogin(member);
 				break;
 
 			case R.id.tv_register:
