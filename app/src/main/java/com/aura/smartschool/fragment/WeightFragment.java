@@ -2,11 +2,9 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -31,7 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HeightFragment extends BaseFragment {
+public class WeightFragment extends BaseFragment {
 
     private View mView;
 
@@ -42,15 +40,14 @@ public class HeightFragment extends BaseFragment {
     private BarChart mChart;
 
     private TextView tv_grade, tv_grade_desc;
-    private TextView tv_lastmonth;
 
-    public HeightFragment() {
+    public WeightFragment() {
         // Required empty public constructor
     }
 
-    public static HeightFragment newInstance(MemberVO member) {
+    public static WeightFragment newInstance(MemberVO member) {
 
-        HeightFragment instance = new HeightFragment();
+        WeightFragment instance = new WeightFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("member", member);
@@ -73,9 +70,6 @@ public class HeightFragment extends BaseFragment {
 
         tv_grade = (TextView) mView.findViewById(R.id.tv_grade);
         tv_grade_desc = (TextView) mView.findViewById(R.id.tv_grade_desc);
-        tv_lastmonth = (TextView) mView.findViewById(R.id.tv_lastmonth);
-
-        tv_lastmonth.setOnClickListener(mClick);
 
         mChart = (BarChart) mView.findViewById(R.id.heightChart);
         mChart.setDrawBarShadow(false);
@@ -114,7 +108,7 @@ public class HeightFragment extends BaseFragment {
     private void getHeight() {
         LoadingDialog.showLoading(getActivity());
         try {
-            String url = Constant.HOST + Constant.API_GET_HEIGHT;
+            String url = Constant.HOST + Constant.API_GET_WEIGHT;
 
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
@@ -215,18 +209,4 @@ public class HeightFragment extends BaseFragment {
 
         mChart.setData(data);
     }
-
-    View.OnClickListener mClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch(v.getId()) {
-                case R.id.tv_lastmonth:
-                    View view = View.inflate(getActivity(), R.layout.popup_height, null);
-                    PopupWindow popup = new PopupWindow(view);
-                    popup.setAnimationStyle(-1);
-                    popup.showAtLocation(view, Gravity.CENTER, 0, -200);
-                    break;
-            }
-        }
-    };
 }

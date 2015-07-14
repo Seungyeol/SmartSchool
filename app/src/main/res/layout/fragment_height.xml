@@ -16,41 +16,60 @@
         android:orientation="horizontal"
         android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="0.7"
         android:gravity="center" android:padding="10dp">
-        <LinearLayout
-            android:layout_width="130dp" android:layout_height="110dp"
-            android:layout_marginRight="20dp"
-            android:padding="5dp"
-            android:orientation="vertical" android:background="#FF555555">
+        <RelativeLayout
+            android:layout_width="120dp" android:layout_height="145dp"
+            android:layout_marginRight="15dp">
             <TextView
-                android:layout_width="match_parent" android:layout_height="40dp"
-                style="@style/HeathItemSmallTitleTxt"
-                android:gravity="center"
-                android:text="전국 등수" />
+                android:id="@+id/tv_lastmonth"
+                android:layout_width="50dp" android:layout_height="40dp"
+                android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+                style="@style/HeathItemContentMain_A"
+                android:gravity="center" android:background="@drawable/bg_darkgray_fill" android:padding="5dp"
+                android:text="전월" />
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+                android:padding="5dp"
+                android:orientation="vertical" android:background="@drawable/bg_darkgray_fill">
+                <TextView
+                    android:layout_width="match_parent" android:layout_height="35dp"
+                    style="@style/HeathItemSmallTitleTxt"
+                    android:gravity="center"
+                    android:text="전국 등수" />
+                <TextView
+                    android:id="@+id/tv_grade"
+                    android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:background="@drawable/bg_white_fill" android:gravity="center"
+                    android:textSize="22sp" android:textColor="#FF000000" android:textStyle="bold"
+                    android:text=" " />
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="120dp" android:layout_height="145dp"
+            android:layout_marginLeft="15dp">
             <TextView
-                android:id="@+id/tv_grade"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-                android:background="#FFFFFFFF" android:gravity="center"
-                android:textSize="26sp" android:textColor="#FF000000" android:textStyle="bold"
-                android:text=" " />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="130dp" android:layout_height="110dp"
-            android:layout_marginLeft="20dp"
-            android:padding="5dp"
-            android:orientation="vertical" android:background="#FF555555">
-
-            <TextView
-                android:layout_width="match_parent" android:layout_height="40dp"
-                style="@style/HeathItemSmallTitleTxt"
-                android:gravity="center"
-                android:text="종합 평가" />
-            <TextView
-                android:id="@+id/tv_grade_desc"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-                android:background="#FFFFFFFF" android:gravity="center"
-                android:textSize="26sp" android:textColor="#FF000000" android:textStyle="bold"
-                android:text="  " />
-        </LinearLayout>
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+                android:visibility="invisible"
+                android:text="" />
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+                android:padding="5dp"
+                android:orientation="vertical" android:background="@drawable/bg_darkgray_fill">
+                <TextView
+                    android:layout_width="match_parent" android:layout_height="35dp"
+                    style="@style/HeathItemSmallTitleTxt"
+                    android:gravity="center"
+                    android:text="종합 평가" />
+                <TextView
+                    android:id="@+id/tv_grade_desc"
+                    android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:background="@drawable/bg_white_fill" android:gravity="center"
+                    android:textSize="22sp" android:textColor="#FF000000" android:textStyle="bold"
+                    android:text="  " />
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout

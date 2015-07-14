@@ -63,7 +63,7 @@ public class LoginManager {
         return true;
     }
 
-    public void doLogIn(LoginResultListener loginResultListener) {
+    public void doLogIn(final LoginResultListener loginResultListener) {
         String homeId = PreferenceUtil.getInstance(mContext).getHomeId();
         String mdn = Util.getMdn(mContext);
         String gcmRegId = PreferenceUtil.getInstance(mContext).getRegID();

@@ -243,3 +243,32 @@ http://210.127.55.205:9000/api/getSchoolList
         "beforeRank": "29"
     }
 }
+몸무게 상세정보 가져오기
+ http://210.127.55.205:9000/api/getWeight
+ {
+    "member_id":31
+ }
+ 결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": {
+        "value": "59.0",
+        "beforeValue": "55.4",
+        "gradeId": "114",
+        "gradeString": "표준 이상",
+        "date": "",
+        "schoolGrade": "1",
+        "beforeSchoolGrade": "1",
+        "totalNumberOfStudent": "1",
+        "averageOfClass": null,
+        "averageOfSchool": "59.0",
+        "averageOfLocal": "44.8",
+        "averageOfNation": "44.8",
+        "averageOfStandard": "44.2",
+        "percentageOfBodyFat": null,
+        "msGradeString": null,
+        "rank": "8",
+        "beforeRank": "10"
+    }
+}

@@ -108,6 +108,7 @@ public class HealthMainFragment extends BaseFragment {
         tv_smoke_ppm = (TextView) mView.findViewById(R.id.tv_smoke_ppm);
 
         rl_height.setOnClickListener(mClick);
+        rl_weight.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
 
@@ -268,6 +269,10 @@ public class HealthMainFragment extends BaseFragment {
             switch (v.getId()) {
                 case R.id.rl_height:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_weight:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WeightFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_activity:

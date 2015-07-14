@@ -15,4 +15,5 @@ public final class Constant {
 
 	public static final String API_GET_MEASURESUMMARY = "/api/getMeasureSummary";
 	public static final String API_GET_HEIGHT = "/api/getHeight";
+	public static final String API_GET_WEIGHT = "/api/getWeight";
 }
