@@ -1,7 +1,9 @@
 package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,8 @@ public class HeightFragment extends BaseFragment {
 
     private TextView tv_grade, tv_grade_desc;
     private TextView tv_lastmonth;
+
+    private PopupWindow mPopup;
 
     public HeightFragment() {
         // Required empty public constructor
@@ -109,6 +113,15 @@ public class HeightFragment extends BaseFragment {
         getHeight();
 
         return mView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if(mPopup != null && mPopup.isShowing()) {
+            mPopup.dismiss();
+        }
     }
 
     private void getHeight() {
@@ -221,10 +234,26 @@ public class HeightFragment extends BaseFragment {
         public void onClick(View v) {
             switch(v.getId()) {
                 case R.id.tv_lastmonth:
+                    if(mPopup != null && mPopup.isShowing()) {
+                        mPopup.dismiss();
+                        return;
+                    }
+                    DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
+                    int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 260, dm);
+                    int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, dm);
                     View view = View.inflate(getActivity(), R.layout.popup_height, null);
-                    PopupWindow popup = new PopupWindow(view);
-                    popup.setAnimationStyle(-1);
-                    popup.showAtLocation(view, Gravity.CENTER, 0, -200);
+
+                    TextView tv_increase = (TextView) view.findViewById(R.id.tv_increase);
+                    TextView tv_rank = (TextView) view.findViewById(R.id.tv_rank);
+                    TextView tv_rank_before = (TextView) view.findViewById(R.id.tv_rank_before);
+
+                    tv_increase.setText(String.format("%.1fcm 증가", mMeasureVO.value - mMeasureVO.beforeValue));
+                    tv_rank.setText(String.valueOf(mMeasureVO.rank) + "등");
+                    tv_rank_before.setText(String.format("이전 %s등", mMeasureVO.beforeRank));
+
+                    mPopup = new PopupWindow(view, width, height);
+                    mPopup.setAnimationStyle(-1);
+                    mPopup.showAtLocation(view, Gravity.CENTER, 0, 0);
                     break;
             }
         }
