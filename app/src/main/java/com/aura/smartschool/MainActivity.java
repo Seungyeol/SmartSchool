@@ -19,33 +19,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Interface.LoginDialogListener;
 import com.aura.smartschool.adapter.DrawerAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
-import com.aura.smartschool.service.MyLocationService;
+import com.aura.smartschool.fragment.HealthMainFragment;
 import com.aura.smartschool.utils.PreferenceUtil;
-import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
-import com.aura.smartschool.vo.SchoolVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements LoginManager.ResultListener {
 	//Handler
 	public static final int MSG_CHECK_ANIMATION = 0;
 	public static final int MSG_INCREASE_NUMBER = 1;
@@ -73,26 +64,21 @@ public class MainActivity extends FragmentActivity {
 
 	private LoginDialog mLoginDialog;
 	
-	private AQuery mAq;
-
     private FragmentManager mFm;
-	private FamilyMembersFragment mFamilyMemberFragment;
-
-    private ArrayList<MemberVO> mMemberList = new ArrayList<MemberVO>();
 
 	private GoogleCloudMessaging _gcm;
 	private String _regId;
+
+	LoginManager mLoginManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mAq = new AQuery(this);
-		mFamilyMemberFragment = new FamilyMembersFragment();
-
 		mFm = getSupportFragmentManager();
-		mFm.beginTransaction().replace(R.id.content_frame, mFamilyMemberFragment).commit();
+
+		mLoginManager = LoginManager.getInstance();
 
 		initDrawerView();
 		initActionBar();
@@ -103,9 +89,16 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 
-		checkLogin();
+		doLoginProcess();
 	}
 
+	private void doLoginProcess() {
+		if(mLoginManager.hasLoginInfo(this)) {
+			requestLogin(mLoginManager.getSavedUserInfo(this));
+		} else {
+			showLoginDialog();
+		}
+	}
 
 	private void initActionBar() {
 		//액션바 처리
@@ -191,7 +184,7 @@ public class MainActivity extends FragmentActivity {
         switch (requestCode) {
         case REQ_DIALOG_SIGNUP:
             if (resultCode == RESULT_OK) {
-            	getMemberList();
+				requestLogin(mLoginManager.getSavedUserInfo(this));
             }
             break;
         }
@@ -292,20 +285,6 @@ public class MainActivity extends FragmentActivity {
 	}
 	//GCM 로직 끝--------------------------------------------------------------------------------------------------
 	
-	private void checkLogin() {
-		String id = PreferenceUtil.getInstance(this).getHomeId();
-		String mdn = Util.getMdn(this);
-		Log.d("LDK", id + "," + mdn);
-		
-		//usim없는 태블릿은 사용불가
-		if(TextUtils.isEmpty(id) || TextUtils.isEmpty(mdn)) {
-			showLoginDialog();
-			return;
-		}
-		
-		getLogin(new MemberVO(id, mdn));
- 	}
-	
 	private void showLoginDialog(){
 		if(mLoginDialog == null){
 			mLoginDialog = new LoginDialog(this, mLoginListener);
@@ -321,144 +300,11 @@ public class MainActivity extends FragmentActivity {
 			mLoginDialog.dismiss();
 		}
 	}
-	
-	private void getLogin(MemberVO member) {
-		String gcmRegId = PreferenceUtil.getInstance(this).getRegID();
-		if(gcmRegId == null){
-			// gcm reg id를 못가져오는 경우 네트워크 상태 메시지 출력
-			Util.showToast(this, "network error");
-			return;
-		}
 
-		LoadingDialog.showLoading(this);
-		try {
-			String url = Constant.HOST + Constant.API_SIGNIN;
-
-			JSONObject json = new JSONObject();
-			json.put("home_id", member.home_id);
-			json.put("mdn", member.mdn);
-			json.put("gcm_id", gcmRegId);
-
-			Log.d("LDK", "url:" + url);
-			Log.d("LDK", "input parameter:" + json.toString(1));
-
-			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
-				@Override
-				public void callback(String url, JSONObject object, AjaxStatus status) {
-					LoadingDialog.hideLoading();
-					try {
-						if(status.getCode() != 200) {
-
-							return;
-						}
-
-						Log.d("LDK", "result:" + object.toString(1));
-
-						if("0".equals(object.getString("result"))) {
-							hideLoginDialog();
-							//location tracking
-							startService(new Intent(MainActivity.this, MyLocationService.class));
-							JSONArray array = object.getJSONArray("data");
-							displayMemberList(array);
-						} else {
-							showLoginDialog();
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void getMemberList() {
-		LoadingDialog.showLoading(this);
-		try {
-			String url = Constant.HOST + Constant.API_GET_MEMBERLIST;
-
-			JSONObject json = new JSONObject();
-			json.put("home_id", PreferenceUtil.getInstance(MainActivity.this).getHomeId());
-
-			Log.d("LDK", "url:" + url);
-			Log.d("LDK", "input parameter:" + json.toString(1));
-
-			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
-				@Override
-				public void callback(String url, JSONObject object, AjaxStatus status) {
-					LoadingDialog.hideLoading();
-					try {
-						Log.d("LDK", "result:" + object.toString(1));
-
-						if(status.getCode() != 200) {
-
-							return;
-						}
-
-						if("0".equals(object.getString("result"))) {
-							JSONArray array = object.getJSONArray("data");
-							displayMemberList(array);
-						} else {
-
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void displayMemberList(JSONArray array) throws JSONException {
-		mMemberList.clear();
-		
-		for(int i=0; i < array.length(); ++i) {
-			JSONObject json = array.getJSONObject(i);
-			MemberVO member = new MemberVO();
-			member.home_id = json.getString("home_id");
-			member.member_id = json.getInt("member_id");
-			member.mdn = json.getString("mdn");
-			member.is_parent = json.getInt("is_parent");
-			member.name = json.getString("name");
-			member.relation = json.getString("relation");
-			member.photo = json.getString("photo");
-			member.sex = json.getString("sex");
-			member.birth_date = json.getString("birth_date");
-
-			//자녀 정보
-			SchoolVO school = new SchoolVO();
-			school.school_id = json.getInt("school_id");
-			school.school_grade = json.getString("school_grade");
-			school.school_class = json.getString("school_class");
-			school.school_name =  json.getString("school_name");
-			school.lat = json.getString("lat");
-			school.lng = json.getString("lng");
-			school.address = json.getString("address");
-			school.new_address = json.getString("new_address");
-			school.contact = json.getString("contact");
-			school.homepage = json.getString("homepage");
-			member.mSchoolVO = school;
-
-			mMemberList.add(member);
-			//자기 정보 저장
-			if(Util.getMdn(this).equals(member.mdn)) {
-				PreferenceUtil.getInstance(this).putHomeId(member.home_id);
-				PreferenceUtil.getInstance(this).putMemberId(member.member_id);
-				PreferenceUtil.getInstance(this).putParent(member.is_parent==1 ? true:false );
-				PreferenceUtil.getInstance(this).putName(member.name);
-			}
-		}
-
-        mFamilyMemberFragment.setFamilyMemberList(mMemberList);
-	}
-	
 	LoginDialogListener mLoginListener = new LoginDialogListener() {
 		@Override
 		public void doLogin(MemberVO member) {
-			getLogin(member);
+			requestLogin(member);
 		}
 
 		@Override
@@ -475,4 +321,32 @@ public class MainActivity extends FragmentActivity {
 			//getRegister(member);
 		}
 	};
+
+	private void requestLogin(MemberVO memberVO) {
+		LoadingDialog.showLoading(this);
+		mLoginManager.doLogIn(memberVO, this, this);
+	}
+
+	public void refreshMemberList() {
+		LoadingDialog.showLoading(this);
+		mLoginManager.refreshMemberList(this, this);
+	}
+
+	@Override
+	public void onSuccess() {
+		LoadingDialog.hideLoading();
+//		if (mLoginManager.getLoginUser().is_parent == 1) {
+			mFm.beginTransaction().replace(R.id.content_frame,  new FamilyMembersFragment()).commit();
+//		} else {
+//			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
+//		}
+	}
+
+	@Override
+	public void onFail() {
+		LoadingDialog.hideLoading();
+		PreferenceUtil.getInstance(this).putHomeId("");
+		Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show();
+		showLoginDialog();
+	}
 }

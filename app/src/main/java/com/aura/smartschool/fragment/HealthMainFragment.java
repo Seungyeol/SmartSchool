@@ -17,6 +17,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
@@ -111,6 +112,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_weight.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
+        rl_consult.setOnClickListener(mClick);
 
         return mView;
 	}
@@ -118,7 +120,12 @@ public class HealthMainFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.btn_pre, mMember.name);
+//        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+            setActionbar(R.drawable.btn_pre, mMember.name);
+//        } else {
+//            setActionbar(R.drawable.home, mMember.name);
+//        }
+
 
         if (!mAnimationEnd) {
             animateHealthMenu();
@@ -222,6 +229,7 @@ public class HealthMainFragment extends BaseFragment {
     }
 
     private void displayData() {
+        if (mSummaryVO == null) return;
         //height animation
         mHandler.sendEmptyMessage(MainActivity.MSG_INCREASE_NUMBER);
 

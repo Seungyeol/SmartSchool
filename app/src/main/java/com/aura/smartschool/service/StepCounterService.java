@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 
+import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
@@ -229,11 +230,18 @@ public class StepCounterService extends Service implements SensorEventListener {
     }
 
     private void showAchieveNotification() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("fragmentName", "WalkingPagerFragment");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationManager mNotiManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(this);
         notiBuilder.setContentTitle("목표량 달성")
                 .setContentText("목표량을 달성하였습니다.")
-        .setSmallIcon(R.drawable.home);
+                .setSmallIcon(R.drawable.home)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
         mNotiManger.notify(1001, notiBuilder.build());
     }
 }

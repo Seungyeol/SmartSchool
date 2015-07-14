@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aura.smartschool.Interface.MemberListListener;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.MemberListAdapter;
@@ -64,31 +65,26 @@ public class FamilyMembersFragment extends BaseFragment {
         return mFamilyListView;
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch (requestCode) {
-//            case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
-//            case MainActivity.REQ_DIALOG_MEMBER_ADD:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    ((MainActivity)getActivity()).getMemberList();
-//                }
-//                break;
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
+            case MainActivity.REQ_DIALOG_MEMBER_ADD:
+                if (resultCode == Activity.RESULT_OK) {
+                    ((MainActivity)getActivity()).refreshMemberList();
+                }
+                break;
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         setActionbar(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
-        ((MainActivity)getActivity()).getMemberList();
-    }
-
-    public void setFamilyMemberList(ArrayList<MemberVO> members) {
-        mAdapter.setData(members);
+        mAdapter.setData(LoginManager.getInstance().getMemberList());
         mAdapter.notifyDataSetChanged();
     }
-
 
     MemberListListener mMemberListListener = new MemberListListener() {
         @Override

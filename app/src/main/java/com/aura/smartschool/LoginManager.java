@@ -7,7 +7,6 @@ import android.util.Log;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
-import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
@@ -25,36 +24,30 @@ import java.util.ArrayList;
 public class LoginManager {
     private volatile static LoginManager INSTANCE;
 
-    private AQuery mAq;
-    private Context mContext;
-
     private ArrayList<MemberVO> mMemberList = new ArrayList<MemberVO>();
     private MemberVO mLoginUser;
 
-    public interface LoginResultListener {
-        void onLoginSuccess();
-        void onLoginFail();
+    public interface ResultListener {
+        void onSuccess();
+        void onFail();
     }
 
-    private LoginManager(Context context){
-        mAq = new AQuery(context);
-        mContext = context;
-    }
+    private LoginManager(){}
 
-    public static LoginManager getInstance(Context context) {
+    public static LoginManager getInstance() {
         if (INSTANCE == null) {
             synchronized (LoginManager.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new LoginManager(context);
+                    INSTANCE = new LoginManager();
                 }
             }
         }
         return INSTANCE;
     }
 
-    public boolean hasLoginInfo() {
-        String id = PreferenceUtil.getInstance(mContext).getHomeId();
-        String mdn = Util.getMdn(mContext);
+    public boolean hasLoginInfo(Context context) {
+        String id = PreferenceUtil.getInstance(context).getHomeId();
+        String mdn = Util.getMdn(context);
 
         //usim없는 태블릿은 사용불가
         if(TextUtils.isEmpty(id) || TextUtils.isEmpty(mdn)) {
@@ -63,13 +56,17 @@ public class LoginManager {
         return true;
     }
 
-    public void doLogIn(final LoginResultListener loginResultListener) {
-        String homeId = PreferenceUtil.getInstance(mContext).getHomeId();
-        String mdn = Util.getMdn(mContext);
-        String gcmRegId = PreferenceUtil.getInstance(mContext).getRegID();
+    public MemberVO getSavedUserInfo(Context context) {
+        return new MemberVO(PreferenceUtil.getInstance(context).getHomeId(),
+                                Util.getMdn(context));
+    }
+
+    public void doLogIn(MemberVO memberVO, final Context context, final ResultListener resultListener) {
+        mLoginUser = null;
+        String gcmRegId = PreferenceUtil.getInstance(context).getRegID();
         if(gcmRegId == null){
             // gcm reg id를 못가져오는 경우 네트워크 상태 메시지 출력
-            Util.showToast(mContext, "network error");
+            Util.showToast(context, "network error");
             return;
         }
 
@@ -77,20 +74,19 @@ public class LoginManager {
             String url = Constant.HOST + Constant.API_SIGNIN;
 
             JSONObject json = new JSONObject();
-            json.put("home_id", homeId);
-            json.put("mdn", mdn);
+            json.put("home_id", memberVO.home_id);
+            json.put("mdn", memberVO.mdn);
             json.put("gcm_id", gcmRegId);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));
 
-            mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+            new AQuery(context).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
-                    LoadingDialog.hideLoading();
                     try {
                         if(status.getCode() != 200) {
-
+                            resultListener.onFail();
                             return;
                         }
 
@@ -98,23 +94,63 @@ public class LoginManager {
 
                         if("0".equals(object.getString("result"))) {
                             JSONArray array = object.getJSONArray("data");
-                            loginResultListener.onLoginSuccess();
+                            setMemberList(context, array);
+                            resultListener.onSuccess();
                         } else {
-                            loginResultListener.onLoginFail();
+                            resultListener.onFail();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        loginResultListener.onLoginFail();
+                        resultListener.onFail();
                     }
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
-            loginResultListener.onLoginFail();
+            resultListener.onFail();
         }
     }
 
-    private void displayMemberList(JSONArray array) throws JSONException {
+    public void refreshMemberList(final Context context, final ResultListener resultListener) {
+        try {
+            String url = Constant.HOST + Constant.API_GET_MEMBERLIST;
+
+            JSONObject json = new JSONObject();
+            json.put("home_id", PreferenceUtil.getInstance(context).getHomeId());
+
+            Log.d("LDK", "url:" + url);
+            Log.d("LDK", "input parameter:" + json.toString(1));
+
+            new AQuery(context).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    try {
+                        Log.d("LDK", "result:" + object.toString(1));
+
+                        if (status.getCode() != 200) {
+                            resultListener.onFail();
+                            return;
+                        }
+
+                        if ("0".equals(object.getString("result"))) {
+                            JSONArray array = object.getJSONArray("data");
+                            setMemberList(context, array);
+                            resultListener.onSuccess();
+                        } else {
+                            resultListener.onFail();
+                        }
+                    } catch (JSONException e) {
+                        resultListener.onFail();
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setMemberList(Context context, JSONArray array) throws JSONException {
         mMemberList.clear();
 
         for(int i=0; i < array.length(); ++i) {
@@ -146,12 +182,12 @@ public class LoginManager {
 
             mMemberList.add(member);
             //자기 정보 저장
-            if(Util.getMdn(mContext).equals(member.mdn)) {
+            if(Util.getMdn(context).equals(member.mdn)) {
                 mLoginUser = member;
-                PreferenceUtil.getInstance(mContext).putHomeId(member.home_id);
-                PreferenceUtil.getInstance(mContext).putMemberId(member.member_id);
-                PreferenceUtil.getInstance(mContext).putParent(member.is_parent==1 ? true:false );
-                PreferenceUtil.getInstance(mContext).putName(member.name);
+                PreferenceUtil.getInstance(context).putHomeId(member.home_id);
+                PreferenceUtil.getInstance(context).putMemberId(member.member_id);
+                PreferenceUtil.getInstance(context).putParent(member.is_parent==1 ? true:false );
+                PreferenceUtil.getInstance(context).putName(member.name);
             }
         }
     }
