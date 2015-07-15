@@ -17,7 +17,6 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
-import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
@@ -276,11 +275,11 @@ public class HealthMainFragment extends BaseFragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.rl_height:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_weight:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WeightFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember, 2)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_activity:

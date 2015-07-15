@@ -39,10 +39,12 @@ public class HeightFragment extends BaseFragment {
 
     private AQuery mAq;
     private MemberVO mMember;
+    private int mType; //1:height, 2:weight
     private MeasureVO mMeasureVO;
 
     private BarChart mChart;
 
+    private TextView tv_title;
     private TextView tv_grade, tv_grade_desc;
     private TextView tv_lastmonth;
 
@@ -52,12 +54,13 @@ public class HeightFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static HeightFragment newInstance(MemberVO member) {
+    public static HeightFragment newInstance(MemberVO member, int type) {
 
         HeightFragment instance = new HeightFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("member", member);
+        args.putInt("type", type);
         instance.setArguments(args);
 
         return instance;
@@ -68,6 +71,7 @@ public class HeightFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable("member");
+        mType = args.getInt("type");
     }
 
     @Override
@@ -75,11 +79,18 @@ public class HeightFragment extends BaseFragment {
         mView = View.inflate(getActivity(), R.layout.fragment_height, null);
         mAq = new AQuery(mView);
 
+        tv_title = (TextView) mView.findViewById(R.id.tv_title);
         tv_grade = (TextView) mView.findViewById(R.id.tv_grade);
         tv_grade_desc = (TextView) mView.findViewById(R.id.tv_grade_desc);
         tv_lastmonth = (TextView) mView.findViewById(R.id.tv_lastmonth);
 
         tv_lastmonth.setOnClickListener(mClick);
+
+        if(mType == 1) {
+            tv_title.setText("신장");
+        } else {
+            tv_title.setText("체중");
+        }
 
         mChart = (BarChart) mView.findViewById(R.id.heightChart);
         mChart.setDrawBarShadow(false);
@@ -110,7 +121,7 @@ public class HeightFragment extends BaseFragment {
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawLabels(false);
 
-        getHeight();
+        getData();
 
         return mView;
     }
@@ -124,10 +135,15 @@ public class HeightFragment extends BaseFragment {
         }
     }
 
-    private void getHeight() {
+    private void getData() {
         LoadingDialog.showLoading(getActivity());
         try {
-            String url = Constant.HOST + Constant.API_GET_HEIGHT;
+            String url = Constant.HOST;
+            if(mType == 1) {
+                url += Constant.API_GET_HEIGHT;
+            } else {
+                url += Constant.API_GET_WEIGHT;
+            }
 
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
@@ -243,17 +259,27 @@ public class HeightFragment extends BaseFragment {
                     int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, dm);
                     View view = View.inflate(getActivity(), R.layout.popup_height, null);
 
+                    TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
                     TextView tv_increase = (TextView) view.findViewById(R.id.tv_increase);
                     TextView tv_rank = (TextView) view.findViewById(R.id.tv_rank);
                     TextView tv_rank_before = (TextView) view.findViewById(R.id.tv_rank_before);
 
-                    tv_increase.setText(String.format("%.1fcm 증가", mMeasureVO.value - mMeasureVO.beforeValue));
+                    if(mType == 1) {
+                        tv_title.setText("신장 변화");
+                        tv_increase.setText(String.format("%.1fcm 증가", mMeasureVO.value - mMeasureVO.beforeValue));
+
+                    } else {
+                        tv_title.setText("체중 변화");
+                        tv_increase.setText(String.format("%.1fkg 증가", mMeasureVO.value - mMeasureVO.beforeValue));
+                    }
+
                     tv_rank.setText(String.valueOf(mMeasureVO.rank) + "등");
                     tv_rank_before.setText(String.format("이전 %s등", mMeasureVO.beforeRank));
 
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);
                     mPopup.showAtLocation(view, Gravity.CENTER, 0, 0);
+                    //mPopup.showAsDropDown(tv_lastmonth);
                     break;
             }
         }
