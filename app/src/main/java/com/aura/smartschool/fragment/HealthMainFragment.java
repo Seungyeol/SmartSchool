@@ -110,6 +110,9 @@ public class HealthMainFragment extends BaseFragment {
         rl_height.setOnClickListener(mClick);
         rl_weight.setOnClickListener(mClick);
         rl_smoke.setOnClickListener(mClick);
+        rl_bmi.setOnClickListener(mClick);
+        rl_growth.setOnClickListener(mClick);
+        rl_pt.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
         rl_consult.setOnClickListener(mClick);
@@ -287,6 +290,18 @@ public class HealthMainFragment extends BaseFragment {
 
                 case R.id.rl_smoke:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, SmokeFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_bmi:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, BmiFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_growth:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_pt:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_activity:

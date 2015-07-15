@@ -272,3 +272,52 @@ http://210.127.55.205:9000/api/getSchoolList
         "beforeRank": "10"
     }
 }
+
+비디오 리스트 가져오기 ( 기존 소스 이용)
+http://210.127.55.205/HealthCare/GetVideoList
+{
+    "masterGradeId" : "1",
+    "schoolGradeId" : "1"
+}
+결과
+{
+    "result": "0",
+    "errMsg": "",
+    "value": [{
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/006_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/006_elementary.mp4",
+        "title": "손으로 원 그리기",
+        "duration": "68"
+    }, {
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/007_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/007_elementary.mp4",
+        "title": "전신 노 젓기",
+        "duration": "70"
+    }, {
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/008_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/008_elementary.mp4",
+        "title": "엎드려 손 발 들기",
+        "duration": "87"
+    }, {
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/009_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/009_elementary.mp4",
+        "title": "다리벌려 좌우 늘리기",
+        "duration": "89"
+    }, {
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/010_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/010_elementary.mp4",
+        "title": "한발로 원 그리기",
+        "duration": "125"
+    }, {
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/011_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/011_elementary.mp4",
+        "title": "깍지 껴 기지개 켰다가 무릎 앉으며 털기",
+        "duration": "72"
+    }, {
+        "thumbnailUrl": "http://210.127.55.205/contents/eng_filename/thumbnail/012_elementary.jpg",
+        "videoUrl": "http://210.127.55.205/contents/eng_filename/012_elementary.mp4",
+        "title": "다리벌려 상체 좌우로 숙이기",
+        "duration": "90"
+    }],
+    "schoolGradeId": ""
+}
