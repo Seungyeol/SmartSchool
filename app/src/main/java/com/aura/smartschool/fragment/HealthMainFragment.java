@@ -85,7 +85,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_mental = (RelativeLayout) mView.findViewById(R.id.rl_mental);
 
         rl_bmi = (RelativeLayout) mView.findViewById(R.id.rl_bmi);
-        rl_ranking = (RelativeLayout) mView.findViewById(R.id.rl_ranking);
+        //rl_ranking = (RelativeLayout) mView.findViewById(R.id.rl_ranking);
         rl_activity = (RelativeLayout) mView.findViewById(R.id.rl_activity);
 
         rl_map = (RelativeLayout) mView.findViewById(R.id.rl_map);
@@ -94,18 +94,18 @@ public class HealthMainFragment extends BaseFragment {
         rl_challenge = (RelativeLayout) mView.findViewById(R.id.rl_challenge);
 
         tv_height = (TextView) mView.findViewById(R.id.tv_height);
-        tv_height_status = (TextView) mView.findViewById(R.id.tv_height_status);
+        //tv_height_status = (TextView) mView.findViewById(R.id.tv_height_status);
         iv_height = (ImageView) mView.findViewById(R.id.iv_height);
         iv_height.setScaleY(mHeight);
         tv_growth_grade = (TextView) mView.findViewById(R.id.tv_growth_grade);
         tv_weight = (TextView) mView.findViewById(R.id.tv_weight);
-        tv_weight_status = (TextView) mView.findViewById(R.id.tv_weight_status);
+        //tv_weight_status = (TextView) mView.findViewById(R.id.tv_weight_status);
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
-        tv_bmi_status = (TextView) mView.findViewById(R.id.tv_bmi_status);
+        //tv_bmi_status = (TextView) mView.findViewById(R.id.tv_bmi_status);
         tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
         tv_smoke_status = (TextView) mView.findViewById(R.id.tv_smoke_status);
-        tv_smoke_cohb = (TextView) mView.findViewById(R.id.tv_smoke_cohb);
-        tv_smoke_ppm = (TextView) mView.findViewById(R.id.tv_smoke_ppm);
+        //tv_smoke_cohb = (TextView) mView.findViewById(R.id.tv_smoke_cohb);
+        //tv_smoke_ppm = (TextView) mView.findViewById(R.id.tv_smoke_ppm);
 
         rl_height.setOnClickListener(mClick);
         rl_weight.setOnClickListener(mClick);

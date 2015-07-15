@@ -10,69 +10,69 @@
             android:id="@+id/rl_height"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:layout_marginRight="@dimen/health_container_item_margin"
-            android:padding="@dimen/health_container_item_padding"  android:background="#455664">
+            android:padding="@dimen/health_container_item_padding"  android:background="#FF7C68">
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
+                style="@style/HeathItemTitleTxt"
                 android:text="신장cm" />
-            <TextView
-                android:id="@+id/tv_height_status"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                style="@style/HeathItemContentSub" />
             <TextView
                 android:id="@+id/tv_height"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_above="@id/tv_height_status" android:layout_centerHorizontal="true"
-                style="@style/HeathItemLargeTitleTxt" />
-
+                android:layout_centerInParent="true"
+                style="@style/HeathItemLargeTitleTxt" android:text="157.8" />
             <ImageView
                 android:id="@+id/iv_height"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                android:background="@drawable/height"/>
+                android:background="@drawable/main_height"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_growth"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:layout_marginRight="@dimen/health_container_item_margin"
-            android:padding="@dimen/health_container_item_padding" android:background="#4c9900">
+            android:padding="@dimen/health_container_item_padding" android:background="#55B06D">
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
+                style="@style/HeathItemTitleTxt"
                 android:text="성장\n점수"/>
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 style="@style/HeathItemLargeTitleTxt"
-                android:id="@+id/tv_growth_grade" />
+                android:id="@+id/tv_growth_grade" android:text="73"/>
+            <ImageView
+                android:id="@+id/iv_growth"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                android:background="@drawable/main_growth"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_dining"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:layout_marginRight="@dimen/health_container_item_margin"
-            android:padding="@dimen/health_container_item_padding" android:background="#f5a000">
+            android:padding="@dimen/health_container_item_padding" android:background="#FFC65B">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
+                style="@style/HeathItemTitleTxt"
                 android:text="식단"/>
             <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="#ffffff"/>
+                android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                android:background="@drawable/main_dining"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_pt"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:padding="@dimen/health_container_item_padding" android:background="#00cccc">
+            android:padding="@dimen/health_container_item_padding" android:background="#A176A1">
             <TextView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
+                style="@style/HeathItemTitleTxt"
                 android:text="개인별\n맞춤형\nP.T"/>
             <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:background="#ffffff"/>
+                android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                android:background="@drawable/main_pt"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -88,44 +88,31 @@
                 android:id="@+id/rl_weight"
                 android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
                 android:layout_marginBottom="@dimen/health_container_item_margin"
-                android:padding="@dimen/health_container_item_padding" android:background="#3399ff">
+                android:padding="@dimen/health_container_item_padding" android:background="#54979F">
                 <TextView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    style="@style/HeathItemLargeTitleTxt"
+                    style="@style/HeathItemTitleTxt"
                     android:text="체중"/>
-                <TextView
-                    android:id="@+id/tv_weight_status"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemContentSub"
-                    android:text=" "/>
                 <TextView
                     android:id="@+id/tv_weight"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_above="@+id/tv_weight_status" android:layout_alignParentRight="true"
-                    style="@style/HeathItemTitleTxt"
-                    android:text=" "/>
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemLargeTitleTxt"  android:text="48.5kg"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_bmi"
                 android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-                android:padding="@dimen/health_container_item_padding" android:background="#ff8000">
+                android:padding="@dimen/health_container_item_padding" android:background="#D7BF7F">
                 <TextView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    style="@style/HeathItemLargeTitleTxt"
+                    style="@style/HeathItemTitleTxt"
                     android:text="BMI"/>
-                <TextView
-                    android:id="@+id/tv_bmi_status"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemContentSub"
-                    android:text=" "/>
                 <TextView
                     android:id="@+id/tv_bmi"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_above="@id/tv_bmi_status" android:layout_alignParentRight="true"
-                    style="@style/HeathItemTitleTxt"
-                    android:text=" "/>
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="22.5"/>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
@@ -136,23 +123,43 @@
                 android:id="@+id/rl_fat"
                 android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
                 android:layout_marginBottom="@dimen/health_container_item_margin"
-                android:padding="@dimen/health_container_item_padding" android:background="#b266ff">
+                android:padding="@dimen/health_container_item_padding" android:background="#E97F95">
                 <TextView
                     android:id="@+id/tv_muscle_title"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    style="@style/HeathItemLargeTitleTxt"
+                    style="@style/HeathItemTitleTxt"
                     android:text="체지방"/>
                 <TextView
                     android:id="@+id/tv_fat"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                     style="@style/HeathItemLargeTitleTxt"
-                    android:text=""/>
+                    android:text="23%"/>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_smoke"
+                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+                android:padding="@dimen/health_container_item_padding" android:background="#CCC030">
+                <TextView
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    style="@style/HeathItemTitleTxt"
+                    android:text="흡연"/>
+                <TextView
+                    android:id="@+id/tv_smoke_status"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    style="@style/HeathItemLargeTitleTxt"
+                    android:text="비흡연"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:layout_marginRight="@dimen/health_container_item_margin"
+            android:orientation="vertical">
+            <!--<RelativeLayout
                 android:id="@+id/rl_ranking"
                 android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-                android:padding="@dimen/health_container_item_padding" android:background="#00cc00">
+                android:padding="@dimen/health_container_item_padding" android:background="#A59AA2">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -161,53 +168,20 @@
                 <ImageView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_centerInParent="true" />
-            </RelativeLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:layout_marginRight="@dimen/health_container_item_margin"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/rl_smoke"
-                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-                android:layout_marginBottom="@dimen/health_container_item_margin"
-                android:padding="@dimen/health_container_item_padding" android:background="#ff3399">
-                <TextView
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    style="@style/HeathItemLargeTitleTxt"
-                    android:text="흡연"/>
-                <TextView
-                    android:id="@+id/tv_smoke_status"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemSmallTitleTxt"
-                    android:text=" "/>
-                <TextView
-                    android:id="@+id/tv_smoke_cohb"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_above="@id/tv_smoke_status" android:layout_alignParentRight="true"
-                    android:gravity="center"
-                    style="@style/HeathItemContentMain_B"
-                    android:text=" "/>
-                <TextView
-                    android:id="@+id/tv_smoke_ppm"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_above="@id/tv_smoke_cohb" android:layout_alignParentRight="true"
-                    style="@style/HeathItemContentMain_B"
-                    android:text=" "/>
-            </RelativeLayout>
+            </RelativeLayout>-->
             <RelativeLayout
                 android:id="@+id/rl_activity"
-                android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-                android:padding="@dimen/health_container_item_padding" android:background="#3D8BBF">
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:padding="@dimen/health_container_item_padding" android:background="#8B99C8">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/HeathItemLargeTitleTxt"
+                    style="@style/HeathItemTitleTxt"
                     android:text="활동량"/>
                 <ImageView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="#ffffff"/>
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    android:background="@drawable/main_activity"/>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
@@ -216,15 +190,16 @@
             <RelativeLayout
                 android:id="@+id/rl_mental"
                 android:layout_width="match_parent" android:layout_height="match_parent"
-                android:padding="@dimen/health_container_item_padding" android:background="#8fc320">
+                android:padding="@dimen/health_container_item_padding" android:background="#FEA94E">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/HeathItemLargeTitleTxt"
+                    style="@style/HeathItemTitleTxt"
                     android:text="심리\n검사"/>
                 <ImageView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="#ffffff"/>
+                    android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+                    android:background="@drawable/main_pt"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
@@ -237,28 +212,28 @@
             android:id="@+id/rl_map"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:layout_marginRight="@dimen/health_container_item_margin"
-            android:padding="@dimen/health_container_item_padding" android:background="#b5b5b5">
+            android:background="@drawable/bg_menu_1">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
-                android:text="안전\n지킴이"/>
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="안전\n지킴이" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:background="#ffffff"/>
+                android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
+                android:background="@drawable/main_map"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_consult"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:padding="@dimen/health_container_item_padding" android:background="#66cc90">
+            android:background="@drawable/bg_menu_2">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
-                android:text="실시간 \n모바일상담"/>
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="실시간\n모바일상담" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:background="#ffffff"/>
+                android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
+                android:background="@drawable/main_consult"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -270,28 +245,29 @@
             android:id="@+id/rl_noti"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:layout_marginRight="@dimen/health_container_item_margin"
-            android:padding="@dimen/health_container_item_padding" android:background="#f099c0">
+            android:background="@drawable/bg_menu_3">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/HeathItemLargeTitleTxt"
-                android:text="학교정보\n알리미"/>
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="학교정보\n알리미" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:background="#ffffff"/>
+                android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
+                android:background="@drawable/main_noti"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_challenge"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:padding="@dimen/health_container_item_padding" android:background="#7ecdf4">
+            android:background="@drawable/bg_menu_4">
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:padding="8dp"
                 style="@style/HeathItemLargeTitleTxt"
-                android:text="도전!! \n건강"/>
+                android:text="도전!!\n건강" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:background="#ffffff"/>
+                android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
+                android:background="@drawable/main_challenge"/>
         </RelativeLayout>
     </LinearLayout>
 
