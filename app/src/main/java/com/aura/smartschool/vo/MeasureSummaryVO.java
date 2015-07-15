@@ -1,9 +1,11 @@
 package com.aura.smartschool.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by eastflag on 2015-07-11.
  */
-public class MeasureSummaryVO {
+public class MeasureSummaryVO implements Serializable {
     public String measure_date;
     public float height;
     public String heightStatus;

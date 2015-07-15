@@ -1,6 +1,8 @@
 package com.aura.smartschool.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -66,7 +68,11 @@ public class VideoListAdapter extends BaseAdapter {
 		holder.iv_video_img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				// 미디어파일 플레이 하기
+				Uri uri = Uri.parse(mVideoList.get(position).video_url);
+				Intent it = new Intent(Intent.ACTION_VIEW);
+				it.setDataAndType(uri, "video/mp4");
+				mContext.startActivity(it);
 			}
 		});
 
