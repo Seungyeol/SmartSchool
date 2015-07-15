@@ -109,6 +109,7 @@ public class HealthMainFragment extends BaseFragment {
 
         rl_height.setOnClickListener(mClick);
         rl_weight.setOnClickListener(mClick);
+        rl_smoke.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
         rl_consult.setOnClickListener(mClick);
@@ -210,6 +211,8 @@ public class HealthMainFragment extends BaseFragment {
                             mSummaryVO.smokeStatus = json.getString("smokeStatus");
                             mSummaryVO.growthGrade = json.getString("growthGrade");
 
+                            mMember.mMeasureSummaryVO = mSummaryVO;
+
                             mHandler.sendEmptyMessage(MainActivity.MSG_CHECK_ANIMATION);
                         } else {
 
@@ -280,6 +283,10 @@ public class HealthMainFragment extends BaseFragment {
 
                 case R.id.rl_weight:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember, 2)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_smoke:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, SmokeFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_activity:

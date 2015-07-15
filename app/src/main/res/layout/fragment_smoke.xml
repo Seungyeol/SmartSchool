@@ -1,0 +1,142 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="흡연지수" android:textStyle="bold" android:textSize="24sp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:gravity="center" android:padding="10dp">
+        <ImageView
+            android:id="@+id/iv_smoke"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/smoking1"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent" android:layout_height="70dp"
+        android:gravity="center" android:background="#FFDDDDDD">
+        <LinearLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:gravity="center|center_horizontal|bottom">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="ppm" android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_ppm"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="32sp" android:textStyle="bold"
+                android:text="2" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:gravity="center|center_horizontal|bottom" >
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="COHb" android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_cohb"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="32sp" android:textStyle="bold"
+                android:text="2" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="0.6"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent" android:layout_height="80dp" >
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="5dp"
+                android:layout_centerInParent="true"
+                android:background="#333333"/>
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical">
+                <Space
+                    android:layout_width="0dp" android:layout_weight="1" android:layout_height="1dp" />
+                <ImageView
+                    android:id="@+id/iv_smoke1"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:background="@drawable/point_1"/>
+                <Space
+                    android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
+                <ImageView
+                    android:id="@+id/iv_smoke2"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:background="@drawable/point_2"/>
+                <Space
+                    android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
+                <ImageView
+                    android:id="@+id/iv_smoke3"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:background="@drawable/point_3"/>
+                <Space
+                    android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
+                <ImageView
+                    android:id="@+id/iv_smoke4"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:background="@drawable/point_4"/>
+                <Space
+                    android:layout_width="0dp" android:layout_weight="1" android:layout_height="1dp" />
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="0.5"
+            android:layout_centerInParent="true">
+            <Space
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="1dp" />
+            <TextView
+                android:layout_width="80dp" android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="정상"/>
+            <Space
+                android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
+            <TextView
+                android:layout_width="80dp" android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="간접초기흡연"/>
+            <Space
+                android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
+            <TextView
+                android:layout_width="80dp" android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="흡연중"/>
+            <Space
+                android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
+            <TextView
+                android:layout_width="80dp" android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="과다흡연"/>
+            <Space
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="1dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="@style/HeathItemLargeTitleTxt" android:background="#3344aa"
+            android:padding="10dp"
+            android:gravity="left"
+            android:text="추천 운동" />
+    </LinearLayout>
+
+</LinearLayout>

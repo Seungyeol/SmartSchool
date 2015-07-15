@@ -18,6 +18,9 @@ public class MemberVO implements Serializable {
 
 	//자녀 정보
 	public SchoolVO mSchoolVO;
+
+	//측정정보
+	public MeasureSummaryVO mMeasureSummaryVO;
 	
 	private static final long serialVersionUID = 6631779405103025795L;
 	
