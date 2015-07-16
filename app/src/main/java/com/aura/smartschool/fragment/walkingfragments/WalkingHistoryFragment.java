@@ -59,7 +59,7 @@ public class WalkingHistoryFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.btn_pre, mMember.name);
+        setActionbar(R.drawable.actionbar_back, mMember.name);
     }
 
 }

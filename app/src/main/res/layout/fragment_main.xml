@@ -4,7 +4,7 @@
     android:padding="4dp"
     android:orientation="vertical" >
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1.8"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2.0"
         android:orientation="horizontal">
         <RelativeLayout
             android:id="@+id/rl_height"
@@ -77,7 +77,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2.2"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2.0"
         android:layout_marginTop="@dimen/health_container_item_margin"
         android:orientation="horizontal">
         <LinearLayout

@@ -35,16 +35,21 @@ public class HealthMainFragment extends BaseFragment {
 
     private RelativeLayout rl_height, rl_growth, rl_dining, rl_pt;
     private RelativeLayout rl_weight, rl_fat, rl_smoke, rl_mental;
-    private RelativeLayout rl_bmi, rl_ranking, rl_activity;
+    private RelativeLayout rl_bmi, rl_activity;
+    //private RelativeLayout rl_ranking;
     private RelativeLayout rl_map, rl_consult, rl_noti, rl_challenge;
 
-    private TextView tv_height, tv_height_status;
+    private TextView tv_height;
+    //private TextView tv_height_status;
     private ImageView iv_height;
     private TextView tv_growth_grade;
-    private TextView tv_weight, tv_weight_status;
-    private TextView tv_bmi, tv_bmi_status;
+    private TextView tv_weight;
+    //private TextView tv_weight_status;
+    private TextView tv_bmi;
+    //private TextView tv_bmi_status;
     private TextView tv_fat;
-    private TextView tv_smoke_status, tv_smoke_cohb, tv_smoke_ppm;
+    private TextView tv_smoke_status;
+    //private TextView tv_smoke_cohb, tv_smoke_ppm;
 
     private static String KEY_MEMBER = "member";
 
@@ -124,7 +129,7 @@ public class HealthMainFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 //        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
-            setActionbar(R.drawable.btn_pre, mMember.name);
+            setActionbar(R.drawable.actionbar_back, mMember.name);
 //        } else {
 //            setActionbar(R.drawable.home, mMember.name);
 //        }
@@ -153,7 +158,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_smoke.startAnimation(aniRightToLeft);
         rl_mental.startAnimation(aniBottomToTop);
         rl_bmi.startAnimation(aniBottomToTop);
-        rl_ranking.startAnimation(aniRightToLeft);
+        //rl_ranking.startAnimation(aniRightToLeft);
         rl_activity.startAnimation(aniLeftToRight);
 
         aniLeftToRight.setAnimationListener(new Animation.AnimationListener() {
@@ -238,15 +243,15 @@ public class HealthMainFragment extends BaseFragment {
         //height animation
         mHandler.sendEmptyMessage(MainActivity.MSG_INCREASE_NUMBER);
 
-        tv_height_status.setText(mSummaryVO.heightStatus);
+        //tv_height_status.setText(mSummaryVO.heightStatus);
         tv_growth_grade.setText(mSummaryVO.growthGrade);
         tv_weight.setText(String.format("%skg", mSummaryVO.weight));
-        tv_weight_status.setText(mSummaryVO.weightStatus);
+        //tv_weight_status.setText(mSummaryVO.weightStatus);
         tv_bmi.setText(mSummaryVO.bmi);
-        tv_bmi_status.setText(mSummaryVO.bmiStatus);
+        //tv_bmi_status.setText(mSummaryVO.bmiStatus);
         tv_smoke_status.setText(mSummaryVO.smokeStatus);
-        tv_smoke_cohb.setText(String.format("%s COHb", mSummaryVO.cohd));
-        tv_smoke_ppm.setText(String.format("%s ppm", mSummaryVO.ppm));
+        //tv_smoke_cohb.setText(String.format("%s COHb", mSummaryVO.cohd));
+        //tv_smoke_ppm.setText(String.format("%s ppm", mSummaryVO.ppm));
         tv_fat.setText(mSummaryVO.fat + "%");
     }
 

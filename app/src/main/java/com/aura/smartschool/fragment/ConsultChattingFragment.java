@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +14,10 @@ import android.widget.EditText;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.ConsultChattingAdapter;
-import com.aura.smartschool.adapter.WalkingHistoryAdapter;
 import com.aura.smartschool.database.DBConsultChat;
-import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.vo.ConsultChatVO;
 import com.aura.smartschool.vo.MemberVO;
-import com.aura.smartschool.vo.WalkingVO;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -112,7 +106,7 @@ public class ConsultChattingFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.btn_pre, mMember.name);
+        setActionbar(R.drawable.actionbar_back, mMember.name);
     }
 
     @Override

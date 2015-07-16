@@ -114,7 +114,7 @@ public class WalkingCountFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.btn_pre, mMember.name);
+        setActionbar(R.drawable.actionbar_back, mMember.name);
 
         Intent serviceIntent = new Intent(getActivity(), StepCounterService.class);
         getActivity().startService(serviceIntent);
