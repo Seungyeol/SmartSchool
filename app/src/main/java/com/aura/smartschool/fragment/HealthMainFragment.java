@@ -50,6 +50,7 @@ public class HealthMainFragment extends BaseFragment {
     private TextView tv_fat;
     private TextView tv_smoke_status;
     //private TextView tv_smoke_cohb, tv_smoke_ppm;
+    private ImageView iv_map, iv_consult, iv_noti, iv_challenge;
 
     private static String KEY_MEMBER = "member";
 
@@ -111,6 +112,10 @@ public class HealthMainFragment extends BaseFragment {
         tv_smoke_status = (TextView) mView.findViewById(R.id.tv_smoke_status);
         //tv_smoke_cohb = (TextView) mView.findViewById(R.id.tv_smoke_cohb);
         //tv_smoke_ppm = (TextView) mView.findViewById(R.id.tv_smoke_ppm);
+        iv_map = (ImageView) mView.findViewById(R.id.iv_map);
+        iv_consult = (ImageView) mView.findViewById(R.id.iv_consult);
+        iv_noti = (ImageView) mView.findViewById(R.id.iv_noti);
+        iv_challenge = (ImageView) mView.findViewById(R.id.iv_challenge);
 
         rl_height.setOnClickListener(mClick);
         rl_weight.setOnClickListener(mClick);
@@ -148,6 +153,7 @@ public class HealthMainFragment extends BaseFragment {
         Animation aniTopToBottom = AnimationUtils.loadAnimation(getActivity(), R.anim.top_to_bottom);
         Animation aniRightToLeft = AnimationUtils.loadAnimation(getActivity(), R.anim.right_to_left);
         Animation aniBottomToTop = AnimationUtils.loadAnimation(getActivity(), R.anim.bottom_to_top);
+        Animation aniTranslateAndBounce = AnimationUtils.loadAnimation(getActivity(), R.anim.translate_bounce);
 
         rl_height.startAnimation(aniLeftToRight);
         rl_growth.startAnimation(aniTopToBottom);
@@ -160,6 +166,10 @@ public class HealthMainFragment extends BaseFragment {
         rl_bmi.startAnimation(aniBottomToTop);
         //rl_ranking.startAnimation(aniRightToLeft);
         rl_activity.startAnimation(aniLeftToRight);
+        iv_map.startAnimation(aniTranslateAndBounce);
+        iv_consult.startAnimation(aniTranslateAndBounce);
+        iv_noti.startAnimation(aniTranslateAndBounce);
+        iv_challenge.startAnimation(aniTranslateAndBounce);
 
         aniLeftToRight.setAnimationListener(new Animation.AnimationListener() {
             @Override

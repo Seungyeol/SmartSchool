@@ -139,7 +139,7 @@
             <RelativeLayout
                 android:id="@+id/rl_smoke"
                 android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-                android:padding="@dimen/health_container_item_padding" android:background="#CCC030">
+                android:padding="@dimen/health_container_item_padding" android:background="#A59AA2">
                 <TextView
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
@@ -199,7 +199,7 @@
                 <ImageView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    android:background="@drawable/main_pt"/>
+                    android:background="@drawable/main_mental"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
@@ -218,6 +218,7 @@
                 android:padding="8dp"
                 android:text="안전\n지킴이" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
+                android:id="@+id/iv_map"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
                 android:background="@drawable/main_map"/>
@@ -227,10 +228,12 @@
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:background="@drawable/bg_menu_2">
             <TextView
+                android:id="@+id/iv_consule"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="실시간\n모바일상담" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
+                android:id="@+id/iv_consult"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
                 android:background="@drawable/main_consult"/>
@@ -251,6 +254,7 @@
                 android:padding="8dp"
                 android:text="학교정보\n알리미" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
+                android:id="@+id/iv_noti"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
                 android:background="@drawable/main_noti"/>
@@ -265,6 +269,7 @@
                 style="@style/HeathItemLargeTitleTxt"
                 android:text="도전!!\n건강" android:textSize="22sp" android:textStyle="bold" android:textColor="#888888"/>
             <ImageView
+                android:id="@+id/iv_challenge"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_alignParentBottom="true"
                 android:background="@drawable/main_challenge"/>
