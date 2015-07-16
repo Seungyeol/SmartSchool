@@ -126,6 +126,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
         rl_consult.setOnClickListener(mClick);
+        rl_noti.setOnClickListener(mClick);
 
         return mView;
 	}
@@ -333,6 +334,9 @@ public class HealthMainFragment extends BaseFragment {
                     break;
                 case R.id.rl_consult:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+                case R.id.rl_noti:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, SchoolNoticeFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
             }
         }
