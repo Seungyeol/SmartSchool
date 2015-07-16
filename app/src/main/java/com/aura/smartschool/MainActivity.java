@@ -327,14 +327,10 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		mLoginManager.doLogIn(memberVO, this, this);
 	}
 
-	public void refreshMemberList() {
-		LoadingDialog.showLoading(this);
-		mLoginManager.refreshMemberList(this, this);
-	}
-
 	@Override
 	public void onSuccess() {
 		LoadingDialog.hideLoading();
+		hideLoginDialog();
 //		if (mLoginManager.getLoginUser().is_parent == 1) {
 			mFm.beginTransaction().replace(R.id.content_frame,  new FamilyMembersFragment()).commit();
 //		} else {

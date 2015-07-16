@@ -16,6 +16,7 @@ import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.MemberListAdapter;
+import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.MemberVO;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2015-06-16.
  */
-public class FamilyMembersFragment extends BaseFragment {
+public class FamilyMembersFragment extends BaseFragment implements LoginManager.ResultListener {
 
     private View mFamilyListView;
 
@@ -72,7 +73,8 @@ public class FamilyMembersFragment extends BaseFragment {
             case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
             case MainActivity.REQ_DIALOG_MEMBER_ADD:
                 if (resultCode == Activity.RESULT_OK) {
-                    ((MainActivity)getActivity()).refreshMemberList();
+                    LoadingDialog.showLoading(getActivity());
+                    LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
                 }
                 break;
         }
@@ -82,6 +84,10 @@ public class FamilyMembersFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setActionbar(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
+        refreshMemberList();
+    }
+
+    private void refreshMemberList() {
         mAdapter.setData(LoginManager.getInstance().getMemberList());
         mAdapter.notifyDataSetChanged();
     }
@@ -105,4 +111,15 @@ public class FamilyMembersFragment extends BaseFragment {
 
         }
     };
+
+    @Override
+    public void onSuccess() {
+        LoadingDialog.hideLoading();
+        refreshMemberList();
+    }
+
+    @Override
+    public void onFail() {
+        LoadingDialog.hideLoading();
+    }
 }
