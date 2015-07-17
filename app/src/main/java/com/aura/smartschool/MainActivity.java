@@ -27,7 +27,7 @@ import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
-import com.aura.smartschool.fragment.HealthMainFragment;
+import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.MemberVO;
 import com.google.android.gms.common.ConnectionResult;
@@ -336,6 +336,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 //		} else {
 //			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
 //		}
+		Intent intent = new Intent(this, MyLocationService.class);
+		startService(intent);
 	}
 
 	@Override
