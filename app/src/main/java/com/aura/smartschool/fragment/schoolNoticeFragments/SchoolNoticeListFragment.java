@@ -1,4 +1,4 @@
-package com.aura.smartschool.fragment;
+package com.aura.smartschool.fragment.schoolNoticeFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,20 +10,21 @@ import android.view.ViewGroup;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolNoticeAdapter;
+import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
  * Created by Administrator on 2015-07-16.
  */
-public class SchoolNoticeFragment extends BaseFragment {
+public class SchoolNoticeListFragment extends BaseFragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
     private RecyclerView mSchoolNoticeListView;
     private SchoolNoticeAdapter mNotiAdapter;
 
-    public static SchoolNoticeFragment newInstance(MemberVO member) {
-        SchoolNoticeFragment instance = new SchoolNoticeFragment();
+    public static SchoolNoticeListFragment newInstance(MemberVO member) {
+        SchoolNoticeListFragment instance = new SchoolNoticeListFragment();
         Bundle args = new Bundle();
         args.putSerializable("member", member);
         instance.setArguments(args);

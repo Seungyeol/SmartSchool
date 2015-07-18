@@ -20,6 +20,7 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolMonthCalScheduleFragment;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MeasureSummaryVO;
 import com.aura.smartschool.vo.MemberVO;
@@ -336,7 +337,7 @@ public class HealthMainFragment extends BaseFragment {
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_noti:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, SchoolNoticeFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, SchoolMonthCalScheduleFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
             }
         }
