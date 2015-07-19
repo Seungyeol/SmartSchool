@@ -5,29 +5,27 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.adapter.SchoolMonthCalendarScheduleAdapter;
+import com.aura.smartschool.adapter.SchoolScheduleListAdapter;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
 
 import java.util.Calendar;
 
 /**
- * Created by Administrator on 2015-07-18.
+ * Created by Administrator on 2015-07-16.
  */
-public class SchoolMonthCalScheduleFragment extends BaseFragment {
+public class SchoolScheduleListFragment extends BaseFragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
-    private TextView tvMonth;
-    private GridView gvCalendar;
-    private SchoolMonthCalendarScheduleAdapter calendarAdapter;
+    private ListView mSchoolScheduleListView;
+    private SchoolScheduleListAdapter mScheduleListAdapter;
 
-    public static SchoolMonthCalScheduleFragment newInstance(MemberVO member) {
-        SchoolMonthCalScheduleFragment instance = new SchoolMonthCalScheduleFragment();
+    public static SchoolScheduleListFragment newInstance(MemberVO member) {
+        SchoolScheduleListFragment instance = new SchoolScheduleListFragment();
         Bundle args = new Bundle();
         args.putSerializable("member", member);
         instance.setArguments(args);
@@ -44,16 +42,12 @@ public class SchoolMonthCalScheduleFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.fragment_school_cal_schedule, null);
+        View view = View.inflate(getActivity(), R.layout.fragment_school_schedule_list, null);
 
-        Calendar cal = Calendar.getInstance();
-        tvMonth = (TextView) view.findViewById(R.id.tv_month);
+        mSchoolScheduleListView = (ListView) view.findViewById(R.id.list_school_schedule_list);
 
-        tvMonth.setText(String.format(getActivity().getResources().getText(R.string.month_schedule).toString(), (cal.get(Calendar.MONTH) + 1)));
-
-        gvCalendar = (GridView) view.findViewById(R.id.gv_calendar);
-        calendarAdapter = new SchoolMonthCalendarScheduleAdapter(getActivity(), cal);
-        gvCalendar.setAdapter(calendarAdapter);
+        mScheduleListAdapter = new SchoolScheduleListAdapter(getActivity(), Calendar.getInstance());
+        mSchoolScheduleListView.setAdapter(mScheduleListAdapter);
 
         return view;
     }

@@ -14,7 +14,7 @@
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="4dp"
             android:textSize="11sp"
             android:gravity="right" />
         <TextView
@@ -22,19 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="9sp"
-            android:layout_marginBottom="3dp" />
+            android:layout_marginBottom="1dp" />
         <TextView
             android:id="@+id/tv_schedule2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="9sp"
-            android:layout_marginBottom="3dp" />
+            android:layout_marginBottom="1dp" />
         <TextView
             android:id="@+id/tv_schedule3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="9sp"
-            android:layout_marginBottom="3dp" />
+            android:layout_marginBottom="1dp" />
     </LinearLayout>
 
 </LinearLayout>

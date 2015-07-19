@@ -15,7 +15,7 @@ import java.util.Calendar;
 /**
  * Created by Administrator on 2015-07-18.
  */
-public class SchoolMonthCalendarScheduleAdapter extends BaseAdapter {
+public class SchoolScheduleCalendarAdapter extends BaseAdapter {
 
     private Context context;
     private Calendar month;
@@ -23,7 +23,7 @@ public class SchoolMonthCalendarScheduleAdapter extends BaseAdapter {
     private int columnNum;
     private int firstDayOfMonth;
 
-    public SchoolMonthCalendarScheduleAdapter(Context context, Calendar month) {
+    public SchoolScheduleCalendarAdapter(Context context, Calendar month) {
         this.context = context;
         this.month = month;
         calculateMonth();
@@ -49,7 +49,7 @@ public class SchoolMonthCalendarScheduleAdapter extends BaseAdapter {
         final ViewHolder holder;
         if(convertView == null){
             holder = new ViewHolder();
-            convertView = View.inflate(context, R.layout.item_month_calendar, null);
+            convertView = View.inflate(context, R.layout.item_schedule_calendar, null);
             holder.linearItemWrapper = convertView.findViewById(R.id.ll_item_wrapper);
             holder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
             holder.tvSchedule1 = (TextView) convertView.findViewById(R.id.tv_schedule1);
