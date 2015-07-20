@@ -2,30 +2,29 @@ package com.aura.smartschool.fragment.schoolNoticeFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.adapter.SchoolScheduleListAdapter;
+import com.aura.smartschool.adapter.SchoolNoticeAdapter;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
-
-import java.util.Calendar;
 
 /**
  * Created by Administrator on 2015-07-16.
  */
-public class SchoolScheduleListFragment extends BaseFragment {
+public class SchoolLetterListFragment extends BaseFragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
-    private ListView mSchoolScheduleListView;
-    private SchoolScheduleListAdapter mScheduleListAdapter;
+    private RecyclerView mSchoolLetterListView;
+    private SchoolNoticeAdapter mLetterAdapter;
 
-    public static SchoolScheduleListFragment newInstance(MemberVO member) {
-        SchoolScheduleListFragment instance = new SchoolScheduleListFragment();
+    public static SchoolLetterListFragment newInstance(MemberVO member) {
+        SchoolLetterListFragment instance = new SchoolLetterListFragment();
         Bundle args = new Bundle();
         args.putSerializable("member", member);
         instance.setArguments(args);
@@ -42,12 +41,13 @@ public class SchoolScheduleListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.fragment_school_schedule_list, null);
+        View view = View.inflate(getActivity(), R.layout.fragment_school_notice, null);
 
-        mSchoolScheduleListView = (ListView) view.findViewById(R.id.list_school_schedule_list);
+        mSchoolLetterListView = (RecyclerView) view.findViewById(R.id.list_school_notice);
+        mSchoolLetterListView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mScheduleListAdapter = new SchoolScheduleListAdapter(getActivity(), Calendar.getInstance());
-        mSchoolScheduleListView.setAdapter(mScheduleListAdapter);
+        mLetterAdapter = new SchoolNoticeAdapter();
+        mSchoolLetterListView.setAdapter(mLetterAdapter);
 
         return view;
     }
