@@ -333,7 +333,7 @@ public class HealthMainFragment extends BaseFragment {
                     }
                     break;
                 case R.id.rl_consult:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultMainFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_noti:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, SchoolNoticePagerFragment.newInstance(mMember)).addToBackStack(null).commit();

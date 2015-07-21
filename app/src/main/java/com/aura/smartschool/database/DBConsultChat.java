@@ -16,24 +16,28 @@ import java.util.Date;
  */
 public class DBConsultChat extends SQLiteOpenHelper {
 
+    public static final int MSG_FROM_TEACHER = 1;
+    public static final int MSG_FROM_ME = 0;
+
     private static final String DATABASE_NAME = "db_consult";
-    private static final String TB_CONSULT = "tb_consult";
+
     private static final int DATABASE_VERSION = 1;
 
     private static final String COL_ID = "_id";
-    private static final String COL_OWN_TYPE = "ownType";
     private static final String COL_BODY = "body";
+    private static final String COL_MSG_FROM = "msgFrom";
     private static final String COL_TIME = "time";
     private static final String COL_SEND_RESULT = "result";
 
-    private static final String CREATE_STEP_TABLE = "CREATE TABLE " + TB_CONSULT +
+    private static final String CREATE_TABLE = "CREATE TABLE %s " +
                                                             " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                                                    COL_OWN_TYPE + " INTEGER, " +
+                                                                    COL_MSG_FROM + " INTEGER, " +
                                                                     COL_BODY + " TEXT, " +
                                                                     COL_TIME + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                                                                     COL_SEND_RESULT + " INTEGER)";
 
-    private static final String DROP_CONSULT_TABLE = "DROP TABLE IF EXISTS '" + TB_CONSULT +"'";
+
+    private static final String DROP_TABLE = "DROP TABLE IF EXISTS '%s'";
 
     private static DBConsultChat INSTANCE;
 
@@ -54,18 +58,23 @@ public class DBConsultChat extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_STEP_TABLE);
+        for (TYPE type : TYPE.values()) {
+            db.execSQL(String.format(CREATE_TABLE, type.getTableName()));
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_CONSULT_TABLE);
+        for (TYPE type : TYPE.values()) {
+            db.execSQL(String.format(DROP_TABLE, type.getTableName()));
+        }
+
         onCreate(db);
     }
 
-    public ArrayList<ConsultChatVO> getAllMsg() {
+    public ArrayList<ConsultChatVO> getAllMsg(TYPE chatType) {
         ArrayList<ConsultChatVO> result = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(TB_CONSULT, new String[]{COL_ID, COL_OWN_TYPE, COL_BODY, COL_TIME, COL_SEND_RESULT}, null, null, null, null, COL_TIME + " ASC" );
+        Cursor cursor = getReadableDatabase().query(chatType.getTableName(), new String[]{COL_ID, COL_MSG_FROM, COL_BODY, COL_TIME, COL_SEND_RESULT}, null, null, null, null, COL_TIME + " ASC" );
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
@@ -76,16 +85,16 @@ public class DBConsultChat extends SQLiteOpenHelper {
         return result;
     }
 
-    public long insertMsg(int ownType, String msg, Date inputTime, int sendResult) {
+    public long insertMsg(TYPE chatType, String msg, int msgFrom, Date inputTime, int sendResult) {
         long id = -1;
         getWritableDatabase().beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            values.put(COL_OWN_TYPE, ownType);
             values.put(COL_BODY, msg);
+            values.put(COL_MSG_FROM, msgFrom);
             values.put(COL_TIME, inputTime.getTime());
             values.put(COL_SEND_RESULT, sendResult);
-            id = getWritableDatabase().insert(TB_CONSULT, null, values);
+            id = getWritableDatabase().insert(chatType.getTableName(), null, values);
             getWritableDatabase().setTransactionSuccessful();
         } finally {
             getWritableDatabase().endTransaction();
@@ -93,10 +102,58 @@ public class DBConsultChat extends SQLiteOpenHelper {
         return id;
     }
 
-    public void updateSendResult(int id, int sendResult) {
-        // 센서가 누적값을 올려주기 때문에 걸음걸이와 거리는 전달된 값으로 갱신한다.
-        getWritableDatabase().execSQL("UPDATE " + TB_CONSULT +
+    public void updateSendResult(TYPE chatType, int id, int sendResult) {
+        getWritableDatabase().execSQL("UPDATE " + chatType.getTableName() +
                 " SET " + COL_SEND_RESULT + " = " + sendResult +
                 " WHERE " + COL_ID + " = " + id);
+    }
+
+    public enum TYPE {
+        //학교폭력, 친구관계, 가정문제, 성상담, 학업상담, 진로상담, 심리상담, 성장상담, 흡연상담.
+        SCHOOL_VIOLENCE_CONSULT("tb_school_violence", 1001),
+        FRIEND_RELATIONSHIP_CONSULT("tb_friend_relationship", 1002),
+        FAMILY_CONSULT("tb_family", 1003),
+        SEXUAL_CONSULT("tb_sexual", 1004),
+        ACADEMIC_CONSULT("tb_academic", 1005),
+        CAREER_CONSULT("tb_career", 1006),
+        PSYCHOLOGY_CONSULT("tb_psychology", 1007),
+        GROWTH_CONSULT("tb_growth", 1008),
+        SMOKING_CONSULT("tb_smoking", 1009);
+
+        private String tbName;
+        private int code;
+
+        private TYPE (String tbName, int code) {
+            this.tbName = tbName;
+            this.code = code;
+        }
+
+        public String getTableName() {
+            return this.tbName;
+        }
+
+        public int getCode() {
+            return this.code;
+        }
+
+        public TYPE findConsultType(String tbName) {
+            TYPE[] types = values();
+            for (TYPE type:types) {
+                if (type.getTableName().equalsIgnoreCase(tbName)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        public TYPE findConsultType(int code) {
+            TYPE[] types = values();
+            for (TYPE type:types) {
+                if (type.getCode() == code) {
+                    return type;
+                }
+            }
+            return null;
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class ConsultChattingFragment extends BaseFragment {
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
+    private DBConsultChat.TYPE chatType;
 
     private DBConsultChat dbConsult;
 
@@ -36,10 +38,11 @@ public class ConsultChattingFragment extends BaseFragment {
     private RecyclerView mConsultChattingList;
     private ConsultChattingAdapter mConsultChattingAdapter;
 
-    public static ConsultChattingFragment newInstance(MemberVO member) {
+    public static ConsultChattingFragment newInstance(MemberVO member, DBConsultChat.TYPE chatType) {
         ConsultChattingFragment instance = new ConsultChattingFragment();
         Bundle args = new Bundle();
-        args.putSerializable("member", member);
+        args.putSerializable(KEY_MEMBER, member);
+        args.putSerializable("chatType", chatType);
         instance.setArguments(args);
         return instance;
     }
@@ -49,6 +52,10 @@ public class ConsultChattingFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
+        chatType = (DBConsultChat.TYPE) args.getSerializable("chatType");
+
+        Log.d("ConsultChattingFragment", "ConsultChattingFragment >> onCreate >> type = " + chatType.getTableName());
+
         dbConsult = DBConsultChat.getInstance(getActivity());
     }
 
@@ -60,7 +67,7 @@ public class ConsultChattingFragment extends BaseFragment {
         mConsultChattingList = (RecyclerView) view.findViewById(R.id.list_consult_chatting);
         mConsultChattingList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mConsultChattingAdapter = new ConsultChattingAdapter(dbConsult.getAllMsg());
+        mConsultChattingAdapter = new ConsultChattingAdapter(dbConsult.getAllMsg(chatType));
         mConsultChattingList.setAdapter(mConsultChattingAdapter);
         if (mConsultChattingAdapter.getItemCount() > 0) {
             mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount()-1);
@@ -74,8 +81,8 @@ public class ConsultChattingFragment extends BaseFragment {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long id = dbConsult.insertMsg(0, etChat.getText().toString(), new Date(), -1);
-                mConsultChattingAdapter.addItem(new ConsultChatVO(0, etChat.getText().toString(), new Date(), 0));
+                long id = dbConsult.insertMsg(chatType, etChat.getText().toString(), DBConsultChat.MSG_FROM_ME, new Date(), -1);
+                mConsultChattingAdapter.addItem(new ConsultChatVO(DBConsultChat.MSG_FROM_ME, etChat.getText().toString(), new Date(), 0));
                 etChat.setText("");
                 mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
             }

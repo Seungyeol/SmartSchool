@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
+import com.aura.smartschool.database.DBConsultChat;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.ConsultChatVO;
 
@@ -48,7 +49,7 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         holder.tvDate.setText(new SimpleDateFormat("yyyy년 MM월 dd일 E요일").format(chatMsgList.get(position).time));
         holder.tvConsultChat.setText(chatMsgList.get(position).msg);
         holder.tvTime.setText(new SimpleDateFormat("a hh:mm").format(chatMsgList.get(position).time));
-        if (getItemViewType(position) == 0) {
+        if (getItemViewType(position) == DBConsultChat.MSG_FROM_ME) {
         } else {
             ((OtherChattingViewHolder)holder).tvName.setText("선생님");
         }
@@ -61,7 +62,7 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
 
     @Override
     public int getItemViewType(int position) {
-        return chatMsgList.get(position).ownType;
+        return chatMsgList.get(position).msgFrom;
     }
 
     public void addItem(ConsultChatVO msg) {
