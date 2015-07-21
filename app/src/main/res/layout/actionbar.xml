@@ -5,11 +5,11 @@
 
     <ImageButton
         android:id="@+id/logo"
-        android:layout_width="40dp" android:layout_height="45dp"
+        android:layout_width="30dp" android:layout_height="30dp"
         android:layout_centerVertical="true" android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:background="@null"
-        android:src="@drawable/home" />
+		android:background="@null"
+        android:src="@drawable/home" android:scaleType="fitXY" />
     
 	<RelativeLayout 
 	    android:id="@+id/fl_more"
@@ -30,8 +30,8 @@
 	<TextView
 	    android:id="@+id/tvTitle"
 	    android:layout_width="wrap_content" android:layout_height="wrap_content"
-	    android:layout_centerVertical="true"
-	    android:layout_toRightOf="@+id/logo"
+	    android:layout_centerVertical="true" android:layout_toRightOf="@+id/logo"
+		android:layout_marginLeft="@dimen/activity_horizontal_margin"
 	    android:text="SmartSchool"
 	    android:textColor="#FFFFFFFF"
 	    android:textSize="22sp"

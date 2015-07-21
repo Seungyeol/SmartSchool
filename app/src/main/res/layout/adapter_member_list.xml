@@ -5,12 +5,12 @@
     android:orientation="vertical" >
     <LinearLayout
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:background="@drawable/bg_gray">
+        android:orientation="horizontal">
 		<LinearLayout
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:padding="5dp"
+			android:padding="5dp" android:gravity="center_horizontal"
 			android:orientation="vertical" >
-			<FrameLayout
+			<RelativeLayout
 				android:id="@+id/fl_user_image"
 				android:layout_width="85dp" android:layout_height="85dp"
 				android:background="#FFFFFFFF" >
@@ -23,17 +23,16 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:background="@drawable/ico_photo_bg" />
-			</FrameLayout>
+			</RelativeLayout>
 			<Button
-				android:id="@+id/btnModify" style="@style/Button_woodred_fixed"
-				android:layout_marginTop="5dp"
-				android:layout_gravity="center"
-				android:drawableLeft="@drawable/btn_change" android:paddingLeft="2dp"
-				android:text="수 정" />
+				android:id="@+id/btnModify"
+				android:layout_width="35dp" android:layout_height="35dp"
+				android:layout_marginTop="3dp"
+				android:background="@drawable/btn_change"/>
 		</LinearLayout>
         <LinearLayout
 			android:id="@+id/ll_member_info"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
 			android:layout_marginRight="5dp" android:layout_marginLeft="5dp"
 			android:padding="3dp"
             android:orientation="vertical" >
@@ -85,6 +84,6 @@
 				android:text="위치정보없음 or gps 꺼짐" android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
-
+	<LinearLayout style="@style/Line" android:background="#696969" />
 
 </LinearLayout>

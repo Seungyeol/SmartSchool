@@ -15,8 +15,9 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/Line"
-        android:layout_marginBottom="5dp"/>
+        android:layout_width="match_parent" android:layout_height="2dp"
+        android:layout_marginBottom="5dp"
+        android:background="#676767"/>
 
     <ListView
         android:id="@+id/listview"
@@ -26,8 +27,11 @@
     </ListView>
 
     <TextView
-        android:id="@+id/tvAddMember" style="@style/Button_woodred_fixed"
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:text="가족 구성원 추가" />
+        android:id="@+id/tvAddMember"
+        android:layout_width="match_parent" android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@drawable/member_add"
+        android:background="@drawable/bg_yellow_fill" android:gravity="center_vertical"
+        android:paddingLeft="100dp" android:drawablePadding="10dp"
+        android:text="가족 구성원 추가" android:textSize="18sp" android:textColor="#FFFFFF"/>
 </LinearLayout>
