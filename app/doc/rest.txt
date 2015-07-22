@@ -337,6 +337,16 @@ http://aurasystem.kr:9000/admin/api/addSchoolNoti
     "msg": "success"
 }
 
+//공지사항 수정하기-------------------------------------------------
+http://aurasystem.kr:9000/admin/api/modifySchoolNoti
+{
+"noti_seq" : 14,
+"category" : 1,
+"title" : "해오름 자원봉사자 모집",
+"content" : "해오름 교육 자원봉사자 모집안내입니다.",
+"noti_date" : "2015-06-20"
+}
+
 //공지사항 가져오기-------------------------------------------------
 category: 1:가정통신문, 2:공지사항, 3: 일정
 첨부화일은 나중에,,,
