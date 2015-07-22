@@ -257,6 +257,8 @@ public class HealthMainFragment extends BaseFragment {
     }
 
     private void displayData() {
+        if (mSummaryVO == null) return;
+
         iv_height.setVisibility(View.VISIBLE);
         iv_height.setPivotX(0.5f);
         iv_height.setPivotY(100f);
