@@ -321,3 +321,38 @@ http://210.127.55.205/HealthCare/GetVideoList
     }],
     "schoolGradeId": ""
 }
+
+//공지사항 올리기(관리자페이지)-------------------------------------------------------------
+http://aurasystem.kr:9000/admin/api/addSchoolNoti
+{
+"school_id" : 18247,
+"category" : 1,
+"title" : "가정통신문1",
+"content" : "aaabbbccc",
+"noti_date" : "2015-07-21"
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//공지사항 가져오기-------------------------------------------------
+category: 1:가정통신문, 2:공지사항, 3: 일정
+첨부화일은 나중에,,,
+http://aurasystem.kr:9000/admin/api/getSchoolNotiList
+{
+"school_id" : 18247
+}
+{
+    "result": 0,
+    "msg": "success",
+    "data": [{
+        "noti_seq": 1,
+        "school_id": 18247,
+        "category": 1,
+        "title": "가정통신문1",
+        "content": "aaabbbccc",
+        "noti_date": "2015-07-21"
+    }]
+}

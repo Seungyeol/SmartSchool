@@ -1,6 +1,8 @@
 package com.aura.smartschool.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -49,6 +51,18 @@ public final class Util {
 		m_toast.setDuration(Toast.LENGTH_SHORT);
 
 		m_toast.show();
+	}
+
+	public static void showAlertDialog(Context context, String strErrorMsg){
+		AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alert.setMessage(strErrorMsg);
+		alert.show();
 	}
 	
 	public static Bitmap StringToBitmap(String encodedString) {

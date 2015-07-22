@@ -20,5 +20,5 @@ public class MeasureSummaryVO implements Serializable {
     public String ppm;
     public String cohd;
     public String smokeStatus;
-    public String growthGrade;
+    public float growthGrade;
 }

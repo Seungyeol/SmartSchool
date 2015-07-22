@@ -41,7 +41,7 @@ public class HealthMainFragment extends BaseFragment {
 
     private TextView tv_height;
     //private TextView tv_height_status;
-    private ImageView iv_height;
+    private ImageView iv_height, iv_growth;
     private TextView tv_growth_grade;
     private TextView tv_weight;
     //private TextView tv_weight_status;
@@ -55,7 +55,7 @@ public class HealthMainFragment extends BaseFragment {
     private static String KEY_MEMBER = "member";
 
     private boolean mAnimationEnd = false;
-    private float mHeight;
+    private float mHeight, mGrowth;
 
     public static HealthMainFragment newInstance(MemberVO member) {
 
@@ -102,7 +102,10 @@ public class HealthMainFragment extends BaseFragment {
         tv_height = (TextView) mView.findViewById(R.id.tv_height);
         //tv_height_status = (TextView) mView.findViewById(R.id.tv_height_status);
         iv_height = (ImageView) mView.findViewById(R.id.iv_height);
-        iv_height.setScaleY(mHeight);
+        iv_height.setVisibility(View.INVISIBLE);
+
+        iv_growth = (ImageView) mView.findViewById(R.id.iv_growth);
+        iv_growth.setVisibility(View.INVISIBLE);
         tv_growth_grade = (TextView) mView.findViewById(R.id.tv_growth_grade);
         tv_weight = (TextView) mView.findViewById(R.id.tv_weight);
         //tv_weight_status = (TextView) mView.findViewById(R.id.tv_weight_status);
@@ -117,11 +120,11 @@ public class HealthMainFragment extends BaseFragment {
         iv_noti = (ImageView) mView.findViewById(R.id.iv_noti);
         iv_challenge = (ImageView) mView.findViewById(R.id.iv_challenge);
 
-        rl_height.setOnClickListener(mClick);
-        rl_weight.setOnClickListener(mClick);
-        rl_smoke.setOnClickListener(mClick);
-        rl_bmi.setOnClickListener(mClick);
-        rl_growth.setOnClickListener(mClick);
+        rl_height.setOnClickListener(mMeasureClick);
+        rl_weight.setOnClickListener(mMeasureClick);
+        rl_smoke.setOnClickListener(mMeasureClick);
+        rl_bmi.setOnClickListener(mMeasureClick);
+        rl_growth.setOnClickListener(mMeasureClick);
         rl_pt.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
@@ -204,8 +207,11 @@ public class HealthMainFragment extends BaseFragment {
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
                     LoadingDialog.hideLoading();
+
                     try {
                         if (status.getCode() != 200) {
+                            iv_height.setVisibility(View.VISIBLE);
+                            iv_growth.setVisibility(View.VISIBLE);
                             return;
                         }
                         Log.d("LDK", "result:" + object.toString(1));
@@ -215,7 +221,7 @@ public class HealthMainFragment extends BaseFragment {
 
                             mSummaryVO = new MeasureSummaryVO();
                             mSummaryVO.measure_date = json.getString("measure_date");
-                            mSummaryVO.height =Float.parseFloat(json.getString("height"));
+                            mSummaryVO.height = Float.parseFloat(json.getString("height"));
                             mSummaryVO.heightStatus = json.getString("heightStatus");
                             mSummaryVO.weight = json.getString("weight");
                             mSummaryVO.weightStatus = json.getString("weightStatus");
@@ -228,13 +234,14 @@ public class HealthMainFragment extends BaseFragment {
                             mSummaryVO.ppm = json.getString("ppm");
                             mSummaryVO.cohd = json.getString("cohd");
                             mSummaryVO.smokeStatus = json.getString("smokeStatus");
-                            mSummaryVO.growthGrade = json.getString("growthGrade");
+                            mSummaryVO.growthGrade = Float.parseFloat(json.getString("growthGrade"));
 
                             mMember.mMeasureSummaryVO = mSummaryVO;
 
                             mHandler.sendEmptyMessage(MainActivity.MSG_CHECK_ANIMATION);
                         } else {
-
+                            iv_height.setVisibility(View.VISIBLE);
+                            iv_growth.setVisibility(View.VISIBLE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -250,12 +257,23 @@ public class HealthMainFragment extends BaseFragment {
     }
 
     private void displayData() {
-        if (mSummaryVO == null) return;
+        iv_height.setVisibility(View.VISIBLE);
+        iv_height.setPivotX(0.5f);
+        iv_height.setPivotY(100f);
+        iv_height.setScaleY(mHeight);
+        iv_growth.setVisibility(View.VISIBLE);
+        iv_growth.setPivotX(0.0f);
+        iv_growth.setPivotY(0.0f);
+        iv_growth.setScaleX(mGrowth);
+
         //height animation
         mHandler.sendEmptyMessage(MainActivity.MSG_INCREASE_NUMBER);
+        //height image animation
+        //Animation aniScale = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_bottom_to_top);
+        //iv_height.startAnimation(aniScale);
 
         //tv_height_status.setText(mSummaryVO.heightStatus);
-        tv_growth_grade.setText(mSummaryVO.growthGrade);
+        //tv_growth_grade.setText(String.valueOf(mSummaryVO.growthGrade));
         tv_weight.setText(String.format("%skg", mSummaryVO.weight));
         //tv_weight_status.setText(mSummaryVO.weightStatus);
         tv_bmi.setText(mSummaryVO.bmi);
@@ -281,20 +299,28 @@ public class HealthMainFragment extends BaseFragment {
                     //1초 애니메이션, 20ms 간격 총 50번
                     if(mHeight < mSummaryVO.height) {
                         mHeight += mSummaryVO.height * 0.02;
+                        mGrowth += mSummaryVO.growthGrade * 0.02;
                         mHandler.sendEmptyMessageDelayed(MainActivity.MSG_INCREASE_NUMBER, 20);
                     } else {
                         mHeight = mSummaryVO.height;
+                        mGrowth = mSummaryVO.growthGrade;
                     }
                     tv_height.setText(String.format("%.1f", mHeight));
-                    iv_height.setScaleY(mHeight /mSummaryVO.height);
+                    iv_height.setScaleY(mHeight / mSummaryVO.height);
+                    tv_growth_grade.setText(String.format("%.0f", mGrowth));
+                    iv_growth.setScaleX(mGrowth / mSummaryVO.growthGrade);
                     break;
             }
         }
     };
 
-    View.OnClickListener mClick = new View.OnClickListener() {
+    View.OnClickListener mMeasureClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(mSummaryVO == null) {
+                Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                return;
+            }
             switch (v.getId()) {
                 case R.id.rl_height:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
@@ -315,7 +341,14 @@ public class HealthMainFragment extends BaseFragment {
                 case R.id.rl_growth:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
+            }
+        }
+    };
 
+    View.OnClickListener mClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
                 case R.id.rl_pt:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;

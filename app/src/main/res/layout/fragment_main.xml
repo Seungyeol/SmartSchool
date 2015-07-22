@@ -19,7 +19,7 @@
                 android:id="@+id/tv_height"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                style="@style/HeathItemLargeTitleTxt" android:text="157.8" />
+                style="@style/HeathItemLargeTitleTxt" android:text="0" />
             <ImageView
                 android:id="@+id/iv_height"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 style="@style/HeathItemLargeTitleTxt"
-                android:id="@+id/tv_growth_grade" android:text="73"/>
+                android:id="@+id/tv_growth_grade" android:text="0"/>
             <ImageView
                 android:id="@+id/iv_growth"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -92,12 +92,12 @@
                 <TextView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
-                    android:text="체중"/>
+                    android:text="체중kg"/>
                 <TextView
                     android:id="@+id/tv_weight"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
-                    style="@style/HeathItemLargeTitleTxt"  android:text="48.5kg"/>
+                    style="@style/HeathItemLargeTitleTxt"  android:text="0"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_bmi"
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                     style="@style/HeathItemLargeTitleTxt"
-                    android:text="22.5"/>
+                    android:text="0"/>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                     style="@style/HeathItemLargeTitleTxt"
-                    android:text="23%"/>
+                    android:text="0%"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_smoke"
@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
                     style="@style/HeathItemLargeTitleTxt"
-                    android:text="비흡연"/>
+                    android:text="없음"/>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout

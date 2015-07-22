@@ -14,4 +14,5 @@
     <string name="spinner_sex">성별</string>
 
     <string name="month_schedule">학사일정( %d월 )</string>
+    <string name="popup_alert_nodata">측정데이터가 없습니다.\n유료회원으로 가입하세요.</string>
 </resources>
