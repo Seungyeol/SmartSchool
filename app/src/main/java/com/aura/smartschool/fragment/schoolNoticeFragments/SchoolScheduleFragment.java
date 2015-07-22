@@ -14,7 +14,9 @@ import com.aura.smartschool.adapter.SchoolScheduleCalendarAdapter;
 import com.aura.smartschool.adapter.SchoolScheduleListAdapter;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolNotiVO;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -35,6 +37,8 @@ public class SchoolScheduleFragment extends BaseFragment {
 
     private ListView mSchoolScheduleListView;
     private SchoolScheduleListAdapter mScheduleListAdapter;
+
+    private ArrayList<SchoolNotiVO> mScheduleList = new ArrayList<>();
 
     public static SchoolScheduleFragment newInstance(MemberVO member) {
         SchoolScheduleFragment instance = new SchoolScheduleFragment();
@@ -106,5 +110,9 @@ public class SchoolScheduleFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void setScheduleList(ArrayList<SchoolNotiVO> scheduleList) {
+        this.mScheduleList = scheduleList;
     }
 }

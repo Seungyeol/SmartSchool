@@ -12,6 +12,9 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolNoticeAdapter;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolNotiVO;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2015-07-16.
@@ -22,6 +25,8 @@ public class SchoolNoticeListFragment extends BaseFragment {
 
     private RecyclerView mSchoolNoticeListView;
     private SchoolNoticeAdapter mNotiAdapter;
+
+    private ArrayList<SchoolNotiVO> mNotiList = new ArrayList<>();
 
     public static SchoolNoticeListFragment newInstance(MemberVO member) {
         SchoolNoticeListFragment instance = new SchoolNoticeListFragment();
@@ -46,7 +51,7 @@ public class SchoolNoticeListFragment extends BaseFragment {
         mSchoolNoticeListView = (RecyclerView) view.findViewById(R.id.list_school_notice);
         mSchoolNoticeListView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mNotiAdapter = new SchoolNoticeAdapter();
+        mNotiAdapter = new SchoolNoticeAdapter(mMember, mNotiList);
         mSchoolNoticeListView.setAdapter(mNotiAdapter);
 
         return view;
@@ -61,5 +66,13 @@ public class SchoolNoticeListFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void setNotiList(ArrayList<SchoolNotiVO> notiList) {
+        this.mNotiList = notiList;
+        if (mNotiAdapter != null) {
+            mNotiAdapter.setNotiList(mNotiList);
+            mNotiAdapter.notifyDataSetChanged();
+        }
     }
 }

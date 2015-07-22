@@ -5,20 +5,37 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
+import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolLetterListFragment;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolNoticeListFragment;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolScheduleFragment;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolNotiVO;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2015-06-14.
  */
 public class SchoolNoticePagerFragment extends BaseFragment implements View.OnClickListener{
+
+    private static final int CATEGORY_LETTER = 1;
+    private static final int CATEGORY_NOTI = 2;
+    private static final int CATEGORY_SCHEDULE = 3;
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
@@ -30,6 +47,14 @@ public class SchoolNoticePagerFragment extends BaseFragment implements View.OnCl
     private View mTabMonthSchedule;
     private View mTabNotice;
     private View mTabSchoolLetter;
+
+    private SchoolLetterListFragment mSchoolLetterFragment;
+    private SchoolNoticeListFragment mSchoolNotiFragment;
+    private SchoolScheduleFragment mSchoolScheduleFragment;
+
+    private ArrayList<SchoolNotiVO> mSchoolLetterList = new ArrayList<>();
+    private ArrayList<SchoolNotiVO> mSchoolNotiList = new ArrayList<>();
+    private ArrayList<SchoolNotiVO> mSchoolScheduleList = new ArrayList<>();
 
     public static SchoolNoticePagerFragment newInstance(MemberVO member) {
 
@@ -47,6 +72,7 @@ public class SchoolNoticePagerFragment extends BaseFragment implements View.OnCl
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
+        getSchoolNotiList();
     }
 
     @Override
@@ -62,6 +88,10 @@ public class SchoolNoticePagerFragment extends BaseFragment implements View.OnCl
         mTabSchoolLetter.setOnClickListener(this);
 
         mTabMonthSchedule.setSelected(true);
+
+        mSchoolLetterFragment = SchoolLetterListFragment.newInstance(mMember);
+        mSchoolNotiFragment = SchoolNoticeListFragment.newInstance(mMember);
+        mSchoolScheduleFragment = SchoolScheduleFragment.newInstance(mMember);
 
         mViewPager = (ViewPager) mView.findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(this.getActivity().getSupportFragmentManager(), mMember);
@@ -131,14 +161,81 @@ public class SchoolNoticePagerFragment extends BaseFragment implements View.OnCl
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return SchoolScheduleFragment.newInstance(mMember);
+                    return mSchoolScheduleFragment;
                 case 1:
-                    return SchoolNoticeListFragment.newInstance(mMember);
+                    return mSchoolNotiFragment;
                 case 2:
-                    return SchoolLetterListFragment.newInstance(mMember);
+                    return mSchoolLetterFragment;
                 default:
                     return null;
             }
         }
    }
+
+    private void getSchoolNotiList() {
+        LoadingDialog.showLoading(getActivity());
+        try {
+            AQuery aQuery = new AQuery(getActivity());
+            String url = Constant.HOST + Constant.API_GET_SCHOOL_NOTI_LIST;
+
+            JSONObject json = new JSONObject();
+//            json.put("school_id", mMember.mSchoolVO.school_id);
+            json.put("school_id", 18247);
+
+            Log.d("LDK", "url:" + url);
+            Log.d("LDK", "input parameter:" + json.toString(1));
+
+            aQuery.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    LoadingDialog.hideLoading();
+
+                    try {
+                        if (status.getCode() != 200) {
+                            return;
+                        }
+                        Log.d("LDK", "result:" + object.toString(1));
+
+                        if (object.getInt("result") == 0) {
+                            JSONArray jsonArray = object.getJSONArray("data");
+                            for(int i = 0; i < jsonArray.length(); i++){
+                                SchoolNotiVO notiVO = new SchoolNotiVO();
+                                notiVO.notiSeq = ((JSONObject)jsonArray.get(i)).getInt("noti_seq");
+                                notiVO.schoolId = ((JSONObject)jsonArray.get(i)).getInt("school_id");
+                                notiVO.category = ((JSONObject)jsonArray.get(i)).getInt("category");
+                                notiVO.title = ((JSONObject)jsonArray.get(i)).getString("title");
+                                notiVO.content = ((JSONObject)jsonArray.get(i)).getString("content");
+                                notiVO.notiDate = ((JSONObject)jsonArray.get(i)).getString("noti_date");
+                                addNotiToList(notiVO);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addNotiToList(SchoolNotiVO notiVO) {
+        switch (notiVO.category) {
+            case CATEGORY_LETTER:
+                mSchoolLetterList.add(notiVO);
+                mSchoolLetterFragment.setLetterList(mSchoolLetterList);
+                break;
+            case CATEGORY_NOTI:
+                mSchoolNotiList.add(notiVO);
+                mSchoolNotiFragment.setNotiList(mSchoolNotiList);
+                break;
+            case CATEGORY_SCHEDULE:
+                mSchoolScheduleList.add(notiVO);
+                mSchoolScheduleFragment.setScheduleList(mSchoolScheduleList);
+                break;
+        }
+    }
 }

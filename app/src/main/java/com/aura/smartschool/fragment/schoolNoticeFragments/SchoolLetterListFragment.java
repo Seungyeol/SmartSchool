@@ -12,6 +12,9 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolNoticeAdapter;
 import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolNotiVO;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2015-07-16.
@@ -22,6 +25,8 @@ public class SchoolLetterListFragment extends BaseFragment {
 
     private RecyclerView mSchoolLetterListView;
     private SchoolNoticeAdapter mLetterAdapter;
+
+    private ArrayList<SchoolNotiVO> mLetterList = new ArrayList<>();
 
     public static SchoolLetterListFragment newInstance(MemberVO member) {
         SchoolLetterListFragment instance = new SchoolLetterListFragment();
@@ -46,7 +51,7 @@ public class SchoolLetterListFragment extends BaseFragment {
         mSchoolLetterListView = (RecyclerView) view.findViewById(R.id.list_school_notice);
         mSchoolLetterListView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mLetterAdapter = new SchoolNoticeAdapter();
+        mLetterAdapter = new SchoolNoticeAdapter(mMember, mLetterList);
         mSchoolLetterListView.setAdapter(mLetterAdapter);
 
         return view;
@@ -61,5 +66,13 @@ public class SchoolLetterListFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void setLetterList(ArrayList<SchoolNotiVO> letterList) {
+        this.mLetterList = letterList;
+        if (mLetterAdapter != null) {
+            mLetterAdapter.setNotiList(mLetterList);
+            mLetterAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -17,6 +17,8 @@ public final class Constant {
 	public static final String API_GET_HEIGHT = "/api/getHeight";
 	public static final String API_GET_WEIGHT = "/api/getWeight";
 
+	public static final String API_GET_SCHOOL_NOTI_LIST = "/admin/api/getSchoolNotiList";
+
 	//기존 서버
 	public static final String API_GET_VIDEOLIST = "http://210.127.55.205/HealthCare/GetVideoList";
 }

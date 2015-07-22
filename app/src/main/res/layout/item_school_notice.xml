@@ -15,10 +15,11 @@
         android:orientation="horizontal">
         <ImageView
             android:id="@+id/iv_school"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/home"/>
+            android:scaleType="center"
+            android:src="@drawable/ic_launcher"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -27,14 +28,12 @@
             <TextView
                 android:id="@+id/tv_school_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="초등학교"/>
+                android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/tv_notice_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="공지사항"/>
+                android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -45,14 +44,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:textStyle="bold"
-                android:text="수"/>
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="5월 31일"/>
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -65,8 +62,7 @@
         android:layout_marginBottom="10dp"
         android:singleLine="true"
         android:ellipsize="end"
-        android:textStyle="bold"
-        android:text="홍보동영상"/>
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_notice_body"
@@ -74,8 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:text="입니다."/>
+        android:layout_marginBottom="10dp"/>
 
     <View
         android:layout_width="match_parent"

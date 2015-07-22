@@ -1,8 +1,6 @@
 package com.aura.smartschool.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.vo.SchoolVO;
+import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.SchoolNotiVO;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,11 @@ import java.util.ArrayList;
  * Created by Administrator on 2015-06-22.
  */
 public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapter.ViewHolder> {
-    public SchoolNoticeAdapter() {
+    private ArrayList<SchoolNotiVO> notiList;
+    private MemberVO member;
+    public SchoolNoticeAdapter(MemberVO member, ArrayList<SchoolNotiVO> notiList) {
+        this.member = member;
+        this.notiList = notiList;
     }
 
     @Override
@@ -30,12 +33,21 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.tvSchoolName.setText("광일초등학교");
+        viewHolder.tvSchoolName.setText(member.mSchoolVO.school_name);
+        viewHolder.tvNoticeName.setText(notiList.get(position).category == 1 ? "가정통신문" : "공지사항");
+//      viewHolder.tvDay;
+        viewHolder.tvDate.setText(notiList.get(position).notiDate);
+        viewHolder.tvNoticeTitle.setText(notiList.get(position).title);
+        viewHolder.tvNoticeBody.setText(notiList.get(position).content);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return notiList.size();
+    }
+
+    public void setNotiList(ArrayList<SchoolNotiVO> notiList) {
+        this.notiList = notiList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
