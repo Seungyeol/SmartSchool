@@ -9,11 +9,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.widget.Toast;
 
+import com.aura.smartschool.MainActivity;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -173,5 +177,25 @@ public final class Util {
 			return true;
 		}
 		return false;
+	}
+
+	public static File getTempFile() {
+		boolean isSdCardMounted = false;
+		String status = Environment.getExternalStorageState();
+		if (status.equals(Environment.MEDIA_MOUNTED)) {
+			isSdCardMounted = true;
+		}
+
+		if (isSdCardMounted) {
+			File f = new File(Environment.getExternalStorageDirectory(), // 외장메모리 경로
+					MainActivity.TEMP_PHOTO_FILE);
+			try {
+				f.createNewFile();      // 외장메모리에 temp.jpg 파일 생성
+			} catch (IOException e) {
+			}
+
+			return f;
+		} else
+			return null;
 	}
 }

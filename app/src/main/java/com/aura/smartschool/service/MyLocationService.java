@@ -144,8 +144,8 @@ public class MyLocationService extends Service {
                 json.put("address", "");
             }*/
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", json.toString(1));
+            //Log.d("LDK", "url:" + url);
+            //Log.d("LDK", json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
                 @Override
@@ -153,7 +153,7 @@ public class MyLocationService extends Service {
                     //update or insert
                     try {
                         if(object.getInt("result") == 0) {
-                            Log.d("LDK", "result:" + object.toString(1));
+                            //Log.d("LDK", "result:" + object.toString(1));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

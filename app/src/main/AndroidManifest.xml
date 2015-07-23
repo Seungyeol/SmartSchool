@@ -73,6 +73,14 @@
             android:windowSoftInputMode="stateAlwaysVisible" >
         </activity>
 
+        <activity
+            android:name=".LocationUploadActivity"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <service
             android:name=".service.MyLocationService"
             android:enabled="true"
