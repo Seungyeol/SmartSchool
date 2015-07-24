@@ -1,7 +1,7 @@
 package com.aura.smartschool;
 
 public final class Constant {
-	public static final String HOST = "http://210.127.55.205:9000";
+	public static final String HOST = "http://aurasystem.kr:9000";
 	
 	public static final String API_SIGNIN = "/api/signIn";
 	public static final String API_SIGNUP = "/api/signUp";
@@ -16,6 +16,10 @@ public final class Constant {
 	public static final String API_GET_MEASURESUMMARY = "/api/getMeasureSummary";
 	public static final String API_GET_HEIGHT = "/api/getHeight";
 	public static final String API_GET_WEIGHT = "/api/getWeight";
+
+	public static final String API_ADD_AREA = "/api/addArea";
+	public static final String API_GET_AREA = "/api/getArea";
+	public static final String API_GET_AREALIST = "/api/getAreaList";
 
 	public static final String API_GET_SCHOOL_NOTI_LIST = "/admin/api/getSchoolNotiList";
 

@@ -6,19 +6,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -27,7 +23,6 @@ import com.aura.smartschool.adapter.CategoryAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
-import com.aura.smartschool.vo.SchoolVO;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,25 +103,17 @@ public class LocationUploadActivity extends Activity {
     }
 
     private void doSave() {
-       /* LoadingDialog.showLoading(this);
+        LoadingDialog.showLoading(this);
         try {
-            String url = Constant.HOST + Constant.API_SIGNUP;
+            String url = Constant.HOST + Constant.API_ADD_AREA;
 
-            *//*JSONObject json = new JSONObject();
-            json.put("home_id", member.home_id);
-            json.put("mdn", member.mdn);
-            json.put("gcm_id", PreferenceUtil.getInstance(RegisterDialogActivity.this).getRegID());
-            json.put("is_parent", member.is_parent);
-            json.put("name", member.name);
-            json.put("relation", member.relation);
-            json.put("photo", imageDataString);
-            if(mIs_parent==0) {
-                json.put("school_name", member.mSchoolVO.school_name);
-                json.put("school_grade", member.mSchoolVO.school_grade);
-                json.put("school_ban", member.mSchoolVO.school_class);
-                json.put("sex", member.sex);
-                json.put("birth_date", member.birth_date);
-            }
+            JSONObject json = new JSONObject();
+            json.put("lat", PreferenceUtil.getInstance(this).getLat());
+            json.put("lng", PreferenceUtil.getInstance(this).getLng());
+            json.put("title", et_title.getText().toString());
+            json.put("content",et_content.getText().toString());
+            json.put("category", category);
+            json.put("picture", imageDataString);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));
@@ -139,16 +126,12 @@ public class LocationUploadActivity extends Activity {
                         Log.d("LDK", "result:" + object.toString(1));
 
                         if(status.getCode() != 200) {
-
                             return;
                         }
 
-                        if("0".equals(object.getString("result"))) {
-                            //home id 저장
-                            PreferenceUtil.getInstance(mContext).putHomeId(et_id.getText().toString());
-                            //
-                            setResult(RESULT_OK);
+                        if(object.getInt("result") == 0) {
                             finish();
+                            Util.showToast(LocationUploadActivity.this, "등록되었습니다.");
                         } else {
 
                         }
@@ -156,10 +139,10 @@ public class LocationUploadActivity extends Activity {
                         e.printStackTrace();
                     }
                 }
-            });*//*
+            });
         } catch (JSONException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     View.OnClickListener mClick = new View.OnClickListener() {
@@ -172,8 +155,8 @@ public class LocationUploadActivity extends Activity {
                     intent.setType("image/*");              // 모든 이미지
                     intent.putExtra("crop", "true");        // Crop기능 활성화
                     intent.putExtra("scale", true);
-                    intent.putExtra("outputX",  300);
-                    intent.putExtra("outputY",  300);
+                    intent.putExtra("outputX",  500);
+                    intent.putExtra("outputY",  500);
                     intent.putExtra("aspectX",  1);
                     intent.putExtra("aspectY",  1);
 

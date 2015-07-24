@@ -1,6 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <fragment
@@ -9,4 +8,68 @@
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-</LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="#77000000">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/map_1"
+                android:layout_marginLeft="5dp" android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                android:text="@string/map_1" android:textColor="#FFFFFFFF" />
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/map_2"
+                android:layout_marginLeft="5dp" android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                android:text="@string/map_2" android:textColor="#FFFFFFFF" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/map_3"
+                android:layout_marginLeft="5dp" android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                android:text="@string/map_3" android:textColor="#FFFFFFFF" />
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/map_4"
+                android:layout_marginLeft="5dp" android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                android:text="@string/map_4" android:textColor="#FFFFFFFF" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/map_5"
+                android:layout_marginLeft="5dp" android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                android:text="@string/map_5" android:textColor="#FFFFFFFF" />
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="@drawable/map_6"
+                android:layout_marginLeft="5dp" android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                android:text="@string/map_6" android:textColor="#FFFFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

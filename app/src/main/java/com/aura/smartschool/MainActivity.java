@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aura.smartschool.Interface.DrawerSelectedListener;
 import com.aura.smartschool.Interface.LoginDialogListener;
 import com.aura.smartschool.adapter.DrawerAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
@@ -146,7 +147,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 			menu = getResources().getStringArray(R.array.child_drawer_menu);
 		}
 
-        mDrawerList.setAdapter(new DrawerAdapter(menu));
+        mDrawerList.setAdapter(new DrawerAdapter(menu, mDrawerSelectedListener));
     }
 
     @Override
@@ -347,4 +348,19 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show();
 		showLoginDialog();
 	}
+
+	DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
+		@Override
+		public void onSelected(int position) {
+			switch(position) {
+				case 3:
+					Intent intent = new Intent(MainActivity.this, LocationUploadActivity.class);
+					startActivity(intent);
+					if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+						mDrawerLayout.closeDrawer(mDrawerList);
+					}
+					break;
+			}
+		}
+	};
 }

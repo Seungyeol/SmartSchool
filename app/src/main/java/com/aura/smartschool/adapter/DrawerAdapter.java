@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aura.smartschool.Interface.DrawerSelectedListener;
 import com.aura.smartschool.R;
 
 import java.util.ArrayList;
@@ -16,13 +17,15 @@ import java.util.ArrayList;
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder> {
 
     private ArrayList<String> mMenuList;
+    private DrawerSelectedListener mListener;
 
-    public DrawerAdapter(String[] menu)  {
+    public DrawerAdapter(String[] menu, DrawerSelectedListener listener)  {
         ArrayList<String> menuList = new ArrayList<>();
         for(String s:menu) {
             menuList.add(s);
         }
         mMenuList = menuList;
+        mListener = listener;
     }
 
     public DrawerAdapter(ArrayList<String> menu)  {
@@ -34,6 +37,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         LayoutInflater vi = LayoutInflater.from(viewGroup.getContext());
         View v = vi.inflate(R.layout.drawer_menu_item, viewGroup, false);
         TextView tv = (TextView) v.findViewById(R.id.tv_menu_item);
+
         return new ViewHolder(tv);
     }
 
@@ -47,12 +51,18 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         return mMenuList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mTextView;
 
         public ViewHolder(TextView v) {
             super(v);
+            v.setOnClickListener(this);
             mTextView = v;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onSelected(getAdapterPosition());
         }
     }
 }

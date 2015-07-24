@@ -79,4 +79,17 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		return get("location_time", 0);
 	}
 
+	public void setLat(double lat) {
+		put("lat", (float)lat);
+	}
+	public double getLat() {
+		return get("lat", 0f);
+	}
+
+	public void setLng(double lng) {
+		put("lng", (float)lng);
+	}
+	public double getLng() {
+		return get("lng", 0f);
+	}
 }
