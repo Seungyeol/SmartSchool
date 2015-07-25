@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Administrator on 2015-06-14.
@@ -56,10 +57,10 @@ public class SchoolNoticePagerFragment extends BaseFragment implements View.OnCl
     private ArrayList<SchoolNotiVO> mSchoolNotiList = new ArrayList<>();
     private ArrayList<SchoolNotiVO> mSchoolScheduleList = new ArrayList<>();
 
+    private Calendar selCalendar = Calendar.getInstance();
+
     public static SchoolNoticePagerFragment newInstance(MemberVO member) {
-
         SchoolNoticePagerFragment instance = new SchoolNoticePagerFragment();
-
         Bundle args = new Bundle();
         args.putSerializable("member", member);
         instance.setArguments(args);
@@ -91,7 +92,7 @@ public class SchoolNoticePagerFragment extends BaseFragment implements View.OnCl
 
         mSchoolLetterFragment = SchoolLetterListFragment.newInstance(mMember);
         mSchoolNotiFragment = SchoolNoticeListFragment.newInstance(mMember);
-        mSchoolScheduleFragment = SchoolScheduleFragment.newInstance(mMember);
+        mSchoolScheduleFragment = SchoolScheduleFragment.newInstance(mMember, selCalendar);
 
         mViewPager = (ViewPager) mView.findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(this.getActivity().getSupportFragmentManager(), mMember);

@@ -9,8 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
+import com.aura.smartschool.vo.SchoolNotiVO;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015-07-18.
@@ -18,15 +21,22 @@ import java.util.Calendar;
 public class SchoolScheduleCalendarAdapter extends BaseAdapter {
 
     private Context context;
-    private Calendar month;
+    private Calendar monthCalendar;
 
     private int columnNum;
     private int firstDayOfMonth;
 
-    public SchoolScheduleCalendarAdapter(Context context, Calendar month) {
+    private Map<String, ArrayList<SchoolNotiVO>> mScheduleMap;
+
+    public SchoolScheduleCalendarAdapter(Context context, Calendar monthCalendar, Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
         this.context = context;
-        this.month = month;
+        this.monthCalendar = monthCalendar;
+        this.mScheduleMap = scheduleMap;
         calculateMonth();
+    }
+
+    public void setScheduleMap(Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
+        this.mScheduleMap = scheduleMap;
     }
 
     @Override
@@ -64,16 +74,31 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
         params.height = (int) (parent.getMeasuredHeight() / (Math.ceil((double)columnNum/7)));
 
         int date = position - firstDayOfMonth + 2;
-        if (date > 0 && date <= month.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+        if (date > 0 && date <= monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
             holder.tvDate.setText(String.valueOf(date));
         } else {
             holder.tvDate.setText("");
         }
 
-        if (date == 10) {
-            holder.tvSchedule1.setText("test 일정");
-        }
+        int year = monthCalendar.get(Calendar.YEAR);
+        int month = monthCalendar.get(Calendar.MONTH) + 1;
 
+        holder.tvSchedule1.setText("");
+        holder.tvSchedule2.setText("");
+        holder.tvSchedule3.setText("");
+        ArrayList<SchoolNotiVO> notiList = mScheduleMap.get(String.format("%d-%02d-%02d", year, month, date));
+        if (notiList != null) {
+            for(int i = 0; i < notiList.size(); i++) {
+                if (i==0) {
+                    holder.tvSchedule1.setText(notiList.get(i).title);
+                } else if (i == 1) {
+                    holder.tvSchedule2.setText(notiList.get(i).title);
+                } else {
+                    holder.tvSchedule3.setText(notiList.get(i).title);
+                    break;
+                }
+            }
+        }
 
         if (position%7 == 0) {
             holder.tvDate.setTextColor(Color.RED);
@@ -85,9 +110,9 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
     }
 
     private void calculateMonth() {
-        month.set(Calendar.DAY_OF_MONTH, 1);
-        firstDayOfMonth = month.get(Calendar.DAY_OF_WEEK);
-        columnNum = month.getActualMaximum(Calendar.DAY_OF_MONTH) + (firstDayOfMonth - 1);
+        monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
+        columnNum = monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH) + (firstDayOfMonth - 1);
         columnNum += (7-columnNum%7);
     }
 

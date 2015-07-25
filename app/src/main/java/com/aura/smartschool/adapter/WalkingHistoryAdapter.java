@@ -127,13 +127,13 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
         return mWalkingHistory.size();
     }
 
-    public static class WalkingHistoryViewHolder extends RecyclerView.ViewHolder {
+    public class WalkingHistoryViewHolder extends RecyclerView.ViewHolder {
         public WalkingHistoryViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public static class WalkingHistoryDayViewHolder extends WalkingHistoryViewHolder {
+    public class WalkingHistoryDayViewHolder extends WalkingHistoryViewHolder {
         public final TextView mDate;
         public final TextView mWalkingCount;
         public final TextView mCalories;
@@ -150,7 +150,7 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
         }
     }
 
-    public static class WalkingHistoryMonthViewHolder extends WalkingHistoryViewHolder {
+    public class WalkingHistoryMonthViewHolder extends WalkingHistoryViewHolder {
         public final TextView mMonth;
         public final TextView mWalkingCount;
 

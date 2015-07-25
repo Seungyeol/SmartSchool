@@ -9,8 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
+import com.aura.smartschool.vo.SchoolNotiVO;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015-07-18.
@@ -18,21 +21,28 @@ import java.util.Calendar;
 public class SchoolScheduleListAdapter extends BaseAdapter {
 
     private Context context;
-    private Calendar month;
+    private Calendar monthCalendar;
 
     private int firstDayOfMonth;
 
-    public SchoolScheduleListAdapter(Context context, Calendar month) {
-        this.context = context;
-        this.month = month;
+    private Map<String, ArrayList<SchoolNotiVO>> mScheduleMap;
 
-        month.set(Calendar.DAY_OF_MONTH, 1);
-        firstDayOfMonth = month.get(Calendar.DAY_OF_WEEK);
+    public SchoolScheduleListAdapter(Context context, Calendar monthCalendar, Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
+        this.context = context;
+        this.monthCalendar = monthCalendar;
+        this.mScheduleMap = scheduleMap;
+
+        monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public void setScheduleMap(Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
+        this.mScheduleMap = scheduleMap;
     }
 
     @Override
     public int getCount() {
-        return month.getActualMaximum(Calendar.DAY_OF_MONTH);
+        return monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
     @Override
@@ -67,9 +77,14 @@ public class SchoolScheduleListAdapter extends BaseAdapter {
             holder.tvDate.setTextColor(Color.BLUE);
         }
 
-        if (position == 10) {
-            for (int i =0; i<2; i++) {
-                addScheduleOnDate(holder, "Test 일정 " + i);
+        int year = monthCalendar.get(Calendar.YEAR);
+        int month = monthCalendar.get(Calendar.MONTH) + 1;
+
+        holder.linearItemWrapper.removeAllViewsInLayout();
+        ArrayList<SchoolNotiVO> notiList = mScheduleMap.get(String.format("%d-%02d-%02d", year, month, (position+1)));
+        if (notiList != null) {
+            for(SchoolNotiVO noti:notiList) {
+                addScheduleOnDate(holder, noti.title);
             }
         }
 
