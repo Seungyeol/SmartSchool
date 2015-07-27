@@ -9,10 +9,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -30,13 +32,10 @@ public class WalkingCountFragment extends BaseFragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
-    private TextView mTvWalkingCount;
-    private TextView mTvCalories;
-    private TextView mTvDistance;
-    private TextView mTvWalkingTime;
-
-    private Switch mSwTaget;
-
+    private TextView mTvWalkingCount, mTvCalories, mTvDistance, mTvWalkingTime;
+    private TextView mTvTargetSelection, mTvTargetMeasure;
+    private EditText mEtTargetNum;
+    private Switch mSwTarget;
 
     private IBinder mBinder;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -99,9 +98,15 @@ public class WalkingCountFragment extends BaseFragment {
         mTvDistance = (TextView) view.findViewById(R.id.tv_distance);
         mTvWalkingTime = (TextView) view.findViewById(R.id.tv_walking_time);
 
-        mSwTaget = (Switch) view.findViewById(R.id.sw_target);
-        mSwTaget.setChecked(StepSharePrefrenceUtil.getNoticeOnOff(getActivity()));
-        mSwTaget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mTvTargetSelection = (TextView) view.findViewById(R.id.tv_target_selection);
+        mTvTargetMeasure = (TextView) view.findViewById(R.id.tv_target_measure);
+        mEtTargetNum = (EditText) view.findViewById(R.id.et_target_num);
+
+        mTvTargetSelection.setOnClickListener(mClickListener);
+
+        mSwTarget = (Switch) view.findViewById(R.id.sw_target);
+        mSwTarget.setChecked(StepSharePrefrenceUtil.getNoticeOnOff(getActivity()));
+        mSwTarget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 StepSharePrefrenceUtil.saveNoticeOnOff(getActivity(), isChecked);
@@ -134,6 +139,29 @@ public class WalkingCountFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         mBinder = null;
+    }
+
+    private View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.tv_target_selection:
+                    TargetSelectionDialogFragment dialog = new TargetSelectionDialogFragment();
+                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                    dialog.show(getActivity().getSupportFragmentManager(), "selectionDialog");
+                    break;
+            }
+        }
+    };
+
+    private class TargetSelectionDialogFragment extends DialogFragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.dialog_activity_target_selection, container, false);
+
+            return v;
+        }
     }
 }
 

@@ -75,6 +75,8 @@ public class SchoolScheduleListAdapter extends BaseAdapter {
             holder.tvDate.setTextColor(Color.RED);
         } else if ((position+firstDayOfMonth-1)%7 == 6) {
             holder.tvDate.setTextColor(Color.BLUE);
+        } else {
+            holder.tvDate.setTextColor(Color.BLACK);
         }
 
         int year = monthCalendar.get(Calendar.YEAR);

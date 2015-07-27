@@ -120,7 +120,7 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        private int NUM_ITEMS = 3;
+        private int NUM_ITEMS = 2;
         private MemberVO mMember;
         public MyPagerAdapter(FragmentManager fragmentManager, MemberVO memberVO) {
             super(fragmentManager);

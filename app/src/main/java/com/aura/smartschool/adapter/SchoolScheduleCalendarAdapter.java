@@ -104,6 +104,8 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
             holder.tvDate.setTextColor(Color.RED);
         } else if (position%7 == 6) {
             holder.tvDate.setTextColor(Color.BLUE);
+        } else {
+            holder.tvDate.setTextColor(Color.BLACK);
         }
 
         return convertView;
