@@ -17,7 +17,7 @@ public class GrowthFragment extends BaseFragment {
     private MemberVO mMember;
 
     private ImageView ivCoach;
-    private TextView tvGrowthScore;
+    private TextView tvGrowthScore, tv_growth_content;
     private ImageView ivWeight1, ivWeight2, ivWeight3, ivWeight4, ivWeight5, ivWeight6;
 
     public GrowthFragment() {
@@ -50,6 +50,12 @@ public class GrowthFragment extends BaseFragment {
         tvGrowthScore = (TextView) mView.findViewById(R.id.tv_growth_score);
         tvGrowthScore.setText(mMember.mMeasureSummaryVO.growthGrade + "점");
 
+        tv_growth_content = (TextView) mView.findViewById(R.id.tv_growth_content);
+        String content = String.format("%s 학생의 키는 %.1fcm 이고 몸무게는 %skg 입니다. BMI는 %s로 %s이며 체지방은 %s 입니다. 건강을 위해서 아래사항을 참고하세요.",
+                mMember.name, mMember.mMeasureSummaryVO.height, mMember.mMeasureSummaryVO.weight,
+                mMember.mMeasureSummaryVO.bmi, mMember.mMeasureSummaryVO.bmiStatus, mMember.mMeasureSummaryVO.fat);
+        tv_growth_content.setText(content);
+
         ivWeight1 = (ImageView) mView.findViewById(R.id.iv_weight1);
         ivWeight2 = (ImageView) mView.findViewById(R.id.iv_weight2);
         ivWeight3 = (ImageView) mView.findViewById(R.id.iv_weight3);
@@ -72,18 +78,18 @@ public class GrowthFragment extends BaseFragment {
 
     //저체중, 정상, 과체중, 비만, 중도비만, 고도비만
     private void setGradeType() {
-        if (mMember.mMeasureSummaryVO.bmiStatus.contains("저체중")) {
+        if (mMember.mMeasureSummaryVO.bmiStatus.startsWith("저체중")) {
             ivWeight1.setBackgroundResource(R.drawable.point_type_1);
-        } else if (mMember.mMeasureSummaryVO.bmiStatus.contains("정상")) {
-            ivWeight2.setBackgroundResource(R.drawable.point_type_1);
-        } else if (mMember.mMeasureSummaryVO.bmiStatus.contains("과체중")) {
-            ivWeight3.setBackgroundResource(R.drawable.point_type_1);
-        } else if (mMember.mMeasureSummaryVO.bmiStatus.contains("경도비만")) {
-            ivWeight4.setBackgroundResource(R.drawable.point_type_1);
-        } else if (mMember.mMeasureSummaryVO.bmiStatus.contains("중도비만")) {
-            ivWeight5.setBackgroundResource(R.drawable.point_type_1);
-        } else if (mMember.mMeasureSummaryVO.bmiStatus.contains("고도비만")) {
-            ivWeight6.setBackgroundResource(R.drawable.point_type_1);
+        } else if (mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상")) {
+            ivWeight2.setBackgroundResource(R.drawable.point_type_2);
+        } else if (mMember.mMeasureSummaryVO.bmiStatus.startsWith("과체중")) {
+            ivWeight3.setBackgroundResource(R.drawable.point_type_3);
+        } else if (mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만")) {
+            ivWeight4.setBackgroundResource(R.drawable.point_type_4);
+        } else if (mMember.mMeasureSummaryVO.bmiStatus.startsWith("중도비만")) {
+            ivWeight5.setBackgroundResource(R.drawable.point_type_5);
+        } else if (mMember.mMeasureSummaryVO.bmiStatus.startsWith("고도비만")) {
+            ivWeight6.setBackgroundResource(R.drawable.point_type_6);
         }
     }
 

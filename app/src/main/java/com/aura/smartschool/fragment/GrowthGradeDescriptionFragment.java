@@ -1,11 +1,9 @@
 package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
@@ -74,9 +72,9 @@ public class GrowthGradeDescriptionFragment extends BaseFragment {
         NOMAL_WEIGHT_B("정상체중 B", R.string.obesity_risk_3, R.string.dietary_habits_2_3, R.string.recommend_exercise_2_3),
         OVER_WEIGHT_A("과체중 A", R.string.obesity_risk_4, R.string.dietary_habits_4, R.string.recommend_exercise_4),
         OVER_WEIGHT_B("과체중 B", R.string.obesity_risk_4, R.string.dietary_habits_4, R.string.recommend_exercise_4),
-        MILD_OBESITY_A("경도비만 A", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
-        MILD_OBESITY_B("경도비만 B", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
-        MILD_OBESITY_C("경도비만 C", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
+        MILD_OBESITY_A("비만 A", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
+        MILD_OBESITY_B("비만 B", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
+        MILD_OBESITY_C("비만 C", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
         MEDIUM_OBESITY_A("중도비만 A", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
         MEDIUM_OBESITY_B("중도비만 B", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
         MEDIUM_OBESITY_C("중도비만 C", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
