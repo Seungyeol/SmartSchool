@@ -106,7 +106,7 @@
                 <TextView
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
-                    android:text="BMI"/>
+                    android:text="비만도"/>
                 <TextView
                     android:id="@+id/tv_bmi"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                     android:id="@+id/tv_muscle_title"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     style="@style/HeathItemTitleTxt"
-                    android:text="체지방"/>
+                    android:text="근육량"/>
                 <TextView
                     android:id="@+id/tv_fat"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"

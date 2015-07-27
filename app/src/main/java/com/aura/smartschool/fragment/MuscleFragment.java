@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.aura.smartschool.R;
 import com.aura.smartschool.vo.MemberVO;
 
-public class BmiFragment extends BaseFragment {
+public class MuscleFragment extends BaseFragment {
 
     private View mView;
     private TextView tv_bmi, tv_fat;
@@ -24,13 +24,13 @@ public class BmiFragment extends BaseFragment {
 
     private MemberVO mMember;
 
-    public BmiFragment() {
+    public MuscleFragment() {
         // Required empty public constructor
     }
 
-    public static BmiFragment newInstance(MemberVO member) {
+    public static MuscleFragment newInstance(MemberVO member) {
 
-        BmiFragment instance = new BmiFragment();
+        MuscleFragment instance = new MuscleFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("member", member);
@@ -48,7 +48,7 @@ public class BmiFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = View.inflate(getActivity(), R.layout.fragment_bmi, null);
+        mView = View.inflate(getActivity(), R.layout.fragment_muscle, null);
 
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
         tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
@@ -56,19 +56,15 @@ public class BmiFragment extends BaseFragment {
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
         iv_bmi = (ImageView) mView.findViewById(R.id.iv_bmi);
 
-        tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.bmi));
-        tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.fat) + "%");
+        tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.skeletal));
+        tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.muscle_percent) + "%");
 
-        if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("저체중")) {
-            iv_bmi.setImageResource(R.drawable.type_under);
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상상")) {
+        if("표준".equals(mMember.mMeasureSummaryVO.weightStatus)) {
             iv_bmi.setImageResource(R.drawable.type_normal);
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("과체중")) {
+        } else if("표준 이상".equals(mMember.mMeasureSummaryVO.weightStatus)) {
             iv_bmi.setImageResource(R.drawable.type_over_1);
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만")) {
-            iv_bmi.setImageResource(R.drawable.type_over_2);
-        } else {
-            iv_bmi.setImageResource(R.drawable.type_over_3);
+        }  else {
+            iv_bmi.setImageResource(R.drawable.type_under);
         }
 
         tv_help_left.setOnClickListener(mClick);
@@ -103,8 +99,8 @@ public class BmiFragment extends BaseFragment {
 
             switch(v.getId()) {
                 case R.id.tv_help_left:
-                    tv_title.setText("BMI란?");
-                    tv_content.setText("체중(kg)을 키의 제곱으로 나눈 값을 통해 지방의 양을 추정하는 비만 측정법이다. 수치가 클수록 체격이 커진다.");
+                    tv_title.setText("골격근량이란?");
+                    tv_content.setText("뼈에 붙어 직접적으로 힘을 낼수있는 근육을 말합니다.");
 
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);
@@ -113,8 +109,8 @@ public class BmiFragment extends BaseFragment {
                     break;
 
                 case R.id.tv_help_right:
-                    tv_title.setText("체지방률이란?");
-                    tv_content.setText("체중에서 체지방이 차지하는 비율. 수치가 작을수록 근육형체형이다.");
+                    tv_title.setText("근육량이란?");
+                    tv_content.setText("우리 몸 전체에 있는 근육량을 의미합니다.");
 
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);

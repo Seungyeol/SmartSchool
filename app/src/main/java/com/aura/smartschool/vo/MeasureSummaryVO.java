@@ -12,8 +12,9 @@ public class MeasureSummaryVO implements Serializable {
     public String weight;
     public String weightStatus;
     public String fat;
-    public String muscle;
     public String waist;
+    public String skeletal;  //골격근량
+    public int muscle_percent; //근육량 퍼센트
     public String bmi;
     public String bmiStatus;
     public String bmiGradeId;

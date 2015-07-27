@@ -124,6 +124,7 @@ public class HealthMainFragment extends BaseFragment {
         rl_weight.setOnClickListener(mMeasureClick);
         rl_smoke.setOnClickListener(mMeasureClick);
         rl_bmi.setOnClickListener(mMeasureClick);
+        rl_fat.setOnClickListener(mMeasureClick);
         rl_growth.setOnClickListener(mMeasureClick);
         rl_pt.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
@@ -226,8 +227,13 @@ public class HealthMainFragment extends BaseFragment {
                             mSummaryVO.weight = json.getString("weight");
                             mSummaryVO.weightStatus = json.getString("weightStatus");
                             mSummaryVO.fat = json.getString("fat");
-                            mSummaryVO.muscle = json.getString("muscle");
+
+                            float muscle = Float.parseFloat(json.getString("muscle"));
+                            float weight = Float.parseFloat(json.getString("weight"));
+                            mSummaryVO.muscle_percent = (int) (muscle /weight * 100);
+
                             mSummaryVO.waist = json.getString("waist");
+                            mSummaryVO.skeletal = json.getString("skeletal");//골격근량
                             mSummaryVO.bmi = json.getString("bmi");
                             mSummaryVO.bmiStatus = json.getString("bmiStatus");
                             mSummaryVO.bmiGradeId = json.getString("bmiGradeId");
@@ -283,7 +289,7 @@ public class HealthMainFragment extends BaseFragment {
         tv_smoke_status.setText(mSummaryVO.smokeStatus);
         //tv_smoke_cohb.setText(String.format("%s COHb", mSummaryVO.cohd));
         //tv_smoke_ppm.setText(String.format("%s ppm", mSummaryVO.ppm));
-        tv_fat.setText(mSummaryVO.fat + "%");
+        tv_fat.setText(String.valueOf(mSummaryVO.muscle_percent) + "%");
     }
 
     private Handler mHandler = new Handler() {
@@ -338,6 +344,10 @@ public class HealthMainFragment extends BaseFragment {
 
                 case R.id.rl_bmi:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, BmiFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_fat:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, MuscleFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_growth:
