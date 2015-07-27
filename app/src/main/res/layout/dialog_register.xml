@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginStart="20dp" android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_white"
+        android:background="@drawable/bg_orange_white"
         android:orientation="vertical"
         android:focusable="true" android:focusableInTouchMode="true">
 
@@ -19,7 +19,7 @@
 
         <LinearLayout
             style="@style/Line"
-            android:background="#FF930D03"  />
+            android:background="@color/orange"  />
 
         <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -27,14 +27,18 @@
             <TextView
                 android:id="@+id/tvParent"
                 android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
-                android:background="#FF930D03" android:textColor="#FFF0F0F0"
+                android:background="@color/orange" android:textColor="#FFF0F0F0"
                 android:text="부 모" android:gravity="center" />
             <TextView
                 android:id="@+id/tvStudent"
                 android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
-                android:background="#FFF0F0F0" android:textColor="#FF930D03"
+                android:background="@color/transparent" android:textColor="@color/orange"
                 android:text="학 생" android:gravity="center"  />
         </LinearLayout>
+
+        <LinearLayout
+            style="@style/Line"
+            android:background="@color/orange"  />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -125,7 +129,7 @@
 
                 <Button
                     android:id="@+id/btn_register"
-                    style="@style/Button_woodred"
+                    style="@style/Button_gold_orange"
                     android:layout_width="match_parent"
                     android:text="확  인" />
             </LinearLayout>

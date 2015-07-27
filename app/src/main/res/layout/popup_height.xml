@@ -3,7 +3,7 @@
     android:layout_width="260dp" android:layout_height="210dp"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@drawable/info">
+    android:background="@drawable/balloon_orange">
 
     <TextView
         android:id="@+id/tv_title"
@@ -22,7 +22,7 @@
             android:orientation="vertical">
             <ImageView
                 android:layout_width="50dp" android:layout_height="70dp"
-                android:background="@drawable/popup_cm" />
+                android:background="@drawable/height" />
             <TextView
                 android:id="@+id/tv_increase"
                 android:layout_width="wrap_content"  android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:orientation="vertical">
             <ImageView
                 android:layout_width="50dp" android:layout_height="70dp"
-                android:background="@drawable/popup_compare" />
+                android:background="@drawable/rank" />
             <TextView
                 android:id="@+id/tv_rank"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"

@@ -4,41 +4,38 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/actionbar_height"
-        android:orientation="horizontal"
-        android:layout_margin="0dp">
+        android:layout_width="match_parent" android:layout_height="@dimen/actionbar_height"
+        android:orientation="horizontal" android:padding="7dp"
+        android:background="@color/gold">
+
         <ImageButton
             android:id="@+id/btn_pre"
-            android:layout_width="40dp" android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:background="@null"
-            android:src="@drawable/btn_pre" />
+            android:layout_width="35dp" android:layout_height="match_parent"
+            android:background="@null" android:padding="5dp"
+            android:src="@drawable/actionbar_back" />
+        <ImageView
+            android:layout_width="35dp" android:layout_height="match_parent"
+            android:background="#FFFFFF" android:padding="5dp"
+            android:src="@drawable/search"/>
         <EditText
             android:id="@+id/et_search_school"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:background="#00000000"
-            android:hint="학교 명을 입력해주세요"
-            android:layout_weight="1"/>
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+            android:background="@drawable/input" android:padding="5dp"
+            android:hint="학교 명을 입력해주세요" />
         <ImageButton
             android:id="@+id/btn_clear"
-            android:layout_width="25dp" android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:scaleType="fitXY"
-            android:background="@null"
-            android:src="@drawable/btn_cancel"/>
+            android:layout_width="35dp" android:layout_height="match_parent"
+            android:background="@color/orange" android:padding="10dp"
+            android:src="@drawable/btn_cancle"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent" android:layout_height="1dp"
         android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
-        android:background="#FF930D03"/>
+        android:background="@color/orange"/>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
         <ProgressBar
             android:id="@+id/progressbar"
             android:layout_width="wrap_content"

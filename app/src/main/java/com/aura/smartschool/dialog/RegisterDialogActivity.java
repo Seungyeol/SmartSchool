@@ -235,19 +235,19 @@ public class RegisterDialogActivity extends Activity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.tvParent:
-				tvParent.setBackgroundColor(0xFF930D03);
-				tvParent.setTextColor(0xFFF0F0F0);
+				tvParent.setBackgroundColor(getResources().getColor(R.color.orange));
+				tvParent.setTextColor(getResources().getColor(R.color.white));
 				mIs_parent = 1;
-				tvStudent.setBackgroundColor(0xFFF0F0F0);
-				tvStudent.setTextColor(0xFF930D03);
+				tvStudent.setBackgroundColor(getResources().getColor(R.color.transparent));
+				tvStudent.setTextColor(getResources().getColor(R.color.orange));
 				school_info.setVisibility(View.GONE);
 				break;
 			case R.id.tvStudent:
-				tvParent.setBackgroundColor(0xFFF0F0F0);
-				tvParent.setTextColor(0xFF930D03);
+				tvParent.setBackgroundColor(getResources().getColor(R.color.transparent));
+				tvParent.setTextColor(getResources().getColor(R.color.orange));
 				mIs_parent = 0;
-				tvStudent.setBackgroundColor(0xFF930D03);
-				tvStudent.setTextColor(0xFFF0F0F0);
+				tvStudent.setBackgroundColor(getResources().getColor(R.color.orange));
+				tvStudent.setTextColor(getResources().getColor(R.color.white));
 				school_info.setVisibility(View.VISIBLE);
 				break;
 

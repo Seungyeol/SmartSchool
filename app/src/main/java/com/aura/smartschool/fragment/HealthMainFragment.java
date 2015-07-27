@@ -276,7 +276,7 @@ public class HealthMainFragment extends BaseFragment {
 
         //tv_height_status.setText(mSummaryVO.heightStatus);
         //tv_growth_grade.setText(String.valueOf(mSummaryVO.growthGrade));
-        tv_weight.setText(String.format("%skg", mSummaryVO.weight));
+        tv_weight.setText(String.format("%s", mSummaryVO.weight));
         //tv_weight_status.setText(mSummaryVO.weightStatus);
         tv_bmi.setText(mSummaryVO.bmi);
         //tv_bmi_status.setText(mSummaryVO.bmiStatus);
