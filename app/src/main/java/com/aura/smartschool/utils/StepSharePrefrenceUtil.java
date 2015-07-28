@@ -17,7 +17,10 @@ public class StepSharePrefrenceUtil {
     private static final String KEY_TARGET_NOTICE_ON_OFF = "notice_on_off";
     private static final String KEY_STEP_COUNT_SERVICE_ON_OFF = "steps_on_off";
 
+    private static final String KEY_TARGET_CODE = "target_code";
     private static final String KEY_TARGET_STEPS = "target_steps";
+    private static final String KEY_TARGET_CALORIES = "target_calories";
+    private static final String KEY_TARGET_DISTANCE = "target_distance";
     private static final String KEY_TARGET_ON_OFF = "target_on_off";
     private static final String KEY_TODAY_ACHIEVED = "today_achieved";
 
@@ -62,12 +65,36 @@ public class StepSharePrefrenceUtil {
         return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getBoolean(KEY_STEP_COUNT_SERVICE_ON_OFF, false);
     }
 
+    public static void saveTargetCode(Context context, int targetCode) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putInt(KEY_TARGET_CODE, targetCode).commit();
+    }
+
+    public static int getTargetCode(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_TARGET_CODE, 0);
+    }
+
     public static void saveTargetSteps(Context context, int targetSteps) {
         context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putInt(KEY_TARGET_STEPS, targetSteps).commit();
     }
 
     public static int getTargetSteps(Context context) {
         return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_TARGET_STEPS, 0);
+    }
+
+    public static void saveTargetCalories(Context context, int targetCalories) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putInt(KEY_TARGET_CALORIES, targetCalories).commit();
+    }
+
+    public static int getTargetCalories(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_TARGET_CALORIES, 0);
+    }
+
+    public static void saveTargetDistance(Context context, float targetDistance) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putFloat(KEY_TARGET_DISTANCE, targetDistance).commit();
+    }
+
+    public static float getTargetDistance(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getFloat(KEY_TARGET_DISTANCE, 0);
     }
 
     public static void saveTargetOnOff(Context context, boolean isOn) {

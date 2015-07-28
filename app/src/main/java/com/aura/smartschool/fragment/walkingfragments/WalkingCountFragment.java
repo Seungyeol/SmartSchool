@@ -37,6 +37,8 @@ public class WalkingCountFragment extends BaseFragment {
     private EditText mEtTargetNum;
     private Switch mSwTarget;
 
+    private TARGET mTarget;
+
     private IBinder mBinder;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -87,6 +89,7 @@ public class WalkingCountFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
+        mTarget = TARGET.findTarget(StepSharePrefrenceUtil.getTargetCode(getActivity()));
     }
 
     @Nullable
@@ -101,6 +104,8 @@ public class WalkingCountFragment extends BaseFragment {
         mTvTargetSelection = (TextView) view.findViewById(R.id.tv_target_selection);
         mTvTargetMeasure = (TextView) view.findViewById(R.id.tv_target_measure);
         mEtTargetNum = (EditText) view.findViewById(R.id.et_target_num);
+
+        setTargetViews();
 
         mTvTargetSelection.setOnClickListener(mClickListener);
 
@@ -148,19 +153,111 @@ public class WalkingCountFragment extends BaseFragment {
                 case R.id.tv_target_selection:
                     TargetSelectionDialogFragment dialog = new TargetSelectionDialogFragment();
                     dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                    dialog.setOnSelectListener(mTargetSelectionListener);
                     dialog.show(getActivity().getSupportFragmentManager(), "selectionDialog");
                     break;
             }
         }
     };
 
-    private class TargetSelectionDialogFragment extends DialogFragment {
+    private TargetSelectionDialogFragment.OnSelectListener mTargetSelectionListener = new TargetSelectionDialogFragment.OnSelectListener() {
+        @Override
+        public void onSelected(TARGET target) {
+            mTarget = target;
+            StepSharePrefrenceUtil.saveTargetCode(getActivity(), target.code);
+            setTargetViews();
+        }
+    };
+
+    private void setTargetViews() {
+        mTvTargetSelection.setText(mTarget.name);
+        mTvTargetMeasure.setText(mTarget.measure);
+        if (mTarget.code == TARGET.WALKING.code) {
+            mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetSteps(getActivity())));
+        } else if (mTarget.code == TARGET.CALORIES.code) {
+            mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetCalories(getActivity())));
+        } else {
+            mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetDistance(getActivity())));
+        }
+    }
+
+    private static class TargetSelectionDialogFragment extends DialogFragment {
+        interface OnSelectListener {
+            void onSelected(TARGET target);
+        }
+
+        View mTargetWalking;
+        View mTargetCalories;
+        View mTargetDistance;
+
+        OnSelectListener listener;
+
+        public void setOnSelectListener(OnSelectListener listener) {
+            this.listener = listener;
+        }
+
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.dialog_activity_target_selection, container, false);
+            mTargetWalking = v.findViewById(R.id.tv_target_walking);
+            mTargetCalories = v.findViewById(R.id.tv_target_calories);
+            mTargetDistance = v.findViewById(R.id.tv_target_distance);
+
+            mTargetWalking.setOnClickListener(mTargetClickListener);
+            mTargetCalories.setOnClickListener(mTargetClickListener);
+            mTargetDistance.setOnClickListener(mTargetClickListener);
 
             return v;
+        }
+
+        private View.OnClickListener mTargetClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener == null) {
+                    dismiss();
+                    return;
+                }
+                switch (v.getId()) {
+                    case R.id.tv_target_walking:
+                        listener.onSelected(TARGET.WALKING);
+                        break;
+                    case R.id.tv_target_calories:
+                        listener.onSelected(TARGET.CALORIES);
+                        break;
+                    case R.id.tv_target_distance:
+                        listener.onSelected(TARGET.DISTANCE);
+                        break;
+                    default:
+                        break;
+                }
+                dismiss();
+            }
+        };
+    }
+
+    private enum TARGET {
+        WALKING(0, "걸음", "걸음"),
+        CALORIES(1, "칼로리", "Kcal"),
+        DISTANCE(2, "거리", "Km");
+
+        int code;
+        String name;
+        String measure;
+
+        TARGET(int code, String name, String measure) {
+            this.code = code;
+            this.name = name;
+            this.measure = measure;
+        }
+
+        public static TARGET findTarget(int code) {
+            for (TARGET t:values()) {
+                if (t.code == code) {
+                   return t;
+                }
+            }
+            return null;
         }
     }
 }

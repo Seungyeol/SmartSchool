@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
+        android:id="@+id/tv_target_walking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -15,6 +16,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
     <TextView
+        android:id="@+id/tv_target_calories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -27,6 +29,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
     <TextView
+        android:id="@+id/tv_target_distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
