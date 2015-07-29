@@ -18,6 +18,7 @@ public class GrowthFragment extends BaseFragment {
 
     private ImageView ivCoach;
     private TextView tvGrowthScore, tv_growth_content;
+    private TextView tv_1, tv_2, tv_3; //복부비만, 체중조절, 체지방조절
     private ImageView ivWeight1, ivWeight2, ivWeight3, ivWeight4, ivWeight5, ivWeight6;
 
     public GrowthFragment() {
@@ -55,6 +56,14 @@ public class GrowthFragment extends BaseFragment {
                 mMember.name, mMember.mMeasureSummaryVO.height, mMember.mMeasureSummaryVO.weight,
                 mMember.mMeasureSummaryVO.bmi, mMember.mMeasureSummaryVO.bmiStatus, mMember.mMeasureSummaryVO.fat);
         tv_growth_content.setText(content);
+
+        tv_1 = (TextView) mView.findViewById(R.id.tv_1);
+        tv_2 = (TextView) mView.findViewById(R.id.tv_2);
+        tv_3 = (TextView) mView.findViewById(R.id.tv_3);
+
+        tv_1.setText(mMember.mMeasureSummaryVO.waist);
+        tv_2.setText(mMember.mMeasureSummaryVO.weight_control + "kg");
+        tv_3.setText(mMember.mMeasureSummaryVO.fat_control + "kg");
 
         ivWeight1 = (ImageView) mView.findViewById(R.id.iv_weight1);
         ivWeight2 = (ImageView) mView.findViewById(R.id.iv_weight2);

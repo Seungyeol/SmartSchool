@@ -234,6 +234,8 @@ public class HealthMainFragment extends BaseFragment {
 
                             mSummaryVO.waist = json.getString("waist");
                             mSummaryVO.skeletal = json.getString("skeletal");//골격근량
+                            mSummaryVO.weight_control = json.getString("weight_control");
+                            mSummaryVO.fat_control = json.getString("fat_control");
                             mSummaryVO.bmi = json.getString("bmi");
                             mSummaryVO.bmiStatus = json.getString("bmiStatus");
                             mSummaryVO.bmiGradeId = json.getString("bmiGradeId");
