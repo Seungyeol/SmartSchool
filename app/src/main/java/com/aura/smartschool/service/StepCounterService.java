@@ -23,6 +23,7 @@ import android.support.v4.app.NotificationCompat;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBStepCounter;
+import com.aura.smartschool.fragment.walkingfragments.WalkingCountFragment;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.utils.Util;
 
@@ -90,8 +91,6 @@ public class StepCounterService extends Service implements SensorEventListener {
 
         checkWalkingTime(totalSteps);
 
-        doCheckAchievedTarget(totalSteps);
-
         StepSharePrefrenceUtil.saveCurrentStepCount(this, totalSteps);
         int totalActiveTime = db.getWalkingTime(Util.getTodayTimeInMillis());
         if (startWalkingTime > 0) {
@@ -99,6 +98,8 @@ public class StepCounterService extends Service implements SensorEventListener {
         }
         int calories = getCalories(totalActiveTime);
         double distance = getDistance(totalSteps);
+
+        doCheckAchievedTarget(totalSteps, calories, distance);
 
         Message message = Message.obtain();
         Bundle data = new Bundle();
@@ -218,14 +219,31 @@ public class StepCounterService extends Service implements SensorEventListener {
                         PendingIntent.getService(this, 3, new Intent(this, StepCounterService.class), 0));
     }
 
-    private void doCheckAchievedTarget(int totalSteps) {
-        int targetSteps = StepSharePrefrenceUtil.getTargetSteps(this);
+    private void doCheckAchievedTarget(int totalSteps, int calories, double distance) {
         boolean isNotiOn = StepSharePrefrenceUtil.getNoticeOnOff(this);
         boolean isTagetAchieved = StepSharePrefrenceUtil.getTodayAchieved(this);
 
-        if (isNotiOn && !isTagetAchieved && totalSteps >= targetSteps) {
-            StepSharePrefrenceUtil.saveTodayAchieved(this, true);
-            showAchieveNotification();
+        if (isNotiOn && !isTagetAchieved) {
+            int targetCode = StepSharePrefrenceUtil.getTargetCode(this);
+            if (targetCode == WalkingCountFragment.TARGET.WALKING.code) {
+                int target = StepSharePrefrenceUtil.getTargetSteps(this);
+                if (target <= totalSteps) {
+                    StepSharePrefrenceUtil.saveTodayAchieved(this, true);
+                    showAchieveNotification();
+                }
+            } else if (targetCode == WalkingCountFragment.TARGET.CALORIES.code) {
+                int target = StepSharePrefrenceUtil.getTargetCalories(this);
+                if (target <= calories) {
+                    StepSharePrefrenceUtil.saveTodayAchieved(this, true);
+                    showAchieveNotification();
+                }
+            } else {
+                float target = StepSharePrefrenceUtil.getTargetDistance(this);
+                if (target <= distance) {
+                    StepSharePrefrenceUtil.saveTodayAchieved(this, true);
+                    showAchieveNotification();
+                }
+            }
         }
     }
 

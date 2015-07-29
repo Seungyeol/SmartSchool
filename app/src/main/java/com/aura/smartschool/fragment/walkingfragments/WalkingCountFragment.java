@@ -10,6 +10,10 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,9 @@ import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.vo.MemberVO;
+
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 /**
  * Created by Administrator on 2015-06-28.
@@ -38,6 +45,9 @@ public class WalkingCountFragment extends BaseFragment {
     private Switch mSwTarget;
 
     private TARGET mTarget;
+
+    private Runnable mTask;
+    private Handler mHandler = new Handler();
 
     private IBinder mBinder;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
@@ -107,6 +117,7 @@ public class WalkingCountFragment extends BaseFragment {
 
         setTargetViews();
 
+        mEtTargetNum.addTextChangedListener(mWatcher);
         mTvTargetSelection.setOnClickListener(mClickListener);
 
         mSwTarget = (Switch) view.findViewById(R.id.sw_target);
@@ -138,6 +149,15 @@ public class WalkingCountFragment extends BaseFragment {
             ((StepCounterService.StepCounterBinder) mBinder).setSensorDelay(StepCounterService.SENSOR_DELAY_TYPE.WALKING_FRAGMENT_DISAPPEAR, null);
         }
         getActivity().unbindService(serviceConnection);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mTask != null) {
+            mHandler.removeCallbacks(mTask);
+        }
+        mEtTargetNum.removeTextChangedListener(mWatcher);
     }
 
     @Override
@@ -174,10 +194,69 @@ public class WalkingCountFragment extends BaseFragment {
         mTvTargetMeasure.setText(mTarget.measure);
         if (mTarget.code == TARGET.WALKING.code) {
             mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetSteps(getActivity())));
+            mEtTargetNum.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else if (mTarget.code == TARGET.CALORIES.code) {
             mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetCalories(getActivity())));
+            mEtTargetNum.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
             mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetDistance(getActivity())));
+            mEtTargetNum.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
+    }
+
+    private TextWatcher mWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (mTask != null) {
+                mHandler.removeCallbacks(mTask);
+            }
+             try {
+                 if (!s.toString().isEmpty()) {
+                     final Number targetSteps = NumberFormat.getInstance().parse(s.toString());
+                     if (targetSteps.floatValue() != 0) {
+                         mTask = new Runnable() {
+                             @Override
+                             public void run() {
+                                 saveTargetNumbers(targetSteps);
+                             }
+                         };
+                         mHandler.postDelayed(mTask, 500);
+                     }
+                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+    private void saveTargetNumbers(Number target) {
+        if (mTarget.code == TARGET.WALKING.code) {
+            int lastTarget = StepSharePrefrenceUtil.getTargetSteps(getActivity());
+            if (target.intValue() != lastTarget) {
+                StepSharePrefrenceUtil.saveTargetSteps(getActivity(), target.intValue());
+                StepSharePrefrenceUtil.saveTodayAchieved(getActivity(), false);
+            }
+        } else if (mTarget.code == TARGET.CALORIES.code) {
+            int lastTarget = StepSharePrefrenceUtil.getTargetCalories(getActivity());
+            if (target.intValue() != lastTarget) {
+                StepSharePrefrenceUtil.saveTargetCalories(getActivity(), target.intValue());
+                StepSharePrefrenceUtil.saveTodayAchieved(getActivity(), false);
+            }
+        } else {
+            float lastTarget = StepSharePrefrenceUtil.getTargetDistance(getActivity());
+            if (target.floatValue() != lastTarget) {
+                StepSharePrefrenceUtil.saveTargetDistance(getActivity(), target.floatValue());
+                StepSharePrefrenceUtil.saveTodayAchieved(getActivity(), false);
+            }
         }
     }
 
@@ -236,14 +315,14 @@ public class WalkingCountFragment extends BaseFragment {
         };
     }
 
-    private enum TARGET {
+    public enum TARGET {
         WALKING(0, "걸음", "걸음"),
         CALORIES(1, "칼로리", "Kcal"),
         DISTANCE(2, "거리", "Km");
 
-        int code;
-        String name;
-        String measure;
+        public int code;
+        public String name;
+        public String measure;
 
         TARGET(int code, String name, String measure) {
             this.code = code;

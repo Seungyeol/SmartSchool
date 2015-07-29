@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import com.aura.smartschool.R;
 import com.aura.smartschool.fragment.walkingfragments.WalkingCountFragment;
 import com.aura.smartschool.fragment.walkingfragments.WalkingHistoryFragment;
-import com.aura.smartschool.fragment.walkingfragments.WalkingSettingFragment;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
@@ -139,8 +138,6 @@ public class WalkingPagerFragment extends BaseFragment implements View.OnClickLi
                     return WalkingCountFragment.newInstance(mMember);
                 case 1:
                     return WalkingHistoryFragment.newInstance(mMember);
-                case 2:
-                    return WalkingSettingFragment.newInstance(mMember);
                 default:
                     return null;
             }
