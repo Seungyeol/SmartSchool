@@ -1,5 +1,6 @@
 package com.aura.smartschool.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +33,8 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.tvSchoolName.setText(member.mSchoolVO.school_name);
-        viewHolder.tvNoticeName.setText(notiList.get(position).category == 1 ? "가정통신문" : "공지사항");
-//      viewHolder.tvDay;
-        viewHolder.tvDate.setText(notiList.get(position).notiDate);
-        viewHolder.tvNoticeTitle.setText(notiList.get(position).title);
-        viewHolder.tvNoticeBody.setText(notiList.get(position).content);
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        viewHolder.onBindViewHolder(notiList.get(position));
     }
 
     @Override
@@ -74,6 +70,42 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             llBtnLike = itemView.findViewById(R.id.ll_btn_like);
             llBtnScrap = itemView.findViewById(R.id.ll_btn_scrap);
             llBtnShare = itemView.findViewById(R.id.ll_btn_share);
+
+            llBtnShare.setOnClickListener(clickListener);
+        }
+
+        public void onBindViewHolder(SchoolNotiVO notiVO) {
+            tvSchoolName.setText(member.mSchoolVO.school_name);
+            tvNoticeName.setText(notiVO.category == 1 ? "가정통신문" : "공지사항");
+//      viewHolder.tvDay;
+            tvDate.setText(notiVO.notiDate);
+            tvNoticeTitle.setText(notiVO.title);
+            tvNoticeBody.setText(notiVO.content);
+        }
+
+        private View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.ll_btn_share:
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, getShareString());
+                        sendIntent.setType("text/plain");
+                        v.getContext().startActivity(sendIntent);
+                        break;
+                }
+            }
+        };
+
+        private String getShareString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<< ").append(tvNoticeName.getText()).append(" >>").append("\n")
+                    .append("학교 : ").append(tvSchoolName.getText()).append("\n")
+                    .append("일정 : ").append(tvDate.getText()).append("\n\n")
+                    .append(tvNoticeTitle.getText()).append("\n")
+                    .append(tvNoticeBody.getText()).append("\n");
+            return sb.toString();
         }
     }
 }
