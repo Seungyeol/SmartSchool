@@ -40,6 +40,7 @@
                 android:background="@color/orange"></LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
@@ -48,11 +49,13 @@
                 <TextView
                     android:id="@+id/tv_1"
                     android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
                     android:gravity="center" android:background="@drawable/bg_square_orange_empty" android:padding="3dp"
                     android:textSize="15dp" android:textStyle="bold" android:text="0.852"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
@@ -61,6 +64,7 @@
                 <TextView
                     android:id="@+id/tv_2"
                     android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
                     android:gravity="center" android:background="@drawable/bg_square_orange_empty" android:padding="3dp"
                     android:textSize="15dp" android:textStyle="bold" android:text="-2.2kg"/>
             </LinearLayout>
@@ -75,6 +79,7 @@
                 <TextView
                     android:id="@+id/tv_3"
                     android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
                     android:gravity="center" android:background="@drawable/bg_square_orange_empty" android:padding="3dp"
                     android:textSize="15dp" android:textStyle="bold" android:text="-3%"/>
             </LinearLayout>
@@ -105,31 +110,31 @@
                 <ImageView
                     android:id="@+id/iv_weight2"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="@drawable/point_1"/>
+                    android:background="@drawable/point_2"/>
                 <Space
                     android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
                 <ImageView
                     android:id="@+id/iv_weight3"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="@drawable/point_1"/>
+                    android:background="@drawable/point_3"/>
                 <Space
                     android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
                 <ImageView
                     android:id="@+id/iv_weight4"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="@drawable/point_2"/>
+                    android:background="@drawable/point_4"/>
                 <Space
                     android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
                 <ImageView
                     android:id="@+id/iv_weight5"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="@drawable/point_3"/>
+                    android:background="@drawable/point_5"/>
                 <Space
                     android:layout_width="0dp" android:layout_weight="2" android:layout_height="1dp" />
                 <ImageView
                     android:id="@+id/iv_weight6"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:background="@drawable/point_4"/>
+                    android:background="@drawable/point_6"/>
                 <Space
                     android:layout_width="0dp" android:layout_weight="1" android:layout_height="1dp" />
             </LinearLayout>

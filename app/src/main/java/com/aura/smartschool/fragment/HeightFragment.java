@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -259,6 +260,7 @@ public class HeightFragment extends BaseFragment {
                     int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, dm);
                     View view = View.inflate(getActivity(), R.layout.popup_height, null);
 
+                    ImageView iv_left = (ImageView) view.findViewById(R.id.iv_left);
                     TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
                     TextView tv_increase = (TextView) view.findViewById(R.id.tv_increase);
                     TextView tv_rank = (TextView) view.findViewById(R.id.tv_rank);
@@ -271,6 +273,7 @@ public class HeightFragment extends BaseFragment {
                     } else {
                         tv_title.setText("체중 변화");
                         tv_increase.setText(String.format("%.1fkg 증가", mMeasureVO.value - mMeasureVO.beforeValue));
+                        iv_left.setBackgroundResource(R.drawable.scale);
                     }
 
                     tv_rank.setText(String.valueOf(mMeasureVO.rank) + "등");

@@ -19,7 +19,8 @@ public class BmiFragment extends BaseFragment {
     private View mView;
     private TextView tv_bmi, tv_fat;
     private TextView tv_help_left, tv_help_right;
-    private ImageView iv_bmi;
+    private ImageView iv_man;
+    private TextView tv_man;
     private PopupWindow mPopup;
 
     private MemberVO mMember;
@@ -54,21 +55,30 @@ public class BmiFragment extends BaseFragment {
         tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
         tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
-        iv_bmi = (ImageView) mView.findViewById(R.id.iv_bmi);
+        iv_man = (ImageView) mView.findViewById(R.id.iv_man);
+        tv_man = (TextView) mView.findViewById(R.id.tv_man);
 
         tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.bmi));
         tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.fat) + "%");
 
         if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("저체중")) {
-            iv_bmi.setImageResource(R.drawable.type_under);
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상상")) {
-            iv_bmi.setImageResource(R.drawable.type_normal);
+            iv_man.setImageResource(R.drawable.point_man_1);
+            tv_man.setText("저체중");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상")) {
+            iv_man.setImageResource(R.drawable.point_man_2);
+            tv_man.setText("정상");
         } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("과체중")) {
-            iv_bmi.setImageResource(R.drawable.type_over_1);
+            iv_man.setImageResource(R.drawable.point_man_3);
+            tv_man.setText("과체중");
         } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만")) {
-            iv_bmi.setImageResource(R.drawable.type_over_2);
-        } else {
-            iv_bmi.setImageResource(R.drawable.type_over_3);
+            iv_man.setImageResource(R.drawable.point_man_4);
+            tv_man.setText("비만");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("중도비만")) {
+            iv_man.setImageResource(R.drawable.point_man_5);
+            tv_man.setText("중도\n비만");
+        } else { //고도 비만
+            iv_man.setImageResource(R.drawable.point_man_6);
+            tv_man.setText("고도\n비만");
         }
 
         tv_help_left.setOnClickListener(mClick);
