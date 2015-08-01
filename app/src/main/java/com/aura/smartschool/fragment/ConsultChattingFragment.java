@@ -13,11 +13,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.ConsultChattingAdapter;
 import com.aura.smartschool.database.DBConsultChat;
+import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.vo.ConsultChatVO;
 import com.aura.smartschool.vo.MemberVO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -27,6 +35,9 @@ import java.util.Date;
 public class ConsultChattingFragment extends BaseFragment {
 
     private static String KEY_MEMBER = "member";
+
+    private AQuery mAq;
+
     private MemberVO mMember;
     private DBConsultChat.TYPE chatType;
 
@@ -64,6 +75,8 @@ public class ConsultChattingFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.fragment_consult_chatting, null);
 
+        mAq = new AQuery(view);
+
         mConsultChattingList = (RecyclerView) view.findViewById(R.id.list_consult_chatting);
         mConsultChattingList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -81,14 +94,66 @@ public class ConsultChattingFragment extends BaseFragment {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long id = dbConsult.insertMsg(chatType, etChat.getText().toString(), DBConsultChat.MSG_FROM_ME, new Date(), -1);
-                mConsultChattingAdapter.addItem(new ConsultChatVO(DBConsultChat.MSG_FROM_ME, etChat.getText().toString(), new Date(), 0));
-                etChat.setText("");
+                long dbIndex = dbConsult.insertMsg(chatType, etChat.getText().toString(), DBConsultChat.MSG_FROM_ME, new Date(), -1);
+                mConsultChattingAdapter.addItem(new ConsultChatVO(dbIndex, DBConsultChat.MSG_FROM_ME, etChat.getText().toString(), new Date(), 0));
                 mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
+                sendConsultMessage(etChat.getText().toString(), dbIndex);
             }
         });
 
         return view;
+    }
+
+    private void sendConsultMessage(String msg, final long dbIndex) {
+        LoadingDialog.showLoading(getActivity());
+        try {
+            String url = Constant.HOST + Constant.API_ADD_CONSULT;
+
+            JSONObject json = new JSONObject();
+            json.put("content", msg);
+            json.put("category", chatType.getCode());
+            json.put("who", DBConsultChat.MSG_FROM_ME);
+            json.put("member_id", mMember.member_id);
+
+            Log.d("LDK", "url:" + url);
+            Log.d("LDK", "input parameter:" + json.toString(1));
+
+            mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    LoadingDialog.hideLoading();
+                    etChat.setText("");
+                    try {
+                        if (status.getCode() != 200) {
+                            Log.d("LDK", "FAIL");
+                            updateResult(dbIndex, -1);
+                            return;
+                        }
+                        Log.d("LDK", "result:" + object.toString(1));
+
+                        if (object.getInt("result") == 0) {
+                            updateResult(dbIndex, 0);
+                        } else {
+                            updateResult(dbIndex, -1);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        updateResult(dbIndex, -1);
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            updateResult(dbIndex, -1);
+        }
+    }
+
+    private void updateResult(long dbIndex, int result) {
+        dbConsult.updateSendResult(chatType, dbIndex, result);
+        if (result == -1) {
+            mConsultChattingAdapter.setFailMsg(dbIndex);
+        }
     }
 
     private TextWatcher mWatcher = new TextWatcher() {

@@ -21,7 +21,7 @@ public class DBConsultChat extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "db_consult";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String COL_ID = "_id";
     private static final String COL_BODY = "body";
@@ -78,7 +78,7 @@ public class DBConsultChat extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                result.add(new ConsultChatVO(cursor.getInt(1), cursor.getString(2), new Date(cursor.getLong(3)), cursor.getInt(4)));
+                result.add(new ConsultChatVO(cursor.getLong(0), cursor.getInt(1), cursor.getString(2), new Date(cursor.getLong(3)), cursor.getInt(4)));
             } while (cursor.moveToNext());
             cursor.close();
         }
@@ -102,9 +102,14 @@ public class DBConsultChat extends SQLiteOpenHelper {
         return id;
     }
 
-    public void updateSendResult(TYPE chatType, int id, int sendResult) {
+    public void updateSendResult(TYPE chatType, long id, int sendResult) {
         getWritableDatabase().execSQL("UPDATE " + chatType.getTableName() +
                 " SET " + COL_SEND_RESULT + " = " + sendResult +
+                " WHERE " + COL_ID + " = " + id);
+    }
+
+    public void removeMessage(TYPE chatType, long id) {
+        getWritableDatabase().execSQL("DELETE FROM "+ chatType.getTableName() +
                 " WHERE " + COL_ID + " = " + id);
     }
 
@@ -113,12 +118,12 @@ public class DBConsultChat extends SQLiteOpenHelper {
         SCHOOL_VIOLENCE_CONSULT("tb_school_violence", 1001),
         FRIEND_RELATIONSHIP_CONSULT("tb_friend_relationship", 1002),
         FAMILY_CONSULT("tb_family", 1003),
-        SEXUAL_CONSULT("tb_sexual", 1004),
-        ACADEMIC_CONSULT("tb_academic", 1005),
-        CAREER_CONSULT("tb_career", 1006),
-        PSYCHOLOGY_CONSULT("tb_psychology", 1007),
-        GROWTH_CONSULT("tb_growth", 1008),
-        SMOKING_CONSULT("tb_smoking", 1009);
+        SEXUAL_CONSULT("tb_sexual", 1),
+        ACADEMIC_CONSULT("tb_academic", 2),
+        CAREER_CONSULT("tb_career", 3),
+        PSYCHOLOGY_CONSULT("tb_psychology", 4),
+        GROWTH_CONSULT("tb_growth", 5),
+        SMOKING_CONSULT("tb_smoking", 6);
 
         private String tbName;
         private int code;

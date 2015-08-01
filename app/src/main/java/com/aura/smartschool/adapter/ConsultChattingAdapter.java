@@ -39,20 +39,12 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
     }
 
     @Override
-    public void onBindViewHolder(ConsultViewHolder holder, int position) {
+    public void onBindViewHolder(final ConsultViewHolder holder, final int position) {
         boolean isFirstMsgOfDay = true;
         if (position > 0) {
             isFirstMsgOfDay = Util.isDifferentDay(chatMsgList.get(position).time, chatMsgList.get(position-1).time);
         }
-
-        holder.llHeaderDate.setVisibility(isFirstMsgOfDay ? View.VISIBLE : View.GONE);
-        holder.tvDate.setText(new SimpleDateFormat("yyyy년 MM월 dd일 E요일").format(chatMsgList.get(position).time));
-        holder.tvConsultChat.setText(chatMsgList.get(position).msg);
-        holder.tvTime.setText(new SimpleDateFormat("a hh:mm").format(chatMsgList.get(position).time));
-        if (getItemViewType(position) == DBConsultChat.MSG_FROM_ME) {
-        } else {
-            ((OtherChattingViewHolder)holder).tvName.setText("선생님");
-        }
+        holder.onBindViewHolder(chatMsgList.get(position), isFirstMsgOfDay);
     }
 
     @Override
@@ -70,6 +62,22 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         notifyItemInserted(chatMsgList.size()-1);
     }
 
+    public void setFailMsg(long id) {
+        boolean hasMsg = false;
+        int idx = 0;
+        for (ConsultChatVO msg:chatMsgList) {
+            if(msg.dbIndex == id) {
+                hasMsg = true;
+                msg.sendResult = -1;
+                break;
+            }
+            idx++;
+        }
+        if (hasMsg) {
+            notifyItemChanged(idx);
+        }
+    }
+
     // ---------------------- ViewHolder ---------------------
 
     public class ConsultViewHolder extends RecyclerView.ViewHolder {
@@ -79,6 +87,13 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         public TextView tvTime;
         public ConsultViewHolder(View itemView) {
             super(itemView);
+        }
+
+        public void onBindViewHolder(ConsultChatVO msg, boolean isFirstMsgOfDay) {
+            llHeaderDate.setVisibility(isFirstMsgOfDay ? View.VISIBLE : View.GONE);
+            tvDate.setText(new SimpleDateFormat("yyyy년 MM월 dd일 E요일").format(msg.time));
+            tvConsultChat.setText(msg.msg);
+            tvTime.setText(new SimpleDateFormat("a hh:mm").format(msg.time));
         }
     }
 
@@ -95,9 +110,17 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
             tvConsultChat = (TextView) itemView.findViewById(R.id.tv_consult_chat);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
         }
+
+        @Override
+        public void onBindViewHolder(ConsultChatVO msg, boolean isFirstMsgOfDay) {
+            super.onBindViewHolder(msg, isFirstMsgOfDay);
+            tvName.setText("선생님");
+        }
     }
 
     public class MineChattingViewHolder extends ConsultViewHolder {
+
+        public ImageView ivFail;
 
         public MineChattingViewHolder(View itemView) {
             super(itemView);
@@ -105,6 +128,13 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             tvConsultChat = (TextView) itemView.findViewById(R.id.tv_consult_chat);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
+            ivFail = (ImageView) itemView.findViewById(R.id.iv_fail);
+        }
+
+        @Override
+        public void onBindViewHolder(ConsultChatVO msg, boolean isFirstMsgOfDay) {
+            super.onBindViewHolder(msg, isFirstMsgOfDay);
+            ivFail.setVisibility(msg.sendResult == 0 ? View.GONE:View.VISIBLE);
         }
     }
 

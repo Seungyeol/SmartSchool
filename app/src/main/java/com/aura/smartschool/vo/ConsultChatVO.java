@@ -7,12 +7,14 @@ import java.util.Date;
  */
 public class ConsultChatVO {
 
+    public long dbIndex;
     public int msgFrom;
     public String msg;
     public Date time;
     public int sendResult;
 
-    public ConsultChatVO (int msgFrom, String msg, Date time, int sendResult) {
+    public ConsultChatVO (long dbIndex, int msgFrom, String msg, Date time, int sendResult) {
+        this.dbIndex = dbIndex;
         this.msgFrom = msgFrom;
         this.msg = msg;
         this.time = time;
