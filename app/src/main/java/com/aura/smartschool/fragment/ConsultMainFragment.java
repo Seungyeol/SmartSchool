@@ -1,5 +1,7 @@
 package com.aura.smartschool.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -81,8 +83,11 @@ public class ConsultMainFragment extends BaseFragment implements View.OnClickLis
         DBConsultChat.TYPE chatType = null;
         switch (v.getId()) {
             case R.id.tv_school_violence:
-                chatType = DBConsultChat.TYPE.SCHOOL_VIOLENCE_CONSULT;
-                break;
+//                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01011111111"));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "01011111111"));
+                startActivity(intent);
+                return;
+                //chatType = DBConsultChat.TYPE.SCHOOL_VIOLENCE_CONSULT;
             case R.id.tv_friend_relationship:
                 chatType = DBConsultChat.TYPE.FRIEND_RELATIONSHIP_CONSULT;
                 break;
