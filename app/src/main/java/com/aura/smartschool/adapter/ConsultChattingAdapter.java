@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,39 +87,32 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
     }
 
     public void removeItem(ConsultChatVO msg) {
-        for (ConsultChatVO m:failMsgList) {
-            if (msg.dbIndex == m.dbIndex) {
-                failMsgList.remove(m);
+        for (int i = failMsgList.size()-1; i>=0; i--) {
+            if (msg.dbIndex == failMsgList.get(i).dbIndex) {
+                failMsgList.remove(i);
             }
         }
         notifyDataSetChanged();
     }
 
     public void setFailMsg(long id) {
-        boolean hasMsg = false;
-        int idx = 0;
-        for (ConsultChatVO msg:chatMsgList) {
-            if(msg.dbIndex == id) {
-                hasMsg = true;
-                msg.sendResult = -1;
-                failMsgList.add(msg);
-                chatMsgList.remove(msg);
+        for (int i = chatMsgList.size()-1; i>=0; i--) {
+            if(chatMsgList.get(i).dbIndex == id) {
+                chatMsgList.get(i).sendResult = -1;
+                failMsgList.add(chatMsgList.get(i));
+                chatMsgList.remove(chatMsgList.get(i));
                 break;
             }
-            idx++;
         }
-        if (hasMsg) {
-            notifyItemChanged(idx);
-        }
+        notifyDataSetChanged();
     }
 
     private void makeFailList() {
         failMsgList = new ArrayList<>();
-        for (ConsultChatVO msg:chatMsgList) {
-            if(msg.sendResult == -1) {
-                failMsgList.add(msg);
-                chatMsgList.remove(msg);
-                break;
+        for (int i = chatMsgList.size()-1; i>=0; i--) {
+            if (chatMsgList.get(i).sendResult == -1) {
+                failMsgList.add(0, chatMsgList.get(i));
+                chatMsgList.remove(i);
             }
         }
     }
