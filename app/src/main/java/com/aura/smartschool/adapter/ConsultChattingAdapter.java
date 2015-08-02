@@ -1,5 +1,13 @@
 package com.aura.smartschool.adapter;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +29,19 @@ import java.util.ArrayList;
 public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChattingAdapter.ConsultViewHolder> {
 
     private ArrayList<ConsultChatVO> chatMsgList;
+    private ArrayList<ConsultChatVO> failMsgList;
 
-    public ConsultChattingAdapter(ArrayList<ConsultChatVO> msgList) {
+    private FailMessageManager failMessageManager;
+
+    public interface FailMessageManager {
+        void OnRetry(ConsultChatVO message);
+        void OnRemove(ConsultChatVO message);
+    }
+
+    public ConsultChattingAdapter(ArrayList<ConsultChatVO> msgList, FailMessageManager manager) {
         this.chatMsgList = msgList;
+        this.failMessageManager = manager;
+        makeFailList();
     }
 
     @Override
@@ -41,25 +59,39 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
     @Override
     public void onBindViewHolder(final ConsultViewHolder holder, final int position) {
         boolean isFirstMsgOfDay = true;
-        if (position > 0) {
+        if (position > 0 && position < chatMsgList.size()) {
             isFirstMsgOfDay = Util.isDifferentDay(chatMsgList.get(position).time, chatMsgList.get(position-1).time);
         }
-        holder.onBindViewHolder(chatMsgList.get(position), isFirstMsgOfDay);
+        if (position < chatMsgList.size()) {
+            holder.onBindViewHolder(chatMsgList.get(position), isFirstMsgOfDay);
+        } else {
+            holder.onBindViewHolder(failMsgList.get(position - chatMsgList.size()), false);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return chatMsgList.size();
+        return chatMsgList.size() + failMsgList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return chatMsgList.get(position).msgFrom;
+        return (position < chatMsgList.size() ? chatMsgList.get(position).msgFrom : DBConsultChat.MSG_FROM_ME);
     }
 
     public void addItem(ConsultChatVO msg) {
         chatMsgList.add(msg);
         notifyItemInserted(chatMsgList.size()-1);
+    }
+
+    public void removeItem(ConsultChatVO msg) {
+        for (ConsultChatVO m:failMsgList) {
+            if (msg.dbIndex == m.dbIndex) {
+                failMsgList.remove(m);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public void setFailMsg(long id) {
@@ -69,12 +101,25 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
             if(msg.dbIndex == id) {
                 hasMsg = true;
                 msg.sendResult = -1;
+                failMsgList.add(msg);
+                chatMsgList.remove(msg);
                 break;
             }
             idx++;
         }
         if (hasMsg) {
             notifyItemChanged(idx);
+        }
+    }
+
+    private void makeFailList() {
+        failMsgList = new ArrayList<>();
+        for (ConsultChatVO msg:chatMsgList) {
+            if(msg.sendResult == -1) {
+                failMsgList.add(msg);
+                chatMsgList.remove(msg);
+                break;
+            }
         }
     }
 
@@ -132,10 +177,65 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         }
 
         @Override
-        public void onBindViewHolder(ConsultChatVO msg, boolean isFirstMsgOfDay) {
+        public void onBindViewHolder(final ConsultChatVO msg, boolean isFirstMsgOfDay) {
             super.onBindViewHolder(msg, isFirstMsgOfDay);
-            ivFail.setVisibility(msg.sendResult == 0 ? View.GONE:View.VISIBLE);
+            if (msg.sendResult == 0) {
+                tvTime.setVisibility(View.VISIBLE);
+                ivFail.setVisibility(View.GONE);
+            } else {
+                tvTime.setVisibility(View.GONE);
+                ivFail.setVisibility(View.VISIBLE);
+                ivFail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new RetryDialog(v.getContext())
+                                .setRetryListener(new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        failMessageManager.OnRetry(msg);
+                                    }
+                                })
+                                .setRemoveListener(new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        failMessageManager.OnRemove(msg);
+                                    }
+                                }).show(((FragmentActivity)v.getContext()).getSupportFragmentManager(), "retryDialog");
+                    }
+                });
+            }
+
         }
     }
 
+    private static class RetryDialog extends DialogFragment {
+        private Context context;
+        private DialogInterface.OnClickListener retryListener;
+        private DialogInterface.OnClickListener removeListener;
+
+        private RetryDialog(Context context) {
+            this.context = context;
+            this.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        }
+
+        RetryDialog setRetryListener(DialogInterface.OnClickListener retryListener) {
+            this.retryListener = retryListener;
+            return this;
+        }
+
+        RetryDialog setRemoveListener(DialogInterface.OnClickListener removeListener) {
+            this.removeListener = removeListener;
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new AlertDialog.Builder(context)
+                    .setMessage("\n재전송 하시겠습니까?\n")
+                    .setPositiveButton("확인", retryListener)
+                    .setNegativeButton("삭제", removeListener)
+                    .create();
+        }
+    }
 }

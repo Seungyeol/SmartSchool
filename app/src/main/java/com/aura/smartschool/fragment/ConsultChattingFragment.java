@@ -80,7 +80,7 @@ public class ConsultChattingFragment extends BaseFragment {
         mConsultChattingList = (RecyclerView) view.findViewById(R.id.list_consult_chatting);
         mConsultChattingList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mConsultChattingAdapter = new ConsultChattingAdapter(dbConsult.getAllMsg(chatType));
+        mConsultChattingAdapter = new ConsultChattingAdapter(dbConsult.getAllMsg(chatType), retryManager);
         mConsultChattingList.setAdapter(mConsultChattingAdapter);
         if (mConsultChattingAdapter.getItemCount() > 0) {
             mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount()-1);
@@ -94,14 +94,32 @@ public class ConsultChattingFragment extends BaseFragment {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long dbIndex = dbConsult.insertMsg(chatType, etChat.getText().toString(), DBConsultChat.MSG_FROM_ME, new Date(), -1);
-                mConsultChattingAdapter.addItem(new ConsultChatVO(dbIndex, DBConsultChat.MSG_FROM_ME, etChat.getText().toString(), new Date(), 0));
-                mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
-                sendConsultMessage(etChat.getText().toString(), dbIndex);
+                createNewMessage(etChat.getText().toString());
             }
         });
 
         return view;
+    }
+
+    private void createNewMessage(String message) {
+        long dbIndex = dbConsult.insertMsg(chatType, message, DBConsultChat.MSG_FROM_ME, new Date(), -1);
+        mConsultChattingAdapter.addItem(new ConsultChatVO(dbIndex, DBConsultChat.MSG_FROM_ME, message, new Date(), 0));
+        mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
+        sendConsultMessage(etChat.getText().toString(), dbIndex);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setActionbar(R.drawable.actionbar_back, mMember.name);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dbConsult != null) {
+            dbConsult.close();
+        }
     }
 
     private void sendConsultMessage(String msg, final long dbIndex) {
@@ -175,17 +193,18 @@ public class ConsultChattingFragment extends BaseFragment {
         }
     };
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setActionbar(R.drawable.actionbar_back, mMember.name);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (dbConsult != null) {
-            dbConsult.close();
+    private ConsultChattingAdapter.FailMessageManager retryManager = new ConsultChattingAdapter.FailMessageManager() {
+        @Override
+        public void OnRetry(ConsultChatVO message) {
+            mConsultChattingAdapter.removeItem(message);
+            dbConsult.removeMessage(chatType, message.dbIndex);
+            createNewMessage(message.msg);
         }
-    }
+
+        @Override
+        public void OnRemove(ConsultChatVO message) {
+            mConsultChattingAdapter.removeItem(message);
+            dbConsult.removeMessage(chatType, message.dbIndex);
+        }
+    };
 }
