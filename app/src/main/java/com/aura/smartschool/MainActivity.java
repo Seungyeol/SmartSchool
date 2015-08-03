@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	public static final int MOD_ADD = 0;
 	public static final int MOD_UPDATE = 1;
 
-	private static final String SENDER_ID = "345146841450";
+	private static final String SENDER_ID = "552376275094";
 	
 	private TextView tvTitle;
 	private ImageView ivHome;
