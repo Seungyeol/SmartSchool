@@ -207,7 +207,9 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         private DialogInterface.OnClickListener retryListener;
         private DialogInterface.OnClickListener removeListener;
 
-        private RetryDialog(Context context) {
+        public RetryDialog () {}
+
+        public RetryDialog (Context context) {
             this.context = context;
             this.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         }
