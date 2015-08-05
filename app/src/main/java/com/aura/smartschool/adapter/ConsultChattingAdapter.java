@@ -1,5 +1,6 @@
 package com.aura.smartschool.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,14 +202,16 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         }
     }
 
-    private static class RetryDialog extends DialogFragment {
+    public static class RetryDialog extends DialogFragment {
         private Context context;
         private DialogInterface.OnClickListener retryListener;
         private DialogInterface.OnClickListener removeListener;
 
         public RetryDialog () {}
 
+        @SuppressLint("ValidFragment")
         public RetryDialog (Context context) {
+            super();
             this.context = context;
             this.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         }

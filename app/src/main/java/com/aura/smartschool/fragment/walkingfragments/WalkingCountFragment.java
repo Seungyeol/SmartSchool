@@ -13,7 +13,6 @@ import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -260,7 +259,7 @@ public class WalkingCountFragment extends BaseFragment {
         }
     }
 
-    private static class TargetSelectionDialogFragment extends DialogFragment {
+    public static class TargetSelectionDialogFragment extends DialogFragment {
         interface OnSelectListener {
             void onSelected(TARGET target);
         }

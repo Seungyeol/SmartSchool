@@ -6,8 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:background="#8BC34A">
+        android:orientation="horizontal">
         <FrameLayout
             android:id="@+id/fl_tab_month_schedule"
             android:layout_width="0dp"
@@ -19,14 +18,6 @@
                 android:gravity="center"
                 style="@style/WalkingCountMenu"
                 android:text="월간일정표"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/tab_selector_white"/>
         </FrameLayout>
         <FrameLayout
             android:id="@+id/fl_tab_notice"
@@ -39,14 +30,6 @@
                 android:gravity="center"
                 style="@style/WalkingCountMenu"
                 android:text="공지사항"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/tab_selector_white"/>
         </FrameLayout>
         <FrameLayout
             android:id="@+id/fl_tab_school_letter"
@@ -59,14 +42,6 @@
                 android:gravity="center"
                 style="@style/WalkingCountMenu"
                 android:text="가정통신문"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/tab_selector_white"/>
         </FrameLayout>
     </LinearLayout>
     <android.support.v4.view.ViewPager
