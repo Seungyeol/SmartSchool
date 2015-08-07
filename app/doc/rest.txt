@@ -322,7 +322,7 @@ http://210.127.55.205/HealthCare/GetVideoList
     "schoolGradeId": ""
 }
 
-//공지사항 올리기(관리자페이지)-------------------------------------------------------------
+//학교 알리미 올리기(관리자페이지)-------------------------------------------------------------
 http://aurasystem.kr:9000/admin/api/addSchoolNoti
 {
 "school_id" : 18247,
@@ -337,7 +337,7 @@ http://aurasystem.kr:9000/admin/api/addSchoolNoti
     "msg": "success"
 }
 
-//공지사항 수정하기-------------------------------------------------
+//학교 알리미 수정하기-------------------------------------------------
 http://aurasystem.kr:9000/admin/api/modifySchoolNoti
 {
 "noti_seq" : 14,
@@ -347,7 +347,7 @@ http://aurasystem.kr:9000/admin/api/modifySchoolNoti
 "noti_date" : "2015-06-20"
 }
 
-//공지사항 가져오기-------------------------------------------------
+//학교 알리미 가져오기-------------------------------------------------
 category: 1:가정통신문, 2:공지사항, 3: 일정
 첨부화일은 나중에,,,
 http://aurasystem.kr:9000/admin/api/getSchoolNotiList
@@ -365,4 +365,183 @@ http://aurasystem.kr:9000/admin/api/getSchoolNotiList
         "content": "aaabbbccc",
         "noti_date": "2015-07-21"
     }]
+}
+
+* 실시간 상담 목록 가져오기(모바일)
+http://aurasystem.kr:9000/api/getConsultList
+{
+   "member_id":31,
+   "category" : 1
+}
+결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": [{
+        "consult_id": 3,
+        "session_id": 2,
+        "who": 0,
+        "content": "고민이 있어요2",
+        "created": "2015-07-30 22:44:43.0"
+    }, {
+        "consult_id": 2,
+        "session_id": 2,
+        "who": 0,
+        "content": "고민이 있어요",
+        "created": "2015-07-30 22:42:32.0"
+    }]
+}
+
+* 실시간상담 입력하기--------------------------------------------------------------------------
+who: 0: 학생, 1: 선생님
+category
+1: 성상담
+2:학업상담
+3:진로상담
+4:심리상담
+5:성장상담
+6:흡연상담
+http://aurasystem.kr:9000/admin/api/addConsult
+{
+	"content": "고민이 있어요",
+	"category": 1,
+    "who": 0,
+	"member_id": 31
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//공지사항 가져오기
+http://aurasystem.kr:9000/api/getNotiList
+결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": [{
+        "noti_id": 2,
+        "title": "title2",
+        "content": "content2",
+        "created": "2015-08-07 20:51:01.0"
+    }, {
+        "noti_id": 1,
+        "title": "title1",
+        "content": "content1",
+        "created": "2015-08-07 20:45:31.0"
+    }]
+}
+
+//공지사항 추가하기
+http://aurasystem.kr:9000/api/addNoti
+{
+    "title" : "title1",
+    "content" : "content1"
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//공지사항 수정하기
+http://aurasystem.kr:9000/api/modifyNoti
+{
+    "title" : "title111",
+    "content" : "content11111",
+    "noti_id" : 1
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//공지사항 삭제하기
+http://aurasystem.kr:9000/api/removeNoti
+{
+    "noti_id" : 1
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//QnA 가져오기
+http://aurasystem.kr:9000/api/getBoardList
+{
+    "member_id" : 31,
+    "board_type" : 1
+}
+결과
+{
+    "result": 0,
+    "msg": "success",
+    "data": [{
+        "board_id": 3,
+        "member_id": 31,
+        "board_type": 1,
+        "title": "qna title3",
+        "content": "qna content3",
+        "answer": null,
+        "created": "2015-08-07 21:26:29.0",
+        "updated": null
+    }, {
+        "board_id": 2,
+        "member_id": 31,
+        "board_type": 1,
+        "title": "qna title2",
+        "content": "qna content2",
+        "answer": null,
+        "created": "2015-08-07 21:26:18.0",
+        "updated": null
+    }, {
+        "board_id": 1,
+        "member_id": 31,
+        "board_type": 1,
+        "title": "qna title",
+        "content": "qna content",
+        "answer": null,
+        "created": "2015-08-07 21:25:09.0",
+        "updated": null
+    }]
+}
+
+//QnA 추가하기
+http://aurasystem.kr:9000/api/addBoard
+{
+    "member_id" : 31,
+    "board_type" : 1,
+    "title" : "qna title",
+    "content" : "qna content"
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//QnA 수정하기(답변하기)
+http://aurasystem.kr:9000/api/modifyBoard
+{
+    "board_id" : 1,
+    "answer" : "답변입니다"
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
+}
+
+//QnA 삭제하기
+http://aurasystem.kr:9000/api/removeBoard
+{
+    "board_id" : 2
+}
+결과
+{
+    "result": 0,
+    "msg": "success"
 }
