@@ -15,6 +15,8 @@ public class MemberVO implements Serializable {
 	//위치정보
 	public double lat;
 	public double lng;
+	//유료회원일 경우 지급 날짜
+	public String pay_date;
 
 	//자녀 정보
 	public SchoolVO mSchoolVO;

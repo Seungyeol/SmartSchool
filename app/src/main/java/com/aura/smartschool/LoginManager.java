@@ -165,6 +165,7 @@ public class LoginManager {
             member.photo = json.getString("photo");
             member.sex = json.getString("sex");
             member.birth_date = json.getString("birth_date");
+            member.pay_date = json.getString("pay_date");
 
             //자녀 정보
             SchoolVO school = new SchoolVO();
