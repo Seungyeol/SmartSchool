@@ -32,7 +32,7 @@ import java.util.Calendar;
 /**
  * Created by Administrator on 2015-06-14.
  */
-public class SchoolNoticePagerFragment extends BaseFragment implements View.OnClickListener{
+public class SchoolNoticePagerFragment extends Fragment implements View.OnClickListener{
 
     private static final int CATEGORY_LETTER = 1;
     private static final int CATEGORY_NOTI = 2;

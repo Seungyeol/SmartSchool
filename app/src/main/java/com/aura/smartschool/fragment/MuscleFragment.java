@@ -1,6 +1,7 @@
 package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import com.aura.smartschool.R;
 import com.aura.smartschool.vo.MemberVO;
 
-public class MuscleFragment extends BaseFragment {
+public class MuscleFragment extends Fragment {
 
     private View mView;
     private TextView tv_bmi, tv_fat;

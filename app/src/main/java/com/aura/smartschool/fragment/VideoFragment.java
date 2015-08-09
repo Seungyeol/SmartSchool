@@ -1,6 +1,7 @@
 package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class VideoFragment extends BaseFragment {
+public class VideoFragment extends Fragment {
 
     private View mView;
     private AQuery mAq;

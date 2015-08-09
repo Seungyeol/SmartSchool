@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -21,8 +22,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
-import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.vo.MemberVO;
@@ -33,7 +34,7 @@ import java.text.ParseException;
 /**
  * Created by Administrator on 2015-06-28.
  */
-public class WalkingCountFragment extends BaseFragment {
+public class WalkingCountFragment extends Fragment {
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
@@ -134,7 +135,7 @@ public class WalkingCountFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
 
         Intent serviceIntent = new Intent(getActivity(), StepCounterService.class);
         getActivity().startService(serviceIntent);

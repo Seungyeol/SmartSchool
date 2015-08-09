@@ -19,7 +19,7 @@ import com.aura.smartschool.vo.MemberVO;
 /**
  * Created by Administrator on 2015-06-14.
  */
-public class WalkingPagerFragment extends BaseFragment implements View.OnClickListener{
+public class WalkingPagerFragment extends Fragment implements View.OnClickListener{
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;

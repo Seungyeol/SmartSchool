@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBConsultChat;
 import com.aura.smartschool.vo.MemberVO;
@@ -15,7 +17,7 @@ import com.aura.smartschool.vo.MemberVO;
 /**
  * Created by Administrator on 2015-07-21.
  */
-public class ConsultMainFragment extends BaseFragment implements View.OnClickListener {
+public class ConsultMainFragment extends Fragment implements View.OnClickListener {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
@@ -75,7 +77,7 @@ public class ConsultMainFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
     }
 
     @Override

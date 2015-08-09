@@ -2,15 +2,16 @@ package com.aura.smartschool.fragment.schoolNoticeFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolNoticeAdapter;
-import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2015-07-16.
  */
-public class SchoolNoticeListFragment extends BaseFragment {
+public class SchoolNoticeListFragment extends Fragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
@@ -60,7 +61,7 @@ public class SchoolNoticeListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
     }
 
     @Override

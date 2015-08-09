@@ -1,6 +1,7 @@
 package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HeightFragment extends BaseFragment {
+public class HeightFragment extends Fragment {
 
     private View mView;
 

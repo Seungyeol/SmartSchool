@@ -3,6 +3,7 @@ package com.aura.smartschool.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ import com.aura.smartschool.vo.MemberVO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class HealthMainFragment extends BaseFragment {
+public class HealthMainFragment extends Fragment {
 	private View mView;
 	private MemberVO mMember;
     private AQuery mAq;
@@ -139,9 +140,9 @@ public class HealthMainFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 //        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
-            setActionbar(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
 //        } else {
-//            setActionbar(R.drawable.home, mMember.name);
+//            ((MainActivity)getActivity()).setHeaderView(R.drawable.home, mMember.name);
 //        }
 
 

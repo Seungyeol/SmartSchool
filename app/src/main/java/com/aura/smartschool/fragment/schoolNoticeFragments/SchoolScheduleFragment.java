@@ -2,6 +2,7 @@ package com.aura.smartschool.fragment.schoolNoticeFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,10 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolScheduleCalendarAdapter;
 import com.aura.smartschool.adapter.SchoolScheduleListAdapter;
-import com.aura.smartschool.fragment.BaseFragment;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
 
@@ -24,7 +25,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015-07-18.
  */
-public class SchoolScheduleFragment extends BaseFragment {
+public class SchoolScheduleFragment extends Fragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
@@ -74,7 +75,7 @@ public class SchoolScheduleFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
     }
 
     public void setScheduleList(ArrayList<SchoolNotiVO> scheduleList) {

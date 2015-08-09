@@ -39,7 +39,7 @@ import java.util.HashMap;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LocationFragment extends BaseFragment {
+public class LocationFragment extends Fragment {
     private View mView;
 
     private SupportMapFragment mMapFragment;

@@ -2,6 +2,7 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.ConsultChattingAdapter;
 import com.aura.smartschool.database.DBConsultChat;
@@ -32,7 +34,7 @@ import java.util.Date;
 /**
  * Created by SeungyeolBak on 15. 7. 11..
  */
-public class ConsultChattingFragment extends BaseFragment {
+public class ConsultChattingFragment extends Fragment {
 
     private static String KEY_MEMBER = "member";
 
@@ -111,7 +113,7 @@ public class ConsultChattingFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setActionbar(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.aura.smartschool;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -29,6 +28,7 @@ import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
 import com.aura.smartschool.service.MyLocationService;
+import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.MemberVO;
 import com.google.android.gms.common.ConnectionResult;
@@ -82,7 +82,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		mLoginManager = LoginManager.getInstance();
 
 		initDrawerView();
-		initActionBar();
+		initActivityHeaderView();
 
 		if(checkPlayServices()){
 			if(TextUtils.isEmpty(getRegistrationId())) {
@@ -101,14 +101,10 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		}
 	}
 
-	private void initActionBar() {
+	private void initActivityHeaderView() {
 		//액션바 처리
-		ActionBar mActionBar = getActionBar();
-		mActionBar.setDisplayShowHomeEnabled(false);
-		mActionBar.setDisplayShowTitleEnabled(false);
-		View mCustomView = View.inflate(this, R.layout.actionbar, null);
-		tvTitle = (TextView) mCustomView.findViewById(R.id.tvTitle);
-		ivHome = (ImageView) mCustomView.findViewById(R.id.logo);
+		tvTitle = (TextView) findViewById(R.id.tvTitle);
+		ivHome = (ImageView) findViewById(R.id.logo);
 		ivHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -118,7 +114,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 			}
 		});
 
-		mCustomView.findViewById(R.id.fl_more).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.fl_more).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
@@ -128,9 +124,11 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 				}
 			}
 		});
+	}
 
-		mActionBar.setCustomView(mCustomView);
-		mActionBar.setDisplayShowCustomEnabled(true);
+	public void setHeaderView(int img_id, String titleText) {
+		ivHome.setImageResource(img_id);
+		tvTitle.setText(titleText);
 	}
 
 	private void initDrawerView() {
@@ -339,6 +337,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 //		}
 		Intent intent = new Intent(this, MyLocationService.class);
 		startService(intent);
+		Intent stepIntent = new Intent(this, StepCounterService.class);
+		startService(stepIntent);
 	}
 
 	@Override
