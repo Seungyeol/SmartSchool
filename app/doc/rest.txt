@@ -545,3 +545,23 @@ http://aurasystem.kr:9000/api/removeBoard
     "result": 0,
     "msg": "success"
 }
+
+* 학교 상담 BR-------------------------------------------------
+{
+    "command" : "consult",
+    "value" : {
+        "category" : 1,
+        "content" : "고민이있어요."
+    }
+}
+
+* 학교 알리미 BR-------------------------------------------------
+{
+    "command" : "school",
+    "value" : {
+        "category" : 1,
+        "title" : "공지사항",
+        "content" : "공지사항입니다.",
+        "noti_date" : "2015-08-09 00:00:00"
+    }
+}
