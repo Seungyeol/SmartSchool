@@ -132,20 +132,12 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	}
 
 	private void initDrawerView() {
-		String[] menu;
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (RecyclerView) findViewById(R.id.drawer_menu);
 
         mDrawerList.setHasFixedSize(true);
         mDrawerList.setLayoutManager(new LinearLayoutManager(this));
-		if (PreferenceUtil.getInstance(MainActivity.this).isParent()) {
-			menu = getResources().getStringArray(R.array.parent_drawer_menu);
-		} else {
-			menu = getResources().getStringArray(R.array.child_drawer_menu);
-		}
-
-        mDrawerList.setAdapter(new DrawerAdapter(menu, mDrawerSelectedListener));
+        mDrawerList.setAdapter(new DrawerAdapter(mDrawerSelectedListener));
     }
 
     @Override
@@ -351,9 +343,9 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
 	DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
 		@Override
-		public void onSelected(int position) {
-			switch(position) {
-				case 3:
+		public void onSelected(DrawerAdapter.DRAWER_MENU menu) {
+			switch(menu) {
+				case LOCATION_INFO:
 					Intent intent = new Intent(MainActivity.this, LocationUploadActivity.class);
 					startActivity(intent);
 					if (mDrawerLayout.isDrawerOpen(mDrawerList)) {

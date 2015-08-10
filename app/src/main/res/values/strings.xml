@@ -6,10 +6,18 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="drawer_notice">Notice</string>
-    <string name="drawer_my_page">My Page</string>
-    <string name="drawer_settings">Settings</string>
-    <string name="drawer_dev_info">지도 정보 등록</string>
+    <string name="drawer_notice">공지사항</string>
+    <string name="drawer_qna">Q &amp; A</string>
+    <string name="drawer_location_info_upload">지도 정보 등록</string>
+    <string name="drawer_settings">설정</string>
+    <string name="drawer_dev_info">정보</string>
+    <string name="drawer_ask">서비스 문의</string>
+    <string name="drawer_drop_out">서비스 탈퇴</string>
+
+    <string name="drawer_setting_home_id">HOME ID : </string>
+    <string name="drawer_setting_in_out_alarm">등, 하교 알림</string>
+    <string name="drawer_setting_activity_alarm">활동량 목표 달성 알림</string>
+    <string name="drawer_setting_widget">SOS 위젯 표시</string>
 
     <string name="spinner_sex">성별</string>
 
