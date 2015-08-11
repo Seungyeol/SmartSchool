@@ -12,6 +12,7 @@ public class SchoolVO  implements Serializable {
     public String school_class;
     public String gubun1;
     public String gubun2; //초등학교,
+    public String code;   //Nice 학교 코드, SchoolApi로 급식정보 얻을때 사용
     public String zipcode;
     public String address;
     public String new_address;

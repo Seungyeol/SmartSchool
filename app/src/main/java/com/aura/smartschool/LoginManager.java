@@ -179,6 +179,8 @@ public class LoginManager {
             school.new_address = json.getString("new_address");
             school.contact = json.getString("contact");
             school.homepage = json.getString("homepage");
+            school.gubun2 = json.getString("gubun2");
+            school.code = json.getString("code");
             member.mSchoolVO = school;
 
             mMemberList.add(member);
