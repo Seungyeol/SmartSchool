@@ -346,20 +346,22 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		public void onSelected(DrawerAdapter.DRAWER_MENU menu) {
 			switch(menu) {
 				case NOTICE:
-					Intent noticeIntent = new Intent(MainActivity.this, AppNoticeActivity.class);
-					startActivity(noticeIntent);
-					if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-						mDrawerLayout.closeDrawer(mDrawerList);
-					}
+					startDrawerMenuActivity(new Intent(MainActivity.this, AppNoticeActivity.class));
+					break;
+				case QnA:
+					startDrawerMenuActivity(new Intent(MainActivity.this, QnAActivity.class));
 					break;
 				case LOCATION_INFO:
-					Intent intent = new Intent(MainActivity.this, LocationUploadActivity.class);
-					startActivity(intent);
-					if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-						mDrawerLayout.closeDrawer(mDrawerList);
-					}
+					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
 					break;
 			}
 		}
 	};
+
+	private void startDrawerMenuActivity(Intent intent) {
+		startActivity(intent);
+		if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}
+	}
 }

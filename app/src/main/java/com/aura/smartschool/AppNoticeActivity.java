@@ -25,8 +25,6 @@ import java.util.ArrayList;
  */
 public class AppNoticeActivity extends Activity {
 
-    private AQuery mAq;
-
     private ArrayList<AppNoticeVO> appNotiList;
 
     private RecyclerView mNoticeListView;
@@ -38,8 +36,6 @@ public class AppNoticeActivity extends Activity {
         setContentView(R.layout.activity_app_notice);
 
         appNotiList = new ArrayList<>();
-
-        mAq = new AQuery(this);
 
         mNoticeListView = (RecyclerView) findViewById(R.id.app_notice_list);
         mNoticeListView.setLayoutManager(new LinearLayoutManager(this));

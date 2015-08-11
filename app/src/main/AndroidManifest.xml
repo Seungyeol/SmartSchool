@@ -88,6 +88,13 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".QnAActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
+
         <service
             android:name=".service.MyLocationService"
             android:enabled="true"
