@@ -17,9 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.database.DBConsultChat;
 import com.aura.smartschool.utils.Util;
-import com.aura.smartschool.vo.ConsultChatVO;
+import com.aura.smartschool.vo.ConsultVO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,20 +28,24 @@ import java.util.ArrayList;
  */
 public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChattingAdapter.ConsultViewHolder> {
 
-    private ArrayList<ConsultChatVO> chatMsgList;
-    private ArrayList<ConsultChatVO> failMsgList;
+    private ArrayList<ConsultVO> chatMsgList;
+    private ArrayList<ConsultVO> failMsgList;
 
     private FailMessageManager failMessageManager;
 
     public interface FailMessageManager {
-        void OnRetry(ConsultChatVO message);
-        void OnRemove(ConsultChatVO message);
+        void OnRetry(ConsultVO message);
+        void OnRemove(ConsultVO message);
     }
 
-    public ConsultChattingAdapter(ArrayList<ConsultChatVO> msgList, FailMessageManager manager) {
+    public ConsultChattingAdapter(ArrayList<ConsultVO> msgList, ArrayList<ConsultVO> failMsgList, FailMessageManager manager) {
         this.chatMsgList = msgList;
+        this.failMsgList = failMsgList;
         this.failMessageManager = manager;
-        makeFailList();
+    }
+
+    public void setConsultMessageList(ArrayList<ConsultVO> messageList) {
+        this.chatMsgList = messageList;
     }
 
     @Override
@@ -61,12 +64,12 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
     public void onBindViewHolder(final ConsultViewHolder holder, final int position) {
         boolean isFirstMsgOfDay = true;
         if (position > 0 && position < chatMsgList.size()) {
-            isFirstMsgOfDay = Util.isDifferentDay(chatMsgList.get(position).time, chatMsgList.get(position-1).time);
+            isFirstMsgOfDay = Util.isDifferentDay(chatMsgList.get(position).created, chatMsgList.get(position-1).created);
         }
         if (position < chatMsgList.size()) {
-            holder.onBindViewHolder(chatMsgList.get(position), isFirstMsgOfDay);
+            holder.onBindViewHolder(chatMsgList.get(position), isFirstMsgOfDay, false);
         } else {
-            holder.onBindViewHolder(failMsgList.get(position - chatMsgList.size()), false);
+            holder.onBindViewHolder(failMsgList.get(position - chatMsgList.size()), false, true);
         }
 
     }
@@ -76,45 +79,32 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         return chatMsgList.size() + failMsgList.size();
     }
 
+    public int getChatMessageListItemCount() {
+        return chatMsgList.size();
+    }
+
     @Override
     public int getItemViewType(int position) {
-        return (position < chatMsgList.size() ? chatMsgList.get(position).msgFrom : DBConsultChat.MSG_FROM_ME);
+        return (position < chatMsgList.size() ? chatMsgList.get(position).who : 0);
     }
 
-    public void addItem(ConsultChatVO msg) {
+    public void addItem(ConsultVO msg) {
         chatMsgList.add(msg);
-        notifyItemInserted(chatMsgList.size()-1);
+        notifyItemInserted(chatMsgList.size() - 1);
     }
 
-    public void removeItem(ConsultChatVO msg) {
+    public void addFailItem(ConsultVO msg) {
+        failMsgList.add(msg);
+        notifyItemInserted(chatMsgList.size() + failMsgList.size() - 1);
+    }
+
+    public void removeItem(ConsultVO msg) {
         for (int i = failMsgList.size()-1; i>=0; i--) {
-            if (msg.dbIndex == failMsgList.get(i).dbIndex) {
+            if (msg.consultId == failMsgList.get(i).consultId) {
                 failMsgList.remove(i);
             }
         }
         notifyDataSetChanged();
-    }
-
-    public void setFailMsg(long id) {
-        for (int i = chatMsgList.size()-1; i>=0; i--) {
-            if(chatMsgList.get(i).dbIndex == id) {
-                chatMsgList.get(i).sendResult = -1;
-                failMsgList.add(chatMsgList.get(i));
-                chatMsgList.remove(chatMsgList.get(i));
-                break;
-            }
-        }
-        notifyDataSetChanged();
-    }
-
-    private void makeFailList() {
-        failMsgList = new ArrayList<>();
-        for (int i = chatMsgList.size()-1; i>=0; i--) {
-            if (chatMsgList.get(i).sendResult == -1) {
-                failMsgList.add(0, chatMsgList.get(i));
-                chatMsgList.remove(i);
-            }
-        }
     }
 
     // ---------------------- ViewHolder ---------------------
@@ -128,11 +118,11 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
             super(itemView);
         }
 
-        public void onBindViewHolder(ConsultChatVO msg, boolean isFirstMsgOfDay) {
+        public void onBindViewHolder(ConsultVO msg, boolean isFirstMsgOfDay, boolean isFailList) {
             llHeaderDate.setVisibility(isFirstMsgOfDay ? View.VISIBLE : View.GONE);
-            tvDate.setText(new SimpleDateFormat("yyyy년 MM월 dd일 E요일").format(msg.time));
-            tvConsultChat.setText(msg.msg);
-            tvTime.setText(new SimpleDateFormat("a hh:mm").format(msg.time));
+            tvDate.setText(new SimpleDateFormat("yyyy년 MM월 dd일 E요일").format(msg.created));
+            tvConsultChat.setText(msg.content);
+            tvTime.setText(new SimpleDateFormat("a hh:mm").format(msg.created));
         }
     }
 
@@ -151,8 +141,8 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         }
 
         @Override
-        public void onBindViewHolder(ConsultChatVO msg, boolean isFirstMsgOfDay) {
-            super.onBindViewHolder(msg, isFirstMsgOfDay);
+        public void onBindViewHolder(ConsultVO msg, boolean isFirstMsgOfDay, boolean isFailList) {
+            super.onBindViewHolder(msg, isFirstMsgOfDay, isFailList);
             tvName.setText("선생님");
         }
     }
@@ -171,9 +161,9 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         }
 
         @Override
-        public void onBindViewHolder(final ConsultChatVO msg, boolean isFirstMsgOfDay) {
-            super.onBindViewHolder(msg, isFirstMsgOfDay);
-            if (msg.sendResult == 0) {
+        public void onBindViewHolder(final ConsultVO msg, boolean isFirstMsgOfDay, boolean isFailList) {
+            super.onBindViewHolder(msg, isFirstMsgOfDay, isFailList);
+            if (!isFailList) {
                 tvTime.setVisibility(View.VISIBLE);
                 ivFail.setVisibility(View.GONE);
             } else {
@@ -198,7 +188,6 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
                     }
                 });
             }
-
         }
     }
 

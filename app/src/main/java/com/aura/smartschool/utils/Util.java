@@ -108,6 +108,17 @@ public final class Util {
 		return term;
 	}
 
+	public static Date getDateFromString(String date) {
+		Date parsedDate = null;
+		try{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			parsedDate = dateFormat.parse(date);
+		}catch(ParseException e){//this generic but you can control another types of exception
+
+		}
+		return parsedDate;
+	}
+
 	public static String getAddress(Context context, double lat, double lng) {
 		List<Address> addresses = null;
 		try {

@@ -22,13 +22,18 @@ import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.ConsultChattingAdapter;
 import com.aura.smartschool.database.DBConsultChat;
+import com.aura.smartschool.database.DBConsultChatFail;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.ConsultChatVO;
+import com.aura.smartschool.vo.ConsultVO;
 import com.aura.smartschool.vo.MemberVO;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -41,9 +46,9 @@ public class ConsultChattingFragment extends Fragment {
     private AQuery mAq;
 
     private MemberVO mMember;
-    private DBConsultChat.TYPE chatType;
+    private DBConsultChatFail.TYPE chatType;
 
-    private DBConsultChat dbConsult;
+    private DBConsultChatFail dbConsultFail;
 
     private EditText etChat;
     private Button btnEnter;
@@ -51,7 +56,9 @@ public class ConsultChattingFragment extends Fragment {
     private RecyclerView mConsultChattingList;
     private ConsultChattingAdapter mConsultChattingAdapter;
 
-    public static ConsultChattingFragment newInstance(MemberVO member, DBConsultChat.TYPE chatType) {
+    private ArrayList<ConsultVO> consultList = new ArrayList<>();
+
+    public static ConsultChattingFragment newInstance(MemberVO member, DBConsultChatFail.TYPE chatType) {
         ConsultChattingFragment instance = new ConsultChattingFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_MEMBER, member);
@@ -65,11 +72,9 @@ public class ConsultChattingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
-        chatType = (DBConsultChat.TYPE) args.getSerializable("chatType");
+        chatType = (DBConsultChatFail.TYPE) args.getSerializable("chatType");
 
-        Log.d("ConsultChattingFragment", "ConsultChattingFragment >> onCreate >> type = " + chatType.getTableName());
-
-        dbConsult = DBConsultChat.getInstance(getActivity());
+        dbConsultFail = DBConsultChatFail.getInstance(getActivity());
     }
 
     @Nullable
@@ -82,7 +87,7 @@ public class ConsultChattingFragment extends Fragment {
         mConsultChattingList = (RecyclerView) view.findViewById(R.id.list_consult_chatting);
         mConsultChattingList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mConsultChattingAdapter = new ConsultChattingAdapter(dbConsult.getAllMsg(chatType), retryManager);
+        mConsultChattingAdapter = new ConsultChattingAdapter(new ArrayList<ConsultVO>(), dbConsultFail.getAllFailMsg(chatType), retryManager);
         mConsultChattingList.setAdapter(mConsultChattingAdapter);
         if (mConsultChattingAdapter.getItemCount() > 0) {
             mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount()-1);
@@ -96,18 +101,13 @@ public class ConsultChattingFragment extends Fragment {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewMessage(etChat.getText().toString());
+                sendConsultMessage(etChat.getText().toString());
             }
         });
 
-        return view;
-    }
+        loadConsultMessage();
 
-    private void createNewMessage(String message) {
-        long dbIndex = dbConsult.insertMsg(chatType, message, DBConsultChat.MSG_FROM_ME, new Date(), -1);
-        mConsultChattingAdapter.addItem(new ConsultChatVO(dbIndex, DBConsultChat.MSG_FROM_ME, message, new Date(), 0));
-        mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
-        sendConsultMessage(etChat.getText().toString(), dbIndex);
+        return view;
     }
 
     @Override
@@ -119,12 +119,63 @@ public class ConsultChattingFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (dbConsult != null) {
-            dbConsult.close();
+        if (dbConsultFail != null) {
+            dbConsultFail.close();
         }
     }
 
-    private void sendConsultMessage(String msg, final long dbIndex) {
+    private void loadConsultMessage() {
+        LoadingDialog.showLoading(getActivity());
+        try {
+            String url = Constant.HOST + Constant.API_GET_CONSULT_LIST;
+
+            JSONObject json = new JSONObject();
+            json.put("member_id", mMember.member_id);
+            json.put("category", chatType.getCode());
+
+            Log.d("LDK", "url:" + url);
+            Log.d("LDK", "input parameter:" + json.toString(1));
+
+            mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    LoadingDialog.hideLoading();
+                    try {
+                        if (status.getCode() != 200) {
+                            Log.d("LDK", "FAIL");
+                            return;
+                        }
+                        Log.d("LDK", "result:" + object.toString(1));
+
+                        if (object.getInt("result") == 0) {
+                            JSONArray array = object.getJSONArray("data");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject json = array.getJSONObject(i);
+                                ConsultVO consult = new ConsultVO();
+                                consult.consultId = json.getInt("consult_id");
+                                consult.sessionId = json.getInt("session_id");
+                                consult.who = json.getInt("who");
+                                consult.content = json.getString("content");
+                                consult.created = Util.getDateFromString(json.getString("created"));
+                                consultList.add(consult);
+                            }
+                            mConsultChattingAdapter.setConsultMessageList(consultList);
+                            mConsultChattingAdapter.notifyDataSetChanged();
+                            mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
+                        } else {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendConsultMessage(final String msg) {
         LoadingDialog.showLoading(getActivity());
         try {
             String url = Constant.HOST + Constant.API_ADD_CONSULT;
@@ -146,34 +197,42 @@ public class ConsultChattingFragment extends Fragment {
                     try {
                         if (status.getCode() != 200) {
                             Log.d("LDK", "FAIL");
-                            updateResult(dbIndex, -1);
+                            addFailMessage(msg);
                             return;
                         }
                         Log.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
-                            updateResult(dbIndex, 0);
+                            ConsultVO consultVO = new ConsultVO();
+                            consultVO.content = msg;
+                            consultVO.who = 0;
+                            consultVO.created = new Date();
+                            mConsultChattingAdapter.addItem(consultVO);
+                            mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getChatMessageListItemCount() - 1);
                         } else {
-                            updateResult(dbIndex, -1);
+                            addFailMessage(msg);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        updateResult(dbIndex, -1);
+                        addFailMessage(msg);
                     }
                 }
             });
 
         } catch (JSONException e) {
             e.printStackTrace();
-            updateResult(dbIndex, -1);
         }
     }
 
-    private void updateResult(long dbIndex, int result) {
-        dbConsult.updateSendResult(chatType, dbIndex, result);
-        if (result == -1) {
-            mConsultChattingAdapter.setFailMsg(dbIndex);
-        }
+    private void addFailMessage(String msg) {
+        long id = dbConsultFail.insertMsg(chatType, msg);
+        ConsultVO consultVO = new ConsultVO();
+        consultVO.consultId = id;
+        consultVO.content = msg;
+        consultVO.who = 0;
+        consultVO.created = new Date();
+        mConsultChattingAdapter.addFailItem(consultVO);
+        mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
     }
 
     private TextWatcher mWatcher = new TextWatcher() {
@@ -197,16 +256,16 @@ public class ConsultChattingFragment extends Fragment {
 
     private ConsultChattingAdapter.FailMessageManager retryManager = new ConsultChattingAdapter.FailMessageManager() {
         @Override
-        public void OnRetry(ConsultChatVO message) {
+        public void OnRetry(ConsultVO message) {
             mConsultChattingAdapter.removeItem(message);
-            dbConsult.removeMessage(chatType, message.dbIndex);
-            createNewMessage(message.msg);
+            dbConsultFail.removeMessage(chatType, message.consultId);
+            sendConsultMessage(message.content);
         }
 
         @Override
-        public void OnRemove(ConsultChatVO message) {
+        public void OnRemove(ConsultVO message) {
             mConsultChattingAdapter.removeItem(message);
-            dbConsult.removeMessage(chatType, message.dbIndex);
+            dbConsultFail.removeMessage(chatType, message.consultId);
         }
     };
 }
