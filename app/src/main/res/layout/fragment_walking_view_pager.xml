@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                style="@style/WalkingCountMenu"
+                style="@style/TabMenu"
                 android:text="활동량"/>
             <View
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                style="@style/WalkingCountMenu"
+                style="@style/TabMenu"
                 android:text="히스토리"/>
             <View
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                style="@style/WalkingCountMenu"
+                style="@style/TabMenu"
                 android:text="설정"/>
             <View
                 android:layout_width="match_parent"

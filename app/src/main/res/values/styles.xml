@@ -117,11 +117,16 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
-    <style name="WalkingCountMenu">
+    <style name="TabMenu">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@drawable/tab_text_color</item>
         <item name="android:background">@drawable/tab_selector</item>
+    </style>
+    <style name="WalkingCountItem">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
     <style name="ConsultItem">
         <item name="android:gravity">center</item>

@@ -16,7 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                style="@style/WalkingCountMenu"
+                style="@style/TabMenu"
                 android:text="월간일정표"/>
         </FrameLayout>
         <FrameLayout
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                style="@style/WalkingCountMenu"
+                style="@style/TabMenu"
                 android:text="공지사항"/>
         </FrameLayout>
         <FrameLayout
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                style="@style/WalkingCountMenu"
+                style="@style/TabMenu"
                 android:text="가정통신문"/>
         </FrameLayout>
     </LinearLayout>

@@ -58,7 +58,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:gravity="center"
-            style="@style/WalkingCountMenu"
+            style="@style/WalkingCountItem"
             android:text="걸음"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            style="@style/WalkingCountMenu"
+            style="@style/WalkingCountItem"
             android:text="목표량 달성 알림"/>
         <Switch
             android:id="@+id/sw_target"
