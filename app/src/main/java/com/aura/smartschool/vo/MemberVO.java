@@ -1,6 +1,11 @@
 package com.aura.smartschool.vo;
 
+import com.aura.smartschool.utils.Util;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
+import java.util.Calendar;
 
 public class MemberVO implements Serializable {
 	public int member_id;
@@ -33,5 +38,16 @@ public class MemberVO implements Serializable {
 	public MemberVO(String home_id, String mdn) {
 		this.home_id = home_id;
 		this.mdn = mdn;
+	}
+
+	public boolean isVIPUser() {
+		if (StringUtils.isEmpty(pay_date) || "null".equals(pay_date)) {
+			return false;
+		}
+		Calendar payDate = Calendar.getInstance();
+		payDate.setTime(Util.getDateFromString(pay_date));
+		int monthDay = payDate.getActualMaximum(Calendar.DAY_OF_MONTH);
+		payDate.add(Calendar.DATE, monthDay);
+		return payDate.after(Calendar.getInstance());
 	}
 }

@@ -63,6 +63,7 @@ public class MemberListAdapter extends BaseAdapter {
 			convertView = View.inflate(mContext, R.layout.adapter_member_list, null);
 			holder.iv_user_image = (ImageView) convertView.findViewById(R.id.iv_user_image);
 			holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+			holder.tvPayment = (TextView) convertView.findViewById(R.id.tvPayment);
 			holder.tvRelation = (TextView) convertView.findViewById(R.id.tvRelation);
 			holder.tvMdn = (TextView) convertView.findViewById(R.id.tvMdn);
 			holder.btnModify = (Button) convertView.findViewById(R.id.btnModify);
@@ -76,8 +77,10 @@ public class MemberListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		holder.tvName.setText(mMemberList.get(position).name);
+		holder.tvPayment.setText(mMemberList.get(position).isVIPUser()?"통합이용":"무료");
+		holder.tvPayment.setBackgroundResource(mMemberList.get(position).isVIPUser() ? R.drawable.bg_yellow_fill : R.drawable.bg_gray_fill);
 		holder.tvRelation.setText(mMemberList.get(position).relation);
 		holder.tvMdn.setText(mMemberList.get(position).mdn);
 		
@@ -173,6 +176,7 @@ public class MemberListAdapter extends BaseAdapter {
 	class ViewHolder {
 		ImageView iv_user_image;
 		TextView tvName;
+		TextView tvPayment;
 		TextView tvRelation;
 		TextView tvMdn;
 		LinearLayout school_info;
