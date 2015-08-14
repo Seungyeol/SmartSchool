@@ -26,6 +26,8 @@ public final class Constant {
 	public static final String API_ADD_CONSULT = "/admin/api/addConsult";
 
 	public static final String API_GET_APP_NOTI_LIST = "/api/getNotiList";
+	public static final String API_GET_BOARD_LIST = "/api/getBoardList";
+	public static final String API_ADD_BOARD = "/api/addBoard";
 
 	//기존 서버
 	public static final String API_GET_VIDEOLIST = "http://210.127.55.205/HealthCare/GetVideoList";

@@ -1,0 +1,83 @@
+package com.aura.smartschool.adapter;
+
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.aura.smartschool.R;
+import com.aura.smartschool.vo.AppNoticeVO;
+import com.aura.smartschool.vo.BoardVO;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+
+/**
+ * Created by SeungyeolBak on 15. 8. 11..
+ */
+public class QnAAdapter extends RecyclerView.Adapter<QnAAdapter.QnAViewHolder> {
+
+    private ArrayList<BoardVO> qnaList = new ArrayList<>();
+
+    public QnAAdapter() {}
+
+    public void setQnAList(ArrayList<BoardVO> qnaList) {
+        this.qnaList = qnaList;
+    }
+
+    @Override
+    public QnAViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.item_qna, parent, false);
+        return new QnAViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(QnAViewHolder holder, int position) {
+        holder.onBindViewHolder(qnaList.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return qnaList.size();
+    }
+
+    public class QnAViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private TextView tvTitle;
+        private TextView tvAnswerState;
+        private TextView tvContent;
+        private TextView tvAnswer;
+
+        public QnAViewHolder(View itemView) {
+            super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            tvAnswerState = (TextView) itemView.findViewById(R.id.tv_answer_state);
+            tvContent = (TextView) itemView.findViewById(R.id.tv_content);
+            tvAnswer = (TextView) itemView.findViewById(R.id.tv_answer);
+
+            tvTitle.setOnClickListener(this);
+        }
+
+        public void onBindViewHolder(BoardVO qna) {
+            tvTitle.setText(qna.title);
+            tvContent.setText(qna.content);
+            if (!StringUtils.isBlank(qna.answer)
+                    && !"null".equals(qna.answer)) {
+                tvAnswerState.setVisibility(View.VISIBLE);
+                tvAnswer.setText(qna.answer);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            tvContent.setVisibility(tvContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            if (tvAnswerState.getVisibility() == View.VISIBLE) {
+                tvAnswer.setVisibility(tvAnswer.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            }
+        }
+    }
+}
