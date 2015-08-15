@@ -49,6 +49,7 @@ public class HeightFragment extends Fragment {
     private TextView tv_title;
     private TextView tv_grade, tv_grade_desc;
     private TextView tv_lastmonth;
+    private TextView tv_babel;
 
     private PopupWindow mPopup;
 
@@ -85,8 +86,10 @@ public class HeightFragment extends Fragment {
         tv_grade = (TextView) mView.findViewById(R.id.tv_grade);
         tv_grade_desc = (TextView) mView.findViewById(R.id.tv_grade_desc);
         tv_lastmonth = (TextView) mView.findViewById(R.id.tv_lastmonth);
+        tv_babel = (TextView) mView.findViewById(R.id.tv_babel);
 
         tv_lastmonth.setOnClickListener(mClick);
+        tv_babel.setOnClickListener(mClick);
 
         if(mType == 1) {
             tv_title.setText("신장");
@@ -284,6 +287,14 @@ public class HeightFragment extends Fragment {
                     mPopup.setAnimationStyle(-1);
                     mPopup.showAtLocation(view, Gravity.CENTER, 0, 0);
                     //mPopup.showAsDropDown(tv_lastmonth);
+                    break;
+
+                case R.id.tv_babel:
+                    if(mType == 1) {
+                        getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 2)).addToBackStack(null).commit();
+                    } else {
+                        getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 3)).addToBackStack(null).commit();
+                    }
                     break;
             }
         }

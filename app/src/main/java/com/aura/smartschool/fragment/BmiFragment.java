@@ -22,6 +22,7 @@ public class BmiFragment extends Fragment {
     private TextView tv_help_left, tv_help_right;
     private ImageView iv_man;
     private TextView tv_man;
+    private TextView tv_babel;
     private PopupWindow mPopup;
 
     private MemberVO mMember;
@@ -58,6 +59,7 @@ public class BmiFragment extends Fragment {
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
         iv_man = (ImageView) mView.findViewById(R.id.iv_man);
         tv_man = (TextView) mView.findViewById(R.id.tv_man);
+        tv_babel = (TextView) mView.findViewById(R.id.tv_babel);
 
         tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.bmi));
         tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.fat) + "%");
@@ -84,6 +86,7 @@ public class BmiFragment extends Fragment {
 
         tv_help_left.setOnClickListener(mClick);
         tv_help_right.setOnClickListener(mClick);
+        tv_babel.setOnClickListener(mClick);
 
         return mView;
     }
@@ -130,6 +133,10 @@ public class BmiFragment extends Fragment {
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);
                     mPopup.showAtLocation(view, Gravity.CENTER, 0, 0);
+                    break;
+
+                case R.id.tv_babel:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 4)).addToBackStack(null).commit();
                     break;
             }
         }

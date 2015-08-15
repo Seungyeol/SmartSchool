@@ -30,6 +30,7 @@ public final class Constant {
 	public static final String API_GET_BOARD_LIST = "/api/getBoardList";
 	public static final String API_ADD_BOARD = "/api/addBoard";
 
-	//기존 서버
-	public static final String API_GET_VIDEOLIST = "http://210.127.55.205/HealthCare/GetVideoList";
+	//비디오 리스트 가져오기
+	public static final String API_GET_VIDEOLIST_BY_MASTERID = "/api/getVideoListByMasterGradeId";
+	public static final String API_GET_VIDEOLIST_BY_SECTION = "/api/getVideoListByInfoType";
 }

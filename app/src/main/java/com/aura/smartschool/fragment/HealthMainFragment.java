@@ -225,8 +225,10 @@ public class HealthMainFragment extends Fragment {
                             mSummaryVO.measure_date = json.getString("measure_date");
                             mSummaryVO.height = Float.parseFloat(json.getString("height"));
                             mSummaryVO.heightStatus = json.getString("heightStatus");
+                            mSummaryVO.heightGradeId = json.getString("heightGradeId");
                             mSummaryVO.weight = json.getString("weight");
                             mSummaryVO.weightStatus = json.getString("weightStatus");
+                            mSummaryVO.weightGradeId = json.getString("weightGradeId");
                             mSummaryVO.fat = json.getString("fat");
 
                             float muscle = Float.parseFloat(json.getString("muscle"));
@@ -237,6 +239,7 @@ public class HealthMainFragment extends Fragment {
                             mSummaryVO.skeletal = json.getString("skeletal");//골격근량
                             mSummaryVO.weight_control = json.getString("weight_control");
                             mSummaryVO.fat_control = json.getString("fat_control");
+                            mSummaryVO.muscle_control = json.getString("muscle_control");
                             mSummaryVO.bmi = json.getString("bmi");
                             mSummaryVO.bmiStatus = json.getString("bmiStatus");
                             mSummaryVO.bmiGradeId = json.getString("bmiGradeId");
@@ -365,7 +368,7 @@ public class HealthMainFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.rl_pt:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
                     break;
 
                 case R.id.rl_activity:

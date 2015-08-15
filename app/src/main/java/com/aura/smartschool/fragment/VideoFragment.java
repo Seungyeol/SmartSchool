@@ -15,6 +15,7 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.VideoListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.VideoVO;
 
@@ -34,16 +35,19 @@ public class VideoFragment extends Fragment {
     private ListView mListview;
     private VideoListAdapter mAdapter;
 
+    private int mType; //1: pt 화면, 2:키, 3: 체중, 4:bmi
+
     public VideoFragment() {
         // Required empty public constructor
     }
 
-    public static VideoFragment newInstance(MemberVO member) {
+    public static VideoFragment newInstance(MemberVO member, int type) {
 
         VideoFragment instance = new VideoFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("member", member);
+        args.putInt("type", type);
         instance.setArguments(args);
 
         return instance;
@@ -54,6 +58,7 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable("member");
+        mType = args.getInt("type");
     }
 
     @Override
@@ -79,11 +84,27 @@ public class VideoFragment extends Fragment {
     private void getVideoList() {
         LoadingDialog.showLoading(getActivity());
         try {
-            String url = Constant.API_GET_VIDEOLIST;
-
+            String url = "";
             JSONObject json = new JSONObject();
-            json.put("masterGradeId", "1");
-            json.put("schoolGradeId", "1");
+
+            switch(mType) {
+                case 1:
+                    url = Constant.HOST + Constant.API_GET_VIDEOLIST_BY_SECTION;
+                    json.put("infoType", mMember.mSchoolVO.gubun2);
+                    break;
+                case 2:
+                    url = Constant.HOST + Constant.API_GET_VIDEOLIST_BY_MASTERID;
+                    json.put("masterGradeId", mMember.mMeasureSummaryVO.heightGradeId);
+                    break;
+                case 3:
+                    url = Constant.HOST + Constant.API_GET_VIDEOLIST_BY_MASTERID;
+                    json.put("masterGradeId", mMember.mMeasureSummaryVO.weightGradeId);
+                    break;
+                case 4:
+                    url = Constant.HOST + Constant.API_GET_VIDEOLIST_BY_MASTERID;
+                    json.put("masterGradeId", mMember.mMeasureSummaryVO.bmiGradeId);
+                    break;
+            }
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));
@@ -99,13 +120,13 @@ public class VideoFragment extends Fragment {
                         Log.d("LDK", "result:" + object.toString(1));
 
                         if ("0".equals(object.getString("result"))) {
-                            JSONArray array = object.getJSONArray("value");
+                            JSONArray array = object.getJSONArray("data");
                             for(int i=0; i < array.length(); ++i) {
                                 VideoVO video = new VideoVO();
                                 video.image_url = array.getJSONObject(i).getString("thumbnailUrl");
                                 video.video_url = array.getJSONObject(i).getString("videoUrl");
                                 video.title = array.getJSONObject(i).getString("title");
-                                video.duration = array.getJSONObject(i).getString("duration");
+                                video.duration = Util.convertSecondToMinute(array.getJSONObject(i).getString("duration"));
                                 mVideoList.add(video);
                             }
                             mAdapter.setData(mVideoList);

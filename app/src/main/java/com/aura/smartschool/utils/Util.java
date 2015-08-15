@@ -190,6 +190,14 @@ public final class Util {
 		return false;
 	}
 
+	public static String convertSecondToMinute(String strSecond) {
+		int totalSecond = Integer.parseInt(strSecond);
+		int minute = totalSecond/60;
+		int second = totalSecond%60;
+
+		return String.format("%d분 %d초", minute, second);
+	}
+
 	public static File getTempFile() {
 		boolean isSdCardMounted = false;
 		String status = Environment.getExternalStorageState();

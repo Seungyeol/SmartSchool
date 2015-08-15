@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
@@ -17,9 +18,10 @@ public class GrowthFragment extends Fragment {
 
     private MemberVO mMember;
 
-    private ImageView ivCoach;
+    private RelativeLayout rl_coach;
     private TextView tvGrowthScore, tv_growth_content;
-    private TextView tv_1, tv_2, tv_3; //복부비만, 체중조절, 체지방조절
+    private TextView tv_1, tv_2, tv_3; //근육조절, 체중조절, 체지방조절
+    private TextView tv_babel;
     private ImageView ivWeight1, ivWeight2, ivWeight3, ivWeight4, ivWeight5, ivWeight6;
 
     public GrowthFragment() {
@@ -48,21 +50,22 @@ public class GrowthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = View.inflate(getActivity(), R.layout.fragment_growth_grade, null);
 
-        ivCoach = (ImageView) mView.findViewById(R.id.iv_coach);
+        rl_coach = (RelativeLayout) mView.findViewById(R.id.rl_coach);
         tvGrowthScore = (TextView) mView.findViewById(R.id.tv_growth_score);
-        tvGrowthScore.setText(mMember.mMeasureSummaryVO.growthGrade + "점");
+        tvGrowthScore.setText(String.format("%d점", (int)(mMember.mMeasureSummaryVO.growthGrade)));
 
         tv_growth_content = (TextView) mView.findViewById(R.id.tv_growth_content);
         String content = String.format("%s 학생의 키는 %.1fcm 이고 몸무게는 %skg 입니다. BMI는 %s로 %s이며 체지방은 %s 입니다. 건강을 위해서 아래사항을 참고하세요.",
                 mMember.name, mMember.mMeasureSummaryVO.height, mMember.mMeasureSummaryVO.weight,
-                mMember.mMeasureSummaryVO.bmi, mMember.mMeasureSummaryVO.bmiStatus, mMember.mMeasureSummaryVO.fat);
+                mMember.mMeasureSummaryVO.bmi, mMember.mMeasureSummaryVO.bmiStatus, mMember.mMeasureSummaryVO.fat + "%");
         tv_growth_content.setText(content);
 
         tv_1 = (TextView) mView.findViewById(R.id.tv_1);
         tv_2 = (TextView) mView.findViewById(R.id.tv_2);
         tv_3 = (TextView) mView.findViewById(R.id.tv_3);
+        tv_babel = (TextView) mView.findViewById(R.id.tv_babel);
 
-        tv_1.setText(mMember.mMeasureSummaryVO.waist);
+        tv_1.setText(mMember.mMeasureSummaryVO.muscle_control + "kg");
         tv_2.setText(mMember.mMeasureSummaryVO.weight_control + "kg");
         tv_3.setText(mMember.mMeasureSummaryVO.fat_control + "kg");
 
@@ -75,7 +78,8 @@ public class GrowthFragment extends Fragment {
 
         setGradeType();
 
-        ivCoach.setOnClickListener(mClick);
+        rl_coach.setOnClickListener(mClick);
+        tv_babel.setOnClickListener(mClick);
 
         return mView;
     }
@@ -107,8 +111,12 @@ public class GrowthFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch(v.getId()) {
-                case R.id.iv_coach:
+                case R.id.rl_coach:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthGradeDescriptionFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.tv_babel:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 4)).addToBackStack(null).commit();
                     break;
             }
         }
