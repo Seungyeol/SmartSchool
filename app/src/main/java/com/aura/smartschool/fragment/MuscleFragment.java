@@ -61,11 +61,11 @@ public class MuscleFragment extends Fragment {
         tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.muscle_percent) + "%");
 
         if("표준".equals(mMember.mMeasureSummaryVO.weightStatus)) {
-            iv_bmi.setImageResource(R.drawable.type_normal);
+            iv_bmi.setImageResource(R.drawable.point_man_2);
         } else if("표준 이상".equals(mMember.mMeasureSummaryVO.weightStatus)) {
-            iv_bmi.setImageResource(R.drawable.type_over_1);
+            iv_bmi.setImageResource(R.drawable.point_man_3);
         }  else {
-            iv_bmi.setImageResource(R.drawable.type_under);
+            iv_bmi.setImageResource(R.drawable.point_man_1);
         }
 
         tv_help_left.setOnClickListener(mClick);

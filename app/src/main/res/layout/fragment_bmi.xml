@@ -26,10 +26,86 @@
             android:text="정상"/>
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bmi_arrow"/>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="100dp">
+        <RelativeLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/point_man_1"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="저\n체\n중" android:textColor="@color/white" android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/point_man_2"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="정\n상" android:textColor="@color/white" android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/point_man_3"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="과\n체중" android:textColor="@color/white" android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/point_man_4"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="비만" android:textColor="@color/white" android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/point_man_5"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="중도\n비만" android:textColor="@color/white" android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/point_man_6"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="고도\n비만" android:textColor="@color/white" android:textStyle="bold"/>
+        </RelativeLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="0.7"
-        android:gravity="center" android:padding="10dp">
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="0.8"
+        android:gravity="center">
         <LinearLayout
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
@@ -91,6 +167,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_width="match_parent" android:layout_height="wrap_content">
         <TextView

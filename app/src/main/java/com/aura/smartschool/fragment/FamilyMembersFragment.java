@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.MemberVO;
-import com.aura.smartschool.vo.SchoolVO;
 
 import java.util.ArrayList;
 
@@ -96,7 +94,10 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
     MemberListListener mMemberListListener = new MemberListListener() {
         @Override
         public void onSelected(int position) {
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, HealthMainFragment.newInstance(mAdapter.getItem(position))).addToBackStack(null).commit();
+            //자녀의 경우 헬스메인으로 이동
+            if(mAdapter.getItem(position).is_parent == 0) {
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, HealthMainFragment.newInstance(mAdapter.getItem(position))).addToBackStack(null).commit();
+            }
         }
 
         @Override

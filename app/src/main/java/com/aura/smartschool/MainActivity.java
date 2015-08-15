@@ -327,10 +327,14 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 //		} else {
 //			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
 //		}
-		Intent intent = new Intent(this, MyLocationService.class);
-		startService(intent);
-		Intent stepIntent = new Intent(this, StepCounterService.class);
-		startService(stepIntent);
+
+		//부모의 경우는 위치서비스와 활동량 서비스를 하지 않는다.
+		if (!PreferenceUtil.getInstance(this).isParent()) {
+			Intent intent = new Intent(this, MyLocationService.class);
+			startService(intent);
+			Intent stepIntent = new Intent(this, StepCounterService.class);
+			startService(stepIntent);
+		}
 	}
 
 	@Override

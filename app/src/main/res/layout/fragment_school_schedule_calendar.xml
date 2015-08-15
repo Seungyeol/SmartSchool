@@ -10,38 +10,34 @@
         android:layout_marginBottom="10dp">
         <TextView
             android:id="@+id/tv_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="학사일정"/>
         <ImageView
             android:id="@+id/iv_btn_pre"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_toLeftOf="@id/tv_month"
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
-            android:scaleType="center"
-            android:src="@drawable/btn_pre"/>
+            android:src="@drawable/left_gold"/>
         <ImageView
             android:id="@+id/iv_btn_next"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_toRightOf="@id/tv_month"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:scaleType="center"
-            android:src="@drawable/btn_pre"/>
+            android:src="@drawable/right_gold"/>
 
         <ImageView
             android:id="@+id/iv_btn_change_layout"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@android:color/holo_blue_bright"/>
+            android:background="@drawable/list"/>
     </RelativeLayout>
 
     <View

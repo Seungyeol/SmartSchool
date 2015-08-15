@@ -79,7 +79,7 @@ public class MemberListAdapter extends BaseAdapter {
 		}
 
 		holder.tvName.setText(mMemberList.get(position).name);
-		holder.tvPayment.setText(mMemberList.get(position).isVIPUser()?"통합이용":"무료");
+		holder.tvPayment.setText(mMemberList.get(position).isVIPUser()?"통합서비스":"기본서비스");
 		holder.tvPayment.setBackgroundResource(mMemberList.get(position).isVIPUser() ? R.drawable.bg_yellow_fill : R.drawable.bg_gray_fill);
 		holder.tvRelation.setText(mMemberList.get(position).relation);
 		holder.tvMdn.setText(mMemberList.get(position).mdn);
@@ -92,9 +92,16 @@ public class MemberListAdapter extends BaseAdapter {
 		}
 
 		if(mMemberList.get(position).is_parent > 0) {
+			//통합 or 기본 서비스 감추기
+			holder.tvPayment.setVisibility(View.GONE);
+			//학교 정보
 			holder.school_info.setVisibility(View.GONE);
+			//위치정보
+			holder.tv_current_location.setVisibility(View.GONE);
 		} else {
+			holder.tvPayment.setVisibility(View.VISIBLE);
 			holder.school_info.setVisibility(View.VISIBLE);
+			holder.tv_current_location.setVisibility(View.VISIBLE);
 			holder.tvSchool.setText(mMemberList.get(position).mSchoolVO.school_name);
 			holder.tvSchool.append("  ");
 			holder.tvSchool.append(mMemberList.get(position).mSchoolVO.school_grade);
@@ -125,49 +132,52 @@ public class MemberListAdapter extends BaseAdapter {
 			}
 		});*/
 
-		AQuery aq = new AQuery(convertView);
-		try {
-			String url = Constant.HOST + Constant.API_GET_LASTLOCATION;
+		//자녀의 경우 위치 조회
+		if(mMemberList.get(position).is_parent == 0) {
+			AQuery aq = new AQuery(convertView);
+			try {
+				String url = Constant.HOST + Constant.API_GET_LASTLOCATION;
 
-			JSONObject json = new JSONObject();
-			json.put("member_id", mMemberList.get(position).member_id);
+				JSONObject json = new JSONObject();
+				json.put("member_id", mMemberList.get(position).member_id);
 
-			Log.d("LDK", "url:" + url);
-			Log.d("LDK", "input parameter:" + json.toString(1));
+				Log.d("LDK", "url:" + url);
+				Log.d("LDK", "input parameter:" + json.toString(1));
 
-			aq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
-				@Override
-				public void callback(String url, JSONObject object, AjaxStatus status) {
-					try {
-						if (status.getCode() != 200) {
-							return;
-						}
-						Log.d("LDK", "result:" + object.toString(1));
-
-						if ("0".equals(object.getString("result"))) {
-							JSONObject data = object.getJSONObject("data");
-							double lat = 0;
-							double lng = 0;
-							if(data != null) {
-								lat = Double.parseDouble(data.getString("lat"));
-								lng = Double.parseDouble(data.getString("lng"));
-								mMemberList.get(position).lat = lat;
-								mMemberList.get(position).lng = lng;
+				aq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+					@Override
+					public void callback(String url, JSONObject object, AjaxStatus status) {
+						try {
+							if (status.getCode() != 200) {
+								return;
 							}
-							long term = Util.getLastedMinuteToCurrent(data.getString("created_date"));
+							Log.d("LDK", "result:" + object.toString(1));
 
-							holder.tv_current_location.setText(Util.getAddress(mContext, lat, lng));
-							holder.tv_current_location.append(String.format(" (%d분 전)", term));
+							if ("0".equals(object.getString("result"))) {
+								JSONObject data = object.getJSONObject("data");
+								double lat = 0;
+								double lng = 0;
+								if (data != null) {
+									lat = Double.parseDouble(data.getString("lat"));
+									lng = Double.parseDouble(data.getString("lng"));
+									mMemberList.get(position).lat = lat;
+									mMemberList.get(position).lng = lng;
+								}
+								long term = Util.getLastedMinuteToCurrent(data.getString("created_date"));
+
+								holder.tv_current_location.setText(Util.getAddress(mContext, lat, lng));
+								holder.tv_current_location.append(String.format(" (%d분 전)", term));
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						} catch (NumberFormatException e) {
+							e.printStackTrace();
 						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
 					}
-				}
-			});
-		} catch (JSONException e) {
-			e.printStackTrace();
+				});
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return convertView;
