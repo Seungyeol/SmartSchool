@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.vo.SchoolNotiVO;
+import com.aura.smartschool.vo.ScheduleData;
 
-import java.util.ArrayList;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Calendar;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015-07-18.
@@ -24,20 +24,17 @@ public class SchoolScheduleListAdapter extends BaseAdapter {
     private Calendar monthCalendar;
 
     private int firstDayOfMonth;
+    private ScheduleData[] scheduleDatas;
 
-    private Map<String, ArrayList<SchoolNotiVO>> mScheduleMap;
-
-    public SchoolScheduleListAdapter(Context context, Calendar monthCalendar, Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
+    public SchoolScheduleListAdapter(Context context, Calendar monthCalendar, ScheduleData[] scheduleDatas) {
         this.context = context;
         this.monthCalendar = monthCalendar;
-        this.mScheduleMap = scheduleMap;
-
-        monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
-        firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
+        this.scheduleDatas = scheduleDatas;
+        calculateMonth();
     }
 
-    public void setScheduleMap(Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
-        this.mScheduleMap = scheduleMap;
+    public void setScheduleDatas(ScheduleData[] scheduleDatas) {
+        this.scheduleDatas = scheduleDatas;
     }
 
     @Override
@@ -79,23 +76,33 @@ public class SchoolScheduleListAdapter extends BaseAdapter {
             holder.tvDate.setTextColor(Color.BLACK);
         }
 
-        int year = monthCalendar.get(Calendar.YEAR);
-        int month = monthCalendar.get(Calendar.MONTH) + 1;
-
         holder.linearItemWrapper.removeAllViewsInLayout();
-        ArrayList<SchoolNotiVO> notiList = mScheduleMap.get(String.format("%d-%02d-%02d", year, month, (position+1)));
-        if (notiList != null) {
-            for(SchoolNotiVO noti:notiList) {
-                addScheduleOnDate(holder, noti.title);
+
+        try {
+            if (scheduleDatas != null && scheduleDatas.length > position) {
+                String schedule = scheduleDatas[position].schedule;
+                if (!StringUtils.isBlank(schedule)) {
+                    String[] schedules = schedule.split(" ");
+                    for(String s : schedules) {
+                        addScheduleOnDate(holder, s);
+                    }
+                }
             }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return convertView;
     }
 
-    private void addScheduleOnDate(ViewHolder holder, String scheduleTitle) {
+    public void calculateMonth() {
+        monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    private void addScheduleOnDate(ViewHolder holder, String schedule) {
         TextView shedule = new TextView(context);
-        shedule.setText(scheduleTitle);
+        shedule.setText(schedule);
         holder.linearItemWrapper.addView(shedule);
     }
 

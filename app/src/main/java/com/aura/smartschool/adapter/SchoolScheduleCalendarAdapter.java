@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.vo.SchoolNotiVO;
+import com.aura.smartschool.vo.ScheduleData;
 
-import java.util.ArrayList;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Calendar;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015-07-18.
@@ -26,17 +26,17 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
     private int columnNum;
     private int firstDayOfMonth;
 
-    private Map<String, ArrayList<SchoolNotiVO>> mScheduleMap;
+    private ScheduleData[] scheduleDatas;
 
-    public SchoolScheduleCalendarAdapter(Context context, Calendar monthCalendar, Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
+    public SchoolScheduleCalendarAdapter(Context context, Calendar monthCalendar, ScheduleData[] scheduleDatas) {
         this.context = context;
         this.monthCalendar = monthCalendar;
-        this.mScheduleMap = scheduleMap;
+        this.scheduleDatas = scheduleDatas;
         calculateMonth();
     }
 
-    public void setScheduleMap(Map<String, ArrayList<SchoolNotiVO>> scheduleMap) {
-        this.mScheduleMap = scheduleMap;
+    public void setScheduleDatas(ScheduleData[] scheduleDatas) {
+        this.scheduleDatas = scheduleDatas;
     }
 
     @Override
@@ -73,31 +73,35 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.linearItemWrapper.getLayoutParams();
         params.height = (int) (parent.getMeasuredHeight() / (Math.ceil((double)columnNum/7)));
 
-        int date = position - firstDayOfMonth + 2;
-        if (date > 0 && date <= monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-            holder.tvDate.setText(String.valueOf(date));
-        } else {
-            holder.tvDate.setText("");
-        }
-
-        int year = monthCalendar.get(Calendar.YEAR);
-        int month = monthCalendar.get(Calendar.MONTH) + 1;
-
         holder.tvSchedule1.setText("");
         holder.tvSchedule2.setText("");
         holder.tvSchedule3.setText("");
-        ArrayList<SchoolNotiVO> notiList = mScheduleMap.get(String.format("%d-%02d-%02d", year, month, date));
-        if (notiList != null) {
-            for(int i = 0; i < notiList.size(); i++) {
-                if (i==0) {
-                    holder.tvSchedule1.setText(notiList.get(i).title);
-                } else if (i == 1) {
-                    holder.tvSchedule2.setText(notiList.get(i).title);
-                } else {
-                    holder.tvSchedule3.setText(notiList.get(i).title);
-                    break;
+
+        int date = position - firstDayOfMonth + 2;
+        if (date > 0 && date <= monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+            holder.tvDate.setText(String.valueOf(date));
+            try {
+                if (scheduleDatas != null && scheduleDatas.length >= monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                    String schedule = scheduleDatas[date-1].schedule;
+                    if (!StringUtils.isBlank(schedule)) {
+                        String[] schedules = schedule.split(" ");
+                        for(int i = 0; i < schedules.length; i++) {
+                            if (i==0) {
+                                holder.tvSchedule1.setText(schedules[i]);
+                            } else if (i == 1) {
+                                holder.tvSchedule2.setText(schedules[i]);
+                            } else {
+                                holder.tvSchedule3.setText(schedules[i]);
+                                break;
+                            }
+                        }
+                    }
                 }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
+        } else {
+            holder.tvDate.setText("");
         }
 
         if (position%7 == 0) {
@@ -111,7 +115,7 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void calculateMonth() {
+    public void calculateMonth() {
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
         firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
         columnNum = monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH) + (firstDayOfMonth - 1);

@@ -15,12 +15,9 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolScheduleCalendarAdapter;
 import com.aura.smartschool.adapter.SchoolScheduleListAdapter;
 import com.aura.smartschool.vo.MemberVO;
-import com.aura.smartschool.vo.SchoolNotiVO;
+import com.aura.smartschool.vo.ScheduleData;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015-07-18.
@@ -44,8 +41,13 @@ public class SchoolScheduleFragment extends Fragment {
     private SchoolScheduleCalendarAdapter mCalendarAdapter;
     private SchoolScheduleListAdapter mScheduleListAdapter;
 
-    private ArrayList<SchoolNotiVO> mScheduleList = new ArrayList<>();
-    private Map<String, ArrayList<SchoolNotiVO>> mScheduleMap = new HashMap<>();
+    private ScheduleData[] mScheduleDatas;
+
+    private OnMonthChangedListener monthChangedListener;
+
+    public interface OnMonthChangedListener {
+        void onMonthChaged(Calendar month);
+    }
 
     public static SchoolScheduleFragment newInstance(MemberVO member, Calendar selCalendar) {
         SchoolScheduleFragment instance = new SchoolScheduleFragment();
@@ -62,6 +64,7 @@ public class SchoolScheduleFragment extends Fragment {
         Bundle args = getArguments();
         this.mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
         this.selMonth = (Calendar) args.getSerializable("selMonth");
+        mScheduleDatas = new ScheduleData[0];
     }
 
     @Nullable
@@ -78,17 +81,20 @@ public class SchoolScheduleFragment extends Fragment {
         ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
     }
 
-    public void setScheduleList(ArrayList<SchoolNotiVO> scheduleList) {
-        this.mScheduleList = scheduleList;
-        makeScheduleMap();
+    public void setScheduleDatas(ScheduleData[] scheduleDatas) {
+        mScheduleDatas = scheduleDatas;
         if (mCalendarAdapter != null) {
-            mCalendarAdapter.setScheduleMap(mScheduleMap);
+            mCalendarAdapter.setScheduleDatas(mScheduleDatas);
             mCalendarAdapter.notifyDataSetChanged();
         }
         if (mScheduleListAdapter != null) {
-            mScheduleListAdapter.setScheduleMap(mScheduleMap);
+            mScheduleListAdapter.setScheduleDatas(mScheduleDatas);
             mScheduleListAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void setMonthChangedListener(OnMonthChangedListener listener) {
+        monthChangedListener = listener;
     }
 
     private void initViews(View view) {
@@ -109,26 +115,15 @@ public class SchoolScheduleFragment extends Fragment {
 
     private void initListView(View view, Calendar cal) {
         mSchoolScheduleListView = (ListView) view.findViewById(R.id.list_school_schedule_list);
-        mScheduleListAdapter = new SchoolScheduleListAdapter(getActivity(), cal, mScheduleMap);
+        mScheduleListAdapter = new SchoolScheduleListAdapter(getActivity(), cal, mScheduleDatas);
         mSchoolScheduleListView.setAdapter(mScheduleListAdapter);
     }
 
     private void initCalendarView(View view, Calendar cal) {
         calendarContainer = view.findViewById(R.id.ll_calendar_container);
         gvCalendar = (GridView) view.findViewById(R.id.gv_calendar);
-        mCalendarAdapter = new SchoolScheduleCalendarAdapter(getActivity(), cal, mScheduleMap);
+        mCalendarAdapter = new SchoolScheduleCalendarAdapter(getActivity(), cal, mScheduleDatas);
         gvCalendar.setAdapter(mCalendarAdapter);
-    }
-
-    private void makeScheduleMap() {
-        for(SchoolNotiVO notiVO : mScheduleList) {
-            ArrayList<SchoolNotiVO> scheduleList = mScheduleMap.get(notiVO.notiDate);
-            if (scheduleList == null) {
-                scheduleList = new ArrayList<>();
-            }
-            scheduleList.add(notiVO);
-            mScheduleMap.put(notiVO.notiDate, scheduleList);
-        }
     }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -160,6 +155,11 @@ public class SchoolScheduleFragment extends Fragment {
 
     private void chageMonth() {
         tvMonth.setText(String.format(getActivity().getResources().getText(R.string.month_schedule).toString(), (selMonth.get(Calendar.MONTH) + 1)));
+
+        monthChangedListener.onMonthChaged(selMonth);
+        mCalendarAdapter.calculateMonth();
+        mScheduleListAdapter.calculateMonth();
+
         mCalendarAdapter.notifyDataSetChanged();
         mScheduleListAdapter.notifyDataSetChanged();
         ivBtnPre.setVisibility(View.VISIBLE);

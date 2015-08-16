@@ -1,5 +1,6 @@
 package com.aura.smartschool.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +20,9 @@ import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolLetterListFragment;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolNoticeListFragment;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolScheduleFragment;
+import com.aura.smartschool.utils.SchoolApi;
 import com.aura.smartschool.vo.MemberVO;
+import com.aura.smartschool.vo.ScheduleData;
 import com.aura.smartschool.vo.SchoolNotiVO;
 
 import org.json.JSONArray;
@@ -37,6 +40,8 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
     private static final int CATEGORY_LETTER = 1;
     private static final int CATEGORY_NOTI = 2;
     private static final int CATEGORY_SCHEDULE = 3;
+
+    private volatile boolean isScheduleJobDone, isNotiJobDone;
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
@@ -73,6 +78,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
+        getSchoolSchedule(selCalendar);
         getSchoolNotiList();
     }
 
@@ -93,6 +99,12 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         mSchoolLetterFragment = SchoolLetterListFragment.newInstance(mMember);
         mSchoolNotiFragment = SchoolNoticeListFragment.newInstance(mMember);
         mSchoolScheduleFragment = SchoolScheduleFragment.newInstance(mMember, selCalendar);
+        mSchoolScheduleFragment.setMonthChangedListener(new SchoolScheduleFragment.OnMonthChangedListener() {
+            @Override
+            public void onMonthChaged(Calendar month) {
+                getSchoolSchedule(month);
+            }
+        });
 
         mViewPager = (ViewPager) mView.findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(this.getActivity().getSupportFragmentManager(), mMember);
@@ -145,43 +157,46 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        private int NUM_ITEMS = 3;
-        private MemberVO mMember;
-        public MyPagerAdapter(FragmentManager fragmentManager, MemberVO memberVO) {
-            super(fragmentManager);
-            this.mMember = memberVO;
-        }
+    private void getSchoolSchedule(final Calendar selectedMonth) {
+        AsyncTask scheduleTask = new AsyncTask<Object, Void, ScheduleData[]>() {
 
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return mSchoolScheduleFragment;
-                case 1:
-                    return mSchoolNotiFragment;
-                case 2:
-                    return mSchoolLetterFragment;
-                default:
-                    return null;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                isScheduleJobDone = false;
+                showLoading();
             }
-        }
-   }
+
+            @Override
+            protected ScheduleData[] doInBackground(Object... params) {
+
+                return SchoolApi.getMonthlySchedule(SchoolApi.getContry(mMember.mSchoolVO.sido),
+                        mMember.mSchoolVO.code,
+                        SchoolApi.getSchoolType(mMember.mSchoolVO.gubun2),
+                        selectedMonth.get(Calendar.YEAR),
+                        selectedMonth.get(Calendar.MONTH) + 1);
+            }
+
+            @Override
+            protected void onPostExecute(ScheduleData[] scheduleDatas) {
+                super.onPostExecute(scheduleDatas);
+                isScheduleJobDone = true;
+                mSchoolScheduleFragment.setScheduleDatas(scheduleDatas);
+                hideLoading();
+            }
+        };
+        scheduleTask.execute();
+    }
 
     private void getSchoolNotiList() {
-        LoadingDialog.showLoading(getActivity());
+        isNotiJobDone = false;
+        showLoading();
         try {
             AQuery aQuery = new AQuery(getActivity());
             String url = Constant.HOST + Constant.API_GET_SCHOOL_NOTI_LIST;
 
             JSONObject json = new JSONObject();
-//            json.put("school_id", mMember.mSchoolVO.school_id);
-            json.put("school_id", 18247);
+            json.put("school_id", mMember.mSchoolVO.school_id);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));
@@ -189,7 +204,8 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
             aQuery.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
-                    LoadingDialog.hideLoading();
+                    isNotiJobDone = true;
+                    hideLoading();
 
                     try {
                         if (status.getCode() != 200) {
@@ -223,6 +239,16 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         }
     }
 
+    private void showLoading() {
+        LoadingDialog.showLoading(getActivity());
+    }
+
+    private void hideLoading() {
+        if (isNotiJobDone && isScheduleJobDone) {
+            LoadingDialog.hideLoading();
+        }
+    }
+
     private void addNotiToList(SchoolNotiVO notiVO) {
         switch (notiVO.category) {
             case CATEGORY_LETTER:
@@ -233,10 +259,39 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 mSchoolNotiList.add(notiVO);
                 mSchoolNotiFragment.setNotiList(mSchoolNotiList);
                 break;
-            case CATEGORY_SCHEDULE:
-                mSchoolScheduleList.add(notiVO);
-                mSchoolScheduleFragment.setScheduleList(mSchoolScheduleList);
-                break;
+            //나이스 api 로 변경됨
+//            case CATEGORY_SCHEDULE:
+//                mSchoolScheduleList.add(notiVO);
+//                mSchoolScheduleFragment.setScheduleList(mSchoolScheduleList);
+//                break;
+        }
+    }
+
+    private class MyPagerAdapter extends FragmentStatePagerAdapter {
+        private int NUM_ITEMS = 3;
+        private MemberVO mMember;
+        public MyPagerAdapter(FragmentManager fragmentManager, MemberVO memberVO) {
+            super(fragmentManager);
+            this.mMember = memberVO;
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return mSchoolScheduleFragment;
+                case 1:
+                    return mSchoolNotiFragment;
+                case 2:
+                    return mSchoolLetterFragment;
+                default:
+                    return null;
+            }
         }
     }
 }

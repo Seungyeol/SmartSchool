@@ -21,18 +21,24 @@
             android:id="@+id/tv_schedule1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
             android:textSize="9sp"
             android:layout_marginBottom="1dp" />
         <TextView
             android:id="@+id/tv_schedule2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
             android:textSize="9sp"
             android:layout_marginBottom="1dp" />
         <TextView
             android:id="@+id/tv_schedule3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
             android:textSize="9sp"
             android:layout_marginBottom="1dp" />
     </LinearLayout>
