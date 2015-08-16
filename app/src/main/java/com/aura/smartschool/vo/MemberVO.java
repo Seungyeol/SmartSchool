@@ -1,5 +1,7 @@
 package com.aura.smartschool.vo;
 
+import android.util.Log;
+
 import com.aura.smartschool.utils.Util;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +49,7 @@ public class MemberVO implements Serializable {
 		Calendar payDate = Calendar.getInstance();
 		payDate.setTime(Util.getDateFromString(pay_date));
 		int monthDay = payDate.getActualMaximum(Calendar.DAY_OF_MONTH);
-		payDate.add(Calendar.DATE, monthDay);
+		payDate.add(Calendar.DATE, monthDay - 1);
 		return payDate.after(Calendar.getInstance());
 	}
 }
