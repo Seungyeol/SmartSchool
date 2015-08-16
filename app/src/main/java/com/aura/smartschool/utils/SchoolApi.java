@@ -78,6 +78,8 @@ public class SchoolApi {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -106,12 +108,14 @@ public class SchoolApi {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return null;
     }
 
-    public static MenuData[] menuParser(Document menuData) {
+    public static MenuData[] menuParser(Document menuData) throws NullPointerException {
 
         MenuData[] monthlyMenu = new MenuData[31];
 
@@ -156,7 +160,7 @@ public class SchoolApi {
         return monthlyMenu;
     }
 
-    public static ScheduleData[] scheduleParser(Document scheduleData) {
+    public static ScheduleData[] scheduleParser(Document scheduleData) throws NullPointerException {
 
         ScheduleData[] monthlySchedule = new ScheduleData[31];
 
@@ -241,11 +245,11 @@ public class SchoolApi {
         if(type.contains("유치원")) {
             return SchoolType.KINDERGARTEN;
         } else if(type.contains("초등")) {
-            return SchoolType.KINDERGARTEN;
+            return SchoolType.ELEMENTARY;
         }  else if(type.contains("중학")) {
-            return SchoolType.KINDERGARTEN;
+            return SchoolType.MIDDLE;
         } else if(type.contains("고등")) {
-            return SchoolType.KINDERGARTEN;
+            return SchoolType.HIGH;
         } else {
             return 0;
         }

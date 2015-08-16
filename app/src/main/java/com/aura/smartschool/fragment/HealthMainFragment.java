@@ -128,6 +128,7 @@ public class HealthMainFragment extends Fragment {
         rl_fat.setOnClickListener(mMeasureClick);
         rl_growth.setOnClickListener(mMeasureClick);
         rl_pt.setOnClickListener(mClick);
+        rl_dining.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
         rl_map.setOnClickListener(mClick);
         rl_consult.setOnClickListener(mClick);
@@ -388,6 +389,9 @@ public class HealthMainFragment extends Fragment {
                     break;
                 case R.id.rl_noti:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, SchoolNoticePagerFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+                case R.id.rl_dining:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, MealListFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
             }
         }
