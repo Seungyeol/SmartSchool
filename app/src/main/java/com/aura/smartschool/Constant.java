@@ -33,4 +33,11 @@ public final class Constant {
 	//비디오 리스트 가져오기
 	public static final String API_GET_VIDEOLIST_BY_MASTERID = "/api/getVideoListByMasterGradeId";
 	public static final String API_GET_VIDEOLIST_BY_SECTION = "/api/getVideoListByInfoType";
+
+	public static final int NOTIFICATION_STEP = 1001;
+	public static final int NOTIFICATION_SCHOOL_ALIMI = 1002;
+	public static final int NOTIFICATION_CONSULT = 1003;
+
+	public static final String NOTIFCATION_DESTINATION_FRAGMENT = "des_fragment";
+	public static final String CONSULT_CATEGORY = "category";
 }

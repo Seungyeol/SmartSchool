@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
-import com.aura.smartschool.database.DBConsultChat;
-import com.aura.smartschool.database.DBConsultChatFail;
+import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
@@ -83,7 +82,7 @@ public class ConsultMainFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        DBConsultChatFail.TYPE chatType = null;
+        ConsultType chatType = null;
         switch (v.getId()) {
             case R.id.tv_school_violence:
 //                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01011111111"));
@@ -92,28 +91,28 @@ public class ConsultMainFragment extends Fragment implements View.OnClickListene
                 return;
                 //chatType = DBConsultChat.TYPE.SCHOOL_VIOLENCE_CONSULT;
             case R.id.tv_friend_relationship:
-                chatType = DBConsultChatFail.TYPE.FRIEND_RELATIONSHIP_CONSULT;
+                chatType = ConsultType.FRIEND_RELATIONSHIP_CONSULT;
                 break;
             case R.id.tv_family:
-                chatType = DBConsultChatFail.TYPE.FAMILY_CONSULT;
+                chatType = ConsultType.FAMILY_CONSULT;
                 break;
             case R.id.tv_sexual:
-                chatType = DBConsultChatFail.TYPE.SEXUAL_CONSULT;
+                chatType = ConsultType.SEXUAL_CONSULT;
                 break;
             case R.id.tv_academic:
-                chatType = DBConsultChatFail.TYPE.ACADEMIC_CONSULT;
+                chatType = ConsultType.ACADEMIC_CONSULT;
                 break;
             case R.id.tv_career:
-                chatType = DBConsultChatFail.TYPE.CAREER_CONSULT;
+                chatType = ConsultType.CAREER_CONSULT;
                 break;
             case R.id.tv_psychology:
-                chatType = DBConsultChatFail.TYPE.PSYCHOLOGY_CONSULT;
+                chatType = ConsultType.PSYCHOLOGY_CONSULT;
                 break;
             case R.id.tv_growth:
-                chatType = DBConsultChatFail.TYPE.GROWTH_CONSULT;
+                chatType = ConsultType.GROWTH_CONSULT;
                 break;
             case R.id.tv_smoking:
-                chatType = DBConsultChatFail.TYPE.SMOKING_CONSULT;
+                chatType = ConsultType.SMOKING_CONSULT;
                 break;
             default:
                 break;

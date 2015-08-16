@@ -48,23 +48,23 @@ public class DBConsultChatFail extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        for (TYPE type : TYPE.values()) {
-            db.execSQL(String.format(CREATE_TABLE, type.getTableName()));
+        for (ConsultType type : ConsultType.values()) {
+            db.execSQL(String.format(CREATE_TABLE, type.failTableName));
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        for (TYPE type : TYPE.values()) {
-            db.execSQL(String.format(DROP_TABLE, type.getTableName()));
+        for (ConsultType type : ConsultType.values()) {
+            db.execSQL(String.format(DROP_TABLE, type.failTableName));
         }
 
         onCreate(db);
     }
 
-    public ArrayList<ConsultVO> getAllFailMsg(TYPE chatType) {
+    public ArrayList<ConsultVO> getAllFailMsg(ConsultType chatType) {
         ArrayList<ConsultVO> result = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(chatType.getTableName(), new String[]{COL_ID, COL_BODY, COL_TIME}, null, null, null, null, COL_TIME + " ASC" );
+        Cursor cursor = getReadableDatabase().query(chatType.failTableName, new String[]{COL_ID, COL_BODY, COL_TIME}, null, null, null, null, COL_TIME + " ASC" );
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
@@ -80,13 +80,13 @@ public class DBConsultChatFail extends SQLiteOpenHelper {
         return result;
     }
 
-    public long insertMsg(TYPE chatType, String msg) {
+    public long insertMsg(ConsultType chatType, String msg) {
         long id = -1;
         getWritableDatabase().beginTransaction();
         try {
             ContentValues values = new ContentValues();
             values.put(COL_BODY, msg);
-            id = getWritableDatabase().insert(chatType.getTableName(), null, values);
+            id = getWritableDatabase().insert(chatType.failTableName, null, values);
             getWritableDatabase().setTransactionSuccessful();
         } finally {
             getWritableDatabase().endTransaction();
@@ -94,57 +94,8 @@ public class DBConsultChatFail extends SQLiteOpenHelper {
         return id;
     }
 
-    public void removeMessage(TYPE chatType, long id) {
-        getWritableDatabase().execSQL("DELETE FROM "+ chatType.getTableName() +
+    public void removeMessage(ConsultType chatType, long id) {
+        getWritableDatabase().execSQL("DELETE FROM "+ chatType.failTableName +
                 " WHERE " + COL_ID + " = " + id);
-    }
-
-    public enum TYPE {
-        //학교폭력, 친구관계, 가정문제, 성상담, 학업상담, 진로상담, 심리상담, 성장상담, 흡연상담.
-        SCHOOL_VIOLENCE_CONSULT("tb_school_violence_fail", 1001),
-        FRIEND_RELATIONSHIP_CONSULT("tb_friend_relationship_fail", 1002),
-        FAMILY_CONSULT("tb_family_fail", 1003),
-        SEXUAL_CONSULT("tb_sexual_fail", 1),
-        ACADEMIC_CONSULT("tb_academic_fail", 2),
-        CAREER_CONSULT("tb_career_fail", 3),
-        PSYCHOLOGY_CONSULT("tb_psychology_fail", 4),
-        GROWTH_CONSULT("tb_growth_fail", 5),
-        SMOKING_CONSULT("tb_smoking_fail", 6);
-
-        private String tbName;
-        private int code;
-
-        private TYPE (String tbName, int code) {
-            this.tbName = tbName;
-            this.code = code;
-        }
-
-        public String getTableName() {
-            return this.tbName;
-        }
-
-        public int getCode() {
-            return this.code;
-        }
-
-        public TYPE findConsultType(String tbName) {
-            TYPE[] types = values();
-            for (TYPE type:types) {
-                if (type.getTableName().equalsIgnoreCase(tbName)) {
-                    return type;
-                }
-            }
-            return null;
-        }
-
-        public TYPE findConsultType(int code) {
-            TYPE[] types = values();
-            for (TYPE type:types) {
-                if (type.getCode() == code) {
-                    return type;
-                }
-            }
-            return null;
-        }
     }
 }

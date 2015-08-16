@@ -23,9 +23,11 @@ import android.widget.Toast;
 import com.aura.smartschool.Interface.DrawerSelectedListener;
 import com.aura.smartschool.Interface.LoginDialogListener;
 import com.aura.smartschool.adapter.DrawerAdapter;
+import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
+import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
 import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
@@ -91,6 +93,12 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		}
 
 		doLoginProcess();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		processNotificationIntent(intent);
 	}
 
 	private void doLoginProcess() {
@@ -328,6 +336,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 //			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
 //		}
 
+		processNotificationIntent(getIntent());
+
 		//부모의 경우는 위치서비스와 활동량 서비스를 하지 않는다.
 		if (!PreferenceUtil.getInstance(this).isParent()) {
 			Intent intent = new Intent(this, MyLocationService.class);
@@ -366,6 +376,17 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		startActivity(intent);
 		if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
 			mDrawerLayout.closeDrawer(mDrawerList);
+		}
+	}
+
+	private void processNotificationIntent(Intent intent) {
+		int desFragment = intent.getIntExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, -1);
+
+		if (desFragment == Constant.NOTIFICATION_CONSULT) {
+			int category = intent.getIntExtra(Constant.CONSULT_CATEGORY, -1);
+			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+					ConsultChattingFragment.newInstance(LoginManager.getInstance().getLoginUser(), ConsultType.findConsultTypeByConsultCode(category))
+			).addToBackStack(null).commitAllowingStateLoss();
 		}
 	}
 }

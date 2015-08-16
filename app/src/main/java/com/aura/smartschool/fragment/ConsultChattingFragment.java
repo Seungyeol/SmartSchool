@@ -18,14 +18,14 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.ConsultFragmentVisibleManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.ConsultChattingAdapter;
-import com.aura.smartschool.database.DBConsultChat;
+import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.database.DBConsultChatFail;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.Util;
-import com.aura.smartschool.vo.ConsultChatVO;
 import com.aura.smartschool.vo.ConsultVO;
 import com.aura.smartschool.vo.MemberVO;
 
@@ -46,7 +46,7 @@ public class ConsultChattingFragment extends Fragment {
     private AQuery mAq;
 
     private MemberVO mMember;
-    private DBConsultChatFail.TYPE chatType;
+    private ConsultType chatType;
 
     private DBConsultChatFail dbConsultFail;
 
@@ -58,7 +58,7 @@ public class ConsultChattingFragment extends Fragment {
 
     private ArrayList<ConsultVO> consultList = new ArrayList<>();
 
-    public static ConsultChattingFragment newInstance(MemberVO member, DBConsultChatFail.TYPE chatType) {
+    public static ConsultChattingFragment newInstance(MemberVO member, ConsultType chatType) {
         ConsultChattingFragment instance = new ConsultChattingFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_MEMBER, member);
@@ -72,7 +72,7 @@ public class ConsultChattingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
-        chatType = (DBConsultChatFail.TYPE) args.getSerializable("chatType");
+        chatType = (ConsultType) args.getSerializable("chatType");
 
         dbConsultFail = DBConsultChatFail.getInstance(getActivity());
     }
@@ -81,6 +81,8 @@ public class ConsultChattingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getActivity(), R.layout.fragment_consult_chatting, null);
+
+        ConsultFragmentVisibleManager.getInstance().setVisible(true, chatType.code, messageReceiveObserver);
 
         mAq = new AQuery(view);
 
@@ -117,6 +119,12 @@ public class ConsultChattingFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ConsultFragmentVisibleManager.getInstance().setVisible(false, -1, null);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (dbConsultFail != null) {
@@ -131,7 +139,7 @@ public class ConsultChattingFragment extends Fragment {
 
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
-            json.put("category", chatType.getCode());
+            json.put("category", chatType.code);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));
@@ -182,8 +190,8 @@ public class ConsultChattingFragment extends Fragment {
 
             JSONObject json = new JSONObject();
             json.put("content", msg);
-            json.put("category", chatType.getCode());
-            json.put("who", DBConsultChat.MSG_FROM_ME);
+            json.put("category", chatType.code);
+            json.put("who", ConsultType.MSG_FROM_STUDENT);
             json.put("member_id", mMember.member_id);
 
             Log.d("LDK", "url:" + url);
@@ -205,7 +213,7 @@ public class ConsultChattingFragment extends Fragment {
                         if (object.getInt("result") == 0) {
                             ConsultVO consultVO = new ConsultVO();
                             consultVO.content = msg;
-                            consultVO.who = 0;
+                            consultVO.who = ConsultType.MSG_FROM_STUDENT;
                             consultVO.created = new Date();
                             mConsultChattingAdapter.addItem(consultVO);
                             mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getChatMessageListItemCount() - 1);
@@ -229,7 +237,7 @@ public class ConsultChattingFragment extends Fragment {
         ConsultVO consultVO = new ConsultVO();
         consultVO.consultId = id;
         consultVO.content = msg;
-        consultVO.who = 0;
+        consultVO.who = ConsultType.MSG_FROM_STUDENT;
         consultVO.created = new Date();
         mConsultChattingAdapter.addFailItem(consultVO);
         mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
@@ -266,6 +274,18 @@ public class ConsultChattingFragment extends Fragment {
         public void OnRemove(ConsultVO message) {
             mConsultChattingAdapter.removeItem(message);
             dbConsultFail.removeMessage(chatType, message.consultId);
+        }
+    };
+
+    private ConsultFragmentVisibleManager.OnMessageReceiveObserver messageReceiveObserver = new ConsultFragmentVisibleManager.OnMessageReceiveObserver() {
+        @Override
+        public void onReceived(String message) {
+            ConsultVO consultVO = new ConsultVO();
+            consultVO.content = message;
+            consultVO.who = ConsultType.MSG_FROM_TEACHER;
+            consultVO.created = new Date();
+            mConsultChattingAdapter.addItem(consultVO);
+            mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getChatMessageListItemCount() - 1);
         }
     };
 }

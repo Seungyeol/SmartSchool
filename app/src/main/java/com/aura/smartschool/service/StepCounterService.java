@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBStepCounter;
@@ -260,6 +261,6 @@ public class StepCounterService extends Service implements SensorEventListener {
                 .setSmallIcon(R.drawable.home)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-        mNotiManger.notify(1001, notiBuilder.build());
+        mNotiManger.notify(Constant.NOTIFICATION_STEP, notiBuilder.build());
     }
 }
