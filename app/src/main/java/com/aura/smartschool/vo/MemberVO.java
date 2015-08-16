@@ -49,7 +49,7 @@ public class MemberVO implements Serializable {
 		Calendar payDate = Calendar.getInstance();
 		payDate.setTime(Util.getDateFromString(pay_date));
 		int monthDay = payDate.getActualMaximum(Calendar.DAY_OF_MONTH);
-		payDate.add(Calendar.DATE, monthDay - 1);
+		payDate.add(Calendar.DATE, monthDay);
 		return payDate.after(Calendar.getInstance());
 	}
 }
