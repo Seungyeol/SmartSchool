@@ -20,6 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_appraisal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:enabled="false"
+            android:text="평가"/>
         <EditText
             android:id="@+id/et_chat"
             android:layout_width="0dp"

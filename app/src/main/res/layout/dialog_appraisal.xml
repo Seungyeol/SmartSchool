@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="10dp"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <View
+            android:id="@+id/v_star1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_selector_appraisal"/>
+        <View
+            android:id="@+id/v_star2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_selector_appraisal"/>
+        <View
+            android:id="@+id/v_star3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_selector_appraisal"/>
+        <View
+            android:id="@+id/v_star4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg_selector_appraisal"/>
+        <View
+            android:id="@+id/v_star5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_selector_appraisal"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_appraisal_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:text="완전 불만족해요"/>
+    <Button
+        android:id="@+id/btn_send_appraisal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"/>
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -24,6 +26,7 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.ConsultChattingAdapter;
 import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.database.DBConsultChatFail;
+import com.aura.smartschool.dialog.AppraisalDialogFragment;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.ConsultVO;
@@ -52,9 +55,12 @@ public class ConsultChattingFragment extends Fragment {
 
     private EditText etChat;
     private Button btnEnter;
+    private View btnAppriaisal;
 
     private RecyclerView mConsultChattingList;
     private ConsultChattingAdapter mConsultChattingAdapter;
+
+    private int sessionId;
 
     private ArrayList<ConsultVO> consultList = new ArrayList<>();
 
@@ -97,15 +103,11 @@ public class ConsultChattingFragment extends Fragment {
 
         etChat = (EditText) view.findViewById(R.id.et_chat);
         btnEnter = (Button) view.findViewById(R.id.btn_enter);
+        btnAppriaisal = view.findViewById(R.id.btn_appraisal);
 
         etChat.addTextChangedListener(mWatcher);
-
-        btnEnter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendConsultMessage(etChat.getText().toString());
-            }
-        });
+        btnAppriaisal.setOnClickListener(mBtnClicked);
+        btnEnter.setOnClickListener(mBtnClicked);
 
         loadConsultMessage();
 
@@ -162,12 +164,16 @@ public class ConsultChattingFragment extends Fragment {
                                 ConsultVO consult = new ConsultVO();
                                 consult.consultId = json.getInt("consult_id");
                                 consult.sessionId = json.getInt("session_id");
+                                sessionId = json.getInt("session_id");
                                 consult.who = json.getInt("who");
                                 consult.content = json.getString("content");
                                 consult.created = Util.getDateFromString(json.getString("created"));
                                 consultList.add(consult);
                             }
                             mConsultChattingAdapter.setConsultMessageList(consultList);
+                            if (consultList.size() > 0) {
+                                btnAppriaisal.setEnabled(true);
+                            }
                             mConsultChattingAdapter.notifyDataSetChanged();
                             mConsultChattingList.scrollToPosition(mConsultChattingAdapter.getItemCount() - 1);
                         } else {
@@ -258,6 +264,68 @@ public class ConsultChattingFragment extends Fragment {
                 btnEnter.setEnabled(false);
             } else {
                 btnEnter.setEnabled(true);
+            }
+        }
+    };
+
+    private View.OnClickListener mBtnClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_appraisal:
+                    AppraisalDialogFragment dialogFragment = new AppraisalDialogFragment();
+                    dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                    dialogFragment.setAppraisalSelectedListener(appraisalSelectedListener);
+                    dialogFragment.show(getFragmentManager(), "appraisalDailog");
+                    break;
+                case R.id.btn_enter:
+                    sendConsultMessage(etChat.getText().toString());
+                    break;
+            }
+        }
+    };
+
+    private AppraisalDialogFragment.OnAppraisalSelectedListener appraisalSelectedListener = new AppraisalDialogFragment.OnAppraisalSelectedListener() {
+        @Override
+        public void onApprisalSelected(int num) {
+            LoadingDialog.showLoading(getActivity());
+            try {
+                String url = Constant.HOST + Constant.API_RATE_CONSULT;
+
+                JSONObject json = new JSONObject();
+                json.put("session_id", sessionId);
+                json.put("rate", num);
+
+                Log.d("LDK", "url:" + url);
+                Log.d("LDK", "input parameter:" + json.toString(1));
+
+                mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                    @Override
+                    public void callback(String url, JSONObject object, AjaxStatus status) {
+                        LoadingDialog.hideLoading();
+                        try {
+                            if (status.getCode() != 200) {
+                                Log.d("LDK", "FAIL");
+                                Toast.makeText(getActivity(), "평가 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            Log.d("LDK", "result:" + object.toString(1));
+
+                            if (object.getInt("result") == 0) {
+                                Toast.makeText(getActivity(), "평가 하였습니다.", Toast.LENGTH_SHORT).show();
+                                getFragmentManager().popBackStack();
+                            } else {
+                                Toast.makeText(getActivity(), "평가 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(getActivity(), "평가 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     };

@@ -85,11 +85,8 @@ public class ConsultMainFragment extends Fragment implements View.OnClickListene
         ConsultType chatType = null;
         switch (v.getId()) {
             case R.id.tv_school_violence:
-//                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01011111111"));
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "01011111111"));
-                startActivity(intent);
-                return;
-                //chatType = DBConsultChat.TYPE.SCHOOL_VIOLENCE_CONSULT;
+                chatType = ConsultType.SCHOOL_VIOLENCE_CONSULT;
+                break;
             case R.id.tv_friend_relationship:
                 chatType = ConsultType.FRIEND_RELATIONSHIP_CONSULT;
                 break;
