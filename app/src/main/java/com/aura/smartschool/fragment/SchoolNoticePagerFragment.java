@@ -271,7 +271,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 isScheduleJobDone = true;
                 break;
         }
-        if (isNotiJobDone && isScheduleJobDone) {
+        if (isNotiJobDone && isScheduleJobDone && isLetterJobDone) {
             LoadingDialog.hideLoading();
         }
     }
