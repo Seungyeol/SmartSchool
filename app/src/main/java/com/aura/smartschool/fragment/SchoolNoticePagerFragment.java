@@ -41,7 +41,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
     private static final int CATEGORY_NOTI = 2;
     private static final int CATEGORY_SCHEDULE = 3;
 
-    private volatile boolean isScheduleJobDone, isNotiJobDone;
+    private volatile boolean isScheduleJobDone, isNotiJobDone, isLetterJobDone;
 
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
@@ -60,7 +60,6 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
 
     private ArrayList<SchoolNotiVO> mSchoolLetterList = new ArrayList<>();
     private ArrayList<SchoolNotiVO> mSchoolNotiList = new ArrayList<>();
-    private ArrayList<SchoolNotiVO> mSchoolScheduleList = new ArrayList<>();
 
     private Calendar selCalendar = Calendar.getInstance();
 
@@ -79,7 +78,8 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
         getSchoolSchedule(selCalendar);
-        getSchoolNotiList();
+        getSchoolNotiList(CATEGORY_LETTER);
+        getSchoolNotiList(CATEGORY_NOTI);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
             protected void onPreExecute() {
                 super.onPreExecute();
                 isScheduleJobDone = false;
-                showLoading();
+                showLoading(CATEGORY_SCHEDULE);
             }
 
             @Override
@@ -182,21 +182,23 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 super.onPostExecute(scheduleDatas);
                 isScheduleJobDone = true;
                 mSchoolScheduleFragment.setScheduleDatas(scheduleDatas);
-                hideLoading();
+                hideLoading(CATEGORY_SCHEDULE);
             }
         };
         scheduleTask.execute();
     }
 
-    private void getSchoolNotiList() {
+    private void getSchoolNotiList(final int category) {
         isNotiJobDone = false;
-        showLoading();
+        showLoading(category);
         try {
             AQuery aQuery = new AQuery(getActivity());
-            String url = Constant.HOST + Constant.API_GET_SCHOOL_NOTI_LIST;
+            String url = Constant.HOST + Constant.API_GET_SCHOOL_NOTI_LIST_BY_MEMBER;
 
             JSONObject json = new JSONObject();
             json.put("school_id", mMember.mSchoolVO.school_id);
+            json.put("category", category);
+            json.put("member_id", mMember.member_id);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));
@@ -205,7 +207,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
                     isNotiJobDone = true;
-                    hideLoading();
+                    hideLoading(category);
 
                     try {
                         if (status.getCode() != 200) {
@@ -223,6 +225,9 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                                 notiVO.title = ((JSONObject)jsonArray.get(i)).getString("title");
                                 notiVO.content = ((JSONObject)jsonArray.get(i)).getString("content");
                                 notiVO.notiDate = ((JSONObject)jsonArray.get(i)).getString("noti_date");
+                                notiVO.startIndex = ((JSONObject)jsonArray.get(i)).getInt("start_index");
+                                notiVO.pageSize = ((JSONObject)jsonArray.get(i)).getInt("page_size");
+                                notiVO.memberId = ((JSONObject)jsonArray.get(i)).getInt("member_id");
                                 addNotiToList(notiVO);
                             }
                         }
@@ -239,11 +244,33 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void showLoading() {
+    private void showLoading(int category) {
+        switch (category) {
+            case CATEGORY_LETTER:
+                isLetterJobDone = false;
+                break;
+            case CATEGORY_NOTI:
+                isNotiJobDone = false;
+                break;
+            case CATEGORY_SCHEDULE:
+                isScheduleJobDone = false;
+                break;
+        }
         LoadingDialog.showLoading(getActivity());
     }
 
-    private void hideLoading() {
+    private void hideLoading(int category) {
+        switch (category) {
+            case CATEGORY_LETTER:
+                isLetterJobDone = true;
+                break;
+            case CATEGORY_NOTI:
+                isNotiJobDone = true;
+                break;
+            case CATEGORY_SCHEDULE:
+                isScheduleJobDone = true;
+                break;
+        }
         if (isNotiJobDone && isScheduleJobDone) {
             LoadingDialog.hideLoading();
         }
