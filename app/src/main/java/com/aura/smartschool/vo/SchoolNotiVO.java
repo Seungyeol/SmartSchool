@@ -14,4 +14,7 @@ public class SchoolNotiVO {
     public String title;
     public String content;
     public String notiDate;
+    public int startIndex;
+    public int pageSize;
+    public int memberId;
 }
