@@ -114,7 +114,7 @@ public class MealListFragment extends Fragment {
                     mMenuListView.post(new Runnable() {
                         @Override
                         public void run() {
-                            mMenuListView.smoothScrollToPosition(thisMonth.get(Calendar.DATE));
+                            mMenuListView.setSelection(thisMonth.get(Calendar.DATE)-1);
                         }
                     });
                 }
