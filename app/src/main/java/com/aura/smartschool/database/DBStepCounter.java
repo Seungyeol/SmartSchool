@@ -5,8 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.WalkingVO;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class DBStepCounter extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "db_steps";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String COL_DATE = "date";
     private static final String COL_STEPS = "steps";
@@ -96,7 +96,7 @@ public class DBStepCounter extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                result.add(new WalkingVO(cursor.getLong(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getInt(4)));
+                result.add(new WalkingVO(cursor.getLong(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4)));
             } while (cursor.moveToNext());
             cursor.close();
         }
@@ -125,16 +125,26 @@ public class DBStepCounter extends SQLiteOpenHelper {
         }
     }
 
-
-
-    public void updateSteps(long date, int steps, int calories, double distance, int activeTime) {
+    public void updateSteps(long date, int steps, int calories, int distance, int activeTime) {
         // 센서가 누적값을 올려주기 때문에 걸음걸이와 거리는 전달된 값으로 갱신한다.
         getWritableDatabase().execSQL("UPDATE " + DATABASE_NAME +
                 " SET " + COL_STEPS + " = " + steps + ", " +
-                           COL_CALORIES + " = " + COL_CALORIES + " + " + calories + ", " +
-                           COL_DISTANCE + " = " + distance + ", " +
-                           COL_ACTIVE_TIME + " = " + COL_ACTIVE_TIME + " + " + activeTime +
+                COL_CALORIES + " = " + COL_CALORIES + " + " + calories + ", " +
+                COL_DISTANCE + " = " + distance + ", " +
+                COL_ACTIVE_TIME + " = " + COL_ACTIVE_TIME + " + " + activeTime +
                 " WHERE " + COL_DATE + " = " + date);
+    }
+
+    public WalkingVO getWalkingDataForUpdate() {
+        WalkingVO result = null;
+        Cursor cursor = getReadableDatabase().query(DATABASE_NAME, new String[]{COL_DATE, COL_STEPS, COL_CALORIES, COL_DISTANCE, COL_ACTIVE_TIME}, "sync = ? AND date != ?",
+                new String[]{String.valueOf(-1), String.valueOf(Util.getTodayTimeInMillis())}, null, null, COL_DATE + " ASC" );
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            result = new WalkingVO(cursor.getLong(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4));
+            cursor.close();
+        }
+        return result;
     }
 
     public void completeSync(long date) {

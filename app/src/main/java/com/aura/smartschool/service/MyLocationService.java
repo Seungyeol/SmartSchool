@@ -10,7 +10,9 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.vo.WalkingVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -19,6 +21,9 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MyLocationService extends Service {
 
@@ -71,6 +76,7 @@ public class MyLocationService extends Service {
             if ((currentTime-lastTime) > 60 * 5) {
                 PreferenceUtil.getInstance(MyLocationService.this).setLocationTime(currentTime);
                 postLocation();
+                syncWalkingHistory();
             }
         }
     };
@@ -164,6 +170,44 @@ public class MyLocationService extends Service {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void syncWalkingHistory() {
+        final WalkingVO walkingData = DBStepCounter.getInstance(this).getWalkingDataForUpdate();
+        if (walkingData != null) {
+            String url = Constant.HOST + Constant.API_ADD_ACTIVITY;
+            JSONObject json = new JSONObject();
+            try {
+                int member_id = PreferenceUtil.getInstance(this).getMemberId();
+                if (member_id == 0) {
+                    return;
+                }
+                json.put("member_id", member_id);
+
+                json.put("activity_date", new SimpleDateFormat("yyyy-MM-dd").format(new Date(walkingData.date)));
+                json.put("step", walkingData.count);
+                json.put("calory", walkingData.calories);
+                json.put("distance", walkingData.distance);
+                json.put("time", walkingData.activeTime);
+
+                mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+                    @Override
+                    public void callback(String url, JSONObject object, AjaxStatus status) {
+                        //update or insert
+                        try {
+                            if(object.getInt("result") == 0) {
+                                DBStepCounter.getInstance(MyLocationService.this).completeSync(walkingData.date);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

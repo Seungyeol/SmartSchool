@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,8 @@ public class WalkingCountFragment extends Fragment {
             Bundle data = message.getData();
             int steps = data.getInt("steps");
             int calories = data.getInt("calories");
-            double distance = data.getDouble("distance");
+            int distance = data.getInt("distance");
+            Log.d("test", "test >> distance = " + distance);
             int totalWalkingTime = data.getInt("activeTime");
 
             mTvWalkingCount.setText(String.valueOf(steps));
@@ -80,7 +82,7 @@ public class WalkingCountFragment extends Fragment {
             int seconds = totalWalkingTime % 60;
 
             mTvCalories.setText(calories + " kcal");
-            mTvDistance.setText(String.format("%.2f Km", distance));
+            mTvDistance.setText(String.format("%.2f Km", (float) distance / 1000));
             mTvWalkingTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
         }
     };
@@ -199,7 +201,7 @@ public class WalkingCountFragment extends Fragment {
             mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetCalories(getActivity())));
             mEtTargetNum.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
-            mEtTargetNum.setText(String.valueOf(StepSharePrefrenceUtil.getTargetDistance(getActivity())));
+            mEtTargetNum.setText(String.valueOf((float)StepSharePrefrenceUtil.getTargetDistance(getActivity())/1000));
             mEtTargetNum.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         }
     }
@@ -225,7 +227,12 @@ public class WalkingCountFragment extends Fragment {
                          mTask = new Runnable() {
                              @Override
                              public void run() {
-                                 saveTargetNumbers(targetSteps);
+                                 if (mTarget.code ==TARGET.DISTANCE.code) {
+                                     saveTargetNumbers((int)(targetSteps.floatValue() * 1000));
+                                 } else {
+                                     saveTargetNumbers(targetSteps.intValue());
+                                 }
+
                              }
                          };
                          mHandler.postDelayed(mTask, 500);
@@ -238,23 +245,23 @@ public class WalkingCountFragment extends Fragment {
         }
     };
 
-    private void saveTargetNumbers(Number target) {
+    private void saveTargetNumbers(int target) {
         if (mTarget.code == TARGET.WALKING.code) {
             int lastTarget = StepSharePrefrenceUtil.getTargetSteps(getActivity());
-            if (target.intValue() != lastTarget) {
-                StepSharePrefrenceUtil.saveTargetSteps(getActivity(), target.intValue());
+            if (target != lastTarget) {
+                StepSharePrefrenceUtil.saveTargetSteps(getActivity(), target);
                 StepSharePrefrenceUtil.saveTodayAchieved(getActivity(), false);
             }
         } else if (mTarget.code == TARGET.CALORIES.code) {
             int lastTarget = StepSharePrefrenceUtil.getTargetCalories(getActivity());
-            if (target.intValue() != lastTarget) {
-                StepSharePrefrenceUtil.saveTargetCalories(getActivity(), target.intValue());
+            if (target != lastTarget) {
+                StepSharePrefrenceUtil.saveTargetCalories(getActivity(), target);
                 StepSharePrefrenceUtil.saveTodayAchieved(getActivity(), false);
             }
         } else {
-            float lastTarget = StepSharePrefrenceUtil.getTargetDistance(getActivity());
-            if (target.floatValue() != lastTarget) {
-                StepSharePrefrenceUtil.saveTargetDistance(getActivity(), target.floatValue());
+            int lastTarget = StepSharePrefrenceUtil.getTargetDistance(getActivity());
+            if (target != lastTarget) {
+                StepSharePrefrenceUtil.saveTargetDistance(getActivity(), target);
                 StepSharePrefrenceUtil.saveTodayAchieved(getActivity(), false);
             }
         }

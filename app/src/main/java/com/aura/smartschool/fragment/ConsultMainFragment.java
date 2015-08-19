@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.ConsultType;
+import com.aura.smartschool.dialog.ConsultHistoryDialogFragment;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
@@ -89,6 +93,10 @@ public class ConsultMainFragment extends Fragment {
     private View.OnClickListener chatClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+                Toast.makeText(getActivity(), "자녀 본인만 열람 가능합니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             ConsultType chatType = null;
             switch (v.getId()) {
                 case R.id.tv_school_violence:
@@ -131,6 +139,9 @@ public class ConsultMainFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tv_consult_history:
+                    ConsultHistoryDialogFragment dialogFragment = new ConsultHistoryDialogFragment(mMember);
+                    dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                    dialogFragment.show(getFragmentManager(), "consultHistoryDialog");
                     break;
                 case R.id.tv_consult_center:
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));

@@ -32,8 +32,14 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
     }
 
     public WalkingHistoryAdapter(ArrayList<WalkingVO> walkingHistory) {
-        this.mWalkingHistoryDay = walkingHistory;
         mWalkingHistoryMonth = new ArrayList<>();
+        setWalkingHistory(walkingHistory);
+    }
+
+    public void setWalkingHistory(ArrayList<WalkingVO> walkingHistory) {
+
+        mWalkingHistoryMonth.clear();
+        this.mWalkingHistoryDay = walkingHistory;
         makeMonthHistory();
         mergeWalkingHistory();
     }
@@ -108,7 +114,7 @@ public class WalkingHistoryAdapter extends RecyclerView.Adapter<WalkingHistoryAd
             ((WalkingHistoryDayViewHolder)viewHolder).mDate.setText(String.format("%d-%02d-%02d", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH)));
             ((WalkingHistoryDayViewHolder)viewHolder).mWalkingCount.setText(mWalkingHistory.get(position).walkingVO.count + " 걸음");
             ((WalkingHistoryDayViewHolder)viewHolder).mCalories.setText(mWalkingHistory.get(position).walkingVO.calories + " Kcal");
-            ((WalkingHistoryDayViewHolder)viewHolder).mDistance.setText(String.format("%.2f", mWalkingHistory.get(position).walkingVO.distance) + " Km");
+            ((WalkingHistoryDayViewHolder)viewHolder).mDistance.setText(String.format("%.2f", (float)(mWalkingHistory.get(position).walkingVO.distance)/1000) + " Km");
 
             int hour = mWalkingHistory.get(position).walkingVO.activeTime / 3600;
             int min = (mWalkingHistory.get(position).walkingVO.activeTime % 3600) / 60;

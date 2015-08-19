@@ -7,12 +7,12 @@ public class WalkingVO {
     public long date;
     public int count;
     public int calories;
-    public double distance;
+    public int distance;
     public int activeTime;
 
     public WalkingVO(){}
 
-    public WalkingVO(long date, int count, int calories, double distance, int activeTime) {
+    public WalkingVO(long date, int count, int calories, int distance, int activeTime) {
         this.date = date;
         this.count = count;
         this.calories = calories;

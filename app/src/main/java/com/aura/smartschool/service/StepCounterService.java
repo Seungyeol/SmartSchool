@@ -98,7 +98,7 @@ public class StepCounterService extends Service implements SensorEventListener {
             totalActiveTime += (int) ((System.currentTimeMillis() - startWalkingTime) / 1000);
         }
         int calories = getCalories(totalActiveTime);
-        double distance = getDistance(totalSteps);
+        int distance = getDistance(totalSteps);
 
         doCheckAchievedTarget(totalSteps, calories, distance);
 
@@ -106,7 +106,7 @@ public class StepCounterService extends Service implements SensorEventListener {
         Bundle data = new Bundle();
         data.putInt("steps", totalSteps);
         data.putInt("calories", calories);
-        data.putDouble("distance", distance);
+        data.putInt("distance", distance);
         data.putInt("activeTime", totalActiveTime);
         message.setData(data);
         if(mStepCounterHandler != null) {
@@ -155,14 +155,17 @@ public class StepCounterService extends Service implements SensorEventListener {
         return (int)(WALKING_COEFFICIENT*weight/15/60*second);
     }
 
-    private double getDistance(int steps) {
+    /*
+    return meter
+     */
+    private int getDistance(int steps) {
         /*
         Men - you can multiply your height in cm by 0.415
         Ladies - multiply your height in cm by 0.413
          */
         int height = 177;
 
-        return (height*0.415)*steps/100/1000;
+        return (int)(height*0.415)*steps/100;
     }
 
     @Override
@@ -220,7 +223,7 @@ public class StepCounterService extends Service implements SensorEventListener {
                         PendingIntent.getService(this, 3, new Intent(this, StepCounterService.class), 0));
     }
 
-    private void doCheckAchievedTarget(int totalSteps, int calories, double distance) {
+    private void doCheckAchievedTarget(int totalSteps, int calories, int distance) {
         boolean isNotiOn = StepSharePrefrenceUtil.getNoticeOnOff(this);
         boolean isTagetAchieved = StepSharePrefrenceUtil.getTodayAchieved(this);
 

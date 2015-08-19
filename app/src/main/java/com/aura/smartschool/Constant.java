@@ -27,10 +27,14 @@ public final class Constant {
 	public static final String API_GET_CONSULT_LIST = "/api/getConsultList";
 	public static final String API_ADD_CONSULT = "/admin/api/addConsult";
 	public static final String API_RATE_CONSULT = "/api/rateConsult";
+	public static final String API_GET_CONSULT_HISTORY = "/api/getConsultHistory";
 
 	public static final String API_GET_APP_NOTI_LIST = "/api/getNotiList";
 	public static final String API_GET_BOARD_LIST = "/api/getBoardList";
 	public static final String API_ADD_BOARD = "/api/addBoard";
+
+	public static final String API_ADD_ACTIVITY = "/api/addActivity";
+	public static final String API_GET_ACTIVITY_LIST = "/api/getActivityList";
 
 	//비디오 리스트 가져오기
 	public static final String API_GET_VIDEOLIST_BY_MASTERID = "/api/getVideoListByMasterGradeId";

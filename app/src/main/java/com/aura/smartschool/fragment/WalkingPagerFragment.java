@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
 import com.aura.smartschool.fragment.walkingfragments.WalkingCountFragment;
 import com.aura.smartschool.fragment.walkingfragments.WalkingHistoryFragment;
@@ -28,6 +29,7 @@ public class WalkingPagerFragment extends Fragment implements View.OnClickListen
     private FragmentStatePagerAdapter adapterViewPager;
     private ViewPager mVpPager;
 
+    private View llTabContainer;
     private View mTabWalkingCount;
     private View mTabWalkingHistory;
     private View mTabSetting;
@@ -54,6 +56,7 @@ public class WalkingPagerFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = View.inflate(getActivity(), R.layout.fragment_walking_view_pager, null);
 
+        llTabContainer = mView.findViewById(R.id.ll_tab_container);
         mTabWalkingCount = mView.findViewById(R.id.fl_tab_walking_count);
         mTabWalkingHistory = mView.findViewById(R.id.fl_tab_walking_history);
         mTabSetting = mView.findViewById(R.id.fl_tab_setting);
@@ -63,6 +66,10 @@ public class WalkingPagerFragment extends Fragment implements View.OnClickListen
         mTabSetting.setOnClickListener(this);
 
         mTabWalkingCount.setSelected(true);
+
+        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+            llTabContainer.setVisibility(View.GONE);
+        }
 
         mVpPager = (ViewPager) mView.findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(this.getActivity().getSupportFragmentManager(), mMember);
@@ -119,7 +126,6 @@ public class WalkingPagerFragment extends Fragment implements View.OnClickListen
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        private int NUM_ITEMS = 2;
         private MemberVO mMember;
         public MyPagerAdapter(FragmentManager fragmentManager, MemberVO memberVO) {
             super(fragmentManager);
@@ -128,11 +134,14 @@ public class WalkingPagerFragment extends Fragment implements View.OnClickListen
 
         @Override
         public int getCount() {
-            return NUM_ITEMS;
+            return LoginManager.getInstance().getLoginUser().is_parent == 0 ? 2 : 1;
         }
 
         @Override
         public Fragment getItem(int position) {
+            if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+                return WalkingHistoryFragment.newInstance(mMember);
+            }
             switch (position) {
                 case 0:
                     return WalkingCountFragment.newInstance(mMember);

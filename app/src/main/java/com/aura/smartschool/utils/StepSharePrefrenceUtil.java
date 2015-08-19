@@ -89,12 +89,12 @@ public class StepSharePrefrenceUtil {
         return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_TARGET_CALORIES, 0);
     }
 
-    public static void saveTargetDistance(Context context, float targetDistance) {
-        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putFloat(KEY_TARGET_DISTANCE, targetDistance).commit();
+    public static void saveTargetDistance(Context context, int targetDistance) {
+        context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).edit().putInt(KEY_TARGET_DISTANCE, targetDistance).commit();
     }
 
-    public static float getTargetDistance(Context context) {
-        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getFloat(KEY_TARGET_DISTANCE, 0);
+    public static int getTargetDistance(Context context) {
+        return context.getSharedPreferences(STEP_COUNTER_PREFERENCE_NAME, Context.MODE_MULTI_PROCESS).getInt(KEY_TARGET_DISTANCE, 0);
     }
 
     public static void saveTargetOnOff(Context context, boolean isOn) {
