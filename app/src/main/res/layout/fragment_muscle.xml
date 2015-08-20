@@ -79,7 +79,7 @@
                     android:gravity="center"
                     android:text="근육량" />
                 <TextView
-                    android:id="@+id/tv_fat"
+                    android:id="@+id/tv_muscle"
                     android:layout_width="match_parent" android:layout_height="match_parent"
                     android:background="@drawable/bg_white_fill" android:gravity="center"
                     android:textSize="22sp" android:textColor="#FF000000" android:textStyle="bold"
@@ -94,7 +94,7 @@
         <TextView
             android:id="@+id/tv_babel"
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            style="@style/HeathItemLargeTitleTxt" android:background="@drawable/bg_gold_fill"
+            style="@style/HeathItemNumberTxt" android:background="@drawable/bg_gold_fill"
             android:drawableLeft="@drawable/babel"
             android:padding="10dp" android:drawablePadding="10dp"
             android:gravity="left"

@@ -54,7 +54,7 @@ public class BmiFragment extends Fragment {
         mView = View.inflate(getActivity(), R.layout.fragment_bmi, null);
 
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
-        tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
+        tv_fat = (TextView) mView.findViewById(R.id.tv_muscle);
         tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
         iv_man = (ImageView) mView.findViewById(R.id.iv_man);

@@ -52,7 +52,7 @@ public class MuscleFragment extends Fragment {
         mView = View.inflate(getActivity(), R.layout.fragment_muscle, null);
 
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
-        tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
+        tv_fat = (TextView) mView.findViewById(R.id.tv_muscle);
         tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
         iv_bmi = (ImageView) mView.findViewById(R.id.iv_bmi);

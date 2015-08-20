@@ -87,7 +87,7 @@ public class HealthMainFragment extends Fragment {
         rl_pt = (RelativeLayout) mView.findViewById(R.id.rl_pt);
 
         rl_weight = (RelativeLayout) mView.findViewById(R.id.rl_weight);
-        rl_fat = (RelativeLayout) mView.findViewById(R.id.rl_fat);
+        rl_fat = (RelativeLayout) mView.findViewById(R.id.rl_muscle);
         rl_smoke = (RelativeLayout) mView.findViewById(R.id.rl_smoke);
         rl_mental = (RelativeLayout) mView.findViewById(R.id.rl_mental);
 
@@ -103,16 +103,14 @@ public class HealthMainFragment extends Fragment {
         tv_height = (TextView) mView.findViewById(R.id.tv_height);
         //tv_height_status = (TextView) mView.findViewById(R.id.tv_height_status);
         iv_height = (ImageView) mView.findViewById(R.id.iv_height);
-        iv_height.setVisibility(View.INVISIBLE);
 
         iv_growth = (ImageView) mView.findViewById(R.id.iv_growth);
-        iv_growth.setVisibility(View.INVISIBLE);
         tv_growth_grade = (TextView) mView.findViewById(R.id.tv_growth_grade);
         tv_weight = (TextView) mView.findViewById(R.id.tv_weight);
         //tv_weight_status = (TextView) mView.findViewById(R.id.tv_weight_status);
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
         //tv_bmi_status = (TextView) mView.findViewById(R.id.tv_bmi_status);
-        tv_fat = (TextView) mView.findViewById(R.id.tv_fat);
+        tv_fat = (TextView) mView.findViewById(R.id.tv_muscle);
         tv_smoke_status = (TextView) mView.findViewById(R.id.tv_smoke_status);
         //tv_smoke_cohb = (TextView) mView.findViewById(R.id.tv_smoke_cohb);
         //tv_smoke_ppm = (TextView) mView.findViewById(R.id.tv_smoke_ppm);
@@ -213,8 +211,6 @@ public class HealthMainFragment extends Fragment {
 
                     try {
                         if (status.getCode() != 200) {
-                            iv_height.setVisibility(View.VISIBLE);
-                            iv_growth.setVisibility(View.VISIBLE);
                             return;
                         }
                         Log.d("LDK", "result:" + object.toString(1));
@@ -252,9 +248,6 @@ public class HealthMainFragment extends Fragment {
                             mMember.mMeasureSummaryVO = mSummaryVO;
 
                             mHandler.sendEmptyMessage(MainActivity.MSG_CHECK_ANIMATION);
-                        } else {
-                            iv_height.setVisibility(View.VISIBLE);
-                            iv_growth.setVisibility(View.VISIBLE);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -272,11 +265,9 @@ public class HealthMainFragment extends Fragment {
     private void displayData() {
         if (mSummaryVO == null) return;
 
-        iv_height.setVisibility(View.VISIBLE);
         iv_height.setPivotX(0.5f);
         iv_height.setPivotY(100f);
         iv_height.setScaleY(mHeight);
-        iv_growth.setVisibility(View.VISIBLE);
         iv_growth.setPivotX(0.0f);
         iv_growth.setPivotY(0.0f);
         iv_growth.setScaleX(mGrowth);
@@ -353,7 +344,7 @@ public class HealthMainFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, BmiFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
 
-                case R.id.rl_fat:
+                case R.id.rl_muscle:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, MuscleFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
 
