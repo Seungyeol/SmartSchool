@@ -24,6 +24,7 @@ public class SmokeFragment extends Fragment {
     private ImageView iv_smoke, iv_smoke1, iv_smoke2, iv_smoke3, iv_smoke4;
     private TextView tv_ppm, tv_cohb;
     private TextView tv_help_left, tv_help_right;
+    private View tv_babel;
 
     private PopupWindow mPopup;
 
@@ -62,6 +63,7 @@ public class SmokeFragment extends Fragment {
         tv_cohb = (TextView) mView.findViewById(R.id.tv_cohb);
         tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
+        tv_babel = mView.findViewById(R.id.tv_babel);
 
         float ppm = 0;
         float cohb = 0;
@@ -91,6 +93,7 @@ public class SmokeFragment extends Fragment {
 
         tv_help_left.setOnClickListener(mClick);
         tv_help_right.setOnClickListener(mClick);
+        tv_babel.setOnClickListener(mMenuClick);
 
         return mView;
     }
@@ -137,6 +140,17 @@ public class SmokeFragment extends Fragment {
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);
                     mPopup.showAtLocation(view, Gravity.CENTER, 0, 0);
+                    break;
+            }
+        }
+    };
+
+    View.OnClickListener mMenuClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()) {
+                case R.id.tv_babel:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, StopSmokeHelpFragment.newInstance()).addToBackStack(null).commit();
                     break;
             }
         }
