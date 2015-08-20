@@ -60,10 +60,10 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	
 	private TextView tvTitle;
 	private ImageView ivHome;
-    private View ivShowDrawerMenu;
 
     DrawerLayout mDrawerLayout;
     RecyclerView mDrawerList;
+	private DrawerAdapter mDrawerAdapter;
 
 	private LoginDialog mLoginDialog;
 	
@@ -145,7 +145,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
         mDrawerList.setHasFixedSize(true);
         mDrawerList.setLayoutManager(new LinearLayoutManager(this));
-        mDrawerList.setAdapter(new DrawerAdapter(mDrawerSelectedListener));
+		mDrawerAdapter = new DrawerAdapter(mDrawerSelectedListener);
+        mDrawerList.setAdapter(mDrawerAdapter);
     }
 
     @Override
@@ -330,6 +331,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	public void onSuccess() {
 		LoadingDialog.hideLoading();
 		hideLoginDialog();
+		mDrawerAdapter.notifyDataSetChanged();
 //		if (mLoginManager.getLoginUser().is_parent == 1) {
 			mFm.beginTransaction().replace(R.id.content_frame,  new FamilyMembersFragment()).commit();
 //		} else {
@@ -365,9 +367,16 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 				case QnA:
 					startDrawerMenuActivity(new Intent(MainActivity.this, QnAActivity.class));
 					break;
-				case LOCATION_INFO:
-					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
+				case DEV_INFO:
+					startDrawerMenuActivity(new Intent(MainActivity.this, DevInfoActivity.class));
 					break;
+				case SERVICE_ASK:
+				case DROP_OUT:
+
+					break;
+//				case LOCATION_INFO:
+//					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
+//					break;
 			}
 		}
 	};

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
  */
 public class AppNoticeActivity extends Activity {
 
+    private View btnLogo;
+
     private ArrayList<AppNoticeVO> appNotiList;
 
     private RecyclerView mNoticeListView;
@@ -34,6 +37,14 @@ public class AppNoticeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_notice);
+
+        btnLogo = findViewById(R.id.logo);
+        btnLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         appNotiList = new ArrayList<>();
 

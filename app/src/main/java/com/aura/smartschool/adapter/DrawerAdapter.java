@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.aura.smartschool.Interface.DrawerSelectedListener;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
 
 import java.util.ArrayList;
@@ -66,9 +67,11 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     public enum DRAWER_MENU {
         NOTICE(MAIN_MENU, R.string.drawer_notice, ALL),
         QnA(MAIN_MENU, R.string.drawer_qna, ALL),
-        LOCATION_INFO(MAIN_MENU, R.string.drawer_location_info_upload, ALL),
-        SETTING(SETTING_MENU, R.string.drawer_settings, ALL),
-        DROP_OUT(MAIN_MENU, R.string.drawer_drop_out, PARENTS);
+        DEV_INFO(MAIN_MENU, R.string.drawer_dev_info, ALL),
+        SERVICE_ASK(MAIN_MENU, R.string.drawer_ask, PARENTS),
+        DROP_OUT(MAIN_MENU, R.string.drawer_drop_out, PARENTS),
+//        LOCATION_INFO(MAIN_MENU, R.string.drawer_location_info_upload, ALL),
+        SETTING(SETTING_MENU, R.string.drawer_settings, ALL);
 
         public int viewType;
         public int descId;
@@ -137,6 +140,9 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         @Override
         public void onBindViewHolder(DRAWER_MENU menu) {
             mTextView.setText(mTextView.getContext().getResources().getString(menu.descId));
+            if (LoginManager.getInstance().getLoginUser() != null) {
+                tvHomeId.setText("Home ID  :  " + LoginManager.getInstance().getLoginUser().home_id);
+            }
         }
 
         @Override

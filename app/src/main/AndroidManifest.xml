@@ -95,6 +95,13 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".DevInfoActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
+
         <service
             android:name=".service.MyLocationService"
             android:enabled="true"

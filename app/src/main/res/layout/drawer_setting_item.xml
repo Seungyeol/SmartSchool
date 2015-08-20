@@ -9,8 +9,14 @@
         android:layout_height="48dp"
         android:paddingLeft="16dp"
         android:gravity="center_vertical"
-        android:textSize="16sp"/>
-
+        android:textSize="16sp"
+        android:visibility="gone"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="#000000"/>
     <LinearLayout
         android:id="@+id/ll_sub_menu"
         android:layout_width="match_parent"
@@ -18,18 +24,20 @@
         android:paddingLeft="23dp"
         android:paddingRight="5dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
         <TextView
             android:id="@+id/tv_home_id"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:gravity="center_vertical"
             android:textSize="12sp"
+            android:textStyle="bold"
             android:text="@string/drawer_setting_home_id"/>
         <RelativeLayout
             android:id="@+id/rl_in_out_alarm"
             android:layout_width="match_parent"
-            android:layout_height="38dp">
+            android:layout_height="38dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
@@ -46,7 +54,8 @@
         <RelativeLayout
             android:id="@+id/rl_activity_alarm"
             android:layout_width="match_parent"
-            android:layout_height="38dp">
+            android:layout_height="38dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
@@ -63,7 +72,8 @@
         <RelativeLayout
             android:id="@+id/rl_widget"
             android:layout_width="match_parent"
-            android:layout_height="38dp">
+            android:layout_height="38dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="40dp"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:background="#FF7127"
+        android:focusable="true" android:focusableInTouchMode="true">
+        <ImageButton
+            android:id="@+id/logo"
+            android:layout_width="30dp" android:layout_height="30dp"
+            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@null"
+            android:src="@drawable/actionbar_back" android:scaleType="fitXY" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_centerVertical="true" android:layout_toRightOf="@+id/logo"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="정보"
+            android:textColor="#FFFFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:paddingLeft="20dp" android:paddingRight="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" style="@style/DevInfoTitleText"
+            android:text="소개"/>
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="스마트안전건강지킴이는 아동과 청소년들의 안전하고, 건강한 바른 성장을 돕기 위해 만들어진 App입니다."/>
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:textStyle="bold"
+            android:text="Copyright ⓒ Aura co., Ltd. All rights reserved."/>
+
+        <View
+            android:layout_width="match_parent" android:layout_height="1dp"
+            android:layout_marginTop="10dp" android:background="@color/accent_material_light" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_version_info"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" style="@style/DevInfoTitleText"
+                android:text="버전정보"/>
+            <LinearLayout
+                android:id="@+id/ll_current_version"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:layout_below="@id/tv_version_info"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="현재버전"/>
+                <TextView
+                    android:id="@+id/tv_current_version"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_latest_version"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:layout_below="@id/ll_current_version"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="최신버전"/>
+                <TextView
+                    android:id="@+id/tv_latest_version"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_update"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" android:layout_below="@id/tv_version_info"
+                android:padding="10dp"
+                android:background="@drawable/bg_square_orange_empty"
+                android:text="최신버전입니다."/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent" android:layout_height="1dp"
+            android:layout_marginTop="10dp" android:background="@color/accent_material_light" />
+
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" style="@style/DevInfoTitleText"
+            android:text="약관 및 정책"/>
+        <TextView
+            android:id="@+id/tv_terms"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="이용약관"/>
+        <TextView
+            android:id="@+id/tv_private_terms"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="개인정보 수집 및 이용 동의"/>
+        <TextView
+            android:id="@+id/tv_private_provide_terms"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="개인정보 제3자 제공 동의"/>
+        <TextView
+            android:id="@+id/tv_location_terms"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="위치기반서비스"/>
+
+        <View
+            android:layout_width="match_parent" android:layout_height="1dp"
+            android:layout_marginTop="10dp" android:background="@color/accent_material_light" />
+
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" style="@style/DevInfoTitleText"
+            android:text="회사소개"/>
+        <TextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="상호 : ㈜아우라\n대표 : 성제혁 대표이사\n주소 : 경기도 광명시 시청로34 선경프라자 3F\n홈페이지 : www.aurasystem.kr"/>
+
+    </LinearLayout>
+
+</LinearLayout>
