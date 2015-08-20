@@ -43,7 +43,8 @@
 
     <string name="month_schedule">학사일정( %d월 )</string>
     <string name="meal_title">급식정보( %d월 )</string>
-    <string name="popup_alert_nodata">측정데이터가 없습니다.\n유료회원으로 가입하세요.</string>
+    <string name="popup_alert_nodata">통합서비스 신청시 이용 가능합니다.</string>
+    <string name="popup_alert_vip_nodata">건강정보 측정기록이 없습니다.\n측정후 이용바랍니다.</string>
     <string name="title_activity_location_upload">LocationUploadActivity</string>
     <string name="category_prompt">카테고리를 선택하세요.</string>
     <string name="map_1">우범지역</string>

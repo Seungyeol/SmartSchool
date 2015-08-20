@@ -320,7 +320,11 @@ public class HealthMainFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(mSummaryVO == null) {
-                Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                if(mMember.isVIPUser()) {
+                    Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_vip_nodata));
+                } else {
+                    Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                }
                 return;
             }
             switch (v.getId()) {
