@@ -6,6 +6,26 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="main_height">성장발달</string>
+    <string name="main_height_babel">신장 추천 운동</string>
+    <string name="main_growth">종합건강점수</string>
+    <string name="main_dining">식단/영양</string>
+    <string name="main_pt">개인별맞춤운동</string>
+    <string name="main_weight">체중변화</string>
+    <string name="main_weight_babel">체중 추천 운동</string>
+    <string name="main_muscle">근육량</string>
+    <string name="main_ranking">건강랭킹</string>
+    <string name="main_brain">두뇌발달분석</string>
+    <string name="main_bmi">비만도</string>
+    <string name="main_bmi_babel">체형 추천 운동</string>
+    <string name="main_smoke">흡연지수</string>
+    <string name="main_activity">나의활동량</string>
+    <string name="main_magazine">건강매거진</string>
+    <string name="main_map">안전\n지킴이</string>
+    <string name="main_consult">실시간\n모바일상담</string>
+    <string name="main_noti">학교정보\n알리미</string>
+    <string name="main_challenge">도전!!\n건강!!</string>
+
     <string name="drawer_notice">공지사항</string>
     <string name="drawer_qna">Q &amp; A</string>
     <string name="drawer_location_info_upload">지도 정보 등록</string>

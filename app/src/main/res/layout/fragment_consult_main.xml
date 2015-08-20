@@ -1,131 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="5dp"
+    android:padding="15dp"
     android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="5dp"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
         android:orientation="horizontal">
-        <TextView
+        <RelativeLayout
             android:id="@+id/tv_school_violence"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="학교\n폭력"
-            android:background="@drawable/bg_consult_item"/>
-        <TextView
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_school"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_school"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_school" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="학교폭력"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/tv_friend_relationship"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="친구\n관계"
-            android:background="@drawable/bg_consult_item"/>
-        <TextView
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_friend"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_friend"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_friend" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="친구관계"/>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/tv_family"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="가정\n문제"
-            android:background="@drawable/bg_consult_item"/>
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_family"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_family"/>
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_consult_family" android:layout_centerHorizontal="true"
+                    style="@style/ConsultItem"
+                    android:text="가정폭력"/>
+            </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
         android:orientation="horizontal">
-        <TextView
+        <RelativeLayout
             android:id="@+id/tv_sexual"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="성\n상담"
-            android:background="@drawable/bg_consult_item"/>
-        <TextView
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_sexual"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_sexual"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_sexual" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="성폭력"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/tv_academic"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="학업\n상담"
-            android:background="@drawable/bg_consult_item"/>
-        <TextView
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_academic"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_academic"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_academic" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="학업상담"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/tv_career"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="진로\n상담"
-            android:background="@drawable/bg_consult_item"/>
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_career"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_career"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_career" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="진로상담"/>
+        </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="5dp"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
         android:orientation="horizontal">
-        <TextView
+        <RelativeLayout
             android:id="@+id/tv_psychology"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="심리\n상담"
-            android:background="@drawable/bg_consult_item"/>
-        <TextView
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_psychology"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_psychology"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_psychology" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="심리상담"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/tv_growth"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="성장\n상담"
-            android:background="@drawable/bg_consult_item"/>
-        <TextView
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_growth"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_growth"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_growth" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="성장상담"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/tv_smoking"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            style="@style/ConsultItem"
-            android:text="흡연\n상담"
-            android:background="@drawable/bg_consult_item"/>
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+            <ImageView
+                android:id="@+id/iv_consult_smoking"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_consult_item" android:padding="5dp"
+                android:src="@drawable/consult_smoke"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_consult_smoking" android:layout_centerHorizontal="true"
+                style="@style/ConsultItem"
+                android:text="진로상담"/>
+        </RelativeLayout>
     </LinearLayout>
-    <TextView
+
+    <Button
         android:id="@+id/tv_consult_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:padding="5dp"
-        style="@style/ConsultItem"
+        style="@style/ConsultButton"
         android:text="상담기록내역"
-        android:background="@drawable/bg_gray_fill"/>
-    <TextView
+        android:background="@drawable/bg_gold_fill"/>
+    <Button
         android:id="@+id/tv_consult_center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="10dp"
-        android:gravity="right"
-        android:textStyle="bold"
-        android:textSize="20dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        style="@style/ConsultButton"
         android:text="스마트안전건강지킴이상담센터\n1544-1284"
-        android:background="@drawable/bg_square_orange_fill"/>
+        android:background="@drawable/bg_orange_fill"/>
 </LinearLayout>

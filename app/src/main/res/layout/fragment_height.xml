@@ -7,7 +7,7 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="신장" android:textStyle="bold" android:textSize="24sp" />
+        android:text="@string/main_height" android:textStyle="bold" android:textSize="24sp" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/heightChart"
@@ -66,7 +66,7 @@
         <TextView
             android:id="@+id/tv_babel"
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            style="@style/HeathItemNumberTxt" android:background="@drawable/bg_gold_fill"
+            style="@style/HealthButton" android:background="@drawable/bg_gold_fill"
             android:drawableLeft="@drawable/babel"
             android:padding="10dp" android:drawablePadding="10dp"
             android:gravity="left"

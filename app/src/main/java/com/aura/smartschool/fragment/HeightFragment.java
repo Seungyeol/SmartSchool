@@ -92,9 +92,11 @@ public class HeightFragment extends Fragment {
         tv_babel.setOnClickListener(mClick);
 
         if(mType == 1) {
-            tv_title.setText("신장");
+            tv_title.setText(getActivity().getString(R.string.main_height));
+            tv_babel.setText(getActivity().getString(R.string.main_height_babel));
         } else {
-            tv_title.setText("체중");
+            tv_title.setText(getActivity().getString(R.string.main_weight));
+            tv_babel.setText(getActivity().getString(R.string.main_weight_babel));
         }
 
         mChart = (BarChart) mView.findViewById(R.id.heightChart);

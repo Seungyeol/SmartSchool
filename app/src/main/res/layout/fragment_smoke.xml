@@ -147,11 +147,10 @@
         <TextView
             android:id="@+id/tv_babel"
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            style="@style/HeathItemNumberTxt" android:background="@drawable/bg_gold_fill"
-            android:drawableLeft="@drawable/babel"
+            style="@style/HealthButton" android:background="@drawable/bg_gold_fill"
             android:padding="10dp" android:drawablePadding="10dp"
             android:gravity="left"
-            android:text="추천 운동" />
+            android:text="금연 도움 사이트" />
     </LinearLayout>
 
 </LinearLayout>

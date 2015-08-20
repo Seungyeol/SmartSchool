@@ -18,8 +18,9 @@ import com.aura.smartschool.vo.MemberVO;
 public class MuscleFragment extends Fragment {
 
     private View mView;
-    private TextView tv_bmi, tv_fat;
+    private TextView tv_skeletal, tv_muscle;
     private TextView tv_help_left, tv_help_right;
+    private TextView tv_man_status;
     private ImageView iv_bmi;
     private PopupWindow mPopup;
 
@@ -51,21 +52,31 @@ public class MuscleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = View.inflate(getActivity(), R.layout.fragment_muscle, null);
 
-        tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
-        tv_fat = (TextView) mView.findViewById(R.id.tv_muscle);
+        tv_skeletal = (TextView) mView.findViewById(R.id.tv_skeletal);
+        tv_muscle = (TextView) mView.findViewById(R.id.tv_muscle);
         tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
         tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
+        tv_man_status = (TextView) mView.findViewById(R.id.tv_man_status);
         iv_bmi = (ImageView) mView.findViewById(R.id.iv_bmi);
 
-        tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.skeletal));
-        tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.muscle_percent) + "%");
+        int muscle_control = 0;
+        try {
+            muscle_control = Integer.parseInt(mMember.mMeasureSummaryVO.muscle_control);
+        } catch (Exception e) {
+        }
 
-        if("표준".equals(mMember.mMeasureSummaryVO.weightStatus)) {
-            iv_bmi.setImageResource(R.drawable.point_man_2);
-        } else if("표준 이상".equals(mMember.mMeasureSummaryVO.weightStatus)) {
+        tv_skeletal.setText(String.format("%s", mMember.mMeasureSummaryVO.skeletal) + "kg");
+        tv_muscle.setText( (muscle_control >=0 ? "+" : "-") +  String.valueOf(mMember.mMeasureSummaryVO.muscle_control) + "kg");
+
+        if(muscle_control >= 3) {
             iv_bmi.setImageResource(R.drawable.point_man_3);
+            tv_man_status.setText("부족");
+        } else if(muscle_control >= 0 && muscle_control < 3) {
+            iv_bmi.setImageResource(R.drawable.point_man_2);
+            tv_man_status.setText("정상");
         }  else {
             iv_bmi.setImageResource(R.drawable.point_man_1);
+            tv_man_status.setText("많음");
         }
 
         tv_help_left.setOnClickListener(mClick);
@@ -110,8 +121,12 @@ public class MuscleFragment extends Fragment {
                     break;
 
                 case R.id.tv_help_right:
-                    tv_title.setText("근육량이란?");
-                    tv_content.setText("우리 몸 전체에 있는 근육량을 의미합니다.");
+                    tv_title.setText("근육조절?");
+                    tv_content.setText("표준이하: 근육조절 +3kg 이상");
+                    tv_content.append("\n");
+                    tv_content.append("표준: 근육조절 +0kg 이상 ~ 3Kg 미만");
+                    tv_content.append("\n");
+                    tv_content.append("표준이상: 근육조절 +0kg 미만");
 
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);

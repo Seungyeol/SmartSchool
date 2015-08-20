@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_height" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="성장발달" />
+                android:text="@string/main_height" />
             <TextView
                 android:id="@+id/tv_height"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -41,12 +41,13 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_growth" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="종합건강점수"/>
+                android:text="@string/main_growth"/>
             <TextView
+                android:id="@+id/tv_growth"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/tv_growth_title" android:layout_centerHorizontal="true"
                 style="@style/HeathItemNumberTxt"
-                android:id="@+id/tv_growth_grade" android:text="0"/>
+                android:text="0"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_dining"
@@ -61,7 +62,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_dining" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="식단/영양"/>
+                android:text="@string/main_dining"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_pt"
@@ -76,7 +77,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_pt" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="개인별맞춤운동"/>
+                android:text="@string/main_pt"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -98,7 +99,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_weight" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="체중변화"/>
+                android:text="@string/main_weight"/>
             <TextView
                 android:id="@+id/tv_weight"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -119,7 +120,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_muscle" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="근육량"/>
+                android:text="@string/main_muscle"/>
             <TextView
                 android:id="@+id/tv_muscle"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -141,7 +142,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_ranking" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="건강랭킹"/>
+                android:text="@string/main_ranking"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_brain"
@@ -157,7 +158,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_brain" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="두뇌발달분석"/>
+                android:text="@string/main_brain"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -179,7 +180,7 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_bmi" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="비만도"/>
+                android:text="@string/main_bmi"/>
             <TextView
                 android:id="@+id/tv_bmi"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -201,9 +202,9 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/iv_smoke" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
-                android:text="흡연지수"/>
+                android:text="@string/main_smoke"/>
             <TextView
-                android:id="@+id/tv_smoke_status"
+                android:id="@+id/tv_smoke"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/tv_smoke_title" android:layout_centerHorizontal="true"
                 style="@style/HeathItemNumberTxt"
@@ -223,10 +224,10 @@
                 android:layout_below="@id/iv_activity" android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/health_container_text_margin"
                 style="@style/HeathItemTitleTxt"
-                android:text="나의활동량"/>
+                android:text="@string/main_activity"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/rl_mental"
+            android:id="@+id/rl_magazine"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
             android:padding="@dimen/health_container_item_padding">
             <ImageView
@@ -239,7 +240,7 @@
                 android:layout_below="@id/iv_magazine" android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/health_container_text_margin"
                 style="@style/HeathItemTitleTxt"
-                android:text="건강매거진"/>
+                android:text="@string/main_magazine"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -255,7 +256,7 @@
                 android:layout_width="100dp" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_centerVertical="true"
                 style="@style/HeathLargeItemTitleTxt"
-                android:text="안전\n지킴이"/>
+                android:text="@string/main_map"/>
             <ImageView
                 android:id="@+id/iv_map"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -274,7 +275,7 @@
                 android:layout_marginLeft="@dimen/health_large_item_image_left_margin"
                 android:layout_alignParentRight="true" android:layout_centerVertical="true"
                 style="@style/HeathLargeItemTitleTxt"
-                android:text="실시간\n모바일상담"/>
+                android:text="@string/main_consult"/>
             <ImageView
                 android:id="@+id/iv_consult"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -296,7 +297,7 @@
                 android:layout_width="100dp" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_centerVertical="true"
                 style="@style/HeathLargeItemTitleTxt"
-                android:text="학교정보\n알리미" />
+                android:text="@string/main_noti" />
             <ImageView
                 android:id="@+id/iv_noti"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -313,7 +314,7 @@
                 android:layout_width="100dp" android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" android:layout_centerVertical="true"
                 style="@style/HeathLargeItemTitleTxt"
-                android:text="도전!!\n건강!!"/>
+                android:text="@string/main_challenge"/>
             <ImageView
                 android:id="@+id/iv_challenge"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -34,23 +33,20 @@ public class HealthMainFragment extends Fragment {
     private AQuery mAq;
     private MeasureSummaryVO mSummaryVO;
 
-    private RelativeLayout rl_height, rl_growth, rl_dining, rl_pt;
-    private RelativeLayout rl_weight, rl_fat, rl_smoke, rl_mental;
-    private RelativeLayout rl_bmi, rl_activity;
-    //private RelativeLayout rl_ranking;
-    private RelativeLayout rl_map, rl_consult, rl_noti, rl_challenge;
+    private View rl_height, rl_growth, rl_dining, rl_pt;
+    private View rl_weight, rl_muscle, rl_ranking, rl_brain;
+    private View rl_bmi, rl_smoke, rl_activity, rl_magazine;
+    private View rl_map, rl_consult, rl_noti, rl_challenge; //하단 4개 메뉴
+
+    private ImageView iv_height, iv_growth;
 
     private TextView tv_height;
-    //private TextView tv_height_status;
-    private ImageView iv_height, iv_growth;
-    private TextView tv_growth_grade;
+    private TextView tv_growth;
     private TextView tv_weight;
-    //private TextView tv_weight_status;
+    private TextView tv_muscle;
     private TextView tv_bmi;
-    //private TextView tv_bmi_status;
-    private TextView tv_fat;
-    private TextView tv_smoke_status;
-    //private TextView tv_smoke_cohb, tv_smoke_ppm;
+    private TextView tv_smoke;
+
     private ImageView iv_map, iv_consult, iv_noti, iv_challenge;
 
     private static String KEY_MEMBER = "member";
@@ -81,56 +77,61 @@ public class HealthMainFragment extends Fragment {
 		mView = View.inflate(getActivity(), R.layout.fragment_main, null);
         mAq = new AQuery(mView);
 
-        rl_height = (RelativeLayout) mView.findViewById(R.id.rl_height);
-        rl_growth = (RelativeLayout) mView.findViewById(R.id.rl_growth);
-        rl_dining = (RelativeLayout) mView.findViewById(R.id.rl_dining);
-        rl_pt = (RelativeLayout) mView.findViewById(R.id.rl_pt);
+        rl_height = mView.findViewById(R.id.rl_height);
+        rl_growth = mView.findViewById(R.id.rl_growth);
+        rl_dining = mView.findViewById(R.id.rl_dining);
+        rl_pt = mView.findViewById(R.id.rl_pt);
 
-        rl_weight = (RelativeLayout) mView.findViewById(R.id.rl_weight);
-        rl_fat = (RelativeLayout) mView.findViewById(R.id.rl_muscle);
-        rl_smoke = (RelativeLayout) mView.findViewById(R.id.rl_smoke);
-        rl_mental = (RelativeLayout) mView.findViewById(R.id.rl_mental);
+        rl_weight = mView.findViewById(R.id.rl_weight);
+        rl_muscle = mView.findViewById(R.id.rl_muscle);
+        rl_ranking = mView.findViewById(R.id.rl_ranking);
+        rl_brain = mView.findViewById(R.id.rl_brain);
 
-        rl_bmi = (RelativeLayout) mView.findViewById(R.id.rl_bmi);
-        //rl_ranking = (RelativeLayout) mView.findViewById(R.id.rl_ranking);
-        rl_activity = (RelativeLayout) mView.findViewById(R.id.rl_activity);
+        rl_bmi = mView.findViewById(R.id.rl_bmi);
+        rl_smoke = mView.findViewById(R.id.rl_smoke);
+        rl_activity = mView.findViewById(R.id.rl_activity);
+        rl_magazine = mView.findViewById(R.id.rl_magazine);
 
-        rl_map = (RelativeLayout) mView.findViewById(R.id.rl_map);
-        rl_consult = (RelativeLayout) mView.findViewById(R.id.rl_consult);
-        rl_noti = (RelativeLayout) mView.findViewById(R.id.rl_noti);
-        rl_challenge = (RelativeLayout) mView.findViewById(R.id.rl_challenge);
+        rl_map = mView.findViewById(R.id.rl_map);
+        rl_consult = mView.findViewById(R.id.rl_consult);
+        rl_noti = mView.findViewById(R.id.rl_noti);
+        rl_challenge = mView.findViewById(R.id.rl_challenge);
+
+        iv_height = (ImageView) mView.findViewById(R.id.iv_height);
+        iv_growth = (ImageView) mView.findViewById(R.id.iv_growth);
 
         tv_height = (TextView) mView.findViewById(R.id.tv_height);
-        //tv_height_status = (TextView) mView.findViewById(R.id.tv_height_status);
-        iv_height = (ImageView) mView.findViewById(R.id.iv_height);
-
-        iv_growth = (ImageView) mView.findViewById(R.id.iv_growth);
-        tv_growth_grade = (TextView) mView.findViewById(R.id.tv_growth_grade);
+        tv_growth = (TextView) mView.findViewById(R.id.tv_growth);
         tv_weight = (TextView) mView.findViewById(R.id.tv_weight);
-        //tv_weight_status = (TextView) mView.findViewById(R.id.tv_weight_status);
+        tv_muscle = (TextView) mView.findViewById(R.id.tv_muscle);
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
-        //tv_bmi_status = (TextView) mView.findViewById(R.id.tv_bmi_status);
-        tv_fat = (TextView) mView.findViewById(R.id.tv_muscle);
-        tv_smoke_status = (TextView) mView.findViewById(R.id.tv_smoke_status);
-        //tv_smoke_cohb = (TextView) mView.findViewById(R.id.tv_smoke_cohb);
-        //tv_smoke_ppm = (TextView) mView.findViewById(R.id.tv_smoke_ppm);
+        tv_smoke = (TextView) mView.findViewById(R.id.tv_smoke);
+
         iv_map = (ImageView) mView.findViewById(R.id.iv_map);
         iv_consult = (ImageView) mView.findViewById(R.id.iv_consult);
         iv_noti = (ImageView) mView.findViewById(R.id.iv_noti);
         iv_challenge = (ImageView) mView.findViewById(R.id.iv_challenge);
 
+        //측정관련
         rl_height.setOnClickListener(mMeasureClick);
-        rl_weight.setOnClickListener(mMeasureClick);
-        rl_smoke.setOnClickListener(mMeasureClick);
-        rl_bmi.setOnClickListener(mMeasureClick);
-        rl_fat.setOnClickListener(mMeasureClick);
         rl_growth.setOnClickListener(mMeasureClick);
-        rl_pt.setOnClickListener(mClick);
+        rl_weight.setOnClickListener(mMeasureClick);
+        rl_muscle.setOnClickListener(mMeasureClick);
+        rl_bmi.setOnClickListener(mMeasureClick);
+        rl_smoke.setOnClickListener(mMeasureClick);
+
+        //상단 우측 6개 메뉴
         rl_dining.setOnClickListener(mClick);
+        rl_pt.setOnClickListener(mClick);
+        rl_ranking.setOnClickListener(mClick);
+        rl_brain.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
+        rl_magazine.setOnClickListener(mClick);
+        //하단 4개 메뉴
         rl_map.setOnClickListener(mClick);
         rl_consult.setOnClickListener(mClick);
         rl_noti.setOnClickListener(mClick);
+        rl_challenge.setOnClickListener(mClick);
 
         return mView;
 	}
@@ -165,9 +166,9 @@ public class HealthMainFragment extends Fragment {
         rl_dining.startAnimation(aniRightToLeft);
         rl_pt.startAnimation(aniBottomToTop);
         rl_weight.startAnimation(aniRightToLeft);
-        rl_fat.startAnimation(aniTopToBottom);
+        rl_muscle.startAnimation(aniTopToBottom);
         rl_smoke.startAnimation(aniRightToLeft);
-        rl_mental.startAnimation(aniBottomToTop);
+        rl_brain.startAnimation(aniBottomToTop);
         rl_bmi.startAnimation(aniBottomToTop);
         //rl_ranking.startAnimation(aniRightToLeft);
         rl_activity.startAnimation(aniLeftToRight);
@@ -274,20 +275,15 @@ public class HealthMainFragment extends Fragment {
 
         //height animation
         mHandler.sendEmptyMessage(MainActivity.MSG_INCREASE_NUMBER);
-        //height image animation
-        //Animation aniScale = AnimationUtils.loadAnimation(getActivity(), R.anim.scale_bottom_to_top);
-        //iv_height.startAnimation(aniScale);
 
-        //tv_height_status.setText(mSummaryVO.heightStatus);
-        //tv_growth_grade.setText(String.valueOf(mSummaryVO.growthGrade));
         tv_weight.setText(String.format("%s", mSummaryVO.weight));
         //tv_weight_status.setText(mSummaryVO.weightStatus);
         tv_bmi.setText(mSummaryVO.bmi);
         //tv_bmi_status.setText(mSummaryVO.bmiStatus);
-        tv_smoke_status.setText(mSummaryVO.smokeStatus);
+        tv_smoke.setText(mSummaryVO.smokeStatus);
         //tv_smoke_cohb.setText(String.format("%s COHb", mSummaryVO.cohd));
         //tv_smoke_ppm.setText(String.format("%s ppm", mSummaryVO.ppm));
-        tv_fat.setText(String.valueOf(mSummaryVO.muscle_percent) + "%");
+        tv_muscle.setText(String.valueOf(mSummaryVO.muscle_percent) + "%");
     }
 
     private Handler mHandler = new Handler() {
@@ -313,7 +309,7 @@ public class HealthMainFragment extends Fragment {
                     }
                     tv_height.setText(String.format("%.1f", mHeight));
                     iv_height.setScaleY(mHeight / mSummaryVO.height);
-                    tv_growth_grade.setText(String.format("%.0f", mGrowth));
+                    tv_growth.setText(String.format("%.0f", mGrowth));
                     iv_growth.setScaleX(mGrowth / mSummaryVO.growthGrade);
                     break;
             }
@@ -359,13 +355,24 @@ public class HealthMainFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.rl_dining:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, MealListFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
                 case R.id.rl_pt:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
                     break;
-
+                case R.id.rl_ranking:
+                    Util.showAlertDialog(getActivity(), "업데이트 예정");
+                    break;
+                case R.id.rl_brain:
+                    Util.showAlertDialog(getActivity(), "업데이트 예정");
+                    break;
                 case R.id.rl_activity:
                     Log.d("test", "onClick >> rl_activity");
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
+                case R.id.rl_magazine:
+                    Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
 
                 case R.id.rl_map:
@@ -381,9 +388,10 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_noti:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, SchoolNoticePagerFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
-                case R.id.rl_dining:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, MealListFragment.newInstance(mMember)).addToBackStack(null).commit();
+                case R.id.rl_challenge:
+                    Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
+
             }
         }
     };

@@ -1,5 +1,6 @@
 package com.aura.smartschool.dialog;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -31,6 +32,11 @@ public class ConsultHistoryDialogFragment extends DialogFragment {
     private TextView tvNumDone;
     private TextView tvNumTotal;
 
+    public ConsultHistoryDialogFragment() {
+
+    }
+
+    @SuppressLint("ValidFragment")
     public ConsultHistoryDialogFragment(MemberVO memberVO) {
         this.memberVO = memberVO;
     }
