@@ -41,7 +41,7 @@ public class SchoolScheduleFragment extends Fragment {
     private SchoolScheduleCalendarAdapter mCalendarAdapter;
     private SchoolScheduleListAdapter mScheduleListAdapter;
 
-    private ScheduleData[] mScheduleDatas;
+    private ScheduleData[] mScheduleDatas = new ScheduleData[0];
 
     private OnMonthChangedListener monthChangedListener;
 
@@ -64,7 +64,6 @@ public class SchoolScheduleFragment extends Fragment {
         Bundle args = getArguments();
         this.mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
         this.selMonth = (Calendar) args.getSerializable("selMonth");
-        mScheduleDatas = new ScheduleData[0];
     }
 
     @Nullable

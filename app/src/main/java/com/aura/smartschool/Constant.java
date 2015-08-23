@@ -32,6 +32,8 @@ public final class Constant {
 	public static final String API_GET_APP_NOTI_LIST = "/api/getNotiList";
 	public static final String API_GET_BOARD_LIST = "/api/getBoardList";
 	public static final String API_ADD_BOARD = "/api/addBoard";
+	public static final String API_ADD_NOTI_BOOKMARK = "/api/addNotiBookmark";
+	public static final String API_REMOVE_NOTI_BOOKMARK = "/api/removeNotiBookmark";
 
 	public static final String API_ADD_ACTIVITY = "/api/addActivity";
 	public static final String API_GET_ACTIVITY_LIST = "/api/getActivityList";

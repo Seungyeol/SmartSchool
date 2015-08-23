@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
@@ -19,10 +20,52 @@ import java.util.ArrayList;
  */
 public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapter.ViewHolder> {
     private ArrayList<SchoolNotiVO> notiList;
+    private ArrayList<SchoolNotiVO> scrapList = new ArrayList<>();
     private MemberVO member;
+
+    private boolean showScrapOnly;
+
+    private OnScrapChangedListener scrapChangedListener;
+
+    public interface OnScrapChangedListener {
+        void onScrapChanged(int notiSeq, boolean isSelected);
+    }
+
     public SchoolNoticeAdapter(MemberVO member, ArrayList<SchoolNotiVO> notiList) {
         this.member = member;
         this.notiList = notiList;
+        makeScrapList();
+    }
+
+    public void setNotiList(ArrayList<SchoolNotiVO> notiList) {
+        this.notiList = notiList;
+        makeScrapList();
+    }
+
+    public void setScrapChangedListener(OnScrapChangedListener listener) {
+        this.scrapChangedListener = listener;
+    }
+
+    public void showScrapItemOnly(boolean selected) {
+        showScrapOnly = selected;
+        notifyDataSetChanged();
+    }
+
+    public void setScrap(int notiSeq, boolean isScraped) {
+        int i = 0;
+        for (SchoolNotiVO notiVO : notiList) {
+            if (notiVO.notiSeq == notiSeq) {
+                if (isScraped) {
+                    notiVO.memberId = LoginManager.getInstance().getLoginUser().member_id;
+                } else {
+                    notiVO.memberId = 0;
+                }
+                notifyItemChanged(i);
+                break;
+            }
+            i++;
+        }
+        makeScrapList();
     }
 
     @Override
@@ -34,16 +77,21 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.onBindViewHolder(notiList.get(position));
+        viewHolder.onBindViewHolder(showScrapOnly ? scrapList.get(position) : notiList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return notiList.size();
+        return (showScrapOnly ? scrapList.size() : notiList.size());
     }
 
-    public void setNotiList(ArrayList<SchoolNotiVO> notiList) {
-        this.notiList = notiList;
+    private void makeScrapList() {
+        scrapList.clear();
+        for (SchoolNotiVO notiVO : notiList) {
+            if (notiVO.memberId > 0) {
+                scrapList.add(notiVO);
+            }
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +106,8 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
         public View llBtnScrap;
         public View llBtnShare;
 
+        private SchoolNotiVO notiVO;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ivSchool = (ImageView) itemView.findViewById(R.id.iv_school);
@@ -71,22 +121,35 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             llBtnScrap = itemView.findViewById(R.id.ll_btn_scrap);
             llBtnShare = itemView.findViewById(R.id.ll_btn_share);
 
+            llBtnScrap.setOnClickListener(clickListener);
             llBtnShare.setOnClickListener(clickListener);
         }
 
         public void onBindViewHolder(SchoolNotiVO notiVO) {
+            this.notiVO = notiVO;
             tvSchoolName.setText(member.mSchoolVO.school_name);
             tvNoticeName.setText(notiVO.category == 1 ? "가정통신문" : "공지사항");
 //      viewHolder.tvDay;
             tvDate.setText(notiVO.notiDate);
             tvNoticeTitle.setText(notiVO.title);
             tvNoticeBody.setText(notiVO.content);
+
+            if (notiVO.memberId > 0) {
+                llBtnScrap.setSelected(true);
+            } else {
+                llBtnScrap.setSelected(false);
+            }
         }
 
         private View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+                    case R.id.ll_btn_scrap:
+                        if (scrapChangedListener != null) {
+                            scrapChangedListener.onScrapChanged(notiVO.notiSeq, !llBtnScrap.isSelected());
+                        }
+                        break;
                     case R.id.ll_btn_share:
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);

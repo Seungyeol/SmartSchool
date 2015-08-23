@@ -84,10 +84,10 @@
         android:orientation="horizontal">
         <LinearLayout
             android:id="@+id/ll_btn_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:gravity="center">
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -101,17 +101,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
+            android:id="@+id/ll_btn_scrap"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center">
             <ImageView
-                android:id="@+id/ll_btn_scrap"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/scrap"/>
+                android:src="@drawable/selector_scrap"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -120,8 +119,8 @@
 
         <LinearLayout
             android:id="@+id/ll_btn_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center">
             <ImageView
                 android:layout_width="30dp"

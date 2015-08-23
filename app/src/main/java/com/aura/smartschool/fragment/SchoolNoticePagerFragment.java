@@ -15,6 +15,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolLetterListFragment;
@@ -198,7 +199,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
             JSONObject json = new JSONObject();
             json.put("school_id", mMember.mSchoolVO.school_id);
             json.put("category", category);
-            json.put("member_id", mMember.member_id);
+            json.put("member_id", LoginManager.getInstance().getLoginUser().member_id);
 
             Log.d("LDK", "url:" + url);
             Log.d("LDK", "input parameter:" + json.toString(1));

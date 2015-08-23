@@ -5,15 +5,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.Constant;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolNoticeAdapter;
+import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -25,8 +36,9 @@ public class SchoolNoticeListFragment extends Fragment {
     private MemberVO mMember;
 
     private RecyclerView mSchoolNoticeListView;
-    private SchoolNoticeAdapter mNotiAdapter;
+    private View ivShowScrapOnly;
 
+    private SchoolNoticeAdapter mNotiAdapter;
     private ArrayList<SchoolNotiVO> mNotiList = new ArrayList<>();
 
     public static SchoolNoticeListFragment newInstance(MemberVO member) {
@@ -52,7 +64,11 @@ public class SchoolNoticeListFragment extends Fragment {
         mSchoolNoticeListView = (RecyclerView) view.findViewById(R.id.list_school_notice);
         mSchoolNoticeListView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        ivShowScrapOnly = view.findViewById(R.id.iv_show_scrap_only);
+        ivShowScrapOnly.setOnClickListener(scrapClicked);
+
         mNotiAdapter = new SchoolNoticeAdapter(mMember, mNotiList);
+        mNotiAdapter.setScrapChangedListener(scrapChangedListener);
         mSchoolNoticeListView.setAdapter(mNotiAdapter);
 
         return view;
@@ -74,6 +90,80 @@ public class SchoolNoticeListFragment extends Fragment {
         if (mNotiAdapter != null) {
             mNotiAdapter.setNotiList(mNotiList);
             mNotiAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private View.OnClickListener scrapClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ivShowScrapOnly.setSelected(!ivShowScrapOnly.isSelected());
+            mNotiAdapter.showScrapItemOnly(ivShowScrapOnly.isSelected());
+        }
+    };
+
+    private SchoolNoticeAdapter.OnScrapChangedListener scrapChangedListener = new SchoolNoticeAdapter.OnScrapChangedListener() {
+        @Override
+        public void onScrapChanged(int notiSeq, boolean isSelected) {
+            doScrapChaged(notiSeq, isSelected);
+        }
+    };
+
+    private void doScrapChaged(final int notiSeq, final boolean isSelected) {
+        LoadingDialog.showLoading(getActivity());
+        String url;
+        if (isSelected) {
+            url = Constant.HOST + Constant.API_ADD_NOTI_BOOKMARK;
+        } else {
+            url = Constant.HOST + Constant.API_REMOVE_NOTI_BOOKMARK;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("member_id", LoginManager.getInstance().getLoginUser().member_id);
+            jsonObject.put("noti_seq", notiSeq);
+            new AQuery(getActivity()).post(url, jsonObject, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    LoadingDialog.hideLoading();
+                    try {
+                        if (status.getCode() != 200) {
+                            Log.d("test", "실패 ");
+                            showScrapToast(isSelected, false);
+                            return;
+                        }
+
+                        Log.d("LDK", "result:" + object.toString(1));
+
+                        if ("0".equals(object.getString("result"))) {
+                            showScrapToast(isSelected, false);
+                            mNotiAdapter.setScrap(notiSeq, isSelected);
+                        } else {
+                            showScrapToast(isSelected, false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        showScrapToast(isSelected, false);
+                    }
+                }
+            });
+        } catch (JSONException e) {
+
+        }
+    }
+
+    private void showScrapToast(boolean isScraped, boolean isSuccess) {
+        if (isSuccess) {
+            if (isScraped) {
+                Toast.makeText(getActivity(), "스크랩 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "스크랩 해제 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (isScraped) {
+                Toast.makeText(getActivity(), "스크랩 하였습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "스크랩 해제 하였습니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
