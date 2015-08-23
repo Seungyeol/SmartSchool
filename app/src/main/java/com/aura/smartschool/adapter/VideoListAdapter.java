@@ -3,6 +3,7 @@ package com.aura.smartschool.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -104,8 +105,8 @@ public class VideoListAdapter extends BaseAdapter {
 			}
 		});
 
-		if (position > videoDiffDate) {
-			int remainDate = position - videoDiffDate - 1;
+		if (position * 7 > videoDiffDate) {
+			int remainDate = (position * 7) - videoDiffDate - 1;
 			holder.lockLayout.setVisibility(View.VISIBLE);
 			holder.lockLayout.getLayoutParams().width = holder.iv_video_img.getLayoutParams().width;
 			holder.lockLayout.getLayoutParams().height = holder.iv_video_img.getLayoutParams().height;
