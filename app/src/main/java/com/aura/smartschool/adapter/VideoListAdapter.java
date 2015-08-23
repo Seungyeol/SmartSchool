@@ -12,20 +12,46 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.aura.smartschool.Interface.MemberListListener;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.VideoVO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class VideoListAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<VideoVO> mVideoList;
 	private MemberListListener mMemberListListener;
 
+	private int videoDiffDate;
+	private int hourToNextDate;
+	private int minuteToNextHour;
+
 	public VideoListAdapter(Context context, ArrayList<VideoVO> videoList) {
 		mContext = context;
 		mVideoList = videoList;
+
+		calculateVideoDiffDate();
 	}
-	
+
+	private void calculateVideoDiffDate() {
+		long videoDate = 0;
+		try {
+			videoDate = new SimpleDateFormat("yyyy-MM-dd").parse(PreferenceUtil.getInstance(mContext).getVideoDate()).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			videoDate = new Date().getTime();
+		}
+		Calendar today = Calendar.getInstance();
+
+		videoDiffDate = (int) ((today.getTimeInMillis() - videoDate) / (24 * 60 * 60 * 1000));
+		minuteToNextHour = 60 - today.get(Calendar.MINUTE);
+		hourToNextDate = 24 - today.get(Calendar.HOUR_OF_DAY) - (minuteToNextHour != 60 ? 1 : 0);
+	}
+
 	public void setData(ArrayList<VideoVO> videoList) {
 		mVideoList = videoList;
 	}
@@ -54,11 +80,13 @@ public class VideoListAdapter extends BaseAdapter {
 			holder.iv_video_img = (ImageView) convertView.findViewById(R.id.iv_video_img);
 			holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
 			holder.tv_duration = (TextView) convertView.findViewById(R.id.tv_duration);
+			holder.lockLayout = convertView.findViewById(R.id.ll_lock);
+			holder.tvLockDate = (TextView) convertView.findViewById(R.id.tv_lock_date);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		holder.tv_title.setText(mVideoList.get(position).title);
 		holder.tv_duration.setText(mVideoList.get(position).duration);
 
@@ -76,6 +104,22 @@ public class VideoListAdapter extends BaseAdapter {
 			}
 		});
 
+		if (position > videoDiffDate) {
+			int remainDate = position - videoDiffDate - 1;
+			holder.lockLayout.setVisibility(View.VISIBLE);
+			holder.lockLayout.getLayoutParams().width = holder.iv_video_img.getLayoutParams().width;
+			holder.lockLayout.getLayoutParams().height = holder.iv_video_img.getLayoutParams().height;
+			StringBuilder sb = new StringBuilder()
+					.append(remainDate > 0 ? remainDate + "일 " : "")
+					.append(hourToNextDate > 0 ? hourToNextDate+"시간 ":"")
+					.append(minuteToNextHour != 60 ? minuteToNextHour : 0).append("분 후 OPEN");
+			holder.tvLockDate.setText(sb.toString());
+			holder.lockLayout.bringToFront();
+			holder.iv_video_img.setOnClickListener(null);
+		} else {
+			holder.lockLayout.setVisibility(View.GONE);
+		}
+
 		return convertView;
 	}
 
@@ -83,5 +127,8 @@ public class VideoListAdapter extends BaseAdapter {
 		ImageView iv_video_img;
 		TextView tv_title;
 		TextView tv_duration;
+
+		View lockLayout;
+		TextView tvLockDate;
 	}
 }

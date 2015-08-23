@@ -15,6 +15,7 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.VideoListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.VideoVO;
@@ -22,8 +23,11 @@ import com.aura.smartschool.vo.VideoVO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.helper.StringUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class VideoFragment extends Fragment {
 
@@ -59,6 +63,10 @@ public class VideoFragment extends Fragment {
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable("member");
         mType = args.getInt("type");
+
+        if (StringUtil.isBlank(PreferenceUtil.getInstance(getActivity()).getVideoDate())) {
+            PreferenceUtil.getInstance(getActivity()).putVideoDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        }
     }
 
     @Override
