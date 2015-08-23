@@ -24,6 +24,7 @@ public enum ConsultType {
         this.consultName = consultName;
         this.failTableName = failTableName;
         this.code = code;
+        this.isFree = isFree;
     }
 
     public static ConsultType findConsultTypeByConsultName(String consultName) {

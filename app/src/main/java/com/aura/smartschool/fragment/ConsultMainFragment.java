@@ -16,6 +16,7 @@ import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.dialog.ConsultHistoryDialogFragment;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
 /**
@@ -130,7 +131,14 @@ public class ConsultMainFragment extends Fragment {
                     break;
             }
 
-            getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember, chatType)).addToBackStack(null).commit();
+
+            if (chatType.isFree) {
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember, chatType)).addToBackStack(null).commit();
+            } else if (!chatType.isFree && LoginManager.getInstance().getLoginUser().isVIPUser()) {
+                getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember, chatType)).addToBackStack(null).commit();
+            } else {
+                Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+            }
         }
     };
 
