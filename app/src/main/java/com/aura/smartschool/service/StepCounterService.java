@@ -26,6 +26,7 @@ import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.fragment.walkingfragments.WalkingCountFragment;
+import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.utils.Util;
 
@@ -152,14 +153,10 @@ public class StepCounterService extends Service implements SensorEventListener {
     } ;
 
     private int getCalories(int second) {
-        float weight = 70.0f;
-
-        if (LoginManager.getInstance().getLoginUser().mMeasureSummaryVO != null
-                && !StringUtil.isBlank(LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.weight)) {
-            weight = Float.parseFloat(LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.weight);
+        double weight = PreferenceUtil.getInstance(getApplicationContext()).getWeight();
+        if (weight == 0f) {
+            weight = 70f;
         }
-
-
         return (int)(WALKING_COEFFICIENT*weight/15/60*second);
     }
 
@@ -171,13 +168,10 @@ public class StepCounterService extends Service implements SensorEventListener {
         Men - you can multiply your height in cm by 0.415
         Ladies - multiply your height in cm by 0.413
          */
-        float height = 170;
-
-        if (LoginManager.getInstance().getLoginUser().mMeasureSummaryVO != null
-                && LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.height != 0) {
-            height = LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.height;
+        double height = PreferenceUtil.getInstance(getApplicationContext()).getHeight();
+        if (height == 0f) {
+            height = 170f;
         }
-
         return (int)(height*0.415)*steps/100;
     }
 

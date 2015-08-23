@@ -93,6 +93,20 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		return get("lng", 0f);
 	}
 
+	public void setWeight(double weight) {
+		put("weight", (float)weight);
+	}
+	public double getWeight() {
+		return get("weight", 0f);
+	}
+
+	public void setHeight(double height) {
+		put("height", (float)height);
+	}
+	public double getHeight() {
+		return get("height", 0f);
+	}
+
 	public void putVideoDate(String dateString) {
 		put("videoDate", dateString);
 	}

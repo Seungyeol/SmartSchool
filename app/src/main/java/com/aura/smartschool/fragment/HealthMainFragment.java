@@ -21,6 +21,7 @@ import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MeasureSummaryVO;
 import com.aura.smartschool.vo.MemberVO;
@@ -249,9 +250,8 @@ public class HealthMainFragment extends Fragment {
 
                             mMember.mMeasureSummaryVO = mSummaryVO;
 
-                            if (LoginManager.getInstance().getLoginUser().member_id == mMember.member_id) {
-                                LoginManager.getInstance().getLoginUser().mMeasureSummaryVO = mSummaryVO;
-                            }
+                            PreferenceUtil.getInstance(getActivity()).setWeight(Double.parseDouble(mSummaryVO.weight));
+                            PreferenceUtil.getInstance(getActivity()).setHeight(mSummaryVO.height);
 
                             mHandler.sendEmptyMessage(MainActivity.MSG_CHECK_ANIMATION);
                         }
