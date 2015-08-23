@@ -62,8 +62,6 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
     private ArrayList<SchoolNotiVO> mSchoolLetterList = new ArrayList<>();
     private ArrayList<SchoolNotiVO> mSchoolNotiList = new ArrayList<>();
 
-    private Calendar selCalendar = Calendar.getInstance();
-
     public static SchoolNoticePagerFragment newInstance(MemberVO member) {
         SchoolNoticePagerFragment instance = new SchoolNoticePagerFragment();
         Bundle args = new Bundle();
@@ -78,7 +76,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
-        getSchoolSchedule(selCalendar);
+        getSchoolSchedule(Calendar.getInstance().get(Calendar.MONTH) + 1);
         getSchoolNotiList(CATEGORY_LETTER);
         getSchoolNotiList(CATEGORY_NOTI);
     }
@@ -99,10 +97,10 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
 
         mSchoolLetterFragment = SchoolLetterListFragment.newInstance(mMember);
         mSchoolNotiFragment = SchoolNoticeListFragment.newInstance(mMember);
-        mSchoolScheduleFragment = SchoolScheduleFragment.newInstance(mMember, selCalendar);
+        mSchoolScheduleFragment = SchoolScheduleFragment.newInstance(mMember);
         mSchoolScheduleFragment.setMonthChangedListener(new SchoolScheduleFragment.OnMonthChangedListener() {
             @Override
-            public void onMonthChaged(Calendar month) {
+            public void onMonthChaged(int month) {
                 getSchoolSchedule(month);
             }
         });
@@ -158,7 +156,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void getSchoolSchedule(final Calendar selectedMonth) {
+    private void getSchoolSchedule(final int month) {
         AsyncTask scheduleTask = new AsyncTask<Object, Void, ScheduleData[]>() {
 
             @Override
@@ -174,8 +172,8 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 return SchoolApi.getMonthlySchedule(SchoolApi.getContry(mMember.mSchoolVO.sido),
                         mMember.mSchoolVO.code,
                         SchoolApi.getSchoolType(mMember.mSchoolVO.gubun2),
-                        selectedMonth.get(Calendar.YEAR),
-                        selectedMonth.get(Calendar.MONTH) + 1);
+                        Calendar.getInstance().get(Calendar.YEAR),
+                        month);
             }
 
             @Override

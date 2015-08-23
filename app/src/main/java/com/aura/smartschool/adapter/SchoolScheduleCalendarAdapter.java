@@ -116,6 +116,11 @@ public class SchoolScheduleCalendarAdapter extends BaseAdapter {
     }
 
     public void calculateMonth() {
+        if (monthCalendar.get(Calendar.MONTH) == 0 || monthCalendar.get(Calendar.MONTH) == 1) {
+            monthCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) + 1);
+        } else {
+            monthCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+        }
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
         firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
         columnNum = monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH) + (firstDayOfMonth - 1);

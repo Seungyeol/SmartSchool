@@ -26,7 +26,7 @@ public class SchoolScheduleFragment extends Fragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
-    private Calendar selMonth;
+    private Calendar selMonth = Calendar.getInstance();
 
     private TextView tvMonth;
     private View ivBtnPre;
@@ -46,14 +46,13 @@ public class SchoolScheduleFragment extends Fragment {
     private OnMonthChangedListener monthChangedListener;
 
     public interface OnMonthChangedListener {
-        void onMonthChaged(Calendar month);
+        void onMonthChaged(int month);
     }
 
-    public static SchoolScheduleFragment newInstance(MemberVO member, Calendar selCalendar) {
+    public static SchoolScheduleFragment newInstance(MemberVO member) {
         SchoolScheduleFragment instance = new SchoolScheduleFragment();
         Bundle args = new Bundle();
         args.putSerializable("member", member);
-        args.putSerializable("selMonth", selCalendar);
         instance.setArguments(args);
         return instance;
     }
@@ -63,7 +62,6 @@ public class SchoolScheduleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         this.mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
-        this.selMonth = (Calendar) args.getSerializable("selMonth");
     }
 
     @Nullable
@@ -134,7 +132,7 @@ public class SchoolScheduleFragment extends Fragment {
                     chageMonth();
                     break;
                 case R.id.iv_btn_next:
-                    selMonth.set(Calendar.MONTH, selMonth.get(Calendar.MONTH) + 1);
+                    selMonth.set(Calendar.MONTH, (selMonth.get(Calendar.MONTH) + 1) % 12);
                     chageMonth();
                     break;
                 case R.id.iv_btn_change_layout:
@@ -155,7 +153,8 @@ public class SchoolScheduleFragment extends Fragment {
     private void chageMonth() {
         tvMonth.setText(String.format(getActivity().getResources().getText(R.string.month_schedule).toString(), (selMonth.get(Calendar.MONTH) + 1)));
 
-        monthChangedListener.onMonthChaged(selMonth);
+        monthChangedListener.onMonthChaged(selMonth.get(Calendar.MONTH) + 1);
+
         mCalendarAdapter.calculateMonth();
         mScheduleListAdapter.calculateMonth();
 
@@ -163,10 +162,10 @@ public class SchoolScheduleFragment extends Fragment {
         mScheduleListAdapter.notifyDataSetChanged();
         ivBtnPre.setVisibility(View.VISIBLE);
         ivBtnNext.setVisibility(View.VISIBLE);
-        if (selMonth.get(Calendar.MONTH) == 0) {
+        if (selMonth.get(Calendar.MONTH) == 2) {
             ivBtnPre.setVisibility(View.GONE);
         }
-        if (selMonth.get(Calendar.MONTH) == 11) {
+        if (selMonth.get(Calendar.MONTH) == 1) {
             ivBtnNext.setVisibility(View.GONE);
         }
     }
