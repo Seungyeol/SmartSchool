@@ -91,7 +91,7 @@ public class LoginDialog extends Dialog {
 				break;
 				
 			case R.id.tv_guest:
-				
+				mListener.onPreView();
 				break;
 				
 			default:

@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
+import com.aura.smartschool.fragment.PreViewFragment;
 import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.PreferenceUtil;
@@ -62,9 +65,21 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	private TextView tvTitle;
 	private ImageView ivHome;
 
-    DrawerLayout mDrawerLayout;
-    RecyclerView mDrawerList;
+	private View hearderView;
+    private DrawerLayout mDrawerLayout;
+    private RecyclerView mDrawerList;
 	private DrawerAdapter mDrawerAdapter;
+
+	private View llPreviewLayout;
+	private FragmentStatePagerAdapter previewAdapter;
+	private ViewPager mPreviewPager;
+	private View prePagePoint1;
+	private View prePagePoint2;
+	private View prePagePoint3;
+	private View prePagePoint4;
+
+	private View btnLogin;
+	private View btnSignUp;
 
 	private LoginDialog mLoginDialog;
 	
@@ -84,8 +99,12 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
 		mLoginManager = LoginManager.getInstance();
 
+		hearderView = findViewById(R.id.header_view);
+		llPreviewLayout = findViewById(R.id.ll_preview);
+
 		initDrawerView();
 		initActivityHeaderView();
+		initPreView();
 
 		if(checkPlayServices()){
 			if(TextUtils.isEmpty(getRegistrationId())) {
@@ -94,6 +113,40 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		}
 
 		doLoginProcess();
+	}
+
+	private void initPreView() {
+		prePagePoint1 = findViewById(R.id.v_page1);
+		prePagePoint2 = findViewById(R.id.v_page2);
+		prePagePoint3 = findViewById(R.id.v_page3);
+		prePagePoint4 = findViewById(R.id.v_page4);
+		prePagePoint1.setSelected(true);
+
+		btnLogin = findViewById(R.id.btn_login);
+		btnSignUp = findViewById(R.id.btn_sign_up);
+
+		btnLogin.setOnClickListener(mClicked);
+		btnSignUp.setOnClickListener(mClicked);
+
+		mPreviewPager = (ViewPager) findViewById(R.id.vp_preview);
+		previewAdapter = new PreViewAdater(this.getSupportFragmentManager());
+		mPreviewPager.setAdapter(previewAdapter);
+		mPreviewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+			@Override
+			public void onPageSelected(int position) {
+				prePagePoint1.setSelected(position == 0);
+				prePagePoint2.setSelected(position == 1);
+				prePagePoint3.setSelected(position == 2);
+				prePagePoint4.setSelected(position == 3);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {}
+		});
 	}
 
 	@Override
@@ -148,6 +201,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
         mDrawerList.setLayoutManager(new LinearLayoutManager(this));
 		mDrawerAdapter = new DrawerAdapter(mDrawerSelectedListener);
         mDrawerList.setAdapter(mDrawerAdapter);
+		mDrawerLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -186,7 +240,9 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
         case REQ_DIALOG_SIGNUP:
             if (resultCode == RESULT_OK) {
 				requestLogin(mLoginManager.getSavedUserInfo(this));
-            }
+            } else {
+				showLoginDialog();
+			}
             break;
         }
     }
@@ -321,6 +377,12 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		public void onRegister(MemberVO member) {
 			//getRegister(member);
 		}
+
+		@Override
+		public void onPreView() {
+			mLoginDialog.dismiss();
+			setLayoutVisibility(false);
+		}
 	};
 
 	private void requestLogin(MemberVO memberVO) {
@@ -332,6 +394,9 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	public void onSuccess() {
 		LoadingDialog.hideLoading();
 		hideLoginDialog();
+
+		setLayoutVisibility(true);
+
 		mDrawerAdapter.notifyDataSetChanged();
 //		if (mLoginManager.getLoginUser().is_parent == 1) {
 			mFm.beginTransaction().replace(R.id.content_frame,  new FamilyMembersFragment()).commit();
@@ -373,8 +438,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 					break;
 				case SERVICE_ASK:
 				case DROP_OUT:
-					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));
-					startActivity(intent);
+
 					break;
 //				case LOCATION_INFO:
 //					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
@@ -398,6 +462,59 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
 					ConsultChattingFragment.newInstance(LoginManager.getInstance().getLoginUser(), ConsultType.findConsultTypeByConsultCode(category))
 			).addToBackStack(null).commitAllowingStateLoss();
+		}
+	}
+
+	private View.OnClickListener mClicked = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			int id = v.getId();
+			setLayoutVisibility(true);
+			switch (id) {
+				case R.id.btn_login:
+					showLoginDialog();
+					break;
+				case R.id.btn_sign_up:
+					Intent intent = new Intent(MainActivity.this, RegisterDialogActivity.class);
+					startActivityForResult(intent, REQ_DIALOG_SIGNUP);
+					break;
+				default:
+					break;
+			}
+		}
+	};
+
+	private void setLayoutVisibility(boolean isMainLayout) {
+		hearderView.setVisibility(isMainLayout?View.VISIBLE:View.GONE);
+		mDrawerLayout.setVisibility(isMainLayout?View.VISIBLE:View.GONE);
+		llPreviewLayout.setVisibility(isMainLayout?View.GONE:View.VISIBLE);
+	}
+
+	private class PreViewAdater extends FragmentStatePagerAdapter {
+		private static final int PREVIEW_NUM = 4;
+		public PreViewAdater(FragmentManager fragmentManager) {
+			super(fragmentManager);
+		}
+
+		@Override
+		public int getCount() {
+			return PREVIEW_NUM;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+				case 0:
+					return PreViewFragment.newInstance(R.drawable.point_man_1);
+				case 1:
+					return PreViewFragment.newInstance(R.drawable.point_man_2);
+				case 2:
+					return PreViewFragment.newInstance(R.drawable.point_man_3);
+				case 3:
+					return PreViewFragment.newInstance(R.drawable.point_man_4);
+				default:
+					return null;
+			}
 		}
 	}
 }

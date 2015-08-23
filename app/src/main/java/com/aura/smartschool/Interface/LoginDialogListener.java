@@ -6,4 +6,5 @@ public interface LoginDialogListener {
 	void doLogin(MemberVO member);
 	void gotoRegister();
 	void onRegister(MemberVO member);
+	void onPreView();
 }
