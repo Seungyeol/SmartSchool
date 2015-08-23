@@ -1,6 +1,8 @@
 package com.aura.smartschool.fragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,9 +31,34 @@ public class StopSmokeHelpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stop_smoke_help, container, false);
+        View mView = View.inflate(getActivity(), R.layout.fragment_stop_smoke_help, null);
+
+        mView.findViewById(R.id.stopsmoke1).setOnClickListener(mClick);
+        mView.findViewById(R.id.stopsmoke2).setOnClickListener(mClick);
+        mView.findViewById(R.id.stopsmoke3).setOnClickListener(mClick);
+
+        return mView;
     }
+
+    View.OnClickListener mClick = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            switch (v.getId()) {
+                case R.id.stopsmoke1:
+                    intent.setData(Uri.parse("http://www.nosmoke.or.kr"));
+                    break;
+                case R.id.stopsmoke2:
+                    intent.setData(Uri.parse("http://www.kash.or.kr"));
+                    break;
+                case R.id.stopsmoke3:
+                    intent.setData(Uri.parse("http://www.ynsa.or.kr"));
+                    break;
+            }
+            startActivity(intent);
+        }
+    };
 
 
 }

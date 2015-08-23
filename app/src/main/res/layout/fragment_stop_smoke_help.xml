@@ -1,10 +1,82 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.aura.smartschool.fragment.StopSmokeHelpFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="15dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="금연 도움 사이트" android:textStyle="bold" android:textSize="24sp" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/stopsmoke1"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_orange_fill"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp" android:textColor="@color/white" android:textStyle="bold"
+                android:text="청소년 금연짱"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="금연교육자료, 금연 노하우, 통계자료 등"
+                android:textSize="14sp" android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/stopsmoke2"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_orange_fill"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp" android:textColor="@color/white" android:textStyle="bold"
+                android:text="한국 금연 운동 협의회"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="금연뉴스, 금연방법, 금연교육자료 등"
+                android:textSize="14sp" android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/stopsmoke3"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_orange_fill"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp" android:textColor="@color/white" android:textStyle="bold"
+                android:text="청소년 흡연음주 예방협회"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="금연활동 및 홍보 동영상, 금연교육신청 등"
+                android:textSize="14sp" android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
