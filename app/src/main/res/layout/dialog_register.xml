@@ -87,6 +87,42 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_terms"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        style="@style/Line"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_centerVertical="true" android:textColor="#000000"
+                            android:text="이용약관"/>
+                        <TextView
+                            android:id="@+id/tv_show_terms"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/bg_square_black_empty"
+                            android:padding="5dp" android:textColor="#000000"
+                            android:text="약관보기"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_centerVertical="true" android:textColor="#000000"
+                            android:text="모든 이용약관에 동의합니다."/>
+                        <CheckBox
+                            android:id="@+id/cb_agree_terms"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:enabled="false"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/school_info"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="vertical" android:visibility="gone">

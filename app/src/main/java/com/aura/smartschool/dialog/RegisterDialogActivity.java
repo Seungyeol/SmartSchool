@@ -10,12 +10,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -44,7 +48,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class RegisterDialogActivity extends Activity {
+public class RegisterDialogActivity extends FragmentActivity {
     private Context mContext;
 	private AQuery mAq;
 
@@ -53,8 +57,9 @@ public class RegisterDialogActivity extends Activity {
 	FrameLayout fl_user_image;
 	EditText et_id, et_name, et_relation;
 	ImageView iv_user_image;
-	TextView tvBirthDay;
-	TextView tvSchoolName;
+	TextView tvBirthDay, tvSchoolName;
+	View tvShowTerms;
+	CheckBox cbAgreeTerms;
 	EditText et_school_grade, et_school_class;
     Spinner spinnerSex;
 	Button btn_register;
@@ -93,6 +98,16 @@ public class RegisterDialogActivity extends Activity {
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
         spinnerSex = (Spinner) findViewById(R.id.spinner_sex);
+		tvShowTerms = findViewById(R.id.tv_show_terms);
+		cbAgreeTerms = (CheckBox) findViewById(R.id.cb_agree_terms);
+		cbAgreeTerms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				btn_register.setEnabled(isChecked);
+			}
+		});
+		btn_register.setEnabled(false);
+
         spinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.spinner_sex, R.layout.spinner_text_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSex.setAdapter(spinnerAdapter);
@@ -107,11 +122,14 @@ public class RegisterDialogActivity extends Activity {
             }
         });
 
+		tvStudent.setVisibility(View.GONE);
+
 		tvParent.setOnClickListener(mClick);
 		tvStudent.setOnClickListener(mClick);
         tvSchoolName.setOnClickListener(mClick);
 		btn_register.setOnClickListener(mClick);
 		fl_user_image.setOnClickListener(mClick);
+		tvShowTerms.setOnClickListener(mClick);
 	}
 
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -328,7 +346,19 @@ public class RegisterDialogActivity extends Activity {
 				
 				getRegister(member);
 				break;
-				
+
+			case R.id.tv_show_terms:
+				final TermsDialogFragment termsDialogFragment = new TermsDialogFragment();
+				termsDialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+				termsDialogFragment.setBtnOkListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						termsDialogFragment.dismiss();
+						cbAgreeTerms.setEnabled(true);
+						cbAgreeTerms.setChecked(true);
+					}
+				});
+				termsDialogFragment.show(getSupportFragmentManager(), "termsDialog");
 			default:
 				break;
 			}

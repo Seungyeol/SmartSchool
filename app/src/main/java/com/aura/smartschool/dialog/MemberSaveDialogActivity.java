@@ -94,6 +94,8 @@ public class MemberSaveDialogActivity extends Activity {
 		et_school_class = (EditText) findViewById(R.id.et_school_class);
 		btn_register = (Button) findViewById(R.id.btn_register);
         spinnerSex = (Spinner) findViewById(R.id.spinner_sex);
+		findViewById(R.id.ll_terms).setVisibility(View.GONE);
+
         spinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.spinner_sex, R.layout.spinner_text_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSex.setAdapter(spinnerAdapter);
