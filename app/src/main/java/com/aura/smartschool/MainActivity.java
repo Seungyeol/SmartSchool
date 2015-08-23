@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -372,7 +373,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 					break;
 				case SERVICE_ASK:
 				case DROP_OUT:
-
+					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));
+					startActivity(intent);
 					break;
 //				case LOCATION_INFO:
 //					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
