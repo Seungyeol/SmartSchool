@@ -17,6 +17,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
@@ -247,6 +248,10 @@ public class HealthMainFragment extends Fragment {
                             mSummaryVO.growthGrade = Float.parseFloat(json.getString("growthGrade"));
 
                             mMember.mMeasureSummaryVO = mSummaryVO;
+
+                            if (LoginManager.getInstance().getLoginUser().member_id == mMember.member_id) {
+                                LoginManager.getInstance().getLoginUser().mMeasureSummaryVO = mSummaryVO;
+                            }
 
                             mHandler.sendEmptyMessage(MainActivity.MSG_CHECK_ANIMATION);
                         }

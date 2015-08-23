@@ -21,12 +21,15 @@ import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 
 import com.aura.smartschool.Constant;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.fragment.walkingfragments.WalkingCountFragment;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.utils.Util;
+
+import org.jsoup.helper.StringUtil;
 
 /**
  * Created by Administrator on 2015-06-28.
@@ -149,9 +152,14 @@ public class StepCounterService extends Service implements SensorEventListener {
     } ;
 
     private int getCalories(int second) {
-        int weight = 72;
-        int height = 177;
-        int age = 31;
+        float weight = 70.0f;
+
+        if (LoginManager.getInstance().getLoginUser().mMeasureSummaryVO != null
+                && !StringUtil.isBlank(LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.weight)) {
+            weight = Float.parseFloat(LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.weight);
+        }
+
+
         return (int)(WALKING_COEFFICIENT*weight/15/60*second);
     }
 
@@ -163,7 +171,12 @@ public class StepCounterService extends Service implements SensorEventListener {
         Men - you can multiply your height in cm by 0.415
         Ladies - multiply your height in cm by 0.413
          */
-        int height = 177;
+        float height = 170;
+
+        if (LoginManager.getInstance().getLoginUser().mMeasureSummaryVO != null
+                && LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.height != 0) {
+            height = LoginManager.getInstance().getLoginUser().mMeasureSummaryVO.height;
+        }
 
         return (int)(height*0.415)*steps/100;
     }
