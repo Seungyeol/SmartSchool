@@ -32,6 +32,7 @@ import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
+import com.aura.smartschool.fragment.HealthMainFragment;
 import com.aura.smartschool.fragment.PreViewFragment;
 import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
@@ -134,7 +135,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		mPreviewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
 
 			@Override
 			public void onPageSelected(int position) {
@@ -145,7 +147,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int state) {}
+			public void onPageScrollStateChanged(int state) {
+			}
 		});
 	}
 
@@ -397,12 +400,14 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
 		setLayoutVisibility(true);
 
-		mDrawerAdapter.notifyDataSetChanged();
-//		if (mLoginManager.getLoginUser().is_parent == 1) {
+		if (mLoginManager.getLoginUser().is_parent == 1) {
+			mDrawerAdapter.setDrawerMenu(true);
 			mFm.beginTransaction().replace(R.id.content_frame,  new FamilyMembersFragment()).commit();
-//		} else {
-//			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
-//		}
+		} else {
+			mDrawerAdapter.setDrawerMenu(false);
+			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
+		}
+		mDrawerAdapter.notifyDataSetChanged();
 
 		processNotificationIntent(getIntent());
 

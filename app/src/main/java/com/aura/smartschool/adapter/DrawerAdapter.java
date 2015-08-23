@@ -31,10 +31,21 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     private boolean subMenuVisibility;
 
     public DrawerAdapter(DrawerSelectedListener listener)  {
-        for(DRAWER_MENU menu:DRAWER_MENU.values()) {
-            mMenuList.add(menu);
-        }
         mListener = listener;
+    }
+
+    public void setDrawerMenu(boolean isParent) {
+        for(DRAWER_MENU menu:DRAWER_MENU.values()) {
+            if (isParent) {
+                if (menu.menuType == ALL || menu.menuType == PARENTS) {
+                    mMenuList.add(menu);
+                }
+            } else {
+                if (menu.menuType == ALL || menu.menuType == CHILD) {
+                    mMenuList.add(menu);
+                }
+            }
+        }
     }
 
     @Override
