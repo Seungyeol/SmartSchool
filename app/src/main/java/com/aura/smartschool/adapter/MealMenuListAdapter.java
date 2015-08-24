@@ -8,8 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
+import com.aura.smartschool.vo.MealVO;
 import com.aura.smartschool.vo.MenuData;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -22,24 +26,41 @@ public class MealMenuListAdapter extends BaseAdapter {
     private int firstDayOfMonth;
     private MenuData[] menuArray;
 
+    private ArrayList<MealVO> mealList = new ArrayList<>();
+
+    private static final String NO_MEAL_MENU = "급식이 없습니다";
+
     public MealMenuListAdapter(Context context, Calendar monthCalendar, MenuData[] menuArray) {
         this.context = context;
         this.menuArray = menuArray;
         firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
+        makeMealList();
     }
 
     public void setMenuArray(MenuData[] menuArray) {
         this.menuArray = menuArray;
+        makeMealList();
+    }
+
+    public int getPosition(int day) {
+        for (int i = 0; i < mealList.size(); i++) {
+            if (mealList.get(i).day == day) {
+                return i;
+            } else if (mealList.get(i).day > day) {
+                return i - 1;
+            }
+        }
+        return 0;
     }
 
     @Override
     public int getCount() {
-        return menuArray.length;
+        return mealList.size();
     }
 
     @Override
-    public MenuData getItem(int position) {
-        return menuArray[position];
+    public MealVO getItem(int position) {
+        return mealList.get(position);
     }
 
     @Override
@@ -62,21 +83,26 @@ public class MealMenuListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.tvDate.setText(String.valueOf(position + 1));
+        holder.tvDate.setText(mealList.get(position).day + " 일");
 
-        if ((position+firstDayOfMonth-1)%7 == 0) {
-            holder.tvDate.setTextColor(Color.RED);
-        } else if ((position+firstDayOfMonth-1)%7 == 6) {
-            holder.tvDate.setTextColor(Color.BLUE);
-        } else {
-            holder.tvDate.setTextColor(Color.BLACK);
-        }
-
-        holder.tvBreakfast.setText(menuArray[position].breakfast);
-        holder.tvLunch.setText(menuArray[position].lunch);
-        holder.tvDinner.setText(menuArray[position].dinner);
+        holder.tvBreakfast.setText(mealList.get(position).breakfast);
+        holder.tvLunch.setText(mealList.get(position).lunch);
+        holder.tvDinner.setText(mealList.get(position).dinner);
 
         return convertView;
+    }
+
+    private void makeMealList() {
+        int day = 0;
+        mealList.clear();
+        for (MenuData data : menuArray) {
+            day++;
+            if (!StringUtils.equals(NO_MEAL_MENU, data.breakfast)
+                    || !StringUtils.equals(NO_MEAL_MENU, data.lunch)
+                    || !StringUtils.equals(NO_MEAL_MENU, data.dinner)) {
+                mealList.add(new MealVO(day, data.breakfast, data.lunch, data.dinner));
+            }
+        }
     }
 
     private class ViewHolder {

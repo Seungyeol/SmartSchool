@@ -114,7 +114,7 @@ public class MealListFragment extends Fragment {
                     mMenuListView.post(new Runnable() {
                         @Override
                         public void run() {
-                            mMenuListView.setSelection(thisMonth.get(Calendar.DATE)-1);
+                            mMenuListView.setSelection(mealAdapter.getPosition(thisMonth.get(Calendar.DATE)));
                         }
                     });
                 }
