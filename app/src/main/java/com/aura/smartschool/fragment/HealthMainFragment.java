@@ -356,6 +356,10 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_growth:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
+
+                case R.id.rl_pt:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
+                    break;
             }
         }
     };
@@ -366,9 +370,6 @@ public class HealthMainFragment extends Fragment {
             switch (v.getId()) {
                 case R.id.rl_dining:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, MealListFragment.newInstance(mMember)).addToBackStack(null).commit();
-                    break;
-                case R.id.rl_pt:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_ranking:
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
