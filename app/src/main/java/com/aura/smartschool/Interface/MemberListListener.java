@@ -6,4 +6,5 @@ public interface MemberListListener {
 	public void onSelected(int position);
 	public void onUpdateClicked(int position);
 	public void onAddClicked(MemberVO member);
+	public void onRemoveClicked(MemberVO member);
 }

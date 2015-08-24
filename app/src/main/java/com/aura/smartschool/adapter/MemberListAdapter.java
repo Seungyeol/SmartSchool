@@ -1,6 +1,8 @@
 package com.aura.smartschool.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,10 +18,12 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.Interface.MemberListListener;
+import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,6 +71,7 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvRelation = (TextView) convertView.findViewById(R.id.tvRelation);
 			holder.tvMdn = (TextView) convertView.findViewById(R.id.tvMdn);
 			holder.btnModify = (Button) convertView.findViewById(R.id.btnModify);
+			holder.btnRemove = (Button) convertView.findViewById(R.id.btnRemove);
 			//holder.btnView = (Button) convertView.findViewById(R.id.btnView);
 			holder.school_info = (LinearLayout) convertView.findViewById(R.id.school_info);
 			holder.tvSchool = (TextView) convertView.findViewById(R.id.tv_school);
@@ -110,11 +115,41 @@ public class MemberListAdapter extends BaseAdapter {
 			//holder.tvSchoolHomepage.setText(mMemberList.get(position).mSchoolVO.homepage);
 			holder.tvSchoolContact.setText(mMemberList.get(position).mSchoolVO.contact);
 		}
-		
+
+		if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+			if (StringUtils.equals(LoginManager.getInstance().getLoginUser().mdn, mMemberList.get(position).mdn)) {
+				holder.btnRemove.setVisibility(View.GONE);
+			}
+		} else {
+			holder.btnRemove.setVisibility(View.GONE);
+		}
+
 		holder.btnModify.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mMemberListListener.onUpdateClicked(position);
+			}
+		});
+
+		holder.btnRemove.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+				alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						mMemberListListener.onRemoveClicked(mMemberList.get(position));
+					}
+				});
+				alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				alert.setMessage("삭제 하시겠습니까?");
+				alert.show();
 			}
 		});
 
@@ -194,6 +229,7 @@ public class MemberListAdapter extends BaseAdapter {
 		//TextView tvSchoolHomepage;
 		TextView tvSchoolContact;
 		Button btnModify;
+		Button btnRemove;
 		//Button btnView;
 		TextView tv_current_location;
 	}

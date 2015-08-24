@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.Interface.MemberListListener;
 import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
@@ -19,7 +24,11 @@ import com.aura.smartschool.adapter.MemberListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -111,6 +120,44 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         @Override
         public void onAddClicked(MemberVO member) {
 
+        }
+
+        @Override
+        public void onRemoveClicked(MemberVO member) {
+            LoadingDialog.showLoading(getActivity());
+            try {
+                String url = Constant.HOST + Constant.API_REMOVE_MEMBER;
+
+                JSONObject json = new JSONObject();
+                json.put("member_id", member.member_id);
+
+                new AQuery(getActivity()).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                    @Override
+                    public void callback(String url, JSONObject object, AjaxStatus status) {
+                        LoadingDialog.hideLoading();
+                        try {
+                            if (status.getCode() != 200) {
+                                Util.showToast(getActivity(), "실패 하였습니다");
+                                return;
+                            }
+                            Log.d("LDK", "result:" + object.toString(1));
+
+                            if (object.getInt("result") == 0) {
+                                LoadingDialog.showLoading(getActivity());
+                                LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
+                            } else {
+                                Util.showToast(getActivity(), "실패 하였습니다");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Util.showToast(getActivity(), "실패 하였습니다");
+                        }
+                    }
+                });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 
