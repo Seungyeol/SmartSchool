@@ -195,7 +195,7 @@
             android:drawableLeft="@drawable/babel"
             android:padding="10dp" android:drawablePadding="10dp"
             android:gravity="left"
-            android:text="추천 운동" />
+            android:text="종합 추천 운동" />
     </LinearLayout>
 
 </LinearLayout>
