@@ -124,7 +124,7 @@ public class HealthMainFragment extends Fragment {
 
         //상단 우측 6개 메뉴
         rl_dining.setOnClickListener(mClick);
-        rl_pt.setOnClickListener(mClick);
+        rl_pt.setOnClickListener(mMeasureClick);
         rl_ranking.setOnClickListener(mClick);
         rl_brain.setOnClickListener(mClick);
         rl_activity.setOnClickListener(mClick);
