@@ -93,7 +93,7 @@
                 android:id="@+id/iv_weight"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-                android:background="@drawable/main_pt"/>
+                android:background="@drawable/main_weight"/>
             <TextView
                 android:id="@+id/tv_weight_title"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"

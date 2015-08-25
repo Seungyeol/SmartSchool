@@ -315,10 +315,10 @@ public class MemberSaveDialogActivity extends Activity {
                 break;
 			case R.id.btn_register:
 				String id = et_id.getText().toString();
-				if(TextUtils.isEmpty(et_id.getText().toString())){
+				/*if(TextUtils.isEmpty(et_id.getText().toString())){
 					Util.showToast(mContext, "전화번호를 입력하세요.");
 					return;
-				}
+				}*/
 				if(TextUtils.isEmpty(et_name.getText().toString())){
 					Util.showToast(mContext, "이름을 입력하세요.");
 					return;

@@ -17,7 +17,7 @@ public class PreViewFragment extends Fragment {
 
     private int imgResId;
     private ImageView ivPreView;
-    private PreViewFragment() {
+    public PreViewFragment() {
         // Required empty public constructor
     }
 
