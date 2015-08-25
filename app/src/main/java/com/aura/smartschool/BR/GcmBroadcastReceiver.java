@@ -114,6 +114,31 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                 }
             }
 
+            //qna 답변시
+            if("qna".equals(command)) {
+                String title = json.getString("title");
+
+                int requestID = (int) System.currentTimeMillis();
+
+                activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_QNA);
+
+                PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification noti = new NotificationCompat.Builder(context)
+                        .setContentTitle("QnQ 게시판 답변 도착")
+                        .setContentText(title + "에 대한 답변이 도착하였습니다.")
+                        .setTicker("QnQ 게시판 답변 도착")
+                        .setSmallIcon(R.drawable.school)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setContentIntent(contentIntent)
+                        .build();
+                nm.notify(Constant.NOTIFICATION_SCHOOL_ALIMI, noti);
+
+                return;
+            }
+
         } catch (JSONException e) {
 
         }
