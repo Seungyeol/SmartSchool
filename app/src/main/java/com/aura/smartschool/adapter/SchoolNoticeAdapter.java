@@ -52,7 +52,6 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
     }
 
     public void setScrap(int notiSeq, boolean isScraped) {
-        int i = 0;
         for (SchoolNotiVO notiVO : notiList) {
             if (notiVO.notiSeq == notiSeq) {
                 if (isScraped) {
@@ -60,12 +59,11 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                 } else {
                     notiVO.memberId = 0;
                 }
-                notifyItemChanged(i);
                 break;
             }
-            i++;
         }
         makeScrapList();
+        notifyDataSetChanged();
     }
 
     @Override
