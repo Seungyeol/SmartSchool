@@ -121,13 +121,14 @@ public class HealthMainFragment extends Fragment {
         rl_muscle.setOnClickListener(mMeasureClick);
         rl_bmi.setOnClickListener(mMeasureClick);
         rl_smoke.setOnClickListener(mMeasureClick);
+        rl_pt.setOnClickListener(mMeasureClick);
+        //활동량
+        rl_activity.setOnClickListener(mActivityClick);
 
         //상단 우측 6개 메뉴
         rl_dining.setOnClickListener(mClick);
-        rl_pt.setOnClickListener(mClick);
         rl_ranking.setOnClickListener(mClick);
         rl_brain.setOnClickListener(mClick);
-        rl_activity.setOnClickListener(mClick);
         rl_magazine.setOnClickListener(mClick);
         //하단 4개 메뉴
         rl_map.setOnClickListener(mClick);
@@ -360,6 +361,7 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_pt:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
                     break;
+
             }
         }
     };
@@ -377,14 +379,10 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_brain:
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
-                case R.id.rl_activity:
-                    Log.d("test", "onClick >> rl_activity");
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
-                    break;
+
                 case R.id.rl_magazine:
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
-
                 case R.id.rl_map:
                     if(mMember.lat != 0) {
                         getFragmentManager().beginTransaction().replace(R.id.content_frame, LocationFragment.newInstance(mMember)).addToBackStack(null).commit();
@@ -402,6 +400,23 @@ public class HealthMainFragment extends Fragment {
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
 
+            }
+        }
+    };
+
+    View.OnClickListener mActivityClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(!mMember.isVIPUser()) {
+                Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                return;
+            }
+
+            switch(v.getId()) {
+                case R.id.rl_activity:
+                    Log.d("test", "onClick >> rl_activity");
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
+                    break;
             }
         }
     };
