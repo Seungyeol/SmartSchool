@@ -400,13 +400,13 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
 		setLayoutVisibility(true);
 
-		if (mLoginManager.getLoginUser().is_parent == 1) {
-			mDrawerAdapter.setDrawerMenu(true);
+//		if (mLoginManager.getLoginUser().is_parent == 1) {
+			mDrawerAdapter.setDrawerMenu(mLoginManager.getLoginUser().is_parent == 1);
 			mFm.beginTransaction().replace(R.id.content_frame,  new FamilyMembersFragment()).commit();
-		} else {
-			mDrawerAdapter.setDrawerMenu(false);
-			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
-		}
+//		} else {
+//			mDrawerAdapter.setDrawerMenu(false);
+//			mFm.beginTransaction().replace(R.id.content_frame,  HealthMainFragment.newInstance(mLoginManager.getLoginUser())).commit();
+//		}
 		mDrawerAdapter.notifyDataSetChanged();
 
 		processNotificationIntent(getIntent());

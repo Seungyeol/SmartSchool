@@ -93,6 +93,11 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         super.onResume();
         ((MainActivity)getActivity()).setHeaderView(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
         refreshMemberList();
+        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+            tvAddMember.setVisibility(View.VISIBLE);
+        } else {
+            tvAddMember.setVisibility(View.GONE);
+        }
     }
 
     private void refreshMemberList() {

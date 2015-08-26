@@ -142,12 +142,11 @@ public class HealthMainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+//        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
             ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
-        } else {
-            ((MainActivity)getActivity()).setHeaderView(R.drawable.home, mMember.name);
-        }
-
+//        } else {
+//            ((MainActivity)getActivity()).setHeaderView(R.drawable.home, mMember.name);
+//        }
 
         if (!mAnimationEnd) {
             animateHealthMenu();

@@ -62,7 +62,6 @@ public class LoginManager {
     }
 
     public void doLogIn(MemberVO memberVO, final Context context, final ResultListener resultListener) {
-        mLoginUser = null;
         String gcmRegId = PreferenceUtil.getInstance(context).getRegID();
         if(gcmRegId == null){
             // gcm reg id를 못가져오는 경우 네트워크 상태 메시지 출력
@@ -206,6 +205,12 @@ public class LoginManager {
     }
 
     public ArrayList<MemberVO> getMemberList() {
-        return mMemberList;
+        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+            return mMemberList;
+        } else {
+            ArrayList<MemberVO> selfList = new ArrayList<MemberVO>();
+            selfList.add(LoginManager.getInstance().getLoginUser());
+            return selfList;
+        }
     }
 }
