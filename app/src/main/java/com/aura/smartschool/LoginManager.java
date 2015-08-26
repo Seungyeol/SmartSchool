@@ -158,7 +158,11 @@ public class LoginManager {
             MemberVO member = new MemberVO();
             member.home_id = json.getString("home_id");
             member.member_id = json.getInt("member_id");
-            member.mdn = json.getString("mdn");
+            if(json.isNull("mdn")) {
+                member.mdn = "";
+            } else {
+                member.mdn = json.getString("mdn");
+            }
             member.is_parent = json.getInt("is_parent");
             member.name = json.getString("name");
             member.relation = json.getString("relation");

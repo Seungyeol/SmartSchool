@@ -84,10 +84,15 @@ public class MemberListAdapter extends BaseAdapter {
 		}
 
 		holder.tvName.setText(mMemberList.get(position).name);
-		holder.tvPayment.setText(mMemberList.get(position).isVIPUser()?"통합서비스":"기본서비스");
+		holder.tvPayment.setText(mMemberList.get(position).isVIPUser() ? "통합서비스" : "기본서비스");
 		holder.tvPayment.setBackgroundResource(mMemberList.get(position).isVIPUser() ? R.drawable.bg_yellow_fill : R.drawable.bg_gray_fill);
 		holder.tvRelation.setText(mMemberList.get(position).relation);
-		holder.tvMdn.setText(mMemberList.get(position).mdn);
+		if(TextUtils.isEmpty(mMemberList.get(position).mdn)) {
+			holder.tvMdn.setText("전화번호 없음");
+		} else {
+			holder.tvMdn.setText(mMemberList.get(position).mdn);
+		}
+
 		
 		String userImage = mMemberList.get(position).photo;
 		if(!TextUtils.isEmpty(userImage)){

@@ -31,7 +31,6 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.FindSchoolActivity;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
-import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolVO;
@@ -199,8 +198,10 @@ public class MemberSaveDialogActivity extends Activity {
 				json.put("member_id", mMember.member_id);
 			}
 
-			json.put("mdn", mMember.mdn);
-			json.put("gcm_id", PreferenceUtil.getInstance(MemberSaveDialogActivity.this).getRegID());
+			if(!TextUtils.isEmpty(mMember.mdn)) {
+				json.put("mdn", mMember.mdn);
+			}
+			//json.put("gcm_id", PreferenceUtil.getInstance(MemberSaveDialogActivity.this).getRegID());
 			json.put("is_parent", mMember.is_parent);
 			json.put("name", mMember.name);
 			json.put("relation", mMember.relation);
@@ -233,7 +234,7 @@ public class MemberSaveDialogActivity extends Activity {
 							setResult(RESULT_OK);
 							finish();
 						} else {
-
+							Util.showToast(MemberSaveDialogActivity.this, object.getString("msg"));
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
