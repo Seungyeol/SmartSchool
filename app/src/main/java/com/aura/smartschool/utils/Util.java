@@ -111,7 +111,7 @@ public final class Util {
 	public static Date getDateFromString(String date) {
 		Date parsedDate = null;
 		try{
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			parsedDate = dateFormat.parse(date);
 		}catch(ParseException e){//this generic but you can control another types of exception
 
