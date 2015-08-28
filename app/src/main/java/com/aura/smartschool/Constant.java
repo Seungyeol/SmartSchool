@@ -3,7 +3,7 @@ package com.aura.smartschool;
 public final class Constant {
 	public static final String HOST = "http://aurasystem.kr:9000";
 	
-	public static final String API_SIGNIN = "/api/signIn";
+	public static final String API_SIGNIN = "/api/signInOfMobile";
 	public static final String API_SIGNUP = "/api/signUp";
 	public static final String API_ADD_MEMBER = "/api/addMember";
 	public static final String API_REMOVE_MEMBER = "/api/removeMember";

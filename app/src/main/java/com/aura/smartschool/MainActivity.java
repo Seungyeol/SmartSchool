@@ -32,7 +32,6 @@ import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
-import com.aura.smartschool.fragment.HealthMainFragment;
 import com.aura.smartschool.fragment.PreViewFragment;
 import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
@@ -424,11 +423,11 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	public void onFail() {
 		LoadingDialog.hideLoading();
 		PreferenceUtil.getInstance(this).putHomeId("");
-		Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "홈아이디가 존재하지 않거나 가족등록이 되지 않았습니다.", Toast.LENGTH_SHORT).show();
 		showLoginDialog();
 	}
 
-	DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
+DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
 		@Override
 		public void onSelected(DrawerAdapter.DRAWER_MENU menu) {
 			switch(menu) {
