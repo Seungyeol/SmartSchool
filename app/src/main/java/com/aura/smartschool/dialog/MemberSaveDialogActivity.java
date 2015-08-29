@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -102,10 +104,14 @@ public class MemberSaveDialogActivity extends Activity {
         tvBirthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(MemberSaveDialogActivity.this, dateSetListener,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(MemberSaveDialogActivity.this,
+						android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+						dateSetListener,
+						calendar.get(Calendar.YEAR),
+						calendar.get(Calendar.MONTH),
+						calendar.get(Calendar.DAY_OF_MONTH));
+				datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+				datePickerDialog.show();
             }
         });
 
