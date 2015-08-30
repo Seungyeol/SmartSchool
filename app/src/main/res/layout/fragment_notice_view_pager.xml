@@ -8,6 +8,18 @@
         android:layout_height="48dp"
         android:orientation="horizontal">
         <FrameLayout
+            android:id="@+id/fl_tab_school_letter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                style="@style/TabMenu"
+                android:text="가정통신문"/>
+        </FrameLayout>
+        <FrameLayout
             android:id="@+id/fl_tab_month_schedule"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -29,19 +41,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 style="@style/TabMenu"
-                android:text="공지사항"/>
-        </FrameLayout>
-        <FrameLayout
-            android:id="@+id/fl_tab_school_letter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                style="@style/TabMenu"
-                android:text="가정통신문"/>
+                android:text="학교\n공지사항"/>
         </FrameLayout>
     </LinearLayout>
     <android.support.v4.view.ViewPager

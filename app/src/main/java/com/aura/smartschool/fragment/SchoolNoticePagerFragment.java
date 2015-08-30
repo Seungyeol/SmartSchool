@@ -93,7 +93,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         mTabNotice.setOnClickListener(this);
         mTabSchoolLetter.setOnClickListener(this);
 
-        mTabMonthSchedule.setSelected(true);
+        mTabSchoolLetter.setSelected(true);
 
         mSchoolLetterFragment = SchoolLetterListFragment.newInstance(mMember);
         mSchoolNotiFragment = SchoolNoticeListFragment.newInstance(mMember);
@@ -118,11 +118,11 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 mTabSchoolLetter.setSelected(false);
 
                 if (position == 0) {
-                    mTabMonthSchedule.setSelected(true);
-                } else if (position == 1) {
-                    mTabNotice.setSelected(true);
-                } else {
                     mTabSchoolLetter.setSelected(true);
+                } else if (position == 1) {
+                    mTabMonthSchedule.setSelected(true);
+                } else {
+                    mTabNotice.setSelected(true);
                 }
             }
 
@@ -142,14 +142,14 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fl_tab_month_schedule:
-                mViewPager.setCurrentItem(0);
-                break;
             case R.id.fl_tab_notice:
+                mViewPager.setCurrentItem(2);
+                break;
+            case R.id.fl_tab_month_schedule:
                 mViewPager.setCurrentItem(1);
                 break;
             case R.id.fl_tab_school_letter:
-                mViewPager.setCurrentItem(2);
+                mViewPager.setCurrentItem(0);
                 break;
             default:
                 break;
@@ -310,11 +310,11 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return mSchoolScheduleFragment;
-                case 1:
-                    return mSchoolNotiFragment;
-                case 2:
                     return mSchoolLetterFragment;
+                case 1:
+                    return mSchoolScheduleFragment;
+                case 2:
+                    return mSchoolNotiFragment;
                 default:
                     return null;
             }
