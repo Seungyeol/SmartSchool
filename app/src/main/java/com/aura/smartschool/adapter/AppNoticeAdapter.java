@@ -1,14 +1,21 @@
 package com.aura.smartschool.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.AppNoticeVO;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -45,11 +52,21 @@ public class AppNoticeAdapter extends RecyclerView.Adapter<AppNoticeAdapter.AppN
 
         private TextView tvTitle;
         private TextView tvContent;
+        private TextView tvShowContent;
+        private TextView tvCreated;
+        private View contentLayout;
 
         public AppNoticeViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvContent = (TextView) itemView.findViewById(R.id.tv_content);
+            tvShowContent = (TextView) itemView.findViewById(R.id.tv_show_contents);
+            tvCreated = (TextView) itemView.findViewById(R.id.tv_create_date);
+            contentLayout = itemView.findViewById(R.id.content_layout);
+
+            SpannableString sp = new SpannableString("더보기");
+            sp.setSpan(new UnderlineSpan(), 0, sp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvShowContent.setText(sp);
 
             tvTitle.setOnClickListener(this);
         }
@@ -57,11 +74,13 @@ public class AppNoticeAdapter extends RecyclerView.Adapter<AppNoticeAdapter.AppN
         public void onBindViewHolder(AppNoticeVO noti) {
             tvTitle.setText(noti.title);
             tvContent.setText(noti.content);
+            contentLayout.setVisibility(View.GONE);
+            tvCreated.setText(new SimpleDateFormat("yyyy년 MM월 dd일").format(Util.getDateFromString(noti.created)));
         }
 
         @Override
         public void onClick(View v) {
-            tvContent.setVisibility(tvContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            contentLayout.setVisibility(View.VISIBLE);
         }
     }
 }
