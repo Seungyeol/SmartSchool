@@ -80,7 +80,7 @@ public class AppNoticeAdapter extends RecyclerView.Adapter<AppNoticeAdapter.AppN
 
         @Override
         public void onClick(View v) {
-            contentLayout.setVisibility(View.VISIBLE);
+            contentLayout.setVisibility(contentLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         }
     }
 }

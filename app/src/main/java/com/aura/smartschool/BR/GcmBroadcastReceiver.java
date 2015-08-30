@@ -70,7 +70,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification noti = new NotificationCompat.Builder(context)
-                        .setContentTitle(title)
+                        .setContentTitle(context.getResources().getString(R.string.app_name_korean))
                         .setContentText(content)
                         .setTicker(title)
                         .setSmallIcon(R.drawable.school)
@@ -100,8 +100,8 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     Notification noti = new NotificationCompat.Builder(context)
-                            .setContentTitle(type.consultName)
-                            .setContentText("선생님 : " + content)
+                            .setContentTitle(context.getResources().getString(R.string.app_name_korean))
+                            .setContentText("(" + type.consultName + ") 상담 메시지가 도착하였습니다.")
                             .setTicker(type.consultName)
                             .setSmallIcon(R.drawable.school)
                             .setDefaults(Notification.DEFAULT_SOUND)
@@ -126,9 +126,9 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification noti = new NotificationCompat.Builder(context)
-                        .setContentTitle("QnQ 게시판 답변 도착")
-                        .setContentText(title + "에 대한 답변이 도착하였습니다.")
-                        .setTicker("QnQ 게시판 답변 도착")
+                        .setContentTitle(context.getResources().getString(R.string.app_name_korean))
+                        .setContentText("Q&A 답변이 등록되었습니다.")
+                        .setTicker("Q&A 답변이 등록되었습니다")
                         .setSmallIcon(R.drawable.school)
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setAutoCancel(true)

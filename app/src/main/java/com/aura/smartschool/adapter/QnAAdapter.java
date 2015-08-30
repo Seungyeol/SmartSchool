@@ -96,7 +96,7 @@ public class QnAAdapter extends RecyclerView.Adapter<QnAAdapter.QnAViewHolder> {
 
         @Override
         public void onClick(View v) {
-            answerLayout.setVisibility(View.VISIBLE);
+            answerLayout.setVisibility(answerLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         }
     }
 }

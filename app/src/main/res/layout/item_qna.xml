@@ -59,8 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-1dp"
             android:padding="10dp"
-            android:background="#F0F0F0"
-            android:visibility="gone" />
+            android:background="#F0F0F0" />
     </LinearLayout>
 
 </LinearLayout>
