@@ -51,5 +51,10 @@ public final class Constant {
 	public static final int NOTIFICATION_QNA = 1004;
 
 	public static final String NOTIFCATION_DESTINATION_FRAGMENT = "des_fragment";
-	public static final String CONSULT_CATEGORY = "category";
+	public static final String CATEGORY = "category";
+	public static final String SCHOOL_ID = "school_id";
+
+	public static final int CATEGORY_LETTER = 1;
+	public static final int CATEGORY_NOTI = 2;
+	public static final int CATEGORY_SCHEDULE = 3;
 }

@@ -213,4 +213,18 @@ public class LoginManager {
             return selfList;
         }
     }
+
+    public MemberVO findMember(int school_id) {
+        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+            for (MemberVO memberVO : mMemberList) {
+                if (memberVO.mSchoolVO.school_id == school_id) {
+                    return memberVO;
+                }
+            }
+        } else {
+            return mLoginUser;
+        }
+
+        return null;
+    }
 }

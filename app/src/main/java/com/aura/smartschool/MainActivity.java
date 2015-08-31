@@ -33,6 +33,8 @@ import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
 import com.aura.smartschool.fragment.PreViewFragment;
+import com.aura.smartschool.fragment.SchoolNoticePagerFragment;
+import com.aura.smartschool.fragment.WalkingPagerFragment;
 import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.PreferenceUtil;
@@ -462,10 +464,28 @@ DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
 		int desFragment = intent.getIntExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, -1);
 
 		if (desFragment == Constant.NOTIFICATION_CONSULT) {
-			int category = intent.getIntExtra(Constant.CONSULT_CATEGORY, -1);
+			int category = intent.getIntExtra(Constant.CATEGORY, -1);
 			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-					ConsultChattingFragment.newInstance(LoginManager.getInstance().getLoginUser(), ConsultType.findConsultTypeByConsultCode(category))
+					ConsultChattingFragment.newInstance(mLoginManager.getLoginUser(), ConsultType.findConsultTypeByConsultCode(category))
 			).addToBackStack(null).commitAllowingStateLoss();
+		} else if (desFragment == Constant.NOTIFICATION_QNA) {
+			Intent qnaIntent = new Intent(MainActivity.this, QnAActivity.class);
+			qnaIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			this.startActivity(qnaIntent);
+		} else if (desFragment == Constant.NOTIFICATION_SCHOOL_ALIMI) {
+			int school_id = intent.getIntExtra(Constant.SCHOOL_ID, -1);
+			MemberVO memberVO = mLoginManager.findMember(school_id);
+			if (memberVO != null) {
+				getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+						SchoolNoticePagerFragment.newInstance(memberVO)
+				).addToBackStack(null).commitAllowingStateLoss();
+			}
+		} else if (desFragment == Constant.NOTIFICATION_STEP) {
+			if (mLoginManager.getLoginUser().isVIPUser()) {
+				getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+						WalkingPagerFragment.newInstance(mLoginManager.getLoginUser())
+				).addToBackStack(null).commitAllowingStateLoss();
+			}
 		}
 	}
 

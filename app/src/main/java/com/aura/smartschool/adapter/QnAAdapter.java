@@ -1,10 +1,7 @@
 package com.aura.smartschool.adapter;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +9,10 @@ import android.widget.TextView;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
-import com.aura.smartschool.vo.AppNoticeVO;
 import com.aura.smartschool.vo.BoardVO;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -71,9 +66,7 @@ public class QnAAdapter extends RecyclerView.Adapter<QnAAdapter.QnAViewHolder> {
             tvAnswer = (TextView) itemView.findViewById(R.id.tv_answer);
             answerLayout = itemView.findViewById(R.id.answer_layout);
 
-            SpannableString sp = new SpannableString("답변보기");
-            sp.setSpan(new UnderlineSpan(), 0, sp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tvShowAnswer.setText(sp);
+            tvShowAnswer.getPaint().setFlags(tvShowAnswer.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             tvTitle.setOnClickListener(this);
         }
@@ -96,7 +89,9 @@ public class QnAAdapter extends RecyclerView.Adapter<QnAAdapter.QnAViewHolder> {
 
         @Override
         public void onClick(View v) {
-            answerLayout.setVisibility(answerLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            if (tvShowAnswer.getVisibility() == View.VISIBLE) {
+                answerLayout.setVisibility(answerLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            }
         }
     }
 }

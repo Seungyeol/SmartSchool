@@ -37,11 +37,6 @@ import java.util.Calendar;
  * Created by Administrator on 2015-06-14.
  */
 public class SchoolNoticePagerFragment extends Fragment implements View.OnClickListener{
-
-    private static final int CATEGORY_LETTER = 1;
-    private static final int CATEGORY_NOTI = 2;
-    private static final int CATEGORY_SCHEDULE = 3;
-
     private volatile boolean isScheduleJobDone, isNotiJobDone, isLetterJobDone;
 
     private static String KEY_MEMBER = "member";
@@ -77,8 +72,8 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
         Bundle args = getArguments();
         mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
         getSchoolSchedule(Calendar.getInstance().get(Calendar.MONTH) + 1);
-        getSchoolNotiList(CATEGORY_LETTER);
-        getSchoolNotiList(CATEGORY_NOTI);
+        getSchoolNotiList(Constant.CATEGORY_LETTER);
+        getSchoolNotiList(Constant.CATEGORY_NOTI);
     }
 
     @Override
@@ -163,7 +158,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
             protected void onPreExecute() {
                 super.onPreExecute();
                 isScheduleJobDone = false;
-                showLoading(CATEGORY_SCHEDULE);
+                showLoading(Constant.CATEGORY_SCHEDULE);
             }
 
             @Override
@@ -181,7 +176,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                 super.onPostExecute(scheduleDatas);
                 isScheduleJobDone = true;
                 mSchoolScheduleFragment.setScheduleDatas(scheduleDatas);
-                hideLoading(CATEGORY_SCHEDULE);
+                hideLoading(Constant.CATEGORY_SCHEDULE);
             }
         };
         scheduleTask.execute();
@@ -245,13 +240,13 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
 
     private void showLoading(int category) {
         switch (category) {
-            case CATEGORY_LETTER:
+            case Constant.CATEGORY_LETTER:
                 isLetterJobDone = false;
                 break;
-            case CATEGORY_NOTI:
+            case Constant.CATEGORY_NOTI:
                 isNotiJobDone = false;
                 break;
-            case CATEGORY_SCHEDULE:
+            case Constant.CATEGORY_SCHEDULE:
                 isScheduleJobDone = false;
                 break;
         }
@@ -260,13 +255,13 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
 
     private void hideLoading(int category) {
         switch (category) {
-            case CATEGORY_LETTER:
+            case Constant.CATEGORY_LETTER:
                 isLetterJobDone = true;
                 break;
-            case CATEGORY_NOTI:
+            case Constant.CATEGORY_NOTI:
                 isNotiJobDone = true;
                 break;
-            case CATEGORY_SCHEDULE:
+            case Constant.CATEGORY_SCHEDULE:
                 isScheduleJobDone = true;
                 break;
         }
@@ -277,11 +272,11 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
 
     private void addNotiToList(SchoolNotiVO notiVO) {
         switch (notiVO.category) {
-            case CATEGORY_LETTER:
+            case Constant.CATEGORY_LETTER:
                 mSchoolLetterList.add(notiVO);
                 mSchoolLetterFragment.setLetterList(mSchoolLetterList);
                 break;
-            case CATEGORY_NOTI:
+            case Constant.CATEGORY_NOTI:
                 mSchoolNotiList.add(notiVO);
                 mSchoolNotiFragment.setNotiList(mSchoolNotiList);
                 break;

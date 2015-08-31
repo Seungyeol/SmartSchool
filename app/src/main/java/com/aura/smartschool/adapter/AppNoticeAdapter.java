@@ -1,11 +1,7 @@
 package com.aura.smartschool.adapter;
 
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +60,7 @@ public class AppNoticeAdapter extends RecyclerView.Adapter<AppNoticeAdapter.AppN
             tvCreated = (TextView) itemView.findViewById(R.id.tv_create_date);
             contentLayout = itemView.findViewById(R.id.content_layout);
 
-            SpannableString sp = new SpannableString("더보기");
-            sp.setSpan(new UnderlineSpan(), 0, sp.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tvShowContent.setText(sp);
+            tvShowContent.getPaint().setFlags(tvShowContent.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             tvTitle.setOnClickListener(this);
         }

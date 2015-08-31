@@ -58,21 +58,26 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             //학교 알리미
             if("school".equals(command)) {
                 int category = json.getInt("category");
+                String categoryString = (category == Constant.CATEGORY_LETTER ? "가정통신문" : "공지사항");
                 String title = json.getString("title");
                 String content = json.getString("content");
                 String noti_date = json.getString("noti_date");
+                int school_id = json.getInt("school_id");
+                String school_name = json.getString("school_name");
 
                 int requestID = (int) System.currentTimeMillis();
 
                 activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_SCHOOL_ALIMI);
+                activitIntent.putExtra(Constant.CATEGORY, category);
+                activitIntent.putExtra(Constant.SCHOOL_ID, school_id);
 
                 PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, new Intent(),
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification noti = new NotificationCompat.Builder(context)
                         .setContentTitle(context.getResources().getString(R.string.app_name_korean))
-                        .setContentText(content)
-                        .setTicker(title)
+                        .setContentText(String.format("(%s)%s - 학교정보가 업데이트 되었습니다.", categoryString, school_name))
+                        .setTicker(String.format("(%s)%s - 학교정보가 업데이트 되었습니다.", categoryString, school_name))
                         .setSmallIcon(R.drawable.school)
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setAutoCancel(true)
@@ -94,7 +99,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                     int requestID = (int) System.currentTimeMillis();
 
                     activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_CONSULT);
-                    activitIntent.putExtra(Constant.CONSULT_CATEGORY, category);
+                    activitIntent.putExtra(Constant.CATEGORY, category);
 
                     PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
@@ -102,7 +107,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                     Notification noti = new NotificationCompat.Builder(context)
                             .setContentTitle(context.getResources().getString(R.string.app_name_korean))
                             .setContentText("(" + type.consultName + ") 상담 메시지가 도착하였습니다.")
-                            .setTicker(type.consultName)
+                            .setTicker("(" + type.consultName + ") 상담 메시지가 도착하였습니다.")
                             .setSmallIcon(R.drawable.school)
                             .setDefaults(Notification.DEFAULT_SOUND)
                             .setAutoCancel(true)
