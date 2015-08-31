@@ -1,7 +1,7 @@
 package com.aura.smartschool;
 
 public final class Constant {
-	public static final String HOST = "http://aurasystem.kr:9000";
+	public static final String HOST = "https://aurasystem.kr:9000";
 	
 	public static final String API_SIGNIN = "/api/signInOfMobile";
 	public static final String API_SIGNUP = "/api/signUp";
