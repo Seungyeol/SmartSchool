@@ -13,16 +13,16 @@ import com.aura.smartschool.R;
 /**
  * Created by Administrator on 2015-08-23.
  */
-public class PreViewFragment extends Fragment {
+public class HelpViewFragment extends Fragment {
 
     private int imgResId;
     private ImageView ivPreView;
-    public PreViewFragment() {
+    public HelpViewFragment() {
         // Required empty public constructor
     }
 
-    public static PreViewFragment newInstance(int imgId) {
-        PreViewFragment instance = new PreViewFragment();
+    public static HelpViewFragment newInstance(int imgId) {
+        HelpViewFragment instance = new HelpViewFragment();
         Bundle args = new Bundle();
         args.putInt("resId", imgId);
         instance.setArguments(args);

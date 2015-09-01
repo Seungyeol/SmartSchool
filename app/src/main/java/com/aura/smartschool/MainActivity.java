@@ -32,7 +32,7 @@ import com.aura.smartschool.dialog.LoginDialog;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
-import com.aura.smartschool.fragment.PreViewFragment;
+import com.aura.smartschool.fragment.HelpViewFragment;
 import com.aura.smartschool.fragment.SchoolNoticePagerFragment;
 import com.aura.smartschool.fragment.WalkingPagerFragment;
 import com.aura.smartschool.service.MyLocationService;
@@ -75,10 +75,6 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	private View llPreviewLayout;
 	private FragmentStatePagerAdapter previewAdapter;
 	private ViewPager mPreviewPager;
-	private View prePagePoint1;
-	private View prePagePoint2;
-	private View prePagePoint3;
-	private View prePagePoint4;
 
 	private View btnLogin;
 	private View btnSignUp;
@@ -118,20 +114,14 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	}
 
 	private void initPreView() {
-		prePagePoint1 = findViewById(R.id.v_page1);
-		prePagePoint2 = findViewById(R.id.v_page2);
-		prePagePoint3 = findViewById(R.id.v_page3);
-		prePagePoint4 = findViewById(R.id.v_page4);
-		prePagePoint1.setSelected(true);
-
 		btnLogin = findViewById(R.id.btn_login);
 		btnSignUp = findViewById(R.id.btn_sign_up);
 
 		btnLogin.setOnClickListener(mClicked);
 		btnSignUp.setOnClickListener(mClicked);
 
-		mPreviewPager = (ViewPager) findViewById(R.id.vp_preview);
-		previewAdapter = new PreViewAdater(this.getSupportFragmentManager());
+		mPreviewPager = (ViewPager) findViewById(R.id.vp_helpview);
+		previewAdapter = new HelpViewAdater(this.getSupportFragmentManager());
 		mPreviewPager.setAdapter(previewAdapter);
 		mPreviewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -141,10 +131,6 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
 			@Override
 			public void onPageSelected(int position) {
-				prePagePoint1.setSelected(position == 0);
-				prePagePoint2.setSelected(position == 1);
-				prePagePoint3.setSelected(position == 2);
-				prePagePoint4.setSelected(position == 3);
 			}
 
 			@Override
@@ -514,9 +500,9 @@ DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
 		llPreviewLayout.setVisibility(isMainLayout?View.GONE:View.VISIBLE);
 	}
 
-	private class PreViewAdater extends FragmentStatePagerAdapter {
+	private class HelpViewAdater extends FragmentStatePagerAdapter {
 		private static final int PREVIEW_NUM = 4;
-		public PreViewAdater(FragmentManager fragmentManager) {
+		public HelpViewAdater(FragmentManager fragmentManager) {
 			super(fragmentManager);
 		}
 
@@ -529,13 +515,13 @@ DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
 		public Fragment getItem(int position) {
 			switch (position) {
 				case 0:
-					return PreViewFragment.newInstance(R.drawable.point_man_1);
+					return HelpViewFragment.newInstance(R.drawable.help_01);
 				case 1:
-					return PreViewFragment.newInstance(R.drawable.point_man_2);
+					return HelpViewFragment.newInstance(R.drawable.help_02);
 				case 2:
-					return PreViewFragment.newInstance(R.drawable.point_man_3);
+					return HelpViewFragment.newInstance(R.drawable.help_03);
 				case 3:
-					return PreViewFragment.newInstance(R.drawable.point_man_4);
+					return HelpViewFragment.newInstance(R.drawable.help_04);
 				default:
 					return null;
 			}

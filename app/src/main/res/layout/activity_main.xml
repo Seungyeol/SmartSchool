@@ -30,52 +30,21 @@
             android:layout_height="0dp"
             android:layout_weight="1">
             <android.support.v4.view.ViewPager
-                android:id="@+id/vp_preview"
+                android:id="@+id/vp_helpview"
                 android:layout_width="match_parent" android:layout_height="match_parent"
                 android:orientation="vertical"/>
-            <LinearLayout
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
-                <View
-                    android:id="@+id/v_page1"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_selector_preview"/>
-                <View
-                    android:id="@+id/v_page2"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_selector_preview"/>
-                <View
-                    android:id="@+id/v_page3"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_selector_preview"/>
-                <View
-                    android:id="@+id/v_page4"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_selector_preview"/>
-            </LinearLayout>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="5dp"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btn_login"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/btn_login" style="@style/Button_gold_orange"
+                android:layout_height="35dp" android:layout_marginRight="5dp"
                 android:text="로그인"/>
             <Button
-                android:id="@+id/btn_sign_up"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:id="@+id/btn_sign_up" style="@style/Button_gold_orange"
+                android:layout_height="35dp" android:layout_marginLeft="5dp"
                 android:text="회원가입"/>
         </LinearLayout>
     </LinearLayout>
