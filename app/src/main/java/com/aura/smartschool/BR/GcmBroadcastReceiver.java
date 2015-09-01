@@ -71,7 +71,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                 activitIntent.putExtra(Constant.CATEGORY, category);
                 activitIntent.putExtra(Constant.SCHOOL_ID, school_id);
 
-                PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, new Intent(),
+                PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification noti = new NotificationCompat.Builder(context)
