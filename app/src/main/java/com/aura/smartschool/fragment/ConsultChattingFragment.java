@@ -167,7 +167,7 @@ public class ConsultChattingFragment extends Fragment {
                                 sessionId = json.getInt("session_id");
                                 consult.who = json.getInt("who");
                                 consult.content = json.getString("content");
-                                consult.created = Util.getDateFromString(json.getString("created"));
+                                consult.created = Util.getDateTimeFromString(json.getString("created"));
                                 consultList.add(consult);
                             }
                             mConsultChattingAdapter.setConsultMessageList(consultList);
