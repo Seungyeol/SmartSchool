@@ -73,8 +73,8 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	private DrawerAdapter mDrawerAdapter;
 
 	private View llPreviewLayout;
-	private FragmentStatePagerAdapter previewAdapter;
-	private ViewPager mPreviewPager;
+	private FragmentStatePagerAdapter helpViewAdapter;
+	private ViewPager mHelpViewPager;
 
 	private View btnLogin;
 	private View btnSignUp;
@@ -120,23 +120,9 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		btnLogin.setOnClickListener(mClicked);
 		btnSignUp.setOnClickListener(mClicked);
 
-		mPreviewPager = (ViewPager) findViewById(R.id.vp_helpview);
-		previewAdapter = new HelpViewAdater(this.getSupportFragmentManager());
-		mPreviewPager.setAdapter(previewAdapter);
-		mPreviewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			}
-
-			@Override
-			public void onPageSelected(int position) {
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int state) {
-			}
-		});
+		mHelpViewPager = (ViewPager) findViewById(R.id.vp_helpview);
+		helpViewAdapter = new HelpViewAdater(this.getSupportFragmentManager());
+		mHelpViewPager.setAdapter(helpViewAdapter);
 	}
 
 	@Override

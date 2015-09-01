@@ -15,6 +15,14 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		super(context);
 	}
 
+	public void putStartState(boolean started) {
+		put("started", started);
+	}
+
+	public boolean getStartState() {
+		return get("started", false);
+	}
+
 	public void putRegID(String regId) {
 		put("registration_id", regId);
 	}
