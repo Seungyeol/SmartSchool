@@ -11,10 +11,21 @@
         <TextView
             android:id="@+id/tv_month"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
             android:layout_centerInParent="true"
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="급식"/>
+        <ImageView
+            android:id="@+id/iv_last_month"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_centerVertical="true" android:layout_toLeftOf="@id/tv_month"
+            android:src="@drawable/left_gold"/>
+        <ImageView
+            android:id="@+id/iv_next_month"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_centerVertical="true" android:layout_toRightOf="@id/tv_month"
+            android:src="@drawable/right_gold"/>
     </RelativeLayout>
 
     <View

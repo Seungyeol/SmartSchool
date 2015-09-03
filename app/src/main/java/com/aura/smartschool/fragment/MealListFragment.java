@@ -27,12 +27,15 @@ public class MealListFragment extends Fragment {
     private static String KEY_MEMBER = "member";
     private MemberVO mMember;
 
-    private Calendar thisMonth;
+    private Calendar mealMonth;
 
     private TextView tvMonth;
     private View llMeal;
     private ListView mMenuListView;
     private TextView tvEmpty;
+
+    private View ivLastMonth;
+    private View ivNextMonth;
 
     private MealMenuListAdapter mealAdapter;
 
@@ -50,13 +53,13 @@ public class MealListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         this.mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
-        this.thisMonth = Calendar.getInstance();
+        this.mealMonth = Calendar.getInstance();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = View.inflate(getActivity(), R.layout.fragment_meanl_list, null);
+        View view = View.inflate(getActivity(), R.layout.fragment_meal_list, null);
         initViews(view);
         return view;
     }
@@ -70,18 +73,24 @@ public class MealListFragment extends Fragment {
 
     private void initViews(View view) {
         tvMonth = (TextView) view.findViewById(R.id.tv_month);
-        tvMonth.setText(String.format(getActivity().getResources().getText(R.string.meal_title).toString(), (thisMonth.get(Calendar.MONTH) + 1)));
 
         llMeal = view.findViewById(R.id.ll_meal);
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_list);
 
+        ivLastMonth = view.findViewById(R.id.iv_last_month);
+        ivNextMonth = view.findViewById(R.id.iv_next_month);
+
+        ivLastMonth.setOnClickListener(mClick);
+        ivNextMonth.setOnClickListener(mClick);
+
         mMenuListView = (ListView) view.findViewById(R.id.list_meal);
-        mealAdapter = new MealMenuListAdapter(getActivity(), thisMonth, new MenuData[0]);
+        mealAdapter = new MealMenuListAdapter(getActivity(), new MenuData[0]);
         mMenuListView.setAdapter(mealAdapter);
 
     }
 
     private void loadMealList() {
+        tvMonth.setText(String.format(getActivity().getResources().getText(R.string.meal_title).toString(), (mealMonth.get(Calendar.MONTH) + 1)));
         AsyncTask mealTask = new AsyncTask<Object, Void, MenuData[]>() {
 
             @Override
@@ -95,8 +104,8 @@ public class MealListFragment extends Fragment {
                 return SchoolApi.getMonthlyMenu(SchoolApi.getContry(mMember.mSchoolVO.sido),
                         mMember.mSchoolVO.code,
                         SchoolApi.getSchoolType(mMember.mSchoolVO.gubun2),
-                        thisMonth.get(Calendar.YEAR),
-                        thisMonth.get(Calendar.MONTH) + 1);
+                        mealMonth.get(Calendar.YEAR),
+                        mealMonth.get(Calendar.MONTH) + 1);
             }
 
             @Override
@@ -111,15 +120,50 @@ public class MealListFragment extends Fragment {
                     llMeal.setVisibility(View.VISIBLE);
                     mealAdapter.setMenuArray(menuList);
                     mealAdapter.notifyDataSetChanged();
-                    mMenuListView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mMenuListView.setSelection(mealAdapter.getPosition(thisMonth.get(Calendar.DATE)));
-                        }
-                    });
+                    if (mealMonth.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)) {
+                        mMenuListView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mMenuListView.setSelection(mealAdapter.getPosition(mealMonth.get(Calendar.DATE)));
+                            }
+                        });
+                    }
+
                 }
             }
         };
         mealTask.execute();
+    }
+
+    private View.OnClickListener mClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.iv_last_month) {
+                if (mealMonth.get(Calendar.MONTH) == 0) {
+                    mealMonth.set(Calendar.YEAR, mealMonth.get(Calendar.YEAR) - 1);
+                }
+                mealMonth.set(Calendar.MONTH, mealMonth.get(Calendar.MONTH) - 1);
+            } else if (v.getId() == R.id.iv_next_month) {
+                if (mealMonth.get(Calendar.MONTH) == 11) {
+                    mealMonth.set(Calendar.YEAR, mealMonth.get(Calendar.YEAR) +1);
+                }
+                mealMonth.set(Calendar.MONTH, mealMonth.get(Calendar.MONTH) + 1);
+            }
+            setButtonVisible();
+            loadMealList();
+        }
+    };
+
+    private void setButtonVisible() {
+        if (mealMonth.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)) {
+            ivLastMonth.setVisibility(View.VISIBLE);
+            ivNextMonth.setVisibility(View.VISIBLE);
+        } else if (mealMonth.get(Calendar.MONTH) < Calendar.getInstance().get(Calendar.MONTH)) {
+            ivLastMonth.setVisibility(View.GONE);
+            ivNextMonth.setVisibility(View.VISIBLE);
+        } else {
+            ivLastMonth.setVisibility(View.VISIBLE);
+            ivNextMonth.setVisibility(View.GONE);
+        }
     }
 }

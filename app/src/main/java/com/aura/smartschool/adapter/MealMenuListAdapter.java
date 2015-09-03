@@ -23,17 +23,15 @@ import java.util.Calendar;
 public class MealMenuListAdapter extends BaseAdapter {
 
     private Context context;
-    private int firstDayOfMonth;
     private MenuData[] menuArray;
 
     private ArrayList<MealVO> mealList = new ArrayList<>();
 
     private static final String NO_MEAL_MENU = "급식이 없습니다";
 
-    public MealMenuListAdapter(Context context, Calendar monthCalendar, MenuData[] menuArray) {
+    public MealMenuListAdapter(Context context, MenuData[] menuArray) {
         this.context = context;
         this.menuArray = menuArray;
-        firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK);
         makeMealList();
     }
 
@@ -97,6 +95,7 @@ public class MealMenuListAdapter extends BaseAdapter {
         mealList.clear();
         for (MenuData data : menuArray) {
             day++;
+            if (data == null) continue;
             if (!StringUtils.equals(NO_MEAL_MENU, data.breakfast)
                     || !StringUtils.equals(NO_MEAL_MENU, data.lunch)
                     || !StringUtils.equals(NO_MEAL_MENU, data.dinner)) {
