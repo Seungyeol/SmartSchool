@@ -17,4 +17,5 @@ public class SchoolNotiVO {
     public int startIndex;
     public int pageSize;
     public int memberId;
+    public String fileName;
 }

@@ -1,6 +1,11 @@
 package com.aura.smartschool.adapter;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -100,6 +110,7 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
         public TextView tvDate;
         public TextView tvNoticeTitle;
         public TextView tvNoticeBody;
+        public TextView tvFileName;
         public View llBtnLike;
         public View llBtnScrap;
         public View llBtnShare;
@@ -115,6 +126,7 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             tvNoticeTitle = (TextView) itemView.findViewById(R.id.tv_notice_title);
             tvNoticeBody = (TextView) itemView.findViewById(R.id.tv_notice_body);
+            tvFileName = (TextView) itemView.findViewById(R.id.tv_attach_file);
             llBtnLike = itemView.findViewById(R.id.ll_btn_like);
             llBtnScrap = itemView.findViewById(R.id.ll_btn_scrap);
             llBtnShare = itemView.findViewById(R.id.ll_btn_share);
@@ -123,14 +135,31 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             llBtnShare.setOnClickListener(clickListener);
         }
 
-        public void onBindViewHolder(SchoolNotiVO notiVO) {
+        public void onBindViewHolder(final SchoolNotiVO notiVO) {
             this.notiVO = notiVO;
             tvSchoolName.setText(member.mSchoolVO.school_name);
             tvNoticeName.setText(notiVO.category == 1 ? "가정통신문" : "공지사항");
 //      viewHolder.tvDay;
-            tvDate.setText(notiVO.notiDate);
+            tvDate.setText(new SimpleDateFormat("yyyy년 MM월 dd일").format(Util.getDateFromString(notiVO.notiDate)));
             tvNoticeTitle.setText(notiVO.title);
             tvNoticeBody.setText(notiVO.content);
+
+            if (!StringUtils.isBlank(notiVO.fileName) && !"null".equals(notiVO.fileName)) {
+                tvFileName.setText(notiVO.fileName);
+                tvFileName.setPaintFlags(tvFileName.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                ((View) tvFileName.getParent()).setVisibility(View.VISIBLE);
+                tvFileName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Constant.HOST + Constant.API_FILE + notiVO.fileName));
+                        request.allowScanningByMediaScanner();
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, notiVO.fileName);
+                        DownloadManager dm = (DownloadManager) v.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                        dm.enqueue(request);
+                    }
+                });
+            }
 
             if (notiVO.memberId > 0) {
                 llBtnScrap.setSelected(true);

@@ -222,6 +222,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                                 notiVO.startIndex = ((JSONObject)jsonArray.get(i)).getInt("start_index");
                                 notiVO.pageSize = ((JSONObject)jsonArray.get(i)).getInt("page_size");
                                 notiVO.memberId = ((JSONObject)jsonArray.get(i)).getInt("member_id");
+                                notiVO.fileName = ((JSONObject)jsonArray.get(i)).getString("filename");
                                 addNotiToList(notiVO);
                             }
                         }

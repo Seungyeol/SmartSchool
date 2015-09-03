@@ -45,6 +45,8 @@ public final class Constant {
 
 	public static final String API_GET_OS_INFO = "/api/getOsInfo";
 
+	public static final String API_FILE = "/upload/";
+
 	public static final int NOTIFICATION_STEP = 1001;
 	public static final int NOTIFICATION_SCHOOL_ALIMI = 1002;
 	public static final int NOTIFICATION_CONSULT = 1003;

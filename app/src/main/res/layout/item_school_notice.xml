@@ -72,6 +72,23 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="10dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp" android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp" android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="15dp" android:layout_height="15dp"
+            android:layout_marginRight="5dp" android:scaleType="fitCenter"
+            android:src="@drawable/ic_attach_file"/>
+        <TextView
+            android:id="@+id/tv_attach_file"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textColor="@color/wallet_link_text_light"
+            android:singleLine="true" android:ellipsize="end"/>
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
