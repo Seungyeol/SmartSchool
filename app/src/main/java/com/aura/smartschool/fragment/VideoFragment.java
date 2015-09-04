@@ -98,7 +98,12 @@ public class VideoFragment extends Fragment {
             switch(mType) {
                 case 1:
                     url = Constant.HOST + Constant.API_GET_VIDEOLIST_BY_SECTION;
-                    json.put("infoType", mMember.mSchoolVO.gubun2);
+                    //동영상 데이터베이스에 초등학교, 중학교만 있으므로 고등학생 일경우에 중학교로 세팅
+                    String gubun2 = mMember.mSchoolVO.gubun2;
+                    if(!"초등학교".equals(gubun2) && !"중학교".equals(gubun2)) {
+                        gubun2 = "중학교";
+                    }
+                    json.put("infoType", gubun2);
                     break;
                 case 2:
                     url = Constant.HOST + Constant.API_GET_VIDEOLIST_BY_MASTERID;
