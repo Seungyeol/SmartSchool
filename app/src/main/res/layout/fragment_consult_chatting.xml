@@ -14,31 +14,40 @@
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="#000000"/>
+        android:background="#000000"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp" android:paddingRight="10dp"
+        android:background="#f5f5f5"
         android:orientation="horizontal">
-        <Button
+        <ImageView
             android:id="@+id/btn_appraisal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitCenter"
             android:enabled="false"
-            android:text="평가"/>
+            android:background="@drawable/chat_mark"/>
         <EditText
             android:id="@+id/et_chat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp" android:layout_height="40dp"
             android:layout_weight="1"
+            android:padding="10dp"
+            android:background="@drawable/bg_chat_black_empty"
             android:hint="내용을 입력해주세요."/>
-        <Button
+        <TextView
             android:id="@+id/btn_enter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="입력"/>
+            android:layout_width="50dp" android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:enabled="false" android:gravity="center"
+            android:background="@drawable/btn_back_gold_orange"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="전송"/>
     </LinearLayout>
 
 </LinearLayout>
