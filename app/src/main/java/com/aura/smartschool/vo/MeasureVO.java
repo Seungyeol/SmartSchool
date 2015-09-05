@@ -10,20 +10,18 @@ public class MeasureVO {
     public String gradeId = "";
     public String gradeString = "";
 
-    public String date = "";
-
-    public String schoolGrade = "0";
-    public String beforeSchoolGrade = "0";
-    public String totalNumberOfStudent = "0";
+    public String measure_date = "";
 
     public float averageOfSchool;
     public float averageOfLocal;
     public float averageOfNation;
     public float averageOfStandard;
 
-    public String percentageOfBodyFat; // DongQ 2014.03.12
-    public String msGradeString;
+    //public String percentageOfBodyFat; // DongQ 2014.03.12
+    //public String msGradeString;
 
-    public String rank;
-    public String beforeRank;
+    public int rank;
+    public int total;
+    public int beforeRank;
+    public int beforeTotal;
 }

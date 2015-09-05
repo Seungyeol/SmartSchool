@@ -176,15 +176,14 @@ public class HeightFragment extends Fragment {
                             mMeasureVO.beforeValue =  Float.parseFloat(json.getString("beforeValue"));
                             mMeasureVO.gradeId = json.getString("gradeId");
                             mMeasureVO.gradeString = json.getString("gradeString");
-                            mMeasureVO.schoolGrade = json.getString("schoolGrade");
-                            mMeasureVO.beforeSchoolGrade = json.getString("beforeSchoolGrade");
-                            mMeasureVO.totalNumberOfStudent = json.getString("totalNumberOfStudent");
                             mMeasureVO.averageOfSchool =  Float.parseFloat(json.getString("averageOfSchool"));
                             mMeasureVO.averageOfLocal =  Float.parseFloat(json.getString("averageOfLocal"));
                             mMeasureVO.averageOfNation = Float.parseFloat(json.getString("averageOfNation"));
                             mMeasureVO.averageOfStandard =  Float.parseFloat(json.getString("averageOfStandard"));
-                            mMeasureVO.rank = json.getString("rank");
-                            mMeasureVO.beforeRank = json.getString("beforeRank");
+                            mMeasureVO.rank = json.getInt("rank");
+                            mMeasureVO.total = json.getInt("total");
+                            mMeasureVO.beforeRank = json.getInt("beforeRank");
+                            mMeasureVO.beforeTotal = json.getInt("beforeTotal");
 
                             drawGraph();
 
@@ -205,7 +204,7 @@ public class HeightFragment extends Fragment {
     }
 
     private void drawGraph() {
-        tv_grade.setText(String.format("%s/100", mMeasureVO.rank));
+        tv_grade.setText(getRankString(mMeasureVO.rank, mMeasureVO.total));
         tv_grade_desc.setText(mMeasureVO.gradeString);
         //Model Data--------------------------------------------------------
         //색깔
@@ -252,6 +251,19 @@ public class HeightFragment extends Fragment {
         mChart.setData(data);
     }
 
+    private String getRankString(int rank, int total) {
+        float rankPercent = rank/(float)total * 100;
+        String rankDesc = "";
+        if(rankPercent<=30) {
+            rankDesc = "상위";
+        } else if(rankPercent >70) {
+            rankDesc = "하위";
+        } else {
+            rankDesc = "표준";
+        }
+        return rankDesc + String.format(" %.2f", rankPercent) + "%";
+    }
+
     View.OnClickListener mClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -282,8 +294,9 @@ public class HeightFragment extends Fragment {
                         iv_left.setBackgroundResource(R.drawable.scale);
                     }
 
-                    tv_rank.setText(String.valueOf(mMeasureVO.rank) + "등");
-                    tv_rank_before.setText(String.format("이전 %s등", mMeasureVO.beforeRank));
+                    //등수 구하기
+                    tv_rank.setText(getRankString(mMeasureVO.rank, mMeasureVO.total));
+                    tv_rank_before.setText("이전" + getRankString(mMeasureVO.beforeRank, mMeasureVO.beforeTotal));
 
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);

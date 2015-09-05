@@ -26,7 +26,7 @@
                 android:layout_width="match_parent" android:layout_height="35dp"
                 style="@style/HeathItemSmallTitleTxt"
                 android:gravity="center"
-                android:text="전국 등수" />
+                android:text="전국 백분율" />
             <TextView
                 android:id="@+id/tv_grade"
                 android:layout_width="match_parent" android:layout_height="match_parent"
