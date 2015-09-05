@@ -3,8 +3,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/rl_circle"
-        android:layout_width="200dp" android:layout_height="200dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="190dp" android:layout_height="190dp"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_circle_gold">
         <TextView
@@ -35,27 +35,45 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_below="@id/rl_circle"
+        android:layout_centerVertical="true"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tv_calories"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/calory"
+            android:drawablePadding="7dp"
             android:gravity="center"
+            android:textColor="@color/orange"
             android:text="0"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
         <TextView
             android:id="@+id/tv_distance"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/distance"
+            android:drawablePadding="7dp"
             android:gravity="center"
+            android:textColor="@color/orange"
             android:text="0"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
         <TextView
             android:id="@+id/tv_walking_time"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/time"
+            android:drawablePadding="7dp"
             android:gravity="center"
+            android:textColor="@color/orange"
             android:text="0"/>
     </LinearLayout>
 
