@@ -1,7 +1,9 @@
 package com.aura.smartschool.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,6 +21,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MeasureVO;
 import com.aura.smartschool.vo.MemberVO;
 import com.github.mikephil.charting.animation.Easing;
@@ -32,6 +35,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -48,10 +52,14 @@ public class HeightFragment extends Fragment {
 
     private TextView tv_title;
     private TextView tv_grade, tv_grade_desc;
-    private TextView tv_lastmonth;
     private TextView tv_babel;
 
     private PopupWindow mPopup;
+
+    private final int[] SCHOOL_COLORS = {
+            Color.rgb(255, 124, 104), Color.rgb(84, 151, 159), Color.rgb(255, 202, 105),
+            Color.rgb(160, 118, 161), Color.rgb(204, 192, 48)
+    };
 
     public HeightFragment() {
         // Required empty public constructor
@@ -82,13 +90,19 @@ public class HeightFragment extends Fragment {
         mView = View.inflate(getActivity(), R.layout.fragment_height, null);
         mAq = new AQuery(mView);
 
+        TextView tv_rank = (TextView) mView.findViewById(R.id.tv_rank);
+        tv_rank.setText(Html.fromHtml("<u>전국 백분율</u>"));
+
+        TextView tv_rate = (TextView) mView.findViewById(R.id.tv_rate);
+        tv_rate.setText(Html.fromHtml("<u>종합 평가</u>"));
+
         tv_title = (TextView) mView.findViewById(R.id.tv_title);
         tv_grade = (TextView) mView.findViewById(R.id.tv_grade);
         tv_grade_desc = (TextView) mView.findViewById(R.id.tv_grade_desc);
-        tv_lastmonth = (TextView) mView.findViewById(R.id.tv_lastmonth);
         tv_babel = (TextView) mView.findViewById(R.id.tv_babel);
 
-        tv_lastmonth.setOnClickListener(mClick);
+        mView.findViewById(R.id.iv_lastmonth).setOnClickListener(mClick);
+        mView.findViewById(R.id.iv_detail).setOnClickListener(mClick);
         tv_babel.setOnClickListener(mClick);
 
         if(mType == 1) {
@@ -209,6 +223,8 @@ public class HeightFragment extends Fragment {
         //Model Data--------------------------------------------------------
         //색깔
         ArrayList<Integer> colors = new ArrayList<Integer>();
+        for (int c : SCHOOL_COLORS)
+            colors.add(c);
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
         for (int c : ColorTemplate.JOYFUL_COLORS)
@@ -259,16 +275,16 @@ public class HeightFragment extends Fragment {
         } else if(rankPercent >70) {
             rankDesc = "하위";
         } else {
-            rankDesc = "표준";
+            rankDesc = "중간";
         }
-        return rankDesc + String.format(" %.2f", rankPercent) + "%";
+        return rankDesc + String.format(" %.1f", rankPercent) + "%";
     }
 
     View.OnClickListener mClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch(v.getId()) {
-                case R.id.tv_lastmonth:
+                case R.id.iv_lastmonth:
                     if(mPopup != null && mPopup.isShowing()) {
                         mPopup.dismiss();
                         return;
@@ -296,7 +312,7 @@ public class HeightFragment extends Fragment {
 
                     //등수 구하기
                     tv_rank.setText(getRankString(mMeasureVO.rank, mMeasureVO.total));
-                    tv_rank_before.setText("이전" + getRankString(mMeasureVO.beforeRank, mMeasureVO.beforeTotal));
+                    tv_rank_before.setText("이전 " + getRankString(mMeasureVO.beforeRank, mMeasureVO.beforeTotal));
 
                     mPopup = new PopupWindow(view, width, height);
                     mPopup.setAnimationStyle(-1);
@@ -310,6 +326,10 @@ public class HeightFragment extends Fragment {
                     } else {
                         getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 3)).addToBackStack(null).commit();
                     }
+                    break;
+
+                case R.id.iv_detail:
+                    Util.showToast(getActivity(), "두번 이상 측정하셔야 제공됩니다.");
                     break;
             }
         }
