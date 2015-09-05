@@ -46,7 +46,7 @@
             android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/chat_img"/>
 
         <LinearLayout
             android:id="@+id/ll_chat_body"
@@ -59,12 +59,14 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#696969"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv_consult_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:paddingTop="5dp" android:paddingBottom="5dp"
+                android:paddingLeft="10dp" android:paddingRight="10dp"
                 android:background="@drawable/bg_consult_msg_other" />
         </LinearLayout>
         <TextView

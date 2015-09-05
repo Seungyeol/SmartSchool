@@ -145,9 +145,9 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             tvNoticeBody.setText(notiVO.content);
 
             if (!StringUtils.isBlank(notiVO.fileName) && !"null".equals(notiVO.fileName)) {
+                ((View) tvFileName.getParent()).setVisibility(View.VISIBLE);
                 tvFileName.setText(notiVO.fileName);
                 tvFileName.setPaintFlags(tvFileName.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                ((View) tvFileName.getParent()).setVisibility(View.VISIBLE);
                 tvFileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -159,6 +159,8 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                         dm.enqueue(request);
                     }
                 });
+            } else {
+                ((View) tvFileName.getParent()).setVisibility(View.GONE);
             }
 
             if (notiVO.memberId > 0) {

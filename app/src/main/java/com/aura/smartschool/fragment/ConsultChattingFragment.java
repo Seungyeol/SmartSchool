@@ -54,7 +54,7 @@ public class ConsultChattingFragment extends Fragment {
     private DBConsultChatFail dbConsultFail;
 
     private EditText etChat;
-    private Button btnEnter;
+    private View btnEnter;
     private View btnAppriaisal;
 
     private RecyclerView mConsultChattingList;
@@ -102,7 +102,7 @@ public class ConsultChattingFragment extends Fragment {
         }
 
         etChat = (EditText) view.findViewById(R.id.et_chat);
-        btnEnter = (Button) view.findViewById(R.id.btn_enter);
+        btnEnter = view.findViewById(R.id.btn_enter);
         btnAppriaisal = view.findViewById(R.id.btn_appraisal);
 
         etChat.addTextChangedListener(mWatcher);
