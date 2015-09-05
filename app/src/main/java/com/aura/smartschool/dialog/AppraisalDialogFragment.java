@@ -22,7 +22,7 @@ public class AppraisalDialogFragment extends DialogFragment {
     private View vStar4;
     private View vStar5;
     private TextView tvAppraisal;
-    private Button btnSendAppraisal;
+    private View btnSendAppraisal;
 
     private int appraisalNum = 1;
 
@@ -37,13 +37,15 @@ public class AppraisalDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_appraisal, container, false);
 
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.bg_dialog_orange_white);
+
         vStar1 = view.findViewById(R.id.v_star1);
         vStar2 = view.findViewById(R.id.v_star2);
         vStar3 = view.findViewById(R.id.v_star3);
         vStar4 = view.findViewById(R.id.v_star4);
         vStar5 = view.findViewById(R.id.v_star5);
         tvAppraisal = (TextView) view.findViewById(R.id.tv_appraisal_text);
-        btnSendAppraisal = (Button) view.findViewById(R.id.btn_send_appraisal);
+        btnSendAppraisal = view.findViewById(R.id.btn_send_appraisal);
 
         vStar1.setOnClickListener(clickListener);
         vStar2.setOnClickListener(clickListener);
@@ -52,7 +54,7 @@ public class AppraisalDialogFragment extends DialogFragment {
         vStar5.setOnClickListener(clickListener);
         btnSendAppraisal.setOnClickListener(clickListener);
 
-        setStartSelected(1);
+        setStartSelected(3);
 
         return view;
     }
@@ -66,23 +68,23 @@ public class AppraisalDialogFragment extends DialogFragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.v_star1:
-                    tvAppraisal.setText("완전 불만족해요");
+                    tvAppraisal.setText("- 완전 불만족해요 -");
                     setStartSelected(1);
                     break;
                 case R.id.v_star2:
-                    tvAppraisal.setText("불만족해요");
+                    tvAppraisal.setText("- 불만족해요 -");
                     setStartSelected(2);
                     break;
                 case R.id.v_star3:
-                    tvAppraisal.setText("보통이예요");
+                    tvAppraisal.setText("- 보통이예요 -");
                     setStartSelected(3);
                     break;
                 case R.id.v_star4:
-                    tvAppraisal.setText("만족했어요");
+                    tvAppraisal.setText("- 만족했어요 -");
                     setStartSelected(4);
                     break;
                 case R.id.v_star5:
-                    tvAppraisal.setText("완전 만족했어요");
+                    tvAppraisal.setText("- 완전 만족했어요 -");
                     setStartSelected(5);
                     break;
                 case R.id.btn_send_appraisal:
