@@ -108,6 +108,16 @@ public final class Util {
 		return term;
 	}
 
+	public static String convertLongToDate(long term) {
+		int hour = (int)term/60;
+		int minute = (int)term%60;
+		if(hour > 0) {
+			return String.format("%d시간 %d분", hour, minute);
+		} else {
+			return String.format("%d분", minute);
+		}
+	}
+
 	public static Date getDateTimeFromString(String date) {
 		Date parsedDate = null;
 		try{

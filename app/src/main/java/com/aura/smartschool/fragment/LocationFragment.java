@@ -88,7 +88,7 @@ public class LocationFragment extends Fragment {
 
         getLocationList();
 
-        getAreaList();
+        //getAreaList();
 
         return mView;
     }
@@ -231,9 +231,11 @@ public class LocationFragment extends Fragment {
                     .width(15).color(Color.RED).geodesic(true));
 
             if(i==(mLocationList.size()-2)) {
+                long term = Util.getLastedMinuteToCurrent( mLocationList.get(i+1).created_date);
+                String title = Util.convertLongToDate(term) + " 전";
                 Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(mLocationList.get(i+1).lat, mLocationList.get(i+1).lng))
-                        .title("now")
+                        .position(new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng))
+                        .title(title)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
                         .snippet(Util.getAddress(getActivity(), mLocationList.get(i+1).lat, mLocationList.get(i+1).lng)));
                 endMarker.showInfoWindow();

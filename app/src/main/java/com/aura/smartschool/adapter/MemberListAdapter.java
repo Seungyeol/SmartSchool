@@ -206,7 +206,7 @@ public class MemberListAdapter extends BaseAdapter {
 								long term = Util.getLastedMinuteToCurrent(data.getString("created_date"));
 
 								holder.tv_current_location.setText(Util.getAddress(mContext, lat, lng));
-								holder.tv_current_location.append(String.format(" (%d분 전)", term));
+								holder.tv_current_location.append("(" + Util.convertLongToDate(term) + " 전)");
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
