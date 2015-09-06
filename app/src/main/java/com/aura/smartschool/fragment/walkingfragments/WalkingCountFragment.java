@@ -25,8 +25,10 @@ import android.widget.TextView;
 
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
+import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
 import java.text.NumberFormat;
@@ -72,7 +74,6 @@ public class WalkingCountFragment extends Fragment {
             int steps = data.getInt("steps");
             int calories = data.getInt("calories");
             int distance = data.getInt("distance");
-            Log.d("test", "test >> distance = " + distance);
             int totalWalkingTime = data.getInt("activeTime");
 
             mTvWalkingCount.setText(String.valueOf(steps));
@@ -138,6 +139,18 @@ public class WalkingCountFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
+
+        DBStepCounter db = DBStepCounter.getInstance(getActivity());
+        int steps = db.getSteps(Util.getTodayTimeInMillis());
+        int totalWalkingTime = db.getWalkingTime(Util.getTodayTimeInMillis());
+        int hours = totalWalkingTime / 3600;
+        int minutes = (totalWalkingTime % 3600) / 60;
+        int seconds = totalWalkingTime % 60;
+
+        mTvWalkingCount.setText(String.valueOf(steps));
+        mTvCalories.setText(Util.getCalories(getActivity(), totalWalkingTime) + " kcal");
+        mTvDistance.setText(String.format("%.2f Km", (float) Util.getDistance(getActivity(), steps) / 1000));
+        mTvWalkingTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
 
         Intent serviceIntent = new Intent(getActivity(), StepCounterService.class);
         getActivity().startService(serviceIntent);

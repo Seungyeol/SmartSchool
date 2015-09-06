@@ -3,11 +3,14 @@ package com.aura.smartschool.service;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.aura.smartschool.Constant;
@@ -37,11 +41,9 @@ import org.jsoup.helper.StringUtil;
  */
 public class StepCounterService extends Service implements SensorEventListener {
 
-    private static final String TAG = StepCounterService.class.getSimpleName();
-
-    private static float WALKING_COEFFICIENT = 0.9F;
-
     private static final int RESTART_DELAY = 1000;
+    private static final int SCREEN_OFF_RECEIVER_DELAY = 5000;
+
     private static final int STEPCOUNTER_DELAY_SEC = 1000000;  //1초
     private static final int STEPCOUNTER_DELAY_2S = 2 * 1000000;  //2초
 
@@ -56,6 +58,7 @@ public class StepCounterService extends Service implements SensorEventListener {
     }
 
     private Handler mStepCounterHandler;
+    private PowerManager.WakeLock mWakeLock;
 
     private IBinder mBinder = new StepCounterBinder();
 
@@ -101,8 +104,8 @@ public class StepCounterService extends Service implements SensorEventListener {
         if (startWalkingTime > 0) {
             totalActiveTime += (int) ((System.currentTimeMillis() - startWalkingTime) / 1000);
         }
-        int calories = getCalories(totalActiveTime);
-        int distance = getDistance(totalSteps);
+        int calories = Util.getCalories(getApplicationContext(), totalActiveTime);
+        int distance = Util.getDistance(getApplicationContext(), totalSteps);
 
         doCheckAchievedTarget(totalSteps, calories, distance);
 
@@ -117,6 +120,7 @@ public class StepCounterService extends Service implements SensorEventListener {
             mStepCounterHandler.sendMessage(message);
         }
         db.close();
+        makeForgroundService();
     }
 
 
@@ -143,37 +147,14 @@ public class StepCounterService extends Service implements SensorEventListener {
                     int activeTime = (int) ((System.currentTimeMillis() - startWalkingTime) / 1000);
                     DBStepCounter.getInstance(StepCounterService.this).updateSteps(Util.getTodayTimeInMillis(),
                                                                                     currentTotalSteps,
-                                                                                    getCalories(activeTime),
-                                                                                    getDistance(currentTotalSteps),
+                                                                                    Util.getCalories(getApplicationContext(), activeTime),
+                                                                                    Util.getDistance(getApplicationContext(), currentTotalSteps),
                                                                                     activeTime);
                 }
                 startWalkingTime = 0;
             }
         }
     } ;
-
-    private int getCalories(int second) {
-        double weight = PreferenceUtil.getInstance(getApplicationContext()).getWeight();
-        if (weight == 0f) {
-            weight = 70f;
-        }
-        return (int)(WALKING_COEFFICIENT*weight/15/60*second);
-    }
-
-    /*
-    return meter
-     */
-    private int getDistance(int steps) {
-        /*
-        Men - you can multiply your height in cm by 0.415
-        Ladies - multiply your height in cm by 0.413
-         */
-        double height = PreferenceUtil.getInstance(getApplicationContext()).getHeight();
-        if (height == 0f) {
-            height = 170f;
-        }
-        return (int)(height*0.415)*steps/100;
-    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -194,10 +175,19 @@ public class StepCounterService extends Service implements SensorEventListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mScreenOffBroadcastReceiver);
+        if (mWakeLock != null) {
+            mWakeLock.release();
+        }
+        if (Util.isKitkatWithStepSensor(this)) {
+            unregisterSensorStep();
+        }
     }
 
     @Override
     public void onCreate() {
+        PowerManager manager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "StepCounterSevice");
         super.onCreate();
     }
 
@@ -205,13 +195,22 @@ public class StepCounterService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         if (Util.isKitkatWithStepSensor(this)) {
+            useWakeLock();
             registerEventListener(STEPCOUNTER_DELAY_2S);
         }
         return START_STICKY;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void unregisterSensorStep() {
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.unregisterListener(this);
+        stopForeground(true);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void registerEventListener(int maxdelay) {
+        makeForgroundService();
         SensorManager sensorManager = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
         try {
             sensorManager.unregisterListener(this);
@@ -219,7 +218,29 @@ public class StepCounterService extends Service implements SensorEventListener {
             e.printStackTrace();
         }
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL, maxdelay);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST, maxdelay);
+    }
+
+    private void useWakeLock() {
+        mWakeLock.acquire();
+
+        registerReceiver(mScreenOffBroadcastReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        registerReceiver(mScreenOffBroadcastReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
+    }
+
+    private void makeForgroundService() {
+        Intent foregroundIntent = new Intent(this, MainActivity.class);
+        foregroundIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        foregroundIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_STEP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, foregroundIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification=new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.home)
+                .setContentTitle("스마트안전건강지킴이")
+                .setContentText(String.format("오늘 누적 활동량은 %d 걸음 입니다.", currentTotalSteps))
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(Constant.NOTIFICATION_STEP_FOREGROUND, notification);
     }
 
     @Override
@@ -261,7 +282,7 @@ public class StepCounterService extends Service implements SensorEventListener {
     private void showAchieveNotification() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("fragmentName", "WalkingPagerFragment");
+        intent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_STEP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManager mNotiManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -270,7 +291,27 @@ public class StepCounterService extends Service implements SensorEventListener {
                 .setContentText("목표량을 달성하였습니다.")
                 .setSmallIcon(R.drawable.home)
                 .setContentIntent(pendingIntent)
+                .setDefaults(Notification.DEFAULT_SOUND)
                 .setAutoCancel(true);
         mNotiManger.notify(Constant.NOTIFICATION_STEP, notiBuilder.build());
     }
+
+    BroadcastReceiver mScreenOffBroadcastReceiver = new BroadcastReceiver() {
+
+        //When Event is published, onReceive method is called
+        @Override
+        public void onReceive(final Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF) || intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                registerEventListener(STEPCOUNTER_DELAY_2S);
+
+                Runnable runnable = new Runnable() {
+                    public void run() {
+                        registerEventListener(STEPCOUNTER_DELAY_2S);
+                    }
+                };
+
+                new Handler().postDelayed(runnable, SCREEN_OFF_RECEIVER_DELAY);
+            }
+        }
+    };
 }

@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class Util {
+
+	private static float WALKING_COEFFICIENT = 0.9F;
+
 	//MainApplication에서 주입받는다.
 	//public static Context sContext;
 
@@ -237,5 +240,29 @@ public final class Util {
 			return f;
 		} else
 			return null;
+	}
+
+
+	public static int getCalories(Context context, int second) {
+		double weight = PreferenceUtil.getInstance(context).getWeight();
+		if (weight == 0f) {
+			weight = 50f;
+		}
+		return (int)(WALKING_COEFFICIENT*weight/15/60*second);
+	}
+
+	/*
+    return meter
+     */
+	public static int getDistance(Context context, int steps) {
+        /*
+        Men - you can multiply your height in cm by 0.415
+        Ladies - multiply your height in cm by 0.413
+         */
+		double height = PreferenceUtil.getInstance(context).getHeight();
+		if (height == 0f) {
+			height = 150f;
+		}
+		return (int)(height*0.415)*steps/100;
 	}
 }
