@@ -2,6 +2,7 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,7 +20,8 @@ public class BmiFragment extends Fragment {
 
     private View mView;
     private TextView tv_bmi, tv_fat;
-    private TextView tv_help_left, tv_help_right;
+    private TextView tv_bmi_title, tv_fat_title;
+    private View tv_help_left, tv_help_right;
     private ImageView iv_man;
     private TextView tv_man;
     private TextView tv_babel;
@@ -55,11 +57,16 @@ public class BmiFragment extends Fragment {
 
         tv_bmi = (TextView) mView.findViewById(R.id.tv_bmi);
         tv_fat = (TextView) mView.findViewById(R.id.tv_muscle);
-        tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
-        tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
+        tv_bmi_title = (TextView) mView.findViewById(R.id.tv_bmi_title);
+        tv_fat_title = (TextView) mView.findViewById(R.id.tv_fat_title);
+        tv_help_left = mView.findViewById(R.id.tv_help_left);
+        tv_help_right = mView.findViewById(R.id.tv_help_right);
         iv_man = (ImageView) mView.findViewById(R.id.iv_man);
         tv_man = (TextView) mView.findViewById(R.id.tv_man);
         tv_babel = (TextView) mView.findViewById(R.id.tv_babel);
+
+        tv_bmi_title.setText(Html.fromHtml("<u>BMI</u>"));
+        tv_fat_title.setText(Html.fromHtml("<u>체지방률</u>"));
 
         tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.bmi));
         tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.fat) + "%");

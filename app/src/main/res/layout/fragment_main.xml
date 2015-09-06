@@ -21,11 +21,18 @@
                 android:layout_below="@id/iv_height" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
                 android:text="@string/main_height" />
-            <TextView
-                android:id="@+id/tv_height"
+            <LinearLayout
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/tv_height_title" android:layout_centerHorizontal="true"
-                style="@style/HeathItemNumberTxt" android:text="0" />
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_height"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    style="@style/HeathItemNumberTxt" android:text="0" />
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    style="@style/HeathItemNumberTxt" android:text="cm" />
+            </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_growth"
@@ -42,12 +49,19 @@
                 android:layout_below="@id/iv_growth" android:layout_centerHorizontal="true"
                 style="@style/HeathItemTitleTxt"
                 android:text="@string/main_growth"/>
-            <TextView
-                android:id="@+id/tv_growth"
+            <LinearLayout
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_below="@id/tv_growth_title" android:layout_centerHorizontal="true"
-                style="@style/HeathItemNumberTxt"
-                android:text="0"/>
+                android:layout_below="@id/tv_growth_title" android:layout_centerHorizontal="true">
+                <TextView
+                    android:id="@+id/tv_growth"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    style="@style/HeathItemNumberTxt"
+                    android:text="0"/>
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    style="@style/HeathItemNumberTxt"
+                    android:text="점"/>
+            </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_dining"
@@ -104,7 +118,7 @@
                 android:id="@+id/tv_weight"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_below="@id/tv_weight_title" android:layout_centerHorizontal="true"
-                style="@style/HeathItemNumberTxt"  android:text="0"/>
+                style="@style/HeathItemNumberTxt"  android:text="0kg"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_muscle"

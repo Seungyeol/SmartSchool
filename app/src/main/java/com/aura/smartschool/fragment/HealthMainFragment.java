@@ -281,11 +281,13 @@ public class HealthMainFragment extends Fragment {
         //height animation
         mHandler.sendEmptyMessage(MainActivity.MSG_INCREASE_NUMBER);
 
-        tv_weight.setText(String.format("%s", mSummaryVO.weight));
+        tv_weight.setText(String.format("%s", mSummaryVO.weight) + "kg");
         //tv_weight_status.setText(mSummaryVO.weightStatus);
         tv_bmi.setText(mSummaryVO.bmi);
         //tv_bmi_status.setText(mSummaryVO.bmiStatus);
-        tv_smoke.setText(mSummaryVO.smokeStatus);
+        if(!mSummaryVO.smokeStatus.equals("null")) {
+            tv_smoke.setText(mSummaryVO.smokeStatus);
+        }
         //tv_smoke_cohb.setText(String.format("%s COHb", mSummaryVO.cohd));
         //tv_smoke_ppm.setText(String.format("%s ppm", mSummaryVO.ppm));
         tv_muscle.setText(String.valueOf(mSummaryVO.muscle_percent) + "%");

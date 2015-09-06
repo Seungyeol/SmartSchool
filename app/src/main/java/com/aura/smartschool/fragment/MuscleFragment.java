@@ -2,6 +2,7 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,7 +20,8 @@ public class MuscleFragment extends Fragment {
 
     private View mView;
     private TextView tv_skeletal, tv_muscle;
-    private TextView tv_help_left, tv_help_right;
+    private TextView tv_skeletal_title, tv_muscle_title;
+    private View tv_help_left, tv_help_right;
     private TextView tv_man_status;
     private ImageView iv_bmi;
     private PopupWindow mPopup;
@@ -54,10 +56,15 @@ public class MuscleFragment extends Fragment {
 
         tv_skeletal = (TextView) mView.findViewById(R.id.tv_skeletal);
         tv_muscle = (TextView) mView.findViewById(R.id.tv_muscle);
-        tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
-        tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
+        tv_skeletal_title = (TextView) mView.findViewById(R.id.tv_skeletal_title);
+        tv_muscle_title = (TextView) mView.findViewById(R.id.tv_muscle_title);
+        tv_help_left = mView.findViewById(R.id.tv_help_left);
+        tv_help_right = mView.findViewById(R.id.tv_help_right);
         tv_man_status = (TextView) mView.findViewById(R.id.tv_man_status);
         iv_bmi = (ImageView) mView.findViewById(R.id.iv_bmi);
+
+        tv_skeletal_title.setText(Html.fromHtml("<u>골격근량</u>"));
+        tv_muscle_title.setText(Html.fromHtml("<u>근육조절</u>"));
 
         int muscle_control = 0;
         try {
@@ -69,13 +76,13 @@ public class MuscleFragment extends Fragment {
         tv_muscle.setText( (muscle_control >=0 ? "+" : "-") +  String.valueOf(mMember.mMeasureSummaryVO.muscle_control) + "kg");
 
         if(muscle_control >= 3) {
-            iv_bmi.setImageResource(R.drawable.point_man_3);
+            iv_bmi.setImageResource(R.drawable.muscle_low);
             tv_man_status.setText("부족");
         } else if(muscle_control >= 0 && muscle_control < 3) {
-            iv_bmi.setImageResource(R.drawable.point_man_2);
+            iv_bmi.setImageResource(R.drawable.muscle_normal);
             tv_man_status.setText("정상");
         }  else {
-            iv_bmi.setImageResource(R.drawable.point_man_1);
+            iv_bmi.setImageResource(R.drawable.muscle_high);
             tv_man_status.setText("많음");
         }
 

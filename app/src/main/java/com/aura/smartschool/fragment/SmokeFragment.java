@@ -2,6 +2,7 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -23,7 +24,8 @@ public class SmokeFragment extends Fragment {
 
     private ImageView iv_smoke, iv_smoke1, iv_smoke2, iv_smoke3, iv_smoke4;
     private TextView tv_ppm, tv_cohb;
-    private TextView tv_help_left, tv_help_right;
+    private TextView tv_ppm_title, tv_cohb_title;
+    private View tv_help_left, tv_help_right;
     private View tv_babel;
 
     private PopupWindow mPopup;
@@ -61,9 +63,14 @@ public class SmokeFragment extends Fragment {
         iv_smoke4 = (ImageView) mView.findViewById(R.id.iv_smoke4);
         tv_ppm = (TextView) mView.findViewById(R.id.tv_ppm);
         tv_cohb = (TextView) mView.findViewById(R.id.tv_cohb);
-        tv_help_left = (TextView) mView.findViewById(R.id.tv_help_left);
-        tv_help_right = (TextView) mView.findViewById(R.id.tv_help_right);
+        tv_ppm_title = (TextView) mView.findViewById(R.id.tv_ppm_title);
+        tv_cohb_title = (TextView) mView.findViewById(R.id.tv_cohb_title);
+        tv_help_left = mView.findViewById(R.id.tv_help_left);
+        tv_help_right = mView.findViewById(R.id.tv_help_right);
         tv_babel = mView.findViewById(R.id.tv_babel);
+
+        tv_ppm_title.setText(Html.fromHtml("<u>ppm</u>"));
+        tv_cohb_title.setText(Html.fromHtml("<u>COHB</u>"));
 
         float ppm = 0;
         float cohb = 0;
