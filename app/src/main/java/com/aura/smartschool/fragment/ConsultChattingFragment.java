@@ -117,7 +117,7 @@ public class ConsultChattingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, mMember.name);
+        ((MainActivity)getActivity()).setHeaderView(R.drawable.actionbar_back, chatType.consultName);
     }
 
     @Override
