@@ -147,9 +147,9 @@ public class WalkingCountFragment extends Fragment {
         int minutes = (totalWalkingTime % 3600) / 60;
         int seconds = totalWalkingTime % 60;
 
-        mTvWalkingCount.setText(String.valueOf(steps));
-        mTvCalories.setText(Util.getCalories(getActivity(), totalWalkingTime) + " kcal");
+        mTvWalkingCount.setText(String.valueOf(steps == -1 ? 0 : steps));
         mTvDistance.setText(String.format("%.2f Km", (float) Util.getDistance(getActivity(), steps) / 1000));
+        mTvCalories.setText(Util.getCalories(getActivity(), Util.getDistance(getActivity(), steps)) + " kcal");
         mTvWalkingTime.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
 
         Intent serviceIntent = new Intent(getActivity(), StepCounterService.class);

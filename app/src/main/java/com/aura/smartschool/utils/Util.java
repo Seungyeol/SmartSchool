@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.aura.smartschool.MainActivity;
@@ -242,13 +243,23 @@ public final class Util {
 			return null;
 	}
 
+//
+//	public static int getCalories(Context context, int second) {
+//		double weight = PreferenceUtil.getInstance(context).getWeight();
+//		if (weight == 0f) {
+//			weight = 50f;
+//		}
+//		return (int)(WALKING_COEFFICIENT*weight/15/60*second);
+//	}
 
-	public static int getCalories(Context context, int second) {
+	public static int getCalories(Context context, int distance) {
 		double weight = PreferenceUtil.getInstance(context).getWeight();
 		if (weight == 0f) {
-			weight = 50f;
+			weight = 70f;
 		}
-		return (int)(WALKING_COEFFICIENT*weight/15/60*second);
+
+		double calPerMile = 0.57 * weight / 0.453592;
+		return (int) (distance * calPerMile * 0.0006213);
 	}
 
 	/*
@@ -261,7 +272,7 @@ public final class Util {
          */
 		double height = PreferenceUtil.getInstance(context).getHeight();
 		if (height == 0f) {
-			height = 150f;
+			height = 170f;
 		}
 		return (int)(height*0.415)*steps/100;
 	}

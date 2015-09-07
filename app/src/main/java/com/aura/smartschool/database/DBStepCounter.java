@@ -129,7 +129,7 @@ public class DBStepCounter extends SQLiteOpenHelper {
         // 센서가 누적값을 올려주기 때문에 걸음걸이와 거리는 전달된 값으로 갱신한다.
         getWritableDatabase().execSQL("UPDATE " + DATABASE_NAME +
                 " SET " + COL_STEPS + " = " + steps + ", " +
-                COL_CALORIES + " = " + COL_CALORIES + " + " + calories + ", " +
+                COL_CALORIES + " = " + calories + ", " +
                 COL_DISTANCE + " = " + distance + ", " +
                 COL_ACTIVE_TIME + " = " + COL_ACTIVE_TIME + " + " + activeTime +
                 " WHERE " + COL_DATE + " = " + date);
