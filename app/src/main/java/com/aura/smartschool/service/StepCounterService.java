@@ -23,6 +23,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.LoginManager;
@@ -36,13 +37,14 @@ import com.aura.smartschool.utils.Util;
 
 import org.jsoup.helper.StringUtil;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by Administrator on 2015-06-28.
  */
 public class StepCounterService extends Service implements SensorEventListener {
 
     private static final int RESTART_DELAY = 1000;
-    private static final int SCREEN_OFF_RECEIVER_DELAY = 5000;
 
     private static final int STEPCOUNTER_DELAY_SEC = 1000000;  //1초
     private static final int STEPCOUNTER_DELAY_2S = 2 * 1000000;  //2초
@@ -173,9 +175,6 @@ public class StepCounterService extends Service implements SensorEventListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (Util.isKitkatWithStepSensor(this)) {
-            unregisterSensorStep();
-        }
     }
 
     @Override
@@ -194,13 +193,6 @@ public class StepCounterService extends Service implements SensorEventListener {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void unregisterSensorStep() {
-        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensorManager.unregisterListener(this);
-        stopForeground(true);
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void registerEventListener(int maxdelay) {
         SensorManager sensorManager = (SensorManager) getSystemService(Activity.SENSOR_SERVICE);
         try {
@@ -209,23 +201,8 @@ public class StepCounterService extends Service implements SensorEventListener {
             e.printStackTrace();
         }
         Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST, maxdelay);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL, maxdelay);
     }
-
-//    private void makeForgroundService() {
-//        Intent foregroundIntent = new Intent(this, MainActivity.class);
-//        foregroundIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        foregroundIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_STEP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, foregroundIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        Notification notification=new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.drawable.home)
-//                .setContentTitle("스마트안전건강지킴이")
-//                .setContentText(String.format("오늘 누적 활동량은 %d 걸음 입니다.", currentTotalSteps))
-//                .setContentIntent(pendingIntent).build();
-//
-//        startForeground(Constant.NOTIFICATION_STEP_FOREGROUND, notification);
-//    }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
