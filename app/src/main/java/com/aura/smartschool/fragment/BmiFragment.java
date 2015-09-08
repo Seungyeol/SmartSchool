@@ -91,6 +91,14 @@ public class BmiFragment extends Fragment {
             tv_man.setText("고도\n비만");
         }
 
+        iv_man.post(new Runnable() {
+            @Override
+            public void run() {
+                ((View) iv_man.getParent()).getLayoutParams().width = ((View) iv_man.getParent()).getMeasuredHeight();
+                ((View) iv_man.getParent()).requestLayout();
+            }
+        });
+
         tv_help_left.setOnClickListener(mClick);
         tv_help_right.setOnClickListener(mClick);
         tv_babel.setOnClickListener(mClick);
