@@ -42,6 +42,7 @@ public final class Constant {
 	//비디오 리스트 가져오기
 	public static final String API_GET_VIDEOLIST_BY_MASTERID = "/api/getVideoListByMasterGradeId";
 	public static final String API_GET_VIDEOLIST_BY_SECTION = "/api/getVideoListByInfoType";
+	public static final String API_GET_VIDEOTIME_OF_MEMBER = "/api/getVideoTimeOfMember";
 
 	public static final String API_GET_OS_INFO = "/api/getOsInfo";
 

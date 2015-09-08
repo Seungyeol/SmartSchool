@@ -61,18 +61,20 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+
+        mAq = new AQuery(getActivity());
+
         mMember = (MemberVO) args.getSerializable("member");
         mType = args.getInt("type");
 
         if (StringUtil.isBlank(PreferenceUtil.getInstance(getActivity()).getVideoDate())) {
-            PreferenceUtil.getInstance(getActivity()).putVideoDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            getVideoTime();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = View.inflate(getActivity(), R.layout.fragment_growth, null);
-        mAq = new AQuery(getActivity(), mView);
 
         mListview = (ListView) mView.findViewById(R.id.listview);
         mAdapter = new VideoListAdapter(getActivity(), mVideoList);
@@ -87,6 +89,43 @@ public class VideoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
+    }
+
+    private void getVideoTime() {
+        try {
+            String url = Constant.HOST + Constant.API_GET_VIDEOTIME_OF_MEMBER;
+            JSONObject json = new JSONObject();
+            json.put("member_id", mMember.member_id);
+            Log.d("LDK", "url:" + url);
+            Log.d("LDK", "input parameter:" + json.toString(1));
+
+            mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    try {
+                        Log.d("LDK", "status.getCode():" + status.getCode());
+                        if (status.getCode() != 200) {
+                            return;
+                        }
+                        Log.d("LDK", "result:" + object.toString(1));
+
+                        if ("0".equals(object.getString("result"))) {
+                            JSONObject data = object.getJSONObject("data");
+                            PreferenceUtil.getInstance(getActivity()).putVideoDate(new SimpleDateFormat("yyyy-MM-dd").format(Util.getDateFromString(data.getString("access_time"))));
+                        } else {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getVideoList() {

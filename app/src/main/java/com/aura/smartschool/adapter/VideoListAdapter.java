@@ -42,18 +42,18 @@ public class VideoListAdapter extends BaseAdapter {
 		long videoDate = 0;
 		try {
 			videoDate = new SimpleDateFormat("yyyy-MM-dd").parse(PreferenceUtil.getInstance(mContext).getVideoDate()).getTime();
+			Calendar today = Calendar.getInstance();
+
+			videoDiffDate = (int) ((today.getTimeInMillis() - videoDate) / (24 * 60 * 60 * 1000));
+			minuteToNextHour = 60 - today.get(Calendar.MINUTE);
+			hourToNextDate = 24 - today.get(Calendar.HOUR_OF_DAY) - (minuteToNextHour != 60 ? 1 : 0);
 		} catch (ParseException e) {
 			e.printStackTrace();
-			videoDate = new Date().getTime();
 		}
-		Calendar today = Calendar.getInstance();
-
-		videoDiffDate = (int) ((today.getTimeInMillis() - videoDate) / (24 * 60 * 60 * 1000));
-		minuteToNextHour = 60 - today.get(Calendar.MINUTE);
-		hourToNextDate = 24 - today.get(Calendar.HOUR_OF_DAY) - (minuteToNextHour != 60 ? 1 : 0);
 	}
 
 	public void setData(ArrayList<VideoVO> videoList) {
+		calculateVideoDiffDate();
 		mVideoList = videoList;
 	}
 
