@@ -11,8 +11,10 @@
         android:text="@string/main_bmi" />
 
     <RelativeLayout
-        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-        android:layout_marginTop="10dp">
+        android:layout_width="wrap_content" android:layout_height="0dp" android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp" android:background="@drawable/bg_circle_gold">
         <ImageView
             android:id="@+id/iv_man"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
