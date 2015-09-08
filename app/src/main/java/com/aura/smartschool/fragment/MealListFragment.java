@@ -54,6 +54,7 @@ public class MealListFragment extends Fragment {
         Bundle args = getArguments();
         this.mMember = (MemberVO) args.getSerializable(KEY_MEMBER);
         this.mealMonth = Calendar.getInstance();
+        this.mealMonth.set(Calendar.DAY_OF_MONTH, 1);
     }
 
     @Nullable
@@ -84,7 +85,7 @@ public class MealListFragment extends Fragment {
         ivNextMonth.setOnClickListener(mClick);
 
         mMenuListView = (ListView) view.findViewById(R.id.list_meal);
-        mealAdapter = new MealMenuListAdapter(getActivity(), new MenuData[0]);
+        mealAdapter = new MealMenuListAdapter(getActivity(), mealMonth, new MenuData[0]);
         mMenuListView.setAdapter(mealAdapter);
 
     }
@@ -118,7 +119,7 @@ public class MealListFragment extends Fragment {
                 } else {
                     tvEmpty.setVisibility(View.GONE);
                     llMeal.setVisibility(View.VISIBLE);
-                    mealAdapter.setMenuArray(menuList);
+                    mealAdapter.setMenuArray(mealMonth, menuList);
                     mealAdapter.notifyDataSetChanged();
                     if (mealMonth.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)) {
                         mMenuListView.post(new Runnable() {

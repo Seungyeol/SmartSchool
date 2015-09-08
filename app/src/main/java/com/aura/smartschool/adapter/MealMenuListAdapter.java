@@ -2,6 +2,7 @@ package com.aura.smartschool.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -26,17 +27,22 @@ public class MealMenuListAdapter extends BaseAdapter {
     private MenuData[] menuArray;
 
     private ArrayList<MealVO> mealList = new ArrayList<>();
+    private Calendar mealCal;
+
+    private int firstDayOfMonth;
 
     private static final String NO_MEAL_MENU = "급식이 없습니다";
 
-    public MealMenuListAdapter(Context context, MenuData[] menuArray) {
+    public MealMenuListAdapter(Context context, Calendar mealCal, MenuData[] menuArray) {
         this.context = context;
         this.menuArray = menuArray;
+        this.mealCal = mealCal;
         makeMealList();
     }
 
-    public void setMenuArray(MenuData[] menuArray) {
+    public void setMenuArray(Calendar mealCal, MenuData[] menuArray) {
         this.menuArray = menuArray;
+        this.mealCal = mealCal;
         makeMealList();
     }
 
@@ -81,7 +87,7 @@ public class MealMenuListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.tvDate.setText(mealList.get(position).day + " 일");
+        holder.tvDate.setText(mealList.get(position).day + " 일 " + getDayofWeekString(mealList.get(position).day));
 
         holder.tvBreakfast.setText(mealList.get(position).breakfast);
         holder.tvLunch.setText(mealList.get(position).lunch);
@@ -90,8 +96,29 @@ public class MealMenuListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private String getDayofWeekString(int day) {
+        switch ((day + firstDayOfMonth -1)%7) {
+            case 1:
+                return "(일)";
+            case 2:
+                return "(월)";
+            case 3:
+                return "(화)";
+            case 4:
+                return "(수)";
+            case 5:
+                return "(목)";
+            case 6:
+                return "(금)";
+            case 7:
+                return "(토)";
+        }
+        return "";
+    }
+
     private void makeMealList() {
         int day = 0;
+        firstDayOfMonth = mealCal.get(Calendar.DAY_OF_WEEK);
         mealList.clear();
         for (MenuData data : menuArray) {
             day++;
