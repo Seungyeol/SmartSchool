@@ -49,9 +49,9 @@ public class GrowthGradeDescriptionFragment extends Fragment {
         tvDietaryHabits = (TextView) mView.findViewById(R.id.tv_dietary_habits);
         tvRecommededExercise = (TextView) mView.findViewById(R.id.tv_recommend_exercise);
 
-        tvBmiStatus.setText(mMember.mMeasureSummaryVO.bmiStatus);
         GROWTH_GRADE growthGrade = GROWTH_GRADE.findDescription(mMember.mMeasureSummaryVO.bmiStatus);
         if(growthGrade != null) {
+            tvBmiStatus.setText(growthGrade.title);
             tvObesityRisk.setText(growthGrade.obesityRiskDesRId);
             tvDietaryHabits.setText(growthGrade.dietaryHabitsDesRId);
             tvRecommededExercise.setText(growthGrade.exerciseDesRId);
@@ -66,30 +66,32 @@ public class GrowthGradeDescriptionFragment extends Fragment {
     }
 
     enum GROWTH_GRADE {
-        LOW_WEIGHT_A("저체중 A", R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
-        LOW_WEIGHT_B("저체중 B", R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
-        LOW_WEIGHT_C("저체중 C", R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
-        NOMAL_WEIGHT_A("정상 A", R.string.obesity_risk_2, R.string.dietary_habits_2_3, R.string.recommend_exercise_2_3),
-        NOMAL_WEIGHT_B("정상 B", R.string.obesity_risk_3, R.string.dietary_habits_2_3, R.string.recommend_exercise_2_3),
-        OVER_WEIGHT_A("과체중 A", R.string.obesity_risk_4, R.string.dietary_habits_4, R.string.recommend_exercise_4),
-        OVER_WEIGHT_B("과체중 B", R.string.obesity_risk_4, R.string.dietary_habits_4, R.string.recommend_exercise_4),
-        MILD_OBESITY_A("비만 A", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
-        MILD_OBESITY_B("비만 B", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
-        MILD_OBESITY_C("비만 C", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
-        MEDIUM_OBESITY_A("중도비만 A", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
-        MEDIUM_OBESITY_B("중도비만 B", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
-        MEDIUM_OBESITY_C("중도비만 C", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
-        EXTREME_OBESITY_A("고도비만 A", R.string.obesity_risk_7, R.string.dietary_habits_6_7, R.string.recommend_exercise_7),
-        EXTREME_OBESITY_B("고도비만 B", R.string.obesity_risk_7, R.string.dietary_habits_7, R.string.recommend_exercise_7),
-        EXTREME_OBESITY_C("고도비만 C", R.string.obesity_risk_7, R.string.dietary_habits_7, R.string.recommend_exercise_7);
+        LOW_WEIGHT_A("저체중 A", "저체중 위험", R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
+        LOW_WEIGHT_B("저체중 B", "저체중 경고",R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
+        LOW_WEIGHT_C("저체중 C", "저체중 노력",R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
+        NOMAL_WEIGHT_A("정상 A", "정상 보통", R.string.obesity_risk_2, R.string.dietary_habits_2_3, R.string.recommend_exercise_2_3),
+        NOMAL_WEIGHT_B("정상 B", "정상 관리", R.string.obesity_risk_3, R.string.dietary_habits_2_3, R.string.recommend_exercise_2_3),
+        OVER_WEIGHT_A("과체중 A", "과체중 경고", R.string.obesity_risk_4, R.string.dietary_habits_4, R.string.recommend_exercise_4),
+        OVER_WEIGHT_B("과체중 B", "과체중 위험", R.string.obesity_risk_4, R.string.dietary_habits_4, R.string.recommend_exercise_4),
+        MILD_OBESITY_A("비만 A", "비만 관리", R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
+        MILD_OBESITY_B("비만 B", "비만 경고",R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
+        MILD_OBESITY_C("비만 C", "비만 위험",R.string.obesity_risk_5, R.string.dietary_habits_5, R.string.recommend_exercise_5),
+        MEDIUM_OBESITY_A("중도비만 A", "중도비만 관리", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
+        MEDIUM_OBESITY_B("중도비만 B", "중도비만 경고", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
+        MEDIUM_OBESITY_C("중도비만 C", "중도비만 위험", R.string.obesity_risk_6, R.string.dietary_habits_6_7, R.string.recommend_exercise_6),
+        EXTREME_OBESITY_A("고도비만 A", "고도비만 관리", R.string.obesity_risk_7, R.string.dietary_habits_6_7, R.string.recommend_exercise_7),
+        EXTREME_OBESITY_B("고도비만 B", "고도비만 경고", R.string.obesity_risk_7, R.string.dietary_habits_7, R.string.recommend_exercise_7),
+        EXTREME_OBESITY_C("고도비만 C", "고도비만 위험", R.string.obesity_risk_7, R.string.dietary_habits_7, R.string.recommend_exercise_7);
 
         String name;
+        String title;
         int obesityRiskDesRId;
         int dietaryHabitsDesRId;
         int exerciseDesRId;
 
-        GROWTH_GRADE(String name, int obesityRiskDesRId, int dietaryHabitsDesRId, int exerciseDesRId) {
+        GROWTH_GRADE(String name, String title, int obesityRiskDesRId, int dietaryHabitsDesRId, int exerciseDesRId) {
             this.name = name;
+            this.title = title;
             this.obesityRiskDesRId = obesityRiskDesRId;
             this.dietaryHabitsDesRId = dietaryHabitsDesRId;
             this.exerciseDesRId = exerciseDesRId;
