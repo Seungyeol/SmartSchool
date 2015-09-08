@@ -3,9 +3,9 @@ package com.aura.smartschool.database;
 public enum ConsultType {
     //학교폭력, 친구관계, 가정문제, 성상담, 학업상담, 진로상담, 심리상담, 성장상담, 흡연상담.
     SCHOOL_VIOLENCE_CONSULT("학교폭력", "tb_school_violence_fail", 7, true),
-    FRIEND_RELATIONSHIP_CONSULT("친구관계", "tb_friend_relationship_fail", 8, true),
-    FAMILY_CONSULT("가정문제", "tb_family_fail", 9, true),
-    SEXUAL_CONSULT("성상담", "tb_sexual_fail", 1, false),
+    FRIEND_RELATIONSHIP_CONSULT("친구관계", "tb_friend_relationship_fail", 8, false),
+    FAMILY_CONSULT("가정폭력", "tb_family_fail", 9, true),
+    SEXUAL_CONSULT("성폭력", "tb_sexual_fail", 1, true),
     ACADEMIC_CONSULT("학업상담", "tb_academic_fail", 2, false),
     CAREER_CONSULT("진로상담", "tb_career_fail", 3, false),
     PSYCHOLOGY_CONSULT("심리상담", "tb_psychology_fail", 4, false),
