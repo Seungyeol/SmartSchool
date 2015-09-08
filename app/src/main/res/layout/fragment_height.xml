@@ -13,8 +13,15 @@
         <ImageView
             android:id="@+id/iv_detail"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:background="@drawable/detail_btn"/>
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" android:layout_below="@id/iv_detail"
+            android:layout_marginTop="2dp" android:layout_marginRight="1dp"
+            android:textColor="@color/orange" android:textStyle="bold"
+            android:textSize="9dp"
+            android:text="상세이력"/>
     </RelativeLayout>
 
     <com.github.mikephil.charting.charts.BarChart
