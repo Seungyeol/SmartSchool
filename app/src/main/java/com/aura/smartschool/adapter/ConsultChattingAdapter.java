@@ -143,7 +143,7 @@ public class ConsultChattingAdapter extends RecyclerView.Adapter<ConsultChatting
         @Override
         public void onBindViewHolder(ConsultVO msg, boolean isFirstMsgOfDay, boolean isFailList) {
             super.onBindViewHolder(msg, isFirstMsgOfDay, isFailList);
-            tvName.setText("티쳐티쳐");
+            tvName.setText("상담원");
         }
     }
 
