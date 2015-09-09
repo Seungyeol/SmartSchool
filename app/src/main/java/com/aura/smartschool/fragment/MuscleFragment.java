@@ -86,6 +86,14 @@ public class MuscleFragment extends Fragment {
             tv_man_status.setText("많음");
         }
 
+        iv_bmi.post(new Runnable() {
+            @Override
+            public void run() {
+                ((View) iv_bmi.getParent()).getLayoutParams().width = ((View) iv_bmi.getParent()).getMeasuredHeight();
+                ((View) iv_bmi.getParent()).requestLayout();
+            }
+        });
+
         tv_help_left.setOnClickListener(mClick);
         tv_help_right.setOnClickListener(mClick);
 
