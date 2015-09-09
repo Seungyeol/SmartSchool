@@ -14,6 +14,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.AreaInfoWindowAdapter;
+import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.AreaVO;
 import com.aura.smartschool.vo.LocationVO;
@@ -81,6 +82,13 @@ public class LocationFragment extends Fragment {
 
         setUpMapIfNeeded();
 
+        mView.findViewById(R.id.location_fresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLocationList();
+            }
+        });
+
         if (mMember.lat != 0) {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mMember.lat, mMember.lng), 16));
@@ -111,6 +119,7 @@ public class LocationFragment extends Fragment {
 
     //비동기로 위치정보 리스트를 가져온다.
     private void getLocationList() {
+        LoadingDialog.showLoading(getActivity());
         mLocationList.clear();
         try {
             String url = Constant.HOST + Constant.API_GET_LOCATIONLIST;
@@ -124,6 +133,7 @@ public class LocationFragment extends Fragment {
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
+                    LoadingDialog.hideLoading();
                     try {
                         if (status.getCode() != 200) {
                             return;
@@ -228,7 +238,7 @@ public class LocationFragment extends Fragment {
             mGoogleMap.addPolyline(new PolylineOptions()
                     .add(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng),
                             new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng))
-                    .width(15).color(Color.RED).geodesic(true));
+                    .width(15).color(Color.TRANSPARENT).geodesic(true));
 
             if(i==(mLocationList.size()-2)) {
                 long term = Util.getLastedMinuteToCurrent( mLocationList.get(i+1).created_date);
@@ -239,6 +249,10 @@ public class LocationFragment extends Fragment {
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
                         .snippet(Util.getAddress(getActivity(), mLocationList.get(i+1).lat, mLocationList.get(i+1).lng)));
                 endMarker.showInfoWindow();
+
+                //카메라 움직이기
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng), 16));
             }
         }
     }
