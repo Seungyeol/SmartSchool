@@ -14,7 +14,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -37,6 +36,7 @@ import com.aura.smartschool.FindSchoolActivity;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolVO;
@@ -193,15 +193,15 @@ public class RegisterDialogActivity extends FragmentActivity {
 				json.put("birth_date", member.birth_date);
 			}
 
-			Log.d("LDK", "url:" + url);
-			Log.d("LDK", "input parameter:" + json.toString(1));
+			SchoolLog.d("LDK", "url:" + url);
+			SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
 			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
 				@Override
 				public void callback(String url, JSONObject object, AjaxStatus status) {
 					LoadingDialog.hideLoading();
 					try {
-						Log.d("LDK", "result:" + object.toString(1));
+						SchoolLog.d("LDK", "result:" + object.toString(1));
 
 						if(status.getCode() != 200) {
 

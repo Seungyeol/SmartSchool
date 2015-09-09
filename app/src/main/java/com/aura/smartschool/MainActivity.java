@@ -18,7 +18,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ import com.aura.smartschool.fragment.WalkingPagerFragment;
 import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.MemberVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -241,7 +241,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 				dialog.show();
 
 			} else {
-				Log.i("MainActivity.java ",
+				SchoolLog.i("MainActivity.java ",
 						"| checkPlayService |This device is not supported.|");
 				// _textStatus.append("\n This device is not supported.\n");
 				finish();
@@ -255,18 +255,18 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	private String getRegistrationId() {
 		String registrationId = PreferenceUtil.getInstance(getApplicationContext()).getRegID();
 		if (TextUtils.isEmpty(registrationId)) {
-			Log.e("LDK", "|Registration not found.|");
+			SchoolLog.e("LDK", "|Registration not found.|");
 			return "";
 		}
 
 		int registeredVersion = PreferenceUtil.getInstance(getApplicationContext()).appVersion();
 		int currentVersion = getAppVersion();
 		if (registeredVersion != currentVersion) {
-			Log.i("LDK", "|App version changed.|");
+			SchoolLog.i("LDK", "|App version changed.|");
 			// _textStatus.append("\n App version changed.\n");
 			return "";
 		}
-		Log.i("LDK", "registrationId:" + registrationId);
+		SchoolLog.i("LDK", "registrationId:" + registrationId);
 		return registrationId;
 	}
 
@@ -295,7 +295,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 
 			@Override
 			protected void onPostExecute(String msg) {
-				Log.e("LDK", "|" + msg + "|");
+				SchoolLog.e("LDK", "|" + msg + "|");
 			}
 		}.execute(null, null, null);
 	}

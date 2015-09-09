@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,6 +21,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.adapter.CategoryAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 
 import org.json.JSONException;
@@ -69,7 +69,7 @@ public class LocationUploadActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 category = position;
-                Log.d("LDK", "position:" + position);
+                SchoolLog.d("LDK", "position:" + position);
             }
 
             @Override
@@ -115,15 +115,15 @@ public class LocationUploadActivity extends Activity {
             json.put("category", category);
             json.put("picture", imageDataString);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
                     LoadingDialog.hideLoading();
                     try {
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if(status.getCode() != 200) {
                             return;

@@ -1,7 +1,6 @@
 package com.aura.smartschool.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +10,7 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.AreaVO;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,8 +63,8 @@ public class AreaInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 JSONObject json = new JSONObject();
                 json.put("id", mAreaMap.get(marker.getId()).id);
 
-                Log.d("LDK", "url:" + url);
-                Log.d("LDK", "input:" + json.toString(1));
+                SchoolLog.d("LDK", "url:" + url);
+                SchoolLog.d("LDK", "input:" + json.toString(1));
 
                 mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                     @Override
@@ -73,7 +73,7 @@ public class AreaInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                             if (status.getCode() != 200) {
                                 return;
                             }
-                            Log.d("LDK", "result:" + object.toString(1));
+                            SchoolLog.d("LDK", "result:" + object.toString(1));
 
                             if (object.getInt("result") == 0) {
                                 imageString = object.getJSONObject("data").getString("picture");

@@ -2,12 +2,12 @@ package com.aura.smartschool;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolVO;
@@ -77,8 +77,8 @@ public class LoginManager {
             json.put("mdn", memberVO.mdn);
             json.put("gcm_id", gcmRegId);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             new AQuery(context).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
                 @Override
@@ -89,7 +89,7 @@ public class LoginManager {
                             return;
                         }
 
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if("0".equals(object.getString("result"))) {
                             JSONArray array = object.getJSONArray("data");
@@ -117,14 +117,14 @@ public class LoginManager {
             JSONObject json = new JSONObject();
             json.put("home_id", PreferenceUtil.getInstance(context).getHomeId());
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             new AQuery(context).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
                     try {
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (status.getCode() != 200) {
                             resultListener.onFail();

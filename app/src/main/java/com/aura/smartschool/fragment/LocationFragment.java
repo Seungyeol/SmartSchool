@@ -3,7 +3,6 @@ package com.aura.smartschool.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.AreaInfoWindowAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.AreaVO;
 import com.aura.smartschool.vo.LocationVO;
@@ -127,8 +127,8 @@ public class LocationFragment extends Fragment {
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -138,7 +138,7 @@ public class LocationFragment extends Fragment {
                         if (status.getCode() != 200) {
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONArray array = object.getJSONArray("data");
@@ -186,7 +186,7 @@ public class LocationFragment extends Fragment {
         String url = Constant.HOST + Constant.API_GET_AREALIST;
 
         JSONObject json = new JSONObject();
-        Log.d("LDK", "url:" + url);
+        SchoolLog.d("LDK", "url:" + url);
 
         mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
             @Override
@@ -195,7 +195,7 @@ public class LocationFragment extends Fragment {
                     if (status.getCode() != 200) {
                         return;
                     }
-                    Log.d("LDK", "result:" + object.toString(1));
+                    SchoolLog.d("LDK", "result:" + object.toString(1));
 
                     if (object.getInt("result") == 0) {
                         JSONArray array = object.getJSONArray("data");

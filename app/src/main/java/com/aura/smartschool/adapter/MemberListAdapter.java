@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,6 +19,7 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.Interface.MemberListListener;
 import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
@@ -181,8 +181,8 @@ public class MemberListAdapter extends BaseAdapter {
 				JSONObject json = new JSONObject();
 				json.put("member_id", mMemberList.get(position).member_id);
 
-				Log.d("LDK", "url:" + url);
-				Log.d("LDK", "input parameter:" + json.toString(1));
+				SchoolLog.d("LDK", "url:" + url);
+				SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
 				aq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
 					@Override
@@ -191,7 +191,7 @@ public class MemberListAdapter extends BaseAdapter {
 							if (status.getCode() != 200) {
 								return;
 							}
-							Log.d("LDK", "result:" + object.toString(1));
+							SchoolLog.d("LDK", "result:" + object.toString(1));
 
 							if ("0".equals(object.getString("result"))) {
 								JSONObject data = object.getJSONObject("data");

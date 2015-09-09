@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.MemberVO;
 
 import org.json.JSONException;
@@ -63,8 +63,8 @@ public class ConsultHistoryDialogFragment extends DialogFragment {
             JSONObject json = new JSONObject();
             json.put("member_id", memberVO.member_id);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             new AQuery(getActivity()).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -72,11 +72,11 @@ public class ConsultHistoryDialogFragment extends DialogFragment {
                     LoadingDialog.hideLoading();
                     try {
                         if (status.getCode() != 200) {
-                            Log.d("LDK", "FAIL");
+                            SchoolLog.d("LDK", "FAIL");
                             Toast.makeText(getActivity(), "상담 히스토리를 불러오지 못하였습니다.", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONObject data = object.getJSONObject("data");

@@ -8,11 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,6 +26,7 @@ import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.database.DBConsultChatFail;
 import com.aura.smartschool.dialog.AppraisalDialogFragment;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.ConsultVO;
 import com.aura.smartschool.vo.MemberVO;
@@ -143,8 +142,8 @@ public class ConsultChattingFragment extends Fragment {
             json.put("member_id", mMember.member_id);
             json.put("category", chatType.code);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -152,10 +151,10 @@ public class ConsultChattingFragment extends Fragment {
                     LoadingDialog.hideLoading();
                     try {
                         if (status.getCode() != 200) {
-                            Log.d("LDK", "FAIL");
+                            SchoolLog.d("LDK", "FAIL");
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONArray array = object.getJSONArray("data");
@@ -200,8 +199,8 @@ public class ConsultChattingFragment extends Fragment {
             json.put("who", ConsultType.MSG_FROM_STUDENT);
             json.put("member_id", mMember.member_id);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -210,11 +209,11 @@ public class ConsultChattingFragment extends Fragment {
                     etChat.setText("");
                     try {
                         if (status.getCode() != 200) {
-                            Log.d("LDK", "FAIL");
+                            SchoolLog.d("LDK", "FAIL");
                             addFailMessage(msg);
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             ConsultVO consultVO = new ConsultVO();
@@ -296,8 +295,8 @@ public class ConsultChattingFragment extends Fragment {
                 json.put("session_id", sessionId);
                 json.put("rate", num);
 
-                Log.d("LDK", "url:" + url);
-                Log.d("LDK", "input parameter:" + json.toString(1));
+                SchoolLog.d("LDK", "url:" + url);
+                SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
                 mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                     @Override
@@ -305,11 +304,11 @@ public class ConsultChattingFragment extends Fragment {
                         LoadingDialog.hideLoading();
                         try {
                             if (status.getCode() != 200) {
-                                Log.d("LDK", "FAIL");
+                                SchoolLog.d("LDK", "FAIL");
                                 Toast.makeText(getActivity(), "평가 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            Log.d("LDK", "result:" + object.toString(1));
+                            SchoolLog.d("LDK", "result:" + object.toString(1));
 
                             if (object.getInt("result") == 0) {
                                 Toast.makeText(getActivity(), "평가 하였습니다.", Toast.LENGTH_SHORT).show();

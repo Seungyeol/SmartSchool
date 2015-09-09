@@ -2,7 +2,6 @@ package com.aura.smartschool.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.VideoListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.VideoVO;
@@ -96,18 +96,18 @@ public class VideoFragment extends Fragment {
             String url = Constant.HOST + Constant.API_GET_VIDEOTIME_OF_MEMBER;
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
                 public void callback(String url, JSONObject object, AjaxStatus status) {
                     try {
-                        Log.d("LDK", "status.getCode():" + status.getCode());
+                        SchoolLog.d("LDK", "status.getCode():" + status.getCode());
                         if (status.getCode() != 200) {
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if ("0".equals(object.getString("result"))) {
                             JSONObject data = object.getJSONObject("data");
@@ -158,8 +158,8 @@ public class VideoFragment extends Fragment {
                     break;
             }
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -169,7 +169,7 @@ public class VideoFragment extends Fragment {
                         if (status.getCode() != 200) {
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if ("0".equals(object.getString("result"))) {
                             JSONArray array = object.getJSONArray("data");

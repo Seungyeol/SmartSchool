@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MeasureVO;
 import com.aura.smartschool.vo.MemberVO;
@@ -169,8 +169,8 @@ public class HeightFragment extends Fragment {
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -180,7 +180,7 @@ public class HeightFragment extends Fragment {
                         if (status.getCode() != 200) {
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONObject json = object.getJSONObject("data");

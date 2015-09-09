@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MeasureSummaryVO;
 import com.aura.smartschool.vo.MemberVO;
@@ -186,7 +186,7 @@ public class HealthMainFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Log.d("LDK", "onAnimationEnd");
+                SchoolLog.d("LDK", "onAnimationEnd");
                 mAnimationEnd = true;
             }
 
@@ -204,8 +204,8 @@ public class HealthMainFragment extends Fragment {
             JSONObject json = new JSONObject();
             json.put("member_id", mMember.member_id);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -216,7 +216,7 @@ public class HealthMainFragment extends Fragment {
                         if (status.getCode() != 200) {
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONObject json = object.getJSONObject("data");
@@ -415,7 +415,7 @@ public class HealthMainFragment extends Fragment {
 
             switch(v.getId()) {
                 case R.id.rl_activity:
-                    Log.d("test", "onClick >> rl_activity");
+                    SchoolLog.d("test", "onClick >> rl_activity");
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, WalkingPagerFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
             }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.adapter.AppNoticeAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.AppNoticeVO;
 
 import org.json.JSONArray;
@@ -70,7 +70,7 @@ public class AppNoticeActivity extends Activity {
                         return;
                     }
 
-                    Log.d("LDK", "result:" + object.toString(1));
+                    SchoolLog.d("LDK", "result:" + object.toString(1));
 
                     if ("0".equals(object.getString("result"))) {
                         JSONArray array = object.getJSONArray("data");

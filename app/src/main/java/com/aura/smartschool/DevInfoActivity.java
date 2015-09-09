@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +15,7 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.TermsDialogFragment;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.VersionVO;
 
 import org.json.JSONException;
@@ -112,7 +112,7 @@ public class DevInfoActivity extends FragmentActivity {
                             return;
                         }
 
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if ("0".equals(object.getString("result"))) {
                             JSONObject data = object.getJSONObject("data");

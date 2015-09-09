@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.ConsultFragmentVisibleManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.database.ConsultType;
+import com.aura.smartschool.utils.SchoolLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("LDK", "GcmBroadcastReceiver onReceive");
+        SchoolLog.d("LDK", "GcmBroadcastReceiver onReceive");
         mContext = context;
 
         Bundle bundle = intent.getExtras();

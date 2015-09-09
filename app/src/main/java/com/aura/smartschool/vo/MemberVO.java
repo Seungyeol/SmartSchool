@@ -1,7 +1,5 @@
 package com.aura.smartschool.vo;
 
-import android.util.Log;
-
 import com.aura.smartschool.utils.Util;
 
 import org.apache.commons.lang3.StringUtils;

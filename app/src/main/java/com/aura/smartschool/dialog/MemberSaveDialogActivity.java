@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -33,6 +32,7 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.FindSchoolActivity;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolVO;
@@ -221,8 +221,8 @@ public class MemberSaveDialogActivity extends Activity {
 				json.put("birth_date", mMember.birth_date);
 			}
 
-			Log.d("LDK", "url:" + url);
-			Log.d("LDK", "input parameter:" + json.toString(1));
+			SchoolLog.d("LDK", "url:" + url);
+			SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
 			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
 				@Override
@@ -234,7 +234,7 @@ public class MemberSaveDialogActivity extends Activity {
 							return;
 						}
 
-						Log.d("LDK", "result:" + object.toString(1));
+						SchoolLog.d("LDK", "result:" + object.toString(1));
 
 						if("0".equals(object.getString("result"))) {
 							setResult(RESULT_OK);

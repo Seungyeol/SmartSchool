@@ -6,12 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -22,6 +19,7 @@ import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.QnAAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.BoardVO;
 
 import org.json.JSONArray;
@@ -82,7 +80,7 @@ public class QnAListFragment extends Fragment {
                             return;
                         }
 
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if ("0".equals(object.getString("result"))) {
                             JSONArray array = object.getJSONArray("data");

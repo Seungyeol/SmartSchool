@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.WalkingHistoryAdapter;
 import com.aura.smartschool.database.DBStepCounter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.WalkingVO;
 
@@ -99,7 +99,7 @@ public class WalkingHistoryFragment extends Fragment {
                         //update or insert
                         LoadingDialog.hideLoading();
                         try {
-                            Log.d("LDK", "result:" + object.toString(1));
+                            SchoolLog.d("LDK", "result:" + object.toString(1));
                             if (object.getInt("result") == 0) {
                                 JSONArray array = object.getJSONArray("data");
                                 for (int i = 0; i < array.length(); i++) {

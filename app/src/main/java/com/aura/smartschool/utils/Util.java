@@ -12,7 +12,6 @@ import android.location.Geocoder;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.aura.smartschool.MainActivity;

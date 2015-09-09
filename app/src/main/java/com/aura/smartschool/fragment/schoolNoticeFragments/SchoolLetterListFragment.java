@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.SchoolNoticeAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
 
@@ -127,12 +127,12 @@ public class SchoolLetterListFragment extends Fragment {
                     LoadingDialog.hideLoading();
                     try {
                         if (status.getCode() != 200) {
-                            Log.d("test", "실패 ");
+                            SchoolLog.d("test", "실패 ");
                             showScrapToast(isSelected, false);
                             return;
                         }
 
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if ("0".equals(object.getString("result"))) {
                             showScrapToast(isSelected, false);

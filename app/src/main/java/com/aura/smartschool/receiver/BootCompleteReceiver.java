@@ -3,7 +3,6 @@ package com.aura.smartschool.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;

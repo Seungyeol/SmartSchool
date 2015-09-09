@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,7 +16,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.adapter.SchoolListAdapter;
-import com.aura.smartschool.dialog.LoadingDialog;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.SchoolVO;
 
 import org.json.JSONArray;
@@ -107,8 +105,8 @@ public class FindSchoolActivity extends Activity {
             JSONObject json = new JSONObject();
             json.put("school_name", s);
 
-            Log.d(TAG, "doSearchSchool >> url:" + url);
-            Log.d(TAG, "doSearchSchool >> input parameter:" + json.toString(1));
+            SchoolLog.d(TAG, "doSearchSchool >> url:" + url);
+            SchoolLog.d(TAG, "doSearchSchool >> input parameter:" + json.toString(1));
 
             mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
                 @Override
@@ -118,7 +116,7 @@ public class FindSchoolActivity extends Activity {
                         if(status.getCode() != 200) {
                             return;
                         }
-                        Log.d(TAG, "doSearchSchool >> result :" + object.toString(1));
+                        SchoolLog.d(TAG, "doSearchSchool >> result :" + object.toString(1));
 
                         showSchoolList(parseSchoolList(object.getJSONArray("data")));
                     } catch (JSONException e) {

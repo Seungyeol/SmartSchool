@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import com.aura.smartschool.adapter.MemberListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.utils.PreferenceUtil;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 
@@ -145,7 +145,7 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
                                 Util.showToast(getActivity(), "실패 하였습니다");
                                 return;
                             }
-                            Log.d("LDK", "result:" + object.toString(1));
+                            SchoolLog.d("LDK", "result:" + object.toString(1));
 
                             if (object.getInt("result") == 0) {
                                 LoadingDialog.showLoading(getActivity());

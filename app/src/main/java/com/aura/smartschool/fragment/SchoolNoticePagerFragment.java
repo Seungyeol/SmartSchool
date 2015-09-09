@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolLetterListFragm
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolNoticeListFragment;
 import com.aura.smartschool.fragment.schoolNoticeFragments.SchoolScheduleFragment;
 import com.aura.smartschool.utils.SchoolApi;
+import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.ScheduleData;
 import com.aura.smartschool.vo.SchoolNotiVO;
@@ -194,8 +194,8 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
             json.put("category", category);
             json.put("member_id", LoginManager.getInstance().getLoginUser().member_id);
 
-            Log.d("LDK", "url:" + url);
-            Log.d("LDK", "input parameter:" + json.toString(1));
+            SchoolLog.d("LDK", "url:" + url);
+            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
 
             aQuery.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -207,7 +207,7 @@ public class SchoolNoticePagerFragment extends Fragment implements View.OnClickL
                         if (status.getCode() != 200) {
                             return;
                         }
-                        Log.d("LDK", "result:" + object.toString(1));
+                        SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONArray jsonArray = object.getJSONArray("data");
