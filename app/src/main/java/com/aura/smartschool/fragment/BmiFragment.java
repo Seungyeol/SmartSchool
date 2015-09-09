@@ -71,24 +71,54 @@ public class BmiFragment extends Fragment {
         tv_bmi.setText(String.format("%s", mMember.mMeasureSummaryVO.bmi));
         tv_fat.setText(String.valueOf(mMember.mMeasureSummaryVO.fat) + "%");
 
-        if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("저체중")) {
+        if(mMember.mMeasureSummaryVO.bmiStatus.equals("저체중 A")) {
             iv_man.setImageResource(R.drawable.point_man_1);
-            tv_man.setText("저체중");
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상")) {
+            tv_man.setText("저체중\n위험");
+        }else  if(mMember.mMeasureSummaryVO.bmiStatus.equals("저체중 B")) {
+            iv_man.setImageResource(R.drawable.point_man_1);
+            tv_man.setText("저체중\n경고");
+        }else  if(mMember.mMeasureSummaryVO.bmiStatus.equals("저체중 C")) {
+            iv_man.setImageResource(R.drawable.point_man_1);
+            tv_man.setText("저체중\n노력");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상 A")) {
             iv_man.setImageResource(R.drawable.point_man_2);
-            tv_man.setText("정상");
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("과체중")) {
+            tv_man.setText("정상\n보통");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("정상 B")) {
+            iv_man.setImageResource(R.drawable.point_man_2);
+            tv_man.setText("정상\n관리");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("과체중 A")) {
             iv_man.setImageResource(R.drawable.point_man_3);
-            tv_man.setText("과체중");
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만")) {
+            tv_man.setText("과체중\n경고");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("과체중 B")) {
+            iv_man.setImageResource(R.drawable.point_man_3);
+            tv_man.setText("과체중\n위험");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만 A")) {
             iv_man.setImageResource(R.drawable.point_man_4);
-            tv_man.setText("비만");
-        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("중도비만")) {
+            tv_man.setText("비만\n관리");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만 B")) {
+            iv_man.setImageResource(R.drawable.point_man_4);
+            tv_man.setText("비만\n경고");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("비만 C")) {
+            iv_man.setImageResource(R.drawable.point_man_4);
+            tv_man.setText("비만\n위험");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("중도비만 A")) {
             iv_man.setImageResource(R.drawable.point_man_5);
-            tv_man.setText("중도\n비만");
+            tv_man.setText("중도\n비만\n관리");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("중도비만 B")) {
+            iv_man.setImageResource(R.drawable.point_man_5);
+            tv_man.setText("중도\n비만\n경고");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("중도비만 C")) {
+            iv_man.setImageResource(R.drawable.point_man_5);
+            tv_man.setText("중도\n비만\n위험");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("고도비만 A")) {
+            iv_man.setImageResource(R.drawable.point_man_6);
+            tv_man.setText("고도\n비만\n관리");
+        } else if(mMember.mMeasureSummaryVO.bmiStatus.startsWith("고도비만 B")) {
+            iv_man.setImageResource(R.drawable.point_man_6);
+            tv_man.setText("고도\n비만\n경고");
         } else { //고도 비만
             iv_man.setImageResource(R.drawable.point_man_6);
-            tv_man.setText("고도\n비만");
+            tv_man.setText("고도\n비만\n위험");
         }
 
         iv_man.post(new Runnable() {
