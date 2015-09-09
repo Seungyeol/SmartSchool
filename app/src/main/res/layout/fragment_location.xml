@@ -87,11 +87,51 @@
             android:textSize="17dp"
             android:textStyle="bold"
             android:text="위치서비스 이용관련 안내사항"/>
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="1) 위치(GPS) 버튼을 반드시 활성화 해주세요.\n2) 위치 서비스는 외부에서 실행 시, 정확도가 더욱 높습니다.\n3) 핸드폰 기종에 따라 위치서비스의 정확도는 약간의 차이를 보일 수 있습니다."/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="1) "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="위치(GPS) 버튼을 반드시 활성화 해주세요."/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="2) "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="위치 서비스는 외부에서 실행 시, 정확도가 더욱 높습니다."/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="3) "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="핸드폰 기종에 따라 위치서비스의 정확도는 약간의 차이를 보일 수 있습니다."/>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
