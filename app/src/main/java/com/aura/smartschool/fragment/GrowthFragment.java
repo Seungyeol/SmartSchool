@@ -57,7 +57,7 @@ public class GrowthFragment extends Fragment {
         tv_growth_content = (TextView) mView.findViewById(R.id.tv_growth_content);
         String content = String.format("%s 학생의 키는 %.1fcm 이고 몸무게는 %skg 입니다. BMI는 %s로 %s이며 체지방은 %s 입니다. 건강을 위해서 아래사항을 참고하세요.",
                 mMember.name, mMember.mMeasureSummaryVO.height, mMember.mMeasureSummaryVO.weight,
-                mMember.mMeasureSummaryVO.bmi, mMember.mMeasureSummaryVO.bmiStatus, mMember.mMeasureSummaryVO.fat + "%");
+                mMember.mMeasureSummaryVO.bmi, GrowthGradeDescriptionFragment.GROWTH_GRADE.findDescription(mMember.mMeasureSummaryVO.bmiStatus).title, mMember.mMeasureSummaryVO.fat + "%");
         tv_growth_content.setText(content);
 
         tv_1 = (TextView) mView.findViewById(R.id.tv_1);

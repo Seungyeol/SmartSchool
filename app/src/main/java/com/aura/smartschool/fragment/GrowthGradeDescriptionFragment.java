@@ -65,7 +65,7 @@ public class GrowthGradeDescriptionFragment extends Fragment {
         super.onDestroyView();
     }
 
-    enum GROWTH_GRADE {
+    public enum GROWTH_GRADE {
         LOW_WEIGHT_A("저체중 A", "저체중 위험", R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
         LOW_WEIGHT_B("저체중 B", "저체중 경고",R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
         LOW_WEIGHT_C("저체중 C", "저체중 노력",R.string.obesity_risk_1, R.string.dietary_habits_1, R.string.recommend_exercise_1),
