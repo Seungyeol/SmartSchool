@@ -460,6 +460,10 @@ DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
 						WalkingPagerFragment.newInstance(mLoginManager.getLoginUser())
 				).addToBackStack(null).commitAllowingStateLoss();
 			}
+		} else if (desFragment == Constant.NOTIFICATION_APP_NOTICE) {
+			Intent qnaIntent = new Intent(MainActivity.this, AppNoticeActivity.class);
+			qnaIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			this.startActivity(qnaIntent);
 		}
 	}
 

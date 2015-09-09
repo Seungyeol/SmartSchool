@@ -89,7 +89,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             }
 
             //학교 상담
-            if("consult".equals(command)) {
+            else if("consult".equals(command)) {
                 int category = json.getInt("category");
                 String content = json.getString("content");
 
@@ -120,7 +120,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             }
 
             //qna 답변시
-            if("qna".equals(command)) {
+            else if("qna".equals(command)) {
                 String title = json.getString("title");
 
                 int requestID = (int) System.currentTimeMillis();
@@ -139,7 +139,30 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                         .setAutoCancel(true)
                         .setContentIntent(contentIntent)
                         .build();
-                nm.notify(Constant.NOTIFICATION_SCHOOL_ALIMI, noti);
+                nm.notify(Constant.NOTIFICATION_QNA, noti);
+
+                return;
+            }
+
+            //공지사항
+            else if("appNoti".equals(command)) {
+                int requestID = (int) System.currentTimeMillis();
+
+                activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_APP_NOTICE);
+
+                PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification noti = new NotificationCompat.Builder(context)
+                        .setContentTitle(context.getResources().getString(R.string.app_name_korean))
+                        .setContentText("새로운 공지사항이 등록되었습니다.")
+                        .setTicker("새로운 공지사항이 등록되었습니다.")
+                        .setSmallIcon(R.drawable.school)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setContentIntent(contentIntent)
+                        .build();
+                nm.notify(Constant.NOTIFICATION_APP_NOTICE, noti);
 
                 return;
             }
