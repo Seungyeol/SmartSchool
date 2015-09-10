@@ -121,6 +121,9 @@ public class MemberListAdapter extends BaseAdapter {
 			holder.tvSchoolContact.setText(mMemberList.get(position).mSchoolVO.contact);
 		}
 
+		//convertView 재사용시 초기화
+		holder.tv_current_location.setText("위치정보없음 or gps 꺼짐");
+
 		if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
 			if (StringUtils.equals(LoginManager.getInstance().getLoginUser().mdn, mMemberList.get(position).mdn)) {
 				holder.btnRemove.setVisibility(View.GONE);
