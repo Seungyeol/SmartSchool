@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -102,8 +103,8 @@ public class MemberSaveDialogActivity extends Activity {
         spinnerSex.setAdapter(spinnerAdapter);
         final GregorianCalendar calendar = new GregorianCalendar();
         tvBirthDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 				DatePickerDialog datePickerDialog = new DatePickerDialog(MemberSaveDialogActivity.this,
 						android.R.style.Theme_Holo_Light_Dialog_MinWidth,
 						dateSetListener,
@@ -112,8 +113,8 @@ public class MemberSaveDialogActivity extends Activity {
 						calendar.get(Calendar.DAY_OF_MONTH));
 				datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 				datePickerDialog.show();
-            }
-        });
+			}
+		});
 
 		tvParent.setOnClickListener(mClick);
 		tvStudent.setOnClickListener(mClick);
@@ -123,7 +124,8 @@ public class MemberSaveDialogActivity extends Activity {
 		
 		//et_id : mdn 필드로 활용
 		et_id.setHint("phone number");
-		
+		et_id.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
 		//update or add 인지 판단
 		mMode = getIntent().getExtras().getInt("mode");
 		mMember = (MemberVO)getIntent().getSerializableExtra("member");
