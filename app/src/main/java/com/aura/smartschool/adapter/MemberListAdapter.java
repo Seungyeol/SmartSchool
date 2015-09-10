@@ -124,6 +124,8 @@ public class MemberListAdapter extends BaseAdapter {
 		if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
 			if (StringUtils.equals(LoginManager.getInstance().getLoginUser().mdn, mMemberList.get(position).mdn)) {
 				holder.btnRemove.setVisibility(View.GONE);
+			} else {
+				holder.btnRemove.setVisibility(View.VISIBLE);
 			}
 		} else {
 			holder.btnRemove.setVisibility(View.GONE);
