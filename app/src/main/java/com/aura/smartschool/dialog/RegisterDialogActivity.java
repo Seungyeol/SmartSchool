@@ -69,6 +69,8 @@ public class RegisterDialogActivity extends FragmentActivity {
 	private int mIs_parent = 1; //default: 부모
 	private String imageDataString ="";
 
+	private boolean isTermShowed;
+
     private SchoolVO mSchoolVO;
 
 	@Override
@@ -104,7 +106,13 @@ public class RegisterDialogActivity extends FragmentActivity {
 		cbAgreeTerms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				btn_register.setEnabled(isChecked);
+				if (isTermShowed) {
+					btn_register.setEnabled(isChecked);
+				} else {
+					btn_register.setEnabled(false);
+					showTermsDialog();
+					cbAgreeTerms.setChecked(false);
+				}
 			}
 		});
 		btn_register.setEnabled(false);
@@ -353,20 +361,25 @@ public class RegisterDialogActivity extends FragmentActivity {
 				break;
 
 			case R.id.tv_show_terms:
-				final TermsDialogFragment termsDialogFragment = new TermsDialogFragment();
-				termsDialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
-				termsDialogFragment.setBtnOkListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						termsDialogFragment.dismiss();
-						cbAgreeTerms.setEnabled(true);
-						cbAgreeTerms.setChecked(true);
-					}
-				});
-				termsDialogFragment.show(getSupportFragmentManager(), "termsDialog");
+				showTermsDialog();
 			default:
 				break;
 			}
 		}
 	};
+
+	private void showTermsDialog() {
+		isTermShowed = true;
+		final TermsDialogFragment termsDialogFragment = new TermsDialogFragment();
+		termsDialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog);
+		termsDialogFragment.setBtnOkListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				termsDialogFragment.dismiss();
+				cbAgreeTerms.setEnabled(true);
+				cbAgreeTerms.setChecked(true);
+			}
+		});
+		termsDialogFragment.show(getSupportFragmentManager(), "termsDialog");
+	}
 }
