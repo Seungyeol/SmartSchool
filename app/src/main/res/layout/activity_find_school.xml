@@ -26,7 +26,8 @@
             android:id="@+id/btn_clear"
             android:layout_width="35dp" android:layout_height="match_parent"
             android:background="@color/orange" android:padding="10dp"
-            android:src="@drawable/btn_cancle"/>
+            android:src="@drawable/btn_cancle"
+            android:visibility="invisible"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent" android:layout_height="1dp"

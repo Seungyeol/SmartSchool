@@ -19,6 +19,7 @@ import com.aura.smartschool.adapter.SchoolListAdapter;
 import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.vo.SchoolVO;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,8 @@ public class FindSchoolActivity extends Activity {
     private EditText mSearchSchool;
     private RecyclerView mSchoolListView;
     private ProgressBar mProgressbar;
+    private View btnPre;
+    private View btnClear;
 
     private SchoolListAdapter mSchoolListAdapter;
 
@@ -54,6 +57,21 @@ public class FindSchoolActivity extends Activity {
         mSearchSchool = (EditText) findViewById(R.id.et_search_school);
         mSchoolListView = (RecyclerView) findViewById(R.id.school_list);
         mProgressbar = (ProgressBar) findViewById(R.id.progressbar);
+        btnPre = findViewById(R.id.btn_pre);
+        btnPre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+            }
+        });
+        btnClear = findViewById(R.id.btn_clear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchSchool.setText("");
+            }
+        });
 
         mSchoolListView.setLayoutManager(new LinearLayoutManager(this));
         mSchoolListAdapter = new SchoolListAdapter();
@@ -84,14 +102,16 @@ public class FindSchoolActivity extends Activity {
                 mHandler.removeCallbacks(mTask);
             }
 
-            if (!s.toString().isEmpty()) {
+            if (StringUtils.isBlank(s.toString())) {
+                btnClear.setVisibility(View.INVISIBLE);
+            } else {
+                btnClear.setVisibility(View.VISIBLE);
                 mTask = new Runnable() {
                     @Override
                     public void run() {
                         doSearchSchool(s.toString());
                     }
                 };
-
                 mHandler.postDelayed(mTask, 1000);
             }
         }
