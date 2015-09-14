@@ -145,7 +145,12 @@ public class MemberSaveDialogActivity extends Activity {
 				et_school_class.setText(mMember.mSchoolVO.school_class);
 				spinnerSex.setSelection(mMember.sex.equals("M") ? 1 : 2);
 				tvStudent.performClick(); //학생탭 선택
-			} 
+				tvStudent.setVisibility(View.VISIBLE);
+				tvParent.setVisibility(View.GONE);
+			} else {
+				tvStudent.setVisibility(View.GONE);
+				tvParent.setVisibility(View.VISIBLE);
+			}
 			
 		} else {
 			tvTitle.setText("가족 구성원 추가");
