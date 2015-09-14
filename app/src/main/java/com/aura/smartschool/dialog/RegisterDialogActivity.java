@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Pattern;
 
 public class RegisterDialogActivity extends FragmentActivity {
     private Context mContext;
@@ -307,6 +308,11 @@ public class RegisterDialogActivity extends FragmentActivity {
 				
 			case R.id.btn_register:
 				String id = et_id.getText().toString();
+				if (!Pattern.matches("^[a-zA-Z0-9가-힣ㄱ-ㅎ]*$", id)) {
+					Util.showToast(mContext, "Home ID는 한글, 영문, 숫자만 입력 가능합니다.");
+					return;
+				}
+
 				if(TextUtils.isEmpty(et_id.getText().toString())){
 					Util.showToast(mContext, "Home ID를 입력하세요.");
 					return;
