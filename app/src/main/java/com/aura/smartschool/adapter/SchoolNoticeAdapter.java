@@ -2,7 +2,6 @@ package com.aura.smartschool.adapter;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
@@ -19,6 +18,9 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.kakao.util.KakaoParameterException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,22 +31,37 @@ import java.util.ArrayList;
  * Created by Administrator on 2015-06-22.
  */
 public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapter.ViewHolder> {
-    private ArrayList<SchoolNotiVO> notiList;
-    private ArrayList<SchoolNotiVO> scrapList = new ArrayList<>();
+    private Context mContext;
     private MemberVO member;
 
-    private boolean showScrapOnly;
+    private KakaoLink mKakaoLink;
+    private KakaoTalkLinkMessageBuilder mKakaoTalkLinkMessageBuilder;
 
+    private ArrayList<SchoolNotiVO> notiList;
+    private ArrayList<SchoolNotiVO> scrapList = new ArrayList<>();
+
+    private boolean showScrapOnly;
     private OnScrapChangedListener scrapChangedListener;
 
     public interface OnScrapChangedListener {
         void onScrapChanged(int notiSeq, boolean isSelected);
     }
 
-    public SchoolNoticeAdapter(MemberVO member, ArrayList<SchoolNotiVO> notiList) {
+    public SchoolNoticeAdapter(Context context, MemberVO member, ArrayList<SchoolNotiVO> notiList) {
+        this.mContext = context;
         this.member = member;
         this.notiList = notiList;
         makeScrapList();
+        initKakaoLink();
+    }
+
+    private void initKakaoLink(){
+        try{
+            mKakaoLink = KakaoLink.getKakaoLink(mContext);
+            mKakaoTalkLinkMessageBuilder = mKakaoLink.createKakaoTalkLinkMessageBuilder();
+        }catch(KakaoParameterException e){
+            e.printStackTrace();
+        }
     }
 
     public void setNotiList(ArrayList<SchoolNotiVO> notiList) {
@@ -180,11 +197,15 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                         }
                         break;
                     case R.id.ll_btn_share:
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, getShareString());
-                        sendIntent.setType("text/plain");
-                        v.getContext().startActivity(sendIntent);
+                        try{
+                            mKakaoTalkLinkMessageBuilder.addText(getShareString())
+                                                            .addAppButton("앱으로 이동");
+
+                            mKakaoLink.sendMessage(mKakaoTalkLinkMessageBuilder.build(), mContext);
+                        }catch(KakaoParameterException e){
+                            e.printStackTrace();
+                        }
+
                         break;
                 }
             }
@@ -196,7 +217,7 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                     .append("학교 : ").append(tvSchoolName.getText()).append("\n")
                     .append("일정 : ").append(tvDate.getText()).append("\n\n")
                     .append(tvNoticeTitle.getText()).append("\n")
-                    .append(tvNoticeBody.getText()).append("\n");
+                    .append(tvNoticeBody.getText());
             return sb.toString();
         }
     }

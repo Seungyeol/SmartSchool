@@ -67,7 +67,7 @@ public class SchoolLetterListFragment extends Fragment {
         ivShowScrapOnly = view.findViewById(R.id.iv_show_scrap_only);
         ivShowScrapOnly.setOnClickListener(scrapClicked);
 
-        mLetterAdapter = new SchoolNoticeAdapter(mMember, mLetterList);
+        mLetterAdapter = new SchoolNoticeAdapter(getActivity(), mMember, mLetterList);
         mLetterAdapter.setScrapChangedListener(scrapChangedListener);
         mSchoolLetterListView.setAdapter(mLetterAdapter);
 
