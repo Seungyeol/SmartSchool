@@ -26,7 +26,7 @@ public final class Constant {
 	public static final String API_GET_SCHOOL_NOTI_LIST_BY_MEMBER = "/api/getSchoolNotiListByMember";
 
 	public static final String API_GET_CONSULT_LIST = "/api/getConsultList";
-	public static final String API_ADD_CONSULT = "/admin/api/addConsult";
+	public static final String API_ADD_CONSULT = "/api/addConsult";
 	public static final String API_RATE_CONSULT = "/api/rateConsult";
 	public static final String API_GET_CONSULT_HISTORY = "/api/getConsultHistory";
 
