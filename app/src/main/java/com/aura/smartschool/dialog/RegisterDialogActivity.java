@@ -224,7 +224,7 @@ public class RegisterDialogActivity extends FragmentActivity {
 							setResult(RESULT_OK);
 							finish();
 						} else {
-
+							Util.showToast(mContext, object.getString("msg"));
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();

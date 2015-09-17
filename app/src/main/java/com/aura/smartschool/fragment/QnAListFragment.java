@@ -20,6 +20,7 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.QnAAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.SchoolLog;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.BoardVO;
 
 import org.json.JSONArray;
@@ -76,7 +77,7 @@ public class QnAListFragment extends Fragment {
                     LoadingDialog.hideLoading();
                     try {
                         if (status.getCode() != 200) {
-                            showToast("질문 리스트 가져오기에 실패했습니다.");
+                            showToast("네트워크 상태를 확인해주세요.");
                             return;
                         }
 
@@ -100,7 +101,7 @@ public class QnAListFragment extends Fragment {
                             mQnAAdapter.setQnAList(qnAList);
                             mQnAAdapter.notifyDataSetChanged();
                         } else {
-                            showToast("질문 리스트 가져오기에 실패했습니다.");
+                            Util.showToast(getActivity(), object.getString("msg"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

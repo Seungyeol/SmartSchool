@@ -113,7 +113,7 @@ public class VideoFragment extends Fragment {
                             JSONObject data = object.getJSONObject("data");
                             PreferenceUtil.getInstance(getActivity()).putVideoDate(new SimpleDateFormat("yyyy-MM-dd").format(Util.getDateFromString(data.getString("access_time"))));
                         } else {
-
+                            Util.showToast(getActivity(), object.getString("msg"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -184,7 +184,7 @@ public class VideoFragment extends Fragment {
                             mAdapter.setData(mVideoList);
                             mAdapter.notifyDataSetChanged();
                         } else {
-
+                            Util.showToast(getActivity(), object.getString("msg"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
