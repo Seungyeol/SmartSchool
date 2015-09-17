@@ -5,6 +5,7 @@ public final class Constant {
 	
 	public static final String API_SIGNIN = "/api/signInOfMobile";
 	public static final String API_SIGNUP = "/api/signUp";
+	public static final String API_GET_HOMEBYNUMBER = "/api/getHomeByNumber";
 	public static final String API_ADD_MEMBER = "/api/addMember";
 	public static final String API_REMOVE_MEMBER = "/api/removeMember";
 	public static final String API_UPDATE_MEMBER = "/api/updateMember";

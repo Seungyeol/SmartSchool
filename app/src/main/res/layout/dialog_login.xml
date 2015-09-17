@@ -55,6 +55,13 @@
 	                android:layout_height="35dp"
 	                android:layout_marginRight="5dp"
 	                android:text="회원가입" />
+
+				<TextView
+					android:id="@+id/tv_find_family_name" style="@style/Button_gold_orange"
+					android:layout_height="35dp"
+					android:layout_marginLeft="5dp"
+					android:layout_marginRight="5dp"
+					android:text="가족명찾기" />
 	            
 	            <TextView
 	                android:id="@+id/tv_guest" style="@style/Button_gold_orange"
