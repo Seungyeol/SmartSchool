@@ -308,13 +308,12 @@ public class RegisterDialogActivity extends FragmentActivity {
 				
 			case R.id.btn_register:
 				String id = et_id.getText().toString();
-				if (!Pattern.matches("^[a-zA-Z0-9가-힣ㄱ-ㅎ]*$", id)) {
-					Util.showToast(mContext, "가족명은 한글, 영문, 숫자만 입력 가능합니다.");
-					return;
-				}
-
 				if(TextUtils.isEmpty(et_id.getText().toString())){
 					Util.showToast(mContext, "가족명을 입력하세요.");
+					return;
+				}
+				if (!Pattern.matches("^[a-zA-Z0-9가-힣ㄱ-ㅎ]*$", id)) {
+					Util.showToast(mContext, "가족명은 한글, 영문, 숫자만 입력 가능합니다.");
 					return;
 				}
 				if(TextUtils.isEmpty(et_name.getText().toString())){

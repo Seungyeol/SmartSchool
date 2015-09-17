@@ -28,8 +28,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     private ArrayList<DRAWER_MENU> mMenuList = new ArrayList<>();
     private DrawerSelectedListener mListener;
 
-    private boolean subMenuVisibility;
-
     public DrawerAdapter(DrawerSelectedListener listener)  {
         mListener = listener;
     }
@@ -126,6 +124,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         public TextView mTextView;
         public View llSubMenu;
         public TextView tvHomeId;
+        public TextView tvModifyHomeId;
         public View rlInOutAlarm;
         public ToggleButton tgInOutAlarm;
         public View rlActivityAlarm;
@@ -138,6 +137,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
             mTextView = (TextView) v.findViewById(R.id.tv_menu_item);
             llSubMenu = v.findViewById(R.id.ll_sub_menu);
             tvHomeId = (TextView) v.findViewById(R.id.tv_home_id);
+            tvModifyHomeId = (TextView) v.findViewById(R.id.tv_modify_family_name);
             rlInOutAlarm = v.findViewById(R.id.rl_in_out_alarm);
             tgInOutAlarm = (ToggleButton) v.findViewById(R.id.tg_in_out_alarm);
             rlActivityAlarm = v.findViewById(R.id.rl_activity_alarm);
@@ -145,7 +145,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
             rlWidget = v.findViewById(R.id.rl_widget);
             tgWidget = (ToggleButton) v.findViewById(R.id.tg_widget);
 
-            mTextView.setOnClickListener(this);
+            tvModifyHomeId.setOnClickListener(this);
         }
 
         @Override
@@ -153,12 +153,15 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
             mTextView.setText(mTextView.getContext().getResources().getString(menu.descId));
             if (LoginManager.getInstance().getLoginUser() != null) {
                 tvHomeId.setText("가족명  :  " + LoginManager.getInstance().getLoginUser().home_id);
+                tvModifyHomeId.setVisibility(LoginManager.getInstance().getLoginUser().is_parent == 0 ? View.GONE : View.VISIBLE);
             }
         }
 
         @Override
         public void onClick(View v) {
-            llSubMenu.setVisibility(llSubMenu.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            if (v.getId() == R.id.tv_modify_family_name) {
+                mListener.onModifyFamilyName();
+            }
         }
     }
 }

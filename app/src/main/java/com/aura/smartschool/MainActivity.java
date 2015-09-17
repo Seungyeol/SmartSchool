@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -23,12 +24,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Interface.DrawerSelectedListener;
 import com.aura.smartschool.Interface.LoginDialogListener;
 import com.aura.smartschool.adapter.DrawerAdapter;
 import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
+import com.aura.smartschool.dialog.ModifyFamilyNameDialogFragment;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
@@ -39,10 +44,14 @@ import com.aura.smartschool.service.MyLocationService;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.SchoolLog;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -402,30 +411,91 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 		showLoginDialog();
 	}
 
-DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
-		@Override
-		public void onSelected(DrawerAdapter.DRAWER_MENU menu) {
-			switch(menu) {
-				case NOTICE:
-					startDrawerMenuActivity(new Intent(MainActivity.this, AppNoticeActivity.class));
-					break;
-				case QnA:
-					startDrawerMenuActivity(new Intent(MainActivity.this, QnAActivity.class));
-					break;
-				case DEV_INFO:
-					startDrawerMenuActivity(new Intent(MainActivity.this, DevInfoActivity.class));
-					break;
-				case SERVICE_ASK:
-				case DROP_OUT:
-					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));
-					startActivity(intent);
-					break;
-//				case LOCATION_INFO:
-//					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
-//					break;
+	DrawerSelectedListener mDrawerSelectedListener = new DrawerSelectedListener() {
+			@Override
+			public void onSelected(DrawerAdapter.DRAWER_MENU menu) {
+				switch(menu) {
+					case NOTICE:
+						startDrawerMenuActivity(new Intent(MainActivity.this, AppNoticeActivity.class));
+						break;
+					case QnA:
+						startDrawerMenuActivity(new Intent(MainActivity.this, QnAActivity.class));
+						break;
+					case DEV_INFO:
+						startDrawerMenuActivity(new Intent(MainActivity.this, DevInfoActivity.class));
+						break;
+					case SERVICE_ASK:
+					case DROP_OUT:
+						Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));
+						startActivity(intent);
+						break;
+	//				case LOCATION_INFO:
+	//					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
+	//					break;
+				}
 			}
+
+		@Override
+		public void onModifyFamilyName() {
+			if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+				mDrawerLayout.closeDrawer(mDrawerList);
+			}
+
+			ModifyFamilyNameDialogFragment dialogFragment = new ModifyFamilyNameDialogFragment();
+			dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+			dialogFragment.setModifyListener(new ModifyFamilyNameDialogFragment.OnModifyListener() {
+				@Override
+				public void onModify(String newName) {
+					doModifyFamilyName(newName);
+				}
+			});
+			dialogFragment.show(getSupportFragmentManager(), "modifyDialog");
 		}
 	};
+
+	private void doModifyFamilyName(final String newName) {
+		LoadingDialog.showLoading(MainActivity.this);
+		try {
+			String url = Constant.HOST + Constant.API_GET_MODIFYHOME;
+
+			JSONObject json = new JSONObject();
+			json.put("home_id", PreferenceUtil.getInstance(MainActivity.this).getHomeId());
+			json.put("new_home_id", newName);
+
+			SchoolLog.d("LDK", "url:" + url);
+			SchoolLog.d("LDK", "input parameter:" + json.toString(1));
+
+			new AQuery(MainActivity.this).post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					try {
+						LoadingDialog.hideLoading();
+						SchoolLog.d("LDK", "result:" + object.toString(1));
+
+						if (status.getCode() != 200) {
+							return;
+						}
+
+						if ("0".equals(object.getString("result"))) {
+							if(mFm.getBackStackEntryCount() == 0) {
+								setHeaderView(R.drawable.home, newName);
+							}
+							LoginManager.getInstance().getLoginUser().home_id = newName;
+							PreferenceUtil.getInstance(MainActivity.this).putHomeId(newName);
+							mDrawerAdapter.notifyDataSetChanged();
+
+						} else {
+							Util.showToast(MainActivity.this, object.getString("msg"));
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void startDrawerMenuActivity(Intent intent) {
 		startActivity(intent);
