@@ -10,12 +10,6 @@
             android:textColor="#ffffff" android:textStyle="bold"
             android:textSize="25dp"
             android:text="Lock"/>
-        <TextView
-            android:id="@+id/tv_lock_date"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:textSize="15dp"
-            android:text="2일 22시간 후 OPEN"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="340dp" android:layout_height="143dp">

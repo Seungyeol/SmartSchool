@@ -114,11 +114,4 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	public double getHeight() {
 		return get("height", 0f);
 	}
-
-	public void putVideoDate(String dateString) {
-		put("videoDate", dateString);
-	}
-	public String getVideoDate() {
-		return get("videoDate");
-	}
 }

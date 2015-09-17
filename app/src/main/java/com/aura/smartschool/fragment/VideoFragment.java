@@ -14,7 +14,6 @@ import com.aura.smartschool.Constant;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.VideoListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
-import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
@@ -23,11 +22,8 @@ import com.aura.smartschool.vo.VideoVO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.helper.StringUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class VideoFragment extends Fragment {
 
@@ -66,10 +62,6 @@ public class VideoFragment extends Fragment {
 
         mMember = (MemberVO) args.getSerializable("member");
         mType = args.getInt("type");
-
-        if (StringUtil.isBlank(PreferenceUtil.getInstance(getActivity()).getVideoDate())) {
-            getVideoTime();
-        }
     }
 
     @Override
@@ -77,7 +69,7 @@ public class VideoFragment extends Fragment {
         mView = View.inflate(getActivity(), R.layout.fragment_growth, null);
 
         mListview = (ListView) mView.findViewById(R.id.listview);
-        mAdapter = new VideoListAdapter(getActivity(), mVideoList);
+        mAdapter = new VideoListAdapter(getActivity(), mMember, mVideoList, mType);
         mListview.setAdapter(mAdapter);
 
         getVideoList();
@@ -89,43 +81,6 @@ public class VideoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-    }
-
-    private void getVideoTime() {
-        try {
-            String url = Constant.HOST + Constant.API_GET_VIDEOTIME_OF_MEMBER;
-            JSONObject json = new JSONObject();
-            json.put("member_id", mMember.member_id);
-            SchoolLog.d("LDK", "url:" + url);
-            SchoolLog.d("LDK", "input parameter:" + json.toString(1));
-
-            mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
-                @Override
-                public void callback(String url, JSONObject object, AjaxStatus status) {
-                    try {
-                        SchoolLog.d("LDK", "status.getCode():" + status.getCode());
-                        if (status.getCode() != 200) {
-                            return;
-                        }
-                        SchoolLog.d("LDK", "result:" + object.toString(1));
-
-                        if ("0".equals(object.getString("result"))) {
-                            JSONObject data = object.getJSONObject("data");
-                            PreferenceUtil.getInstance(getActivity()).putVideoDate(new SimpleDateFormat("yyyy-MM-dd").format(Util.getDateFromString(data.getString("access_time"))));
-                        } else {
-                            Util.showToast(getActivity(), object.getString("msg"));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (NumberFormatException e) {
-
-                    }
-                }
-            });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void getVideoList() {
@@ -198,13 +153,4 @@ public class VideoFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-    View.OnClickListener mClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch(v.getId()) {
-
-            }
-        }
-    };
 }
