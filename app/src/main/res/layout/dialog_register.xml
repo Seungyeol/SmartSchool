@@ -52,7 +52,7 @@
                     android:id="@+id/et_id"
                     style="@style/InputBox"
                     android:layout_marginBottom="10dp"
-                    android:hint="Home ID" />
+                    android:hint="가족명" />
                 <LinearLayout
                     android:layout_width="match_parent" android:layout_height="85dp"
                     android:layout_marginBottom="10dp"
