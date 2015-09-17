@@ -152,7 +152,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         public void onBindViewHolder(DRAWER_MENU menu) {
             mTextView.setText(mTextView.getContext().getResources().getString(menu.descId));
             if (LoginManager.getInstance().getLoginUser() != null) {
-                tvHomeId.setText("Home ID  :  " + LoginManager.getInstance().getLoginUser().home_id);
+                tvHomeId.setText("가족명  :  " + LoginManager.getInstance().getLoginUser().home_id);
             }
         }
 

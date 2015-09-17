@@ -212,6 +212,8 @@ public class MemberListAdapter extends BaseAdapter {
 
 								holder.tv_current_location.setText(Util.getAddress(mContext, lat, lng));
 								holder.tv_current_location.append("(" + Util.convertLongToDate(term) + " 전)");
+							} else {
+								Util.showToast(mContext, object.getString("msg"));
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();

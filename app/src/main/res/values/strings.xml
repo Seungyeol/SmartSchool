@@ -35,7 +35,7 @@
     <string name="drawer_ask">서비스 문의</string>
     <string name="drawer_drop_out">서비스 탈퇴</string>
 
-    <string name="drawer_setting_home_id">HOME ID : </string>
+    <string name="drawer_setting_family_name">가족명 : </string>
     <string name="drawer_setting_in_out_alarm">등, 하교 알림</string>
     <string name="drawer_setting_activity_alarm">활동량 목표 달성 알림</string>
     <string name="drawer_setting_widget">SOS 위젯 표시</string>

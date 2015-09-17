@@ -16,6 +16,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.TermsDialogFragment;
 import com.aura.smartschool.utils.SchoolLog;
+import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.VersionVO;
 
 import org.json.JSONException;
@@ -121,6 +122,7 @@ public class DevInfoActivity extends FragmentActivity {
                             latestVersion.versionCode = data.getInt("version_code");
                             setLatestVersion();
                         } else {
+                            Util.showToast(DevInfoActivity.this, object.getString("msg"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

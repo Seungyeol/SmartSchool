@@ -32,7 +32,7 @@
             android:gravity="center_vertical"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:text="@string/drawer_setting_home_id"/>
+            android:text="@string/drawer_setting_family_name"/>
         <RelativeLayout
             android:id="@+id/rl_in_out_alarm"
             android:layout_width="match_parent"

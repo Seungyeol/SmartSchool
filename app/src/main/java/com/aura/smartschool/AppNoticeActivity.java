@@ -66,7 +66,7 @@ public class AppNoticeActivity extends Activity {
                 LoadingDialog.hideLoading();
                 try {
                     if (status.getCode() != 200) {
-                        showToast("공지사항 불러오기에 실패하였습니다.");
+                        showToast("네트워크 상태를 확인해주세요.");
                         return;
                     }
 
@@ -86,7 +86,7 @@ public class AppNoticeActivity extends Activity {
                         mNoticeAdapter.setNotiList(appNotiList);
                         mNoticeAdapter.notifyDataSetChanged();
                     } else {
-                        showToast("공지사항 불러오기에 실패하였습니다.");
+                        showToast(object.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

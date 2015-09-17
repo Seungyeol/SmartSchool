@@ -70,7 +70,7 @@ public class LoginDialog extends Dialog {
 				
 				String id = et_id.getText().toString();
 				if(TextUtils.isEmpty(id)){
-					Util.showToast(mContext, "Home ID를 입력하세요.");
+					Util.showToast(mContext, "가족명을 입력하세요.");
 					return;
 				}
 				

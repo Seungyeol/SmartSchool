@@ -96,6 +96,7 @@ public class LoginManager {
                             setMemberList(context, array);
                             resultListener.onSuccess();
                         } else {
+                            Util.showToast(context, object.getString("msg"));
                             resultListener.onFail();
                         }
                     } catch (JSONException e) {
@@ -136,6 +137,7 @@ public class LoginManager {
                             setMemberList(context, array);
                             resultListener.onSuccess();
                         } else {
+                            Util.showToast(context, object.getString("msg"));
                             resultListener.onFail();
                         }
                     } catch (JSONException e) {

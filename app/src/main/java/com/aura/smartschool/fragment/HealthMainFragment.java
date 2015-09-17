@@ -121,7 +121,7 @@ public class HealthMainFragment extends Fragment {
         rl_muscle.setOnClickListener(mMeasureClick);
         rl_bmi.setOnClickListener(mMeasureClick);
         rl_smoke.setOnClickListener(mMeasureClick);
-        rl_pt.setOnClickListener(mMeasureClick);
+        rl_pt.setOnClickListener(mClick);
         //활동량
         rl_activity.setOnClickListener(mActivityClick);
 
@@ -358,11 +358,6 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_growth:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
-
-                case R.id.rl_pt:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
-                    break;
-
             }
         }
     };
@@ -400,7 +395,9 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_challenge:
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
-
+                case R.id.rl_pt:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
+                    break;
             }
         }
     };

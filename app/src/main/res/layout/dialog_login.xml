@@ -32,7 +32,7 @@
 	            android:id="@+id/et_id"
 	            style="@style/InputBox" android:layout_height="40dp"
 	            android:layout_marginBottom="15dp"
-	            android:hint="Home ID" />
+	            android:hint="가족명" />
 	            
 	        <Button
 	            android:id="@+id/btn_login"
