@@ -320,6 +320,10 @@ public class RegisterDialogActivity extends FragmentActivity {
 					Util.showToast(mContext, "이름을 입력하세요.");
 					return;
 				}
+				if (!Pattern.matches("^[가-힣]*$", et_name.getText().toString())) {
+					Util.showToast(mContext, "이름은 한글만 입력 가능합니다.");
+					return;
+				}
 				if(TextUtils.isEmpty(et_relation.getText().toString())){
 					Util.showToast(mContext, "관계를 입력하세요.");
 					return;

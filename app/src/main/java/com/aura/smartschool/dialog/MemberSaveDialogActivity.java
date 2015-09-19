@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Pattern;
 
 public class MemberSaveDialogActivity extends Activity {
 	private int mMode; //0: add, 1:update
@@ -335,6 +336,10 @@ public class MemberSaveDialogActivity extends Activity {
 				}*/
 				if(TextUtils.isEmpty(et_name.getText().toString())){
 					Util.showToast(mContext, "이름을 입력하세요.");
+					return;
+				}
+				if (!Pattern.matches("^[가-힣]*$", et_name.getText().toString())) {
+					Util.showToast(mContext, "이름은 한글만 입력 가능합니다.");
 					return;
 				}
 				if(TextUtils.isEmpty(et_relation.getText().toString())){
