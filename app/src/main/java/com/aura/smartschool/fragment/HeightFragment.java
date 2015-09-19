@@ -32,11 +32,12 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class HeightFragment extends Fragment {
@@ -260,6 +261,12 @@ public class HeightFragment extends Fragment {
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return new DecimalFormat("0.#").format(value);
+            }
+        });
         data.setValueTextSize(10f);
 
         mChart.animateY(800, Easing.EasingOption.EaseInOutQuad);
