@@ -34,6 +34,19 @@ public class VideoListAdapter extends BaseAdapter {
 
 	public void setData(ArrayList<VideoVO> videoList) {
 		mVideoList = videoList;
+		if (mType == 1) {
+			ArrayList<VideoVO> tempList = new ArrayList<>();
+			for (int i = mVideoList.size() -1; i > 0; i--) {
+				for (String supportedTitle : mSupportedTitle) {
+					if (mVideoList.get(i).title.contains(supportedTitle)) {
+						tempList.add(mVideoList.remove(i));
+					}
+				}
+			}
+			for (VideoVO videoVO : tempList) {
+				mVideoList.add(0, videoVO);
+			}
+		}
 	}
 
 	@Override
