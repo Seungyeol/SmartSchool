@@ -106,7 +106,7 @@ public class VideoListAdapter extends BaseAdapter {
 			holder.lockLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Util.showAlertDialog(v.getContext(), v.getContext().getResources().getString(R.string.popup_alert_nodata));
+					Util.showConnectAuraDialog(v.getContext(), v.getContext().getResources().getString(R.string.popup_alert_nodata));
 				}
 			});
 			holder.iv_video_img.setOnClickListener(null);

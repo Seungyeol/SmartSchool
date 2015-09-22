@@ -3,12 +3,14 @@ package com.aura.smartschool.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
@@ -58,6 +60,25 @@ public final class Util {
 		m_toast.setDuration(Toast.LENGTH_SHORT);
 
 		m_toast.show();
+	}
+
+	public static void showConnectAuraDialog(final Context context, String strErrorMsg){
+		AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));
+				context.startActivity(intent);
+			}
+		});
+		alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alert.setMessage(strErrorMsg + "\n고객센터에 연결하시겠습니까?");
+		alert.show();
 	}
 
 	public static void showAlertDialog(Context context, String strErrorMsg){

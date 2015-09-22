@@ -137,7 +137,7 @@ public class ConsultMainFragment extends Fragment {
             } else if (!chatType.isFree && LoginManager.getInstance().getLoginUser().isVIPUser()) {
                 getFragmentManager().beginTransaction().replace(R.id.content_frame, ConsultChattingFragment.newInstance(mMember, chatType)).addToBackStack(null).commit();
             } else {
-                Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                Util.showConnectAuraDialog(getActivity(), getString(R.string.popup_alert_nodata));
             }
         }
     };

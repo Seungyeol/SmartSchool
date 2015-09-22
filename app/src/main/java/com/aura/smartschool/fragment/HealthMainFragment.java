@@ -330,7 +330,7 @@ public class HealthMainFragment extends Fragment {
                 if(mMember.isVIPUser()) {
                     Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_vip_nodata));
                 } else {
-                    Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                    Util.showConnectAuraDialog(getActivity(), getString(R.string.popup_alert_nodata));
                 }
                 return;
             }
@@ -406,7 +406,7 @@ public class HealthMainFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(!mMember.isVIPUser()) {
-                Util.showAlertDialog(getActivity(), getString(R.string.popup_alert_nodata));
+                Util.showConnectAuraDialog(getActivity(), getString(R.string.popup_alert_nodata));
                 return;
             }
 
