@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -136,7 +137,9 @@ public class DevInfoActivity extends FragmentActivity {
 
     private void setLatestVersion() {
         tvLatestVersion.setText("v" + latestVersion.versionName);
-        if (getCurrentAppVersion().compareTo(latestVersion.versionName) < 0) {
+        String currentVersion = getCurrentAppVersion();
+        if (currentVersion.length() < latestVersion.versionName.length()
+                || currentVersion.compareTo(latestVersion.versionName) < 0) {
             tvUpdate.setText("업데이트");
             tvUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
