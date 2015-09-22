@@ -116,7 +116,7 @@ public class GrowthFragment extends Fragment {
                     break;
 
                 case R.id.tv_babel:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 4)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, VideoFragment.newInstance(mMember, 1)).addToBackStack(null).commit();
                     break;
             }
         }
