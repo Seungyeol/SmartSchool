@@ -168,7 +168,7 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                 tvFileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Constant.HOST + Constant.API_FILE + notiVO.fileName));
+                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Constant.HOST + Constant.API_FILE + Uri.encode(notiVO.fileName, "UTF-8")));
                         request.allowScanningByMediaScanner();
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, notiVO.fileName);
