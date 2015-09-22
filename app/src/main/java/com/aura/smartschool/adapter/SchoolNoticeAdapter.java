@@ -2,6 +2,7 @@ package com.aura.smartschool.adapter;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
@@ -9,12 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 import com.aura.smartschool.Constant;
 import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
+import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolNotiVO;
@@ -24,6 +30,7 @@ import com.kakao.util.KakaoParameterException;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -168,12 +175,29 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                 tvFileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Constant.HOST + Constant.API_FILE + Uri.encode(notiVO.fileName, "UTF-8")));
-                        request.allowScanningByMediaScanner();
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, notiVO.fileName);
-                        DownloadManager dm = (DownloadManager) v.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                        dm.enqueue(request);
+                        LoadingDialog.showLoading(mContext);
+                        String url = Constant.HOST + Constant.API_FILE + Uri.encode(notiVO.fileName, "UTF-8");
+
+                        File ext = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                        File target = new File(ext, notiVO.fileName);
+
+                        new AQuery(mContext).download(url, target, new AjaxCallback<File>() {
+
+                            public void callback(String url, File file, AjaxStatus status) {
+                                LoadingDialog.hideLoading();
+                                if (file != null) {
+                                    Intent fileIntent = new Intent(Intent.ACTION_VIEW);
+                                    fileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    fileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    fileIntent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), notiVO.fileName)),
+                                            getMimeType(notiVO.fileName));
+                                    mContext.startActivity(fileIntent);
+                                } else {
+                                    Util.showToast(mContext, "다운로드 실패 하였습니다.");
+                                }
+                            }
+
+                        });
                     }
                 });
             } else {
@@ -185,6 +209,21 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             } else {
                 llBtnScrap.setSelected(false);
             }
+        }
+
+        public String getMimeType(String url) {
+            String type = null;
+            if (url.endsWith(".pdf")){
+                type = "application/pdf";
+            }else if (url.endsWith(".hwp")){
+                type = "application/hwp";
+            } else {
+                String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+                if (extension != null) {
+                    type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                }
+            }
+            return type;
         }
 
         private View.OnClickListener clickListener = new View.OnClickListener() {
