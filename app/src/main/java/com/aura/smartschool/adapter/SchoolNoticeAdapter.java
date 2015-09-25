@@ -1,6 +1,5 @@
 package com.aura.smartschool.adapter;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -190,7 +189,7 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                                     fileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     fileIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     fileIntent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), notiVO.fileName)),
-                                            getMimeType(notiVO.fileName));
+                                            getMimeType(Uri.encode(notiVO.fileName, "UTF-8")));
                                     mContext.startActivity(fileIntent);
                                     Util.showToast(mContext, "다운로드가 완료");
                                 } else {
@@ -212,14 +211,14 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
             }
         }
 
-        public String getMimeType(String url) {
+        public String getMimeType(String fileName) {
             String type = null;
-            if (url.endsWith(".pdf")){
+            if (fileName.endsWith(".pdf")){
                 type = "application/pdf";
-            }else if (url.endsWith(".hwp")){
+            }else if (fileName.endsWith(".hwp")){
                 type = "application/hwp";
             } else {
-                String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+                String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
                 if (extension != null) {
                     type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
                 }
