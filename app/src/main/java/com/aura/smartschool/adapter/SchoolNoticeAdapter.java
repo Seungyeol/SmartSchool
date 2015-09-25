@@ -191,7 +191,7 @@ public class SchoolNoticeAdapter extends RecyclerView.Adapter<SchoolNoticeAdapte
                                     fileIntent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), notiVO.fileName)),
                                             getMimeType(Uri.encode(notiVO.fileName, "UTF-8")));
                                     mContext.startActivity(fileIntent);
-                                    Util.showToast(mContext, "다운로드가 완료");
+                                    Util.showToast(mContext, "다운로드 완료");
                                 } else {
                                     Util.showToast(mContext, "다운로드 실패");
                                 }
