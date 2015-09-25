@@ -405,6 +405,12 @@ public class HealthMainFragment extends Fragment {
     View.OnClickListener mActivityClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (LoginManager.getInstance().getLoginUser().is_parent == 0 &&
+                    !Util.isKitkatWithStepSensor(getActivity())) {
+                Util.showAlertDialog(getActivity(), "지원하지 않는 기기입니다.");
+                return;
+            }
+
             if(!mMember.isVIPUser()) {
                 Util.showConnectAuraDialog(getActivity(), getString(R.string.popup_alert_nodata));
                 return;
