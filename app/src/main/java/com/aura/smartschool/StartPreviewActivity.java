@@ -75,13 +75,13 @@ public class StartPreviewActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return HelpViewFragment.newInstance(R.drawable.start_01);
+                    return HelpViewFragment.newInstance(R.drawable.help_01);
                 case 1:
-                    return HelpViewFragment.newInstance(R.drawable.start_02);
+                    return HelpViewFragment.newInstance(R.drawable.help_02);
                 case 2:
-                    return HelpViewFragment.newInstance(R.drawable.start_03);
+                    return HelpViewFragment.newInstance(R.drawable.help_03);
                 case 3:
-                    return HelpViewFragment.newInstance(R.drawable.start_04);
+                    return HelpViewFragment.newInstance(R.drawable.help_04);
                 default:
                     return null;
             }
