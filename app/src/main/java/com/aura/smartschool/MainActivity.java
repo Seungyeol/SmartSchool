@@ -429,9 +429,9 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 						Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "15441284"));
 						startActivity(intent);
 						break;
-	//				case LOCATION_INFO:
-	//					startDrawerMenuActivity(new Intent(MainActivity.this, LocationUploadActivity.class));
-	//					break;
+					case DIET_MENU:
+						startDrawerMenuActivity(new Intent(MainActivity.this, SchoolDietMenuUploadActivity.class));
+						break;
 				}
 			}
 

@@ -24,6 +24,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     private static final int ALL = 0;
     private static final int PARENTS = 1;
     private static final int CHILD = 2;
+    private static final int NUTRITIONIST = 2;
 
     private ArrayList<DRAWER_MENU> mMenuList = new ArrayList<>();
     private DrawerSelectedListener mListener;
@@ -39,8 +40,14 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
                     mMenuList.add(menu);
                 }
             } else {
-                if (menu.menuType == ALL || menu.menuType == CHILD) {
-                    mMenuList.add(menu);
+                if ("영양사".equals(LoginManager.getInstance().getLoginUser().home_id)) {
+                    if (menu.menuType == ALL || menu.menuType == NUTRITIONIST) {
+                        mMenuList.add(menu);
+                    }
+                } else {
+                    if (menu.menuType == ALL || menu.menuType == CHILD) {
+                        mMenuList.add(menu);
+                    }
                 }
             }
         }
@@ -77,6 +84,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         NOTICE(MAIN_MENU, R.string.drawer_notice, ALL),
         QnA(MAIN_MENU, R.string.drawer_qna, ALL),
         DEV_INFO(MAIN_MENU, R.string.drawer_dev_info, ALL),
+        DIET_MENU(MAIN_MENU, R.string.drawer_diet_menu, NUTRITIONIST),
         SERVICE_ASK(MAIN_MENU, R.string.drawer_ask, PARENTS),
         DROP_OUT(MAIN_MENU, R.string.drawer_drop_out, PARENTS),
 //        LOCATION_INFO(MAIN_MENU, R.string.drawer_location_info_upload, ALL),

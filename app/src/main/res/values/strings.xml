@@ -32,6 +32,7 @@
     <string name="drawer_location_info_upload">지도 정보 등록</string>
     <string name="drawer_settings">설정</string>
     <string name="drawer_dev_info">정보</string>
+    <string name="drawer_diet_menu">식단메뉴 등록</string>
     <string name="drawer_ask">서비스 문의</string>
     <string name="drawer_drop_out">서비스 탈퇴</string>
 

@@ -98,6 +98,13 @@
         </activity>
 
         <activity
+            android:name=".SchoolDietMenuUploadActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".AppNoticeActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize"
