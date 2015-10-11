@@ -104,10 +104,10 @@ public final class Util {
 		}
 	}
 	
-    public static String BitmapToString(Bitmap bm){
+    public static String BitmapToString(Bitmap bm, int width, int height){
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();  
 		
-		bm = Bitmap.createScaledBitmap(bm, 200, 200, true);
+		bm = Bitmap.createScaledBitmap(bm, width, height, true);
 		bm.compress(Bitmap.CompressFormat.JPEG, 80 , baos);    
 		byte[] b = baos.toByteArray(); 
 		

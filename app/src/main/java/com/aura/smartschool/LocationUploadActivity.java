@@ -93,7 +93,7 @@ public class LocationUploadActivity extends Activity {
 
                         Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
                         // temp.jpg파일을 Bitmap으로 디코딩한다.
-                        imageDataString = Util.BitmapToString(selectedImage);
+                        imageDataString = Util.BitmapToString(selectedImage, 200, 200);
 
                         iv_picture.setImageBitmap(selectedImage);
                     }
@@ -155,8 +155,8 @@ public class LocationUploadActivity extends Activity {
                     intent.setType("image/*");              // 모든 이미지
                     intent.putExtra("crop", "true");        // Crop기능 활성화
                     intent.putExtra("scale", true);
-                    intent.putExtra("outputX",  500);
-                    intent.putExtra("outputY",  500);
+                    intent.putExtra("outputX",  200);
+                    intent.putExtra("outputY",  200);
                     intent.putExtra("aspectX",  1);
                     intent.putExtra("aspectY",  1);
 

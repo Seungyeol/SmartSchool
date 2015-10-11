@@ -179,7 +179,7 @@ public class MemberSaveDialogActivity extends Activity {
 
                     Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
                     // temp.jpg파일을 Bitmap으로 디코딩한다.
-                    mMember.photo = Util.BitmapToString(selectedImage);
+                    mMember.photo = Util.BitmapToString(selectedImage, 200, 200);
 
                     //iv_user_image.setImageBitmap(selectedImage); 
                     iv_user_image.setImageBitmap(selectedImage);

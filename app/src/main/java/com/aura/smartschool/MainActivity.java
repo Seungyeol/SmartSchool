@@ -65,6 +65,7 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	public static final int REQ_DIALOG_MEMBER_UPDATE = 101;
 	public static final int REQ_DIALOG_MEMBER_ADD = 102;
 	public static final int REQ_CODE_PICK_IMAGE = 200;
+	public static final int REQ_CODE_CAMERA_IMAGE = 300;
 	public static final int REQ_CODE_FIND_SCHOOL = 201;
 	private final static int REQ_PLAY_SERVICES_RESOLUTION = 9000;
 

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,6 +29,8 @@ import com.aura.smartschool.utils.Util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -41,6 +44,7 @@ public class SchoolDietMenuUploadActivity extends Activity {
     private ImageView iv_picture;
     private TextView tvPictureHint;
     private Button btn_submit;
+    private Button btnCamera, btnGallery;
 
     private String imageDataString ="";
 
@@ -64,6 +68,8 @@ public class SchoolDietMenuUploadActivity extends Activity {
         tvPictureHint = (TextView) findViewById(R.id.tv_picture_hint);
         iv_picture = (ImageView) findViewById(R.id.iv_picture);
         btn_submit = (Button) findViewById(R.id.btn_submit);
+        btnCamera = (Button) findViewById(R.id.btnCamera);
+        btnGallery = (Button) findViewById(R.id.btnGallery);
 
         Calendar calendar = Calendar.getInstance();
         tvSchool.setText(LoginManager.getInstance().getLoginUser().mSchoolVO.school_name);
@@ -72,6 +78,8 @@ public class SchoolDietMenuUploadActivity extends Activity {
         tvDate.setOnClickListener(mClick);
         iv_picture.setOnClickListener(mClick);
         btn_submit.setOnClickListener(mClick);
+        btnCamera.setOnClickListener(mClick);
+        btnGallery.setOnClickListener(mClick);
     }
 
     @Override
@@ -86,10 +94,19 @@ public class SchoolDietMenuUploadActivity extends Activity {
 
                         Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
                         // temp.jpg파일을 Bitmap으로 디코딩한다.
-                        imageDataString = Util.BitmapToString(selectedImage);
-
+                        imageDataString = Util.BitmapToString(selectedImage, 600, 480);
                         iv_picture.setImageBitmap(selectedImage);
                     }
+                    break;
+
+                case MainActivity.REQ_CODE_CAMERA_IMAGE:
+                    String filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
+
+                    Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+
+                    imageDataString = Util.BitmapToString(selectedImage, 600, 480);
+                    iv_picture.setImageBitmap(selectedImage);
+
                     break;
             }
         }
@@ -144,22 +161,33 @@ public class SchoolDietMenuUploadActivity extends Activity {
     View.OnClickListener mClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Intent intent;
             switch(v.getId()) {
-                case R.id.iv_picture:
-                    Intent intent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                case R.id.btnCamera:
+                    intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra("crop", "true");
+                    intent.putExtra("scale", true);
+                    intent.putExtra("aspectX",  5);
+                    intent.putExtra("aspectY",  4);
+                    intent.putExtra("outputX",  600);
+                    intent.putExtra("outputY",  480);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Util.getTempFile()));
+                    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+                    startActivityForResult(intent, MainActivity.REQ_CODE_CAMERA_IMAGE);
+                    break;
+
+                case R.id.iv_picture: //fall-through
+                case R.id.btnGallery:
+                    intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");              // 모든 이미지
                     intent.putExtra("crop", "true");        // Crop기능 활성화
                     intent.putExtra("scale", true);
-                    intent.putExtra("outputX",  500);
-                    intent.putExtra("outputY",  500);
-                    intent.putExtra("aspectX",  1);
-                    intent.putExtra("aspectY",  1);
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Util.getTempFile()));     // 임시파일 생성
-                    intent.putExtra("outputFormat",         // 포맷방식
-                            Bitmap.CompressFormat.JPEG.toString());
-
+                    intent.putExtra("outputX",  1200);
+                    intent.putExtra("outputY",  960);
+                    intent.putExtra("aspectX",  5);
+                    intent.putExtra("aspectY",  4);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Util.getTempFile()));
+                    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
                     startActivityForResult(intent, MainActivity.REQ_CODE_PICK_IMAGE);
                     break;
 
