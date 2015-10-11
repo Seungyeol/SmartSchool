@@ -105,21 +105,21 @@ public class MealMenuListAdapter extends BaseAdapter {
         holder.tvBreakfast.setText(mealList.get(position).breakfast);
         if (menuPicMap.containsKey(String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 1))){
             holder.ivBreakfast.setVisibility(View.VISIBLE);
-            mAquery.id(holder.ivBreakfast).image(Constant.HOST + Constant.API_GET_DINING_IMAGE + schoolId + "_" + String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 1) + ".jpg", true, true, 0, AQuery.GONE);
+            mAquery.id(holder.ivBreakfast).image(Constant.HOST + Constant.API_GET_DINING_IMAGE + schoolId + "_" + String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 1) + ".jpg", true, false, 0, AQuery.GONE);
         } else {
             holder.ivBreakfast.setVisibility(View.GONE);
         }
         holder.tvLunch.setText(mealList.get(position).lunch);
         if (menuPicMap.containsKey(String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 2))){
             holder.ivLunch.setVisibility(View.VISIBLE);
-            mAquery.id(holder.ivLunch).image(Constant.HOST + Constant.API_GET_DINING_IMAGE + schoolId + "_" + String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 2) + ".jpg", true, true, 0, AQuery.GONE);
+            mAquery.id(holder.ivLunch).image(Constant.HOST + Constant.API_GET_DINING_IMAGE + schoolId + "_" + String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 2) + ".jpg", true, false, 0, AQuery.GONE);
         } else {
             holder.ivLunch.setVisibility(View.GONE);
         }
         holder.tvDinner.setText(mealList.get(position).dinner);
         if (menuPicMap.containsKey(String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 3))){
             holder.ivDinner.setVisibility(View.VISIBLE);
-            mAquery.id(holder.ivDinner).image(Constant.HOST + Constant.API_GET_DINING_IMAGE + schoolId + "_" + String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 3) + ".jpg", true, true, 0, AQuery.GONE);
+            mAquery.id(holder.ivDinner).image(Constant.HOST + Constant.API_GET_DINING_IMAGE + schoolId + "_" + String.format("%d-%02d-%02d_%d", mealCal.get(Calendar.YEAR), (mealCal.get(Calendar.MONTH) + 1), mealList.get(position).day, 3) + ".jpg", true, false, 0, AQuery.GONE);
         } else {
             holder.ivDinner.setVisibility(View.GONE);
         }
