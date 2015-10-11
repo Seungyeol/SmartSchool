@@ -47,7 +47,8 @@ public final class Constant {
 	public static final String API_GET_VIDEOTIME_OF_MEMBER = "/api/getVideoTimeOfMember";
 
 	public static final String API_ADD_DINING = "/api/addDining";
-	public static final String API_GET_DINING = "/api/getDining";
+	public static final String API_GET_DINING_LIST = "/api/getDiningList";
+	public static final String API_GET_DINING_IMAGE = "/images/dining/";
 
 	public static final String API_GET_OS_INFO = "/api/getOsInfo";
 

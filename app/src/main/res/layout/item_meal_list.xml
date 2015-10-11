@@ -22,6 +22,11 @@
             android:id="@+id/tv_breakfast"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:textSize="13sp"/>
+        <ImageView
+            android:id="@+id/iv_breakfast"
+            android:layout_width="200dp" android:layout_height="160dp"
+            android:layout_gravity="center_horizontal" android:scaleType="fitCenter"
+            android:visibility="gone" />
         <TextView
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -31,6 +36,11 @@
             android:id="@+id/tv_lunch"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:textSize="13sp"/>
+        <ImageView
+            android:id="@+id/iv_lunch"
+            android:layout_width="200dp" android:layout_height="160dp"
+            android:layout_gravity="center_horizontal" android:scaleType="fitCenter"
+            android:visibility="gone" />
         <TextView
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -40,5 +50,10 @@
             android:id="@+id/tv_dinner"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:textSize="13sp"/>
+        <ImageView
+            android:id="@+id/iv_dinner"
+            android:layout_width="200dp" android:layout_height="160dp"
+            android:layout_gravity="center_horizontal" android:scaleType="fitCenter"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>
