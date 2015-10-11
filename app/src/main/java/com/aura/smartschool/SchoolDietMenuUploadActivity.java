@@ -100,12 +100,17 @@ public class SchoolDietMenuUploadActivity extends Activity {
                     break;
 
                 case MainActivity.REQ_CODE_CAMERA_IMAGE:
-                    String filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
-
-                    Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
-
-                    imageDataString = Util.BitmapToString(selectedImage, 600, 480);
-                    iv_picture.setImageBitmap(selectedImage);
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setDataAndType(Uri.fromFile(Util.getTempFile()), "image/*");
+                    intent.putExtra("crop", "true");        // Crop기능 활성화
+                    intent.putExtra("scale", true);
+                    intent.putExtra("outputX",  600);
+                    intent.putExtra("outputY",  480);
+                    intent.putExtra("aspectX",  5);
+                    intent.putExtra("aspectY",  4);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Util.getTempFile()));
+                    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+                    startActivityForResult(intent, MainActivity.REQ_CODE_PICK_IMAGE);
 
                     break;
             }
@@ -165,12 +170,6 @@ public class SchoolDietMenuUploadActivity extends Activity {
             switch(v.getId()) {
                 case R.id.btnCamera:
                     intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra("crop", "true");
-                    intent.putExtra("scale", true);
-                    intent.putExtra("aspectX",  5);
-                    intent.putExtra("aspectY",  4);
-                    intent.putExtra("outputX",  600);
-                    intent.putExtra("outputY",  480);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Util.getTempFile()));
                     intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
                     startActivityForResult(intent, MainActivity.REQ_CODE_CAMERA_IMAGE);
