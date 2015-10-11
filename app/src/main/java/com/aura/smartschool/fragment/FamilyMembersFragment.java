@@ -22,6 +22,7 @@ import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.MemberListAdapter;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
+import com.aura.smartschool.exception.LoginMemberNullpointerException;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
@@ -80,10 +81,10 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         switch (requestCode) {
             case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
             case MainActivity.REQ_DIALOG_MEMBER_ADD:
-                if (resultCode == Activity.RESULT_OK) {
-                    LoadingDialog.showLoading(getActivity());
-                    LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
-                }
+//                if (resultCode == Activity.RESULT_OK) {
+//                    LoadingDialog.showLoading(getActivity());
+//                    LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
+//                }
                 break;
         }
     }
@@ -92,7 +93,8 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
     public void onResume() {
         super.onResume();
         ((MainActivity)getActivity()).setHeaderView(R.drawable.home, PreferenceUtil.getInstance(this.getActivity()).getHomeId());
-        refreshMemberList();
+        LoadingDialog.showLoading(getActivity());
+        LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
         if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
             tvAddMember.setVisibility(View.VISIBLE);
         } else {
@@ -101,8 +103,13 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
     }
 
     private void refreshMemberList() {
-        mAdapter.setData(LoginManager.getInstance().getMemberList());
-        mAdapter.notifyDataSetChanged();
+        try {
+            mAdapter.setData(LoginManager.getInstance().getMemberList());
+            mAdapter.notifyDataSetChanged();
+        } catch (LoginMemberNullpointerException e) {
+            LoadingDialog.showLoading(getActivity());
+            LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
+        }
     }
 
     MemberListListener mMemberListListener = new MemberListListener() {

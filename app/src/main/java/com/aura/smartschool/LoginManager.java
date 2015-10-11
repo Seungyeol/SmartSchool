@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.exception.LoginMemberNullpointerException;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.SchoolLog;
 import com.aura.smartschool.utils.Util;
@@ -206,12 +207,15 @@ public class LoginManager {
         return mLoginUser;
     }
 
-    public ArrayList<MemberVO> getMemberList() {
-        if (LoginManager.getInstance().getLoginUser().is_parent == 1) {
+    public ArrayList<MemberVO> getMemberList() throws LoginMemberNullpointerException {
+        if (mLoginUser == null) {
+            throw new LoginMemberNullpointerException();
+        }
+        if (mLoginUser.is_parent == 1) {
             return mMemberList;
         } else {
             ArrayList<MemberVO> selfList = new ArrayList<MemberVO>();
-            selfList.add(LoginManager.getInstance().getLoginUser());
+            selfList.add(mLoginUser);
             return selfList;
         }
     }
