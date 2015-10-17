@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="48dp"
+    android:paddingLeft="16dp" android:paddingRight="16dp"
+    android:gravity="center" >
+    <TextView
+        android:id="@+id/tv_menu_item"
+        android:layout_width="0dp" android:layout_height="48dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textSize="15sp"
+        android:text="설정"/>
+    <ToggleButton
+        android:id="@+id/tv_modify_home_id"
+        android:layout_width="35dp" android:layout_height="20dp"
+        android:background="@drawable/btn_selector_toggle"
+        android:checked="false" android:text=""
+        android:textOff="" android:textOn="" />
+</LinearLayout>

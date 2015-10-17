@@ -13,6 +13,7 @@ import com.aura.smartschool.utils.Util;
 import com.aura.smartschool.vo.MemberVO;
 import com.aura.smartschool.vo.SchoolVO;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class LoginManager {
     private volatile static LoginManager INSTANCE;
 
+    private static final int GUARDIAN_NUM = 3;
     private ArrayList<MemberVO> mMemberList = new ArrayList<MemberVO>();
     private MemberVO mLoginUser;
 
@@ -201,6 +203,34 @@ public class LoginManager {
                 PreferenceUtil.getInstance(context).putName(member.name);
             }
         }
+
+        if (mLoginUser.is_parent == 0) {
+            if (isGuardianInfoEmpty(context)) {
+                saveGuardianInfo(context);
+            }
+        }
+
+    }
+
+    private void saveGuardianInfo(Context context) {
+        int idx = 0;
+        for (MemberVO memberVO: mMemberList) {
+            if (memberVO.is_parent == 1) {
+                if (!StringUtils.isEmpty(memberVO.mdn) && !StringUtils.isEmpty(memberVO.name)){
+                    PreferenceUtil.getInstance(context).putGuardianInfo(idx, memberVO.name, memberVO.mdn);
+                    idx++;
+                }
+            }
+        }
+    }
+
+    private boolean isGuardianInfoEmpty(Context context) {
+        for (int i = 0; i < GUARDIAN_NUM; i++) {
+            if (!StringUtils.isEmpty(PreferenceUtil.getInstance(context).getGuardianInfo(i)[0])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public MemberVO getLoginUser() {

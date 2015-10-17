@@ -2,6 +2,8 @@ package com.aura.smartschool.utils;
 
 import android.content.Context;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class PreferenceUtil extends BasePreferenceUtil {
 	private static PreferenceUtil sInstance = null;
 
@@ -113,5 +115,54 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	}
 	public double getHeight() {
 		return get("height", 0f);
+	}
+
+	public void setSOSEnabled(boolean enabled) {
+		put("sos_enabled", enabled);
+	}
+
+	public boolean isSOSEnabled() {
+		return get("sos_enabled", false);
+	}
+
+	public void setSosCoordX(int x) {
+		put("sos_coord_x", x);
+	}
+
+	public int getSosCoordX() {
+		return get("sos_coord_x", 0);
+	}
+
+	public void setSosCoordY(int y) {
+		put("sos_coord_y", y);
+	}
+
+	public int getSosCoordY() {
+		return get("sos_coord_y", 0);
+	}
+
+	public void putGuardianInfo(int idx, String name, String phoneNumber) {
+		put("guardianName" + idx, name);
+		put("guardianPhoneNumber" + idx, phoneNumber);
+	}
+
+	public String[] getGuardianInfo(int idx) {
+		String[] result = new String[2];
+		result[0] = get("guardianName" + idx);
+		result[1] = get("guardianPhoneNumber" + idx);
+		return result;
+	}
+
+	public void putSOSMessage(String msg) {
+		put("SOSMessage", msg);
+	}
+
+	public String getSOSMessage() {
+		String result = get("SOSMessage");
+		if (StringUtils.isEmpty(result)) {
+			return "[SOS] 긴급상황입니다. 도와주세요!!!";
+		} else {
+			return result;
+		}
 	}
 }

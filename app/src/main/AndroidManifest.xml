@@ -30,8 +30,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
 
-    <uses-permission
-        android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -122,6 +124,13 @@
         </activity>
 
         <activity
+            android:name=".SOSSettingActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".DevInfoActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:windowSoftInputMode="adjustResize"
@@ -135,6 +144,12 @@
         </service>
         <service
             android:name=".service.StepCounterService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+
+        <service
+            android:name=".service.SOSIconService"
             android:enabled="true"
             android:exported="false" >
         </service>

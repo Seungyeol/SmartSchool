@@ -7,5 +7,4 @@ import com.aura.smartschool.adapter.DrawerAdapter;
  */
 public interface DrawerSelectedListener {
     void onSelected(DrawerAdapter.DRAWER_MENU menu);
-    void onModifyFamilyName();
 }

@@ -62,6 +62,19 @@ public final class Util {
 		m_toast.show();
 	}
 
+	public static void showConfirmDialog(final Context context, String msg, DialogInterface.OnClickListener okListener){
+		AlertDialog.Builder alert = new AlertDialog.Builder(context);
+		alert.setPositiveButton("확인", okListener);
+		alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alert.setMessage(msg);
+		alert.show();
+	}
+
 	public static void showConnectAuraDialog(final Context context, String strErrorMsg){
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 		alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {

@@ -41,6 +41,7 @@ import com.aura.smartschool.fragment.HelpViewFragment;
 import com.aura.smartschool.fragment.SchoolNoticePagerFragment;
 import com.aura.smartschool.fragment.WalkingPagerFragment;
 import com.aura.smartschool.service.MyLocationService;
+import com.aura.smartschool.service.SOSIconService;
 import com.aura.smartschool.service.StepCounterService;
 import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.SchoolLog;
@@ -401,6 +402,10 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 			startService(intent);
 			Intent stepIntent = new Intent(this, StepCounterService.class);
 			startService(stepIntent);
+			if (PreferenceUtil.getInstance(this).isSOSEnabled()) {
+				Intent sosIntent = new Intent(this, SOSIconService.class);
+				startService(sosIntent);
+			}
 		}
 	}
 
@@ -433,11 +438,16 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 					case DIET_MENU:
 						startDrawerMenuActivity(new Intent(MainActivity.this, SchoolDietMenuUploadActivity.class));
 						break;
+					case HOMEID:
+						modifyFamilyName();
+						break;
+					case SOS_ICON:
+						startDrawerMenuActivity(new Intent(MainActivity.this, SOSSettingActivity.class));
+						break;
 				}
 			}
 
-		@Override
-		public void onModifyFamilyName() {
+		private void modifyFamilyName() {
 			if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}

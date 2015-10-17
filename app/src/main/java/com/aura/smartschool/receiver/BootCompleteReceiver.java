@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.aura.smartschool.service.SOSIconService;
 import com.aura.smartschool.service.StepCounterService;
+import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.utils.StepSharePrefrenceUtil;
 import com.aura.smartschool.utils.Util;
 
@@ -14,8 +16,15 @@ import com.aura.smartschool.utils.Util;
 public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        //TODO Login Check
-        if (Util.isKitkatWithStepSensor(context)) {
+
+        //SOS 서비스 시작
+        if (PreferenceUtil.getInstance(context).isSOSEnabled()) {
+            Intent sosIntent = new Intent(context, SOSIconService.class);
+            context.startService(sosIntent);
+        }
+
+        //Step Counter 서비스 시작
+        if (Util.isKitkatWithStepSensor(context) && !PreferenceUtil.getInstance(context).isParent()) {
             StepSharePrefrenceUtil.saveMergeStepCount(context, StepSharePrefrenceUtil.getCurrentStepCount(context));
             StepSharePrefrenceUtil.saveDiffStepCount(context, 0);
             context.startService(new Intent(context, StepCounterService.class));

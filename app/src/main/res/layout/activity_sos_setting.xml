@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="@dimen/actionbar_height"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:background="#FF7127"
+        android:focusable="true" android:focusableInTouchMode="true">
+        <ImageButton
+            android:id="@+id/logo"
+            android:layout_width="30dp" android:layout_height="30dp"
+            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@null"
+            android:src="@drawable/actionbar_back" android:scaleType="fitXY" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_centerVertical="true" android:layout_toRightOf="@+id/logo"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="SOS 설정"
+            android:textColor="#FFFFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:paddingTop="10dp"
+        android:paddingLeft="10dp" android:paddingRight="10dp">
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent" android:layout_height="40dp"
+                android:gravity="center_vertical" android:paddingLeft="5dp"
+                android:text="SOS 연락처 리스트" android:textSize="18sp" />
+            <View
+                android:layout_width="match_parent" android:layout_height="2dp"
+                android:layout_marginBottom="5dp"
+                android:background="#676767"/>
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_guardian_tel_a"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:layout_marginRight="5dp"
+                    android:padding="5dp" android:gravity="center_vertical"
+                    android:background="@drawable/bg_square_gray_empty"
+                    android:hint="번호를 등록해 주세요" android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btn_remove_a"
+                    android:layout_width="46dp" android:layout_height="24dp"
+                    android:background="@drawable/btn_delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_guardian_tel_b"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:layout_marginRight="5dp"
+                    android:padding="5dp" android:gravity="center_vertical"
+                    android:background="@drawable/bg_square_gray_empty"
+                    android:hint="번호를 등록해 주세요" android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btn_remove_b"
+                    android:layout_width="46dp" android:layout_height="24dp"
+                    android:background="@drawable/btn_delete"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_guardian_tel_c"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:layout_marginRight="5dp"
+                    android:padding="5dp" android:gravity="center_vertical"
+                    android:background="@drawable/bg_square_gray_empty"
+                    android:hint="번호를 등록해 주세요" android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btn_remove_c"
+                    android:layout_width="46dp" android:layout_height="24dp"
+                    android:background="@drawable/btn_delete"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent" android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical" android:paddingLeft="5dp"
+                android:text="SOS 메시지" android:textSize="18sp" />
+            <View
+                android:layout_width="match_parent" android:layout_height="2dp"
+                android:layout_marginBottom="5dp"
+                android:background="#676767"/>
+            <EditText
+                android:id="@+id/et_sos_message"
+                android:layout_width="match_parent" android:layout_height="170dp"
+                android:layout_weight="1"  android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:background="@drawable/bg_orange_white"/>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="0dp" android:layout_height="40dp"
+            android:layout_weight="1" android:layout_marginRight="5dp"
+            android:background="@drawable/bg_yellow_fill"
+            android:gravity="center" android:textStyle="bold"
+            android:textSize="18sp" android:textColor="#FFFFFF"
+            android:text="취소"/>
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="0dp" android:layout_height="40dp"
+            android:layout_weight="1" android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_yellow_fill"
+            android:gravity="center" android:textStyle="bold"
+            android:textSize="18sp" android:textColor="#FFFFFF"
+            android:text="확인" />
+    </LinearLayout>
+
+</LinearLayout>

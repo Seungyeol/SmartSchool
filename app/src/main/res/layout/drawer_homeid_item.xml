@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="48dp"
+    android:layout_marginTop="20dp" android:layout_marginBottom="15dp"
+    android:paddingLeft="16dp" android:paddingRight="16dp"
+    android:gravity="center" >
+    <TextView
+        android:id="@+id/tv_home_id"
+        android:layout_width="wrap_content" android:layout_height="48dp"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:text="가족명"/>
+    <TextView
+        android:id="@+id/tv_modify_home_id"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:padding="3dp" android:background="@drawable/btn_back_gold_orange"
+        android:textColor="@color/white" android:textStyle="bold"
+        android:textSize="14sp"
+        android:text="변경"/>
+</LinearLayout>

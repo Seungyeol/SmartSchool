@@ -1,15 +1,18 @@
 package com.aura.smartschool.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.aura.smartschool.Interface.DrawerSelectedListener;
 import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.PreferenceUtil;
 
 import java.util.ArrayList;
 
@@ -18,13 +21,14 @@ import java.util.ArrayList;
  */
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerViewHolder> {
 
-    private static final int MAIN_MENU = 0;
-    private static final int SETTING_MENU = 1;
+    private static final int HOMEID_MENU = 0;
+    private static final int PLAIN_MENU = 1;
+    private static final int TOGGLE_MENU = 2;
 
     private static final int ALL = 0;
     private static final int PARENTS = 1;
     private static final int CHILD = 2;
-    private static final int NUTRITIONIST = 2;
+    private static final int NUTRITIONIST = 3;
 
     private ArrayList<DRAWER_MENU> mMenuList = new ArrayList<>();
     private DrawerSelectedListener mListener;
@@ -56,12 +60,15 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     @Override
     public DrawerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater vi = LayoutInflater.from(viewGroup.getContext());
-        if (viewType == MAIN_MENU) {
-            View itemView = vi.inflate(R.layout.drawer_menu_item, viewGroup, false);
-            return new MainMenuViewHolder(itemView);
+        if (viewType == HOMEID_MENU) {
+            View itemView = vi.inflate(R.layout.drawer_homeid_item, viewGroup, false);
+            return new HomeIdMenuViewHolder(itemView);
+        } else  if (viewType == TOGGLE_MENU) {
+            View itemView = vi.inflate(R.layout.drawer_toggle_item, viewGroup, false);
+            return new ToggleMenuViewHolder(itemView);
         } else {
-            View itemView = vi.inflate(R.layout.drawer_setting_item, viewGroup, false);
-            return new SubMenuViewHolder(itemView);
+            View itemView = vi.inflate(R.layout.drawer_plain_item, viewGroup, false);
+            return new MainMenuViewHolder(itemView);
         }
     }
 
@@ -81,14 +88,14 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     }
 
     public enum DRAWER_MENU {
-        NOTICE(MAIN_MENU, R.string.drawer_notice, ALL),
-        QnA(MAIN_MENU, R.string.drawer_qna, ALL),
-        DEV_INFO(MAIN_MENU, R.string.drawer_dev_info, ALL),
-        DIET_MENU(MAIN_MENU, R.string.drawer_diet_menu, NUTRITIONIST),
-        SERVICE_ASK(MAIN_MENU, R.string.drawer_ask, PARENTS),
-        DROP_OUT(MAIN_MENU, R.string.drawer_drop_out, PARENTS),
-//        LOCATION_INFO(MAIN_MENU, R.string.drawer_location_info_upload, ALL),
-        SETTING(SETTING_MENU, R.string.drawer_settings, ALL);
+        HOMEID(HOMEID_MENU, R.string.drawer_setting_family_name, ALL),
+        NOTICE(PLAIN_MENU, R.string.drawer_notice, ALL),
+        QnA(PLAIN_MENU, R.string.drawer_qna, ALL),
+        DEV_INFO(PLAIN_MENU, R.string.drawer_dev_info, ALL),
+        DIET_MENU(PLAIN_MENU, R.string.drawer_diet_menu, NUTRITIONIST),
+        SERVICE_ASK(PLAIN_MENU, R.string.drawer_ask, PARENTS),
+        DROP_OUT(PLAIN_MENU, R.string.drawer_drop_out, PARENTS),
+        SOS_ICON(TOGGLE_MENU, R.string.drawer_setting_widget, CHILD);
 
         public int viewType;
         public int descId;
@@ -106,6 +113,35 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
             super(itemView);
         }
         public abstract void onBindViewHolder(DRAWER_MENU menu);
+    }
+
+    public class HomeIdMenuViewHolder extends DrawerViewHolder implements View.OnClickListener {
+        public TextView mTvHomeId;
+        public TextView mTvModifyHomeId;
+
+        public HomeIdMenuViewHolder(View v) {
+            super(v);
+            v.setOnClickListener(this);
+            mTvHomeId = (TextView) v.findViewById(R.id.tv_home_id);
+            mTvModifyHomeId = (TextView) v.findViewById(R.id.tv_modify_home_id);
+
+            mTvModifyHomeId.setOnClickListener(this);
+        }
+
+        @Override
+        public void onBindViewHolder(DRAWER_MENU menu) {
+            if (LoginManager.getInstance().getLoginUser() != null) {
+                mTvHomeId.setText(LoginManager.getInstance().getLoginUser().home_id);
+                mTvModifyHomeId.setVisibility(LoginManager.getInstance().getLoginUser().is_parent == 0 ? View.GONE : View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.tv_modify_home_id) {
+                mListener.onSelected(DRAWER_MENU.HOMEID);
+            }
+        }
     }
 
     public class MainMenuViewHolder extends DrawerViewHolder implements View.OnClickListener {
@@ -128,48 +164,50 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         }
     }
 
-    public class SubMenuViewHolder extends DrawerViewHolder implements View.OnClickListener {
-        public TextView mTextView;
-        public View llSubMenu;
-        public TextView tvHomeId;
-        public TextView tvModifyHomeId;
-        public View rlInOutAlarm;
-        public ToggleButton tgInOutAlarm;
-        public View rlActivityAlarm;
-        public ToggleButton tgActivityAlarm;
-        public View rlWidget;
-        public ToggleButton tgWidget;
+    public class ToggleMenuViewHolder extends DrawerViewHolder {
+        public TextView mTvMenu;
+        public ToggleButton mTgBtn;
 
-        public SubMenuViewHolder(View v) {
+        private boolean isInBindEvent;
+
+        private Context mContext;
+
+        public ToggleMenuViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.tv_menu_item);
-            llSubMenu = v.findViewById(R.id.ll_sub_menu);
-            tvHomeId = (TextView) v.findViewById(R.id.tv_home_id);
-            tvModifyHomeId = (TextView) v.findViewById(R.id.tv_modify_family_name);
-            rlInOutAlarm = v.findViewById(R.id.rl_in_out_alarm);
-            tgInOutAlarm = (ToggleButton) v.findViewById(R.id.tg_in_out_alarm);
-            rlActivityAlarm = v.findViewById(R.id.rl_activity_alarm);
-            tgActivityAlarm = (ToggleButton) v.findViewById(R.id.tg_activity_alarm);
-            rlWidget = v.findViewById(R.id.rl_widget);
-            tgWidget = (ToggleButton) v.findViewById(R.id.tg_widget);
+            mContext = v.getContext();
+            mTvMenu = (TextView) v.findViewById(R.id.tv_menu_item);
+            mTgBtn = (ToggleButton) v.findViewById(R.id.tv_modify_home_id);
 
-            tvModifyHomeId.setOnClickListener(this);
+            mTvMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mTgBtn.isChecked()) {
+                        mListener.onSelected(mMenuList.get(getAdapterPosition()));
+                    }
+                }
+            });
+
+            mTgBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!isInBindEvent) {
+                        if (DRAWER_MENU.SOS_ICON == mMenuList.get(getAdapterPosition())) {
+                            PreferenceUtil.getInstance(buttonView.getContext()).setSOSEnabled(isChecked);
+                        }
+                        if (isChecked) {
+                            mListener.onSelected(mMenuList.get(getAdapterPosition()));
+                        }
+                    }
+                }
+            });
         }
 
         @Override
         public void onBindViewHolder(DRAWER_MENU menu) {
-            mTextView.setText(mTextView.getContext().getResources().getString(menu.descId));
-            if (LoginManager.getInstance().getLoginUser() != null) {
-                tvHomeId.setText("가족명  :  " + LoginManager.getInstance().getLoginUser().home_id);
-                tvModifyHomeId.setVisibility(LoginManager.getInstance().getLoginUser().is_parent == 0 ? View.GONE : View.VISIBLE);
-            }
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.tv_modify_family_name) {
-                mListener.onModifyFamilyName();
-            }
+            isInBindEvent = true;
+            mTvMenu.setText(mTvMenu.getContext().getResources().getString(menu.descId));
+            mTgBtn.setChecked(PreferenceUtil.getInstance(mContext).isSOSEnabled());
+            isInBindEvent = false;
         }
     }
 }
