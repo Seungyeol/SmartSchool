@@ -154,6 +154,18 @@ public class LoginManager {
         }
     }
 
+    public boolean hasChild() {
+        boolean result = false;
+        if (mMemberList != null) {
+            for (MemberVO memberVO : mMemberList) {
+                if (memberVO.is_parent == 0) {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
     private void setMemberList(Context context, JSONArray array) throws JSONException {
         mMemberList.clear();
 

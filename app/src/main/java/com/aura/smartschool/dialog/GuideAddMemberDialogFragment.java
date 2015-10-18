@@ -6,12 +6,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.aura.smartschool.R;
-import com.aura.smartschool.utils.Util;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Administrator on 2015-08-17.

@@ -21,7 +21,6 @@ import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.MemberListAdapter;
-import com.aura.smartschool.dialog.GuardianInputDialogFragment;
 import com.aura.smartschool.dialog.GuideAddMemberDialogFragment;
 import com.aura.smartschool.dialog.GuideInstallOtherMemberDialogFragment;
 import com.aura.smartschool.dialog.LoadingDialog;
@@ -78,9 +77,13 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case MainActivity.REQ_DIALOG_MEMBER_ADD:
-                GuideInstallOtherMemberDialogFragment guideInstallDialog = new GuideInstallOtherMemberDialogFragment();
-                guideInstallDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                guideInstallDialog.show(getFragmentManager(), "guideInstallDialog");
+                if(resultCode == Activity.RESULT_OK) {
+                    if (PreferenceUtil.getInstance(getActivity()).getInstallMemberEnable()) {
+                        GuideInstallOtherMemberDialogFragment guideInstallDialog = new GuideInstallOtherMemberDialogFragment();
+                        guideInstallDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                        guideInstallDialog.show(getFragmentManager(), "guideInstallDialog");
+                    }
+                }
                 break;
         }
     }
@@ -96,23 +99,27 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         } else {
             tvAddMember.setVisibility(View.GONE);
         }
-//        if (LoginManager.getInstance().getLoginUser() != null
-//                && LoginManager.getInstance().getLoginUser().is_parent == 1) {
-        if (!PreferenceUtil.getInstance(getActivity()).isGuideAddMemberShowed()) {
-            PreferenceUtil.getInstance(getActivity()).setGuideAddMemberShowed(true);
-            final GuideAddMemberDialogFragment guideAddMemberDialog = new GuideAddMemberDialogFragment();
-            guideAddMemberDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-            guideAddMemberDialog.setAddMemberClickListner(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    guideAddMemberDialog.dismiss();
-                    addMember();
-                }
-            });
-            guideAddMemberDialog.show(getFragmentManager(), "gudieAddMemberDialog");
-        }
+        showAddMemberGuideDialog();
+    }
 
-//        }
+    private void showAddMemberGuideDialog() {
+        if (LoginManager.getInstance().getLoginUser() != null
+                && LoginManager.getInstance().getLoginUser().is_parent == 1) {
+            if (!PreferenceUtil.getInstance(getActivity()).isGuideAddMemberShowed()
+                    && !LoginManager.getInstance().hasChild()) {
+                PreferenceUtil.getInstance(getActivity()).setGuideAddMemberShowed(true);
+                final GuideAddMemberDialogFragment guideAddMemberDialog = new GuideAddMemberDialogFragment();
+                guideAddMemberDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                guideAddMemberDialog.setAddMemberClickListner(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        guideAddMemberDialog.dismiss();
+                        addMember();
+                    }
+                });
+                guideAddMemberDialog.show(getFragmentManager(), "gudieAddMemberDialog");
+            }
+        }
     }
 
     private void refreshMemberList() {

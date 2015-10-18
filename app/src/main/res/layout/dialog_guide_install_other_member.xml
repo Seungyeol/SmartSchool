@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:layout_margin="20dp"
     android:minWidth="300dp"
     android:gravity="center"
     android:orientation="vertical" >
     <LinearLayout
         android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:orientation="vertical">
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="모든 가족원이 설치해야 사용이 가능합니다."/>
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textSize="20dp" android:textStyle="bold"
+            android:gravity="center" android:lineSpacingExtra="4dp"
+            android:text="구성원 추가가 완료되었습니다.\n\n정상적인 이용을 위해 가족 모두 스마트안전건강지킴이 앱 설치 후 사용해주세요."/>
 
         <CheckBox
             android:id="@+id/cb_never_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" android:layout_marginBottom="10dp"
             android:text="다시보지않음"/>
 
         <TextView
