@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:minWidth="300dp"
+    android:gravity="center"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="모든 가족원이 설치해야 사용이 가능합니다."/>
+
+        <CheckBox
+            android:id="@+id/cb_never_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다시보지않음"/>
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent" android:layout_height="40dp"
+            android:background="@drawable/bg_yellow_fill" android:gravity="center"
+            android:text="확인" android:textSize="18sp" android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+</LinearLayout>

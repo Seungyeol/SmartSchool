@@ -165,4 +165,20 @@ public class PreferenceUtil extends BasePreferenceUtil {
 			return result;
 		}
 	}
+
+	public void setGuideAddMemberShowed(boolean isShowed) {
+		put("guide_add_member", isShowed);
+	}
+
+	public boolean isGuideAddMemberShowed() {
+		return get("guide_add_member", false);
+	}
+
+	public void setInstallMemberEnable(boolean enable) {
+		put("guide_install_member", enable);
+	}
+
+	public boolean getInstallMemberEnable() {
+		return get("guide_install_member", true);
+	}
 }

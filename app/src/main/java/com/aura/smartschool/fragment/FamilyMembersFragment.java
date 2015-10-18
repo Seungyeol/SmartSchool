@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,9 @@ import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
 import com.aura.smartschool.adapter.MemberListAdapter;
+import com.aura.smartschool.dialog.GuardianInputDialogFragment;
+import com.aura.smartschool.dialog.GuideAddMemberDialogFragment;
+import com.aura.smartschool.dialog.GuideInstallOtherMemberDialogFragment;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.MemberSaveDialogActivity;
 import com.aura.smartschool.exception.LoginMemberNullpointerException;
@@ -62,13 +66,7 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         tvAddMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MemberVO member = new MemberVO();
-                member.home_id = PreferenceUtil.getInstance(getActivity()).getHomeId();
-
-                Intent intent = new Intent(getActivity(), MemberSaveDialogActivity.class);
-                intent.putExtra("mode", MainActivity.MOD_ADD);
-                intent.putExtra("member", member);
-                startActivityForResult(intent, MainActivity.REQ_DIALOG_MEMBER_ADD);
+                addMember();
             }
         });
 
@@ -79,12 +77,10 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case MainActivity.REQ_DIALOG_MEMBER_UPDATE:
             case MainActivity.REQ_DIALOG_MEMBER_ADD:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    LoadingDialog.showLoading(getActivity());
-//                    LoginManager.getInstance().refreshMemberList(getActivity(), FamilyMembersFragment.this);
-//                }
+                GuideInstallOtherMemberDialogFragment guideInstallDialog = new GuideInstallOtherMemberDialogFragment();
+                guideInstallDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                guideInstallDialog.show(getFragmentManager(), "guideInstallDialog");
                 break;
         }
     }
@@ -100,6 +96,23 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
         } else {
             tvAddMember.setVisibility(View.GONE);
         }
+//        if (LoginManager.getInstance().getLoginUser() != null
+//                && LoginManager.getInstance().getLoginUser().is_parent == 1) {
+        if (!PreferenceUtil.getInstance(getActivity()).isGuideAddMemberShowed()) {
+            PreferenceUtil.getInstance(getActivity()).setGuideAddMemberShowed(true);
+            final GuideAddMemberDialogFragment guideAddMemberDialog = new GuideAddMemberDialogFragment();
+            guideAddMemberDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            guideAddMemberDialog.setAddMemberClickListner(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    guideAddMemberDialog.dismiss();
+                    addMember();
+                }
+            });
+            guideAddMemberDialog.show(getFragmentManager(), "gudieAddMemberDialog");
+        }
+
+//        }
     }
 
     private void refreshMemberList() {
@@ -182,5 +195,15 @@ public class FamilyMembersFragment extends Fragment implements LoginManager.Resu
     @Override
     public void onFail() {
         LoadingDialog.hideLoading();
+    }
+
+    private void addMember() {
+        MemberVO member = new MemberVO();
+        member.home_id = PreferenceUtil.getInstance(getActivity()).getHomeId();
+
+        Intent intent = new Intent(getActivity(), MemberSaveDialogActivity.class);
+        intent.putExtra("mode", MainActivity.MOD_ADD);
+        intent.putExtra("member", member);
+        startActivityForResult(intent, MainActivity.REQ_DIALOG_MEMBER_ADD);
     }
 }
