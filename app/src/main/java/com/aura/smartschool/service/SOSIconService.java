@@ -10,6 +10,7 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.view.Gravity;
@@ -35,7 +36,7 @@ public class SOSIconService extends Service {
 
     private static final int CONTINUOUS_TAP_TIMEOUT = 300;
     private static final int CONTINUOUS_TAP_MIN_TIME = 40;
-    private static final int LONG_PRESS_FOR_SOS_TIMEOUT = 5000;
+    private static final int LONG_PRESS_FOR_SOS_TIMEOUT = 4000;
 
     private boolean mInContinuousTapRegion;
 
@@ -69,6 +70,7 @@ public class SOSIconService extends Service {
         }
 
         private void sendSOS() {
+            Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
             SmsManager smsManager = SmsManager.getDefault();
             String sosMessage = PreferenceUtil.getInstance(getApplicationContext()).getSOSMessage();
             for (int i = 0; i < GUARDIAN_NUM; i++) {
@@ -77,6 +79,7 @@ public class SOSIconService extends Service {
                     smsManager.sendTextMessage(phoneNum, null, sosMessage, null, null);
                 }
             }
+            vibrator.vibrate(100);
         }
     });
 
