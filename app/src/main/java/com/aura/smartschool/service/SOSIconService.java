@@ -1,6 +1,8 @@
 package com.aura.smartschool.service;
 
+import android.app.AlarmManager;
 import android.app.KeyguardManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -106,9 +108,29 @@ public class SOSIconService extends Service {
         return START_STICKY;
     }
 
+    @Override
+    public void onDestroy() {
+        if (PreferenceUtil.getInstance(getApplicationContext()).isSOSEnabled()) {
+            ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
+                    .set(AlarmManager.RTC, System.currentTimeMillis() + 3000,
+                            PendingIntent.getService(this, 3, new Intent(this, SOSIconService.class), 0));
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
+                .set(AlarmManager.RTC, System.currentTimeMillis() + 3000,
+                        PendingIntent.getService(this, 3, new Intent(this, SOSIconService.class), 0));
+    }
+
     private void addIconToScreen() {
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-        if (!keyguardManager.inKeyguardRestrictedInputMode() || isAdded) {
+        if (!keyguardManager.inKeyguardRestrictedInputMode()
+                || !PreferenceUtil.getInstance(getApplicationContext()).isSOSEnabled()
+                || isAdded) {
             return;
         }
 

@@ -1,6 +1,7 @@
 package com.aura.smartschool.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ToggleButton;
 import com.aura.smartschool.Interface.DrawerSelectedListener;
 import com.aura.smartschool.LoginManager;
 import com.aura.smartschool.R;
+import com.aura.smartschool.service.SOSIconService;
 import com.aura.smartschool.utils.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -193,9 +195,12 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
                     if (!isInBindEvent) {
                         if (DRAWER_MENU.SOS_ICON == mMenuList.get(getAdapterPosition())) {
                             PreferenceUtil.getInstance(buttonView.getContext()).setSOSEnabled(isChecked);
-                        }
-                        if (isChecked) {
-                            mListener.onSelected(mMenuList.get(getAdapterPosition()));
+                            if (isChecked) {
+                                mListener.onSelected(mMenuList.get(getAdapterPosition()));
+                            } else {
+                                Intent sosIntent = new Intent(buttonView.getContext(), SOSIconService.class);
+                                buttonView.getContext().stopService(sosIntent);
+                            }
                         }
                     }
                 }
