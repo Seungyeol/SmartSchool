@@ -80,6 +80,8 @@ public class SOSSettingActivity extends FragmentActivity {
         setGuardianInfoViews(2, mTvGuardianC, mBtnRemoveC);
 
         mTvGuardianA.setOnClickListener(mGuardianTextClick);
+        mTvGuardianB.setOnClickListener(mGuardianTextClick);
+        mTvGuardianC.setOnClickListener(mGuardianTextClick);
 
         mEtSOSMessage = (EditText) findViewById(R.id.et_sos_message);
         mEtSOSMessage.setText(PreferenceUtil.getInstance(SOSSettingActivity.this).getSOSMessage());
@@ -104,6 +106,11 @@ public class SOSSettingActivity extends FragmentActivity {
         mBtnCancel.setOnClickListener(mBtnClick);
         mBtnConfirm.setOnClickListener(mBtnClick);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        checkEditingBeforeFinish();
     }
 
     private void setGuardianInfoViews(int idx, TextView tv, View btnView) {
@@ -176,20 +183,7 @@ public class SOSSettingActivity extends FragmentActivity {
                     break;
                 case R.id.tv_cancel:
                 case R.id.logo:
-                    if (isModified) {
-                        Util.showConfirmDialog(SOSSettingActivity.this, "취소하시겠습니까?", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SOSSettingActivity.this.finish();
-                            }
-                        });
-                    } else {
-                        if (isGuardianNumberEmpty()) {
-                            Util.showToast(SOSSettingActivity.this, "SOS 서비스가 실행되지 않습니다.");
-                            PreferenceUtil.getInstance(SOSSettingActivity.this).setSOSEnabled(false);
-                        }
-                        SOSSettingActivity.this.finish();
-                    }
+                    checkEditingBeforeFinish();
                     break;
                 case R.id.tv_confirm:
                     if (saveSOSInfo()) {
@@ -208,6 +202,7 @@ public class SOSSettingActivity extends FragmentActivity {
             Util.showConfirmDialog(SOSSettingActivity.this, "삭제하시겠습니까?", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    isModified = true;
                     mGuardianNames[idx] = "";
                     mGuardianPhoneNumbers[idx] = "";
                     if (idx == 0) {
@@ -222,6 +217,23 @@ public class SOSSettingActivity extends FragmentActivity {
             });
         }
     };
+
+    private void checkEditingBeforeFinish() {
+        if (isModified) {
+            Util.showConfirmDialog(SOSSettingActivity.this, "취소하시겠습니까?", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SOSSettingActivity.this.finish();
+                }
+            });
+        } else {
+            if (isGuardianNumberEmpty()) {
+                Util.showToast(SOSSettingActivity.this, "SOS 서비스가 실행되지 않습니다.");
+                PreferenceUtil.getInstance(SOSSettingActivity.this).setSOSEnabled(false);
+            }
+            SOSSettingActivity.this.finish();
+        }
+    }
 
     private boolean isGuardianNumberEmpty() {
         for (int i = 0; i < mGuardianPhoneNumbers.length; i++) {
