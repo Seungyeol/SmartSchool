@@ -86,4 +86,32 @@
     <string name="obesity_risk_7">비만관련질환의 위험도 고도 위험으로 추정됩니다</string>
     <string name="dietary_habits_7">아침>점심>저녁의 비율로 먹도록하고 채식위주의 식단으로 조금씩 식사를하며 과식을 하지 않는 것이 효과적입니다. \n음식은 천천히 오래 씹도록하세요. 군것질이나 저녁에 먹는 야식은 피하시는게 좋습니다.</string>
     <string name="recommend_exercise_7">유산소운동[걷기, 천천히 뛰기, 줄넘기 등]의 비율 80\u0025, 신체부위별 운동[상체, 하체, 복부, 전신 등] 20\u0025의 비율로 운동하는 것이 좋습니다. \n1일 운동량 : 유산소 운동 1일 48분이상 / 신체부위별 운동 12분 이상</string>
+
+    <!-- Buttons strings -->
+    <string name="add_geofences">Add geofences</string>
+    <string name="remove_geofences">Remove geofences</string>
+
+    <string name="geofences_added">Geofences added</string>
+    <string name="geofences_removed">Geofences removed</string>
+
+    <!-- Error strings -->
+    <string name="not_connected">GoogleApiClient no yet connected. Try again.</string>
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofence_transition_invalid_type">
+        Geofence transition error: invalid transition type %1$d
+    </string>
+
+    <!-- Transition type strings -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+
+    <string name="geofence_transition_notification_text">Click notification to return to app</string>
 </resources>

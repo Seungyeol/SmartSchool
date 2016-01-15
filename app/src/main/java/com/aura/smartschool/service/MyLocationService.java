@@ -1,10 +1,12 @@
 package com.aura.smartschool.service;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -15,15 +17,22 @@ import com.aura.smartschool.utils.PreferenceUtil;
 import com.aura.smartschool.vo.WalkingVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class MyLocationService extends Service {
 
@@ -31,6 +40,13 @@ public class MyLocationService extends Service {
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
     private String mLastUpdateTime;
+
+    private ArrayList<Geofence> mGeofenceList;
+
+    /**
+     * Used when requesting to add or remove geofences.
+     */
+    private PendingIntent mGeofencePendingIntent;
 
     private AQuery mAq;
 
@@ -47,6 +63,22 @@ public class MyLocationService extends Service {
 
             //연결이 되면 위치 추적
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
+
+            //Geofencing 시작
+            try {
+                LocationServices.GeofencingApi.addGeofences(
+                        mGoogleApiClient,
+                        // The GeofenceRequest object.
+                        getGeofencingRequest(),
+                        // A pending intent that that is reused when calling removeGeofences(). This
+                        // pending intent is used to generate an intent when a matched geofence
+                        // transition is observed.
+                        getGeofencePendingIntent()
+                ).setResultCallback(mResultCallback); // Result processed in onResult().
+            } catch (SecurityException securityException) {
+                // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+                logSecurityException(securityException);
+            }
         }
 
         @Override
@@ -81,9 +113,18 @@ public class MyLocationService extends Service {
         }
     };
 
+    ResultCallback<Status> mResultCallback = new ResultCallback<Status>() {
+        @Override
+        public void onResult(Status status) {
+
+        }
+    };
+
     @Override
     public void onCreate() {
         mAq = new AQuery(this);
+
+        mGeofenceList = new ArrayList<Geofence>();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(mCallbacks)
@@ -97,6 +138,9 @@ public class MyLocationService extends Service {
         mLocationRequest.setInterval(1000 * 60 * 10); //10 minutes
         mLocationRequest.setFastestInterval(1000 * 60 * 10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        //GeoPencing setting
+        populateGeofenceList();
 
         super.onCreate();
     }
@@ -116,6 +160,70 @@ public class MyLocationService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void populateGeofenceList() {
+        mGeofenceList.add(new Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+                .setRequestId("School")
+
+                        // Set the circular region of this geofence.
+                .setCircularRegion(
+                        37.5019169,   //latitude
+                        126.7435496,  //longitude
+                        500   //meter
+                )
+
+                        // Set the expiration duration of the geofence. This geofence gets automatically
+                        // removed after this period of time.
+                .setExpirationDuration(10000000)
+
+                        // Set the transition types of interest. Alerts are only generated for these
+                        // transition. We track entry and exit transitions in this sample.
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+
+                        // Create the geofence.
+                .build());
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+
+        // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
+        // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
+        // is already inside that geofence.
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+
+        // Add the geofences to be monitored by geofencing service.
+        builder.addGeofences(mGeofenceList);
+
+        // Return a GeofencingRequest.
+        return builder.build();
+    }
+
+    private void logSecurityException(SecurityException securityException) {
+        Log.e("LDK", "Invalid location permission. " +
+                "You need to use ACCESS_FINE_LOCATION with geofences", securityException);
+    }
+
+    /**
+     * Gets a PendingIntent to send with the request to add or remove Geofences. Location Services
+     * issues the Intent inside this PendingIntent whenever a geofence transition occurs for the
+     * current list of geofences.
+     *
+     * @return A PendingIntent for the IntentService that handles geofence transitions.
+     */
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (mGeofencePendingIntent != null) {
+            return mGeofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
+        // addGeofences() and removeGeofences().
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void postLocation() {
