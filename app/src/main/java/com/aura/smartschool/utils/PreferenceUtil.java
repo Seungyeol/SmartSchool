@@ -181,4 +181,19 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	public boolean getInstallMemberEnable() {
 		return get("guide_install_member", true);
 	}
+
+	//학교 위도 경도 정보 저장
+	public void putSchool_lat(String school_lat) {
+		put("school_lat", school_lat);
+	}
+	public String getSchool_lat() {
+		return get("school_lat");
+	}
+
+	public void putSchool_lng(String school_lng) {
+		put("school_lng", school_lng);
+	}
+	public String getSchool_lng() {
+		return get("school_lng");
+	}
 }

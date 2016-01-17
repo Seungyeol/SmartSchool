@@ -213,6 +213,11 @@ public class LoginManager {
                 PreferenceUtil.getInstance(context).putMemberId(member.member_id);
                 PreferenceUtil.getInstance(context).putParent(member.is_parent==1 ? true:false );
                 PreferenceUtil.getInstance(context).putName(member.name);
+                //자녀일 경우 학교의 위도 경도 저장
+                if(member.is_parent==0) {
+                    PreferenceUtil.getInstance(context).putSchool_lat(school.lat);
+                    PreferenceUtil.getInstance(context).putSchool_lng(school.lng);
+                }
             }
         }
 

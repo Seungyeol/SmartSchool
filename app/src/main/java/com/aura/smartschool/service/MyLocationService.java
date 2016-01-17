@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.androidquery.AQuery;
@@ -163,6 +164,21 @@ public class MyLocationService extends Service {
     }
 
     public void populateGeofenceList() {
+        String strLat = PreferenceUtil.getInstance(this).getSchool_lat();
+        String strLng = PreferenceUtil.getInstance(this).getSchool_lng();
+
+        if(TextUtils.isEmpty(strLat)) {
+            return;
+        }
+        double lat = 0;
+        double lng = 0;
+        try {
+            lat = Double.parseDouble(strLat);
+            lng = Double.parseDouble(strLng);
+        } catch (NumberFormatException e) {
+            return;
+        }
+
         mGeofenceList.add(new Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
@@ -170,14 +186,14 @@ public class MyLocationService extends Service {
 
                         // Set the circular region of this geofence.
                 .setCircularRegion(
-                        37.5019169,   //latitude
-                        126.7435496,  //longitude
+                        lat,   //latitude
+                        lng,  //longitude
                         500   //meter
                 )
 
                         // Set the expiration duration of the geofence. This geofence gets automatically
                         // removed after this period of time.
-                .setExpirationDuration(10000000)
+                        //.setExpirationDuration(24 * 60 * 60 * 1000)
 
                         // Set the transition types of interest. Alerts are only generated for these
                         // transition. We track entry and exit transitions in this sample.
