@@ -193,7 +193,7 @@ public class MyLocationService extends Service {
 
                         // Set the expiration duration of the geofence. This geofence gets automatically
                         // removed after this period of time.
-                        //.setExpirationDuration(24 * 60 * 60 * 1000)
+                .setExpirationDuration(24 * 60 * 60 * 1000 * 365)
 
                         // Set the transition types of interest. Alerts are only generated for these
                         // transition. We track entry and exit transitions in this sample.
