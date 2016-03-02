@@ -12,10 +12,18 @@ import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.aura.smartschool.Constant;
 import com.aura.smartschool.MainActivity;
 import com.aura.smartschool.R;
+import com.aura.smartschool.utils.PreferenceUtil;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,54 +52,53 @@ public class GeofenceTransitionsIntentService extends IntentService {
         }
 
         // Get the transition type.
+        //1:enter, 2:exit
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
         // Test that the reported transition was of interest.
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
                 geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
-            // Get the geofences that were triggered. A single event can trigger multiple geofences.
-            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
-
-            // Get the transition details as a String.
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(
-                    this,
-                    geofenceTransition,
-                    triggeringGeofences
-            );
-
             // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails);
-            Log.i("LDK", geofenceTransitionDetails);
+            //sendNotification(geofenceTransitionDetails);
+            //Log.i("LDK", geofenceTransitionDetails);
+            //부모에게 통지한다.
+            sendNoti();
         } else {
             // Log the error.
             Log.e("LDK", getString(R.string.geofence_transition_invalid_type, geofenceTransition));
         }
     }
 
-    /**
-     * Gets transition details and returns them as a formatted string.
-     *
-     * @param context               The app context.
-     * @param geofenceTransition    The ID of the geofence transition.
-     * @param triggeringGeofences   The geofence(s) triggered.
-     * @return                      The transition details formatted as String.
-     */
-    private String getGeofenceTransitionDetails(
-            Context context,
-            int geofenceTransition,
-            List<Geofence> triggeringGeofences) {
+    private void sendNoti() {
+        AQuery aq = new AQuery(getApplicationContext());
 
-        String geofenceTransitionString = getTransitionString(geofenceTransition);
+        String url = Constant.HOST + Constant.API_ADD_LOCATION;
+        JSONObject json = new JSONObject();
+        try {
+            int member_id = PreferenceUtil.getInstance(this).getMemberId();
+            if (member_id == 0) {
+                return;
+            }
 
-        // Get the Ids of each geofence that was triggered.
-        ArrayList triggeringGeofencesIdsList = new ArrayList();
-        for (Geofence geofence : triggeringGeofences) {
-            triggeringGeofencesIdsList.add(geofence.getRequestId());
+            json.put("member_id", member_id);
+
+            aq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
+                @Override
+                public void callback(String url, JSONObject object, AjaxStatus status) {
+                    //update or insert
+                    try {
+                        if (object.getInt("result") == 0) {
+                            //Log.d("LDK", "result:" + object.toString(1));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
-
-        return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
     }
 
     /**
@@ -138,22 +145,5 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         // Issue the notification
         mNotificationManager.notify(9999, builder.build());
-    }
-
-    /**
-     * Maps geofence transition types to their human-readable equivalents.
-     *
-     * @param transitionType    A transition type constant defined in Geofence
-     * @return                  A String indicating the type of transition
-     */
-    private String getTransitionString(int transitionType) {
-        switch (transitionType) {
-            case Geofence.GEOFENCE_TRANSITION_ENTER:
-                return getString(R.string.geofence_transition_entered);
-            case Geofence.GEOFENCE_TRANSITION_EXIT:
-                return getString(R.string.geofence_transition_exited);
-            default:
-                return getString(R.string.unknown_geofence_transition);
-        }
     }
 }
