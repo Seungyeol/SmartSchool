@@ -59,7 +59,8 @@ public final class Constant {
 	public static final int NOTIFICATION_SCHOOL_ALIMI = 1002;
 	public static final int NOTIFICATION_CONSULT = 1003;
 	public static final int NOTIFICATION_QNA = 1004;
-	public static final int NOTIFICATION_APP_NOTICE = 1005;
+	public static final int NOTIFICATION_NOTICE = 1005;
+	public static final int NOTIFICATION_GEOFENCE = 1006;
 
 	public static final String NOTIFCATION_DESTINATION_FRAGMENT = "des_fragment";
 	public static final String CATEGORY = "category";

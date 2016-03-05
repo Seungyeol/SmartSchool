@@ -148,7 +148,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
             else if("appNoti".equals(command)) {
                 int requestID = (int) System.currentTimeMillis();
 
-                activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_APP_NOTICE);
+                activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_NOTICE);
 
                 PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
@@ -162,7 +162,38 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                         .setAutoCancel(true)
                         .setContentIntent(contentIntent)
                         .build();
-                nm.notify(Constant.NOTIFICATION_APP_NOTICE, noti);
+                nm.notify(Constant.NOTIFICATION_NOTICE, noti);
+
+                return;
+            }
+
+            //지오펜스
+            else if("geofence".equals(command)) {
+                int type = json.getInt("type");
+                String typeString = (type == 1 ? "들어왔습니다" : "나갔습니다");
+                String title = type == 1 ? "등교알림" : "하교알림";
+                String schoolName = json.getString("school_name");
+                String name = json.getString("name");
+                String sex = "M".equals(json.getString("sex")) ? "군" : "양";
+                String content = String.format("%s 반경 100m 이내 %s %s(이)가 %s", schoolName, name, sex, typeString);
+
+                int requestID = (int) System.currentTimeMillis();
+
+                activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_GEOFENCE);
+
+                PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification noti = new NotificationCompat.Builder(context)
+                        .setContentTitle(title)
+                        .setContentText(content)
+                        .setTicker(content)
+                        .setSmallIcon(R.drawable.geofence)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setContentIntent(contentIntent)
+                        .build();
+                nm.notify(Constant.NOTIFICATION_GEOFENCE, noti);
 
                 return;
             }

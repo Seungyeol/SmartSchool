@@ -541,10 +541,12 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 						WalkingPagerFragment.newInstance(mLoginManager.getLoginUser())
 				).addToBackStack(null).commitAllowingStateLoss();
 			}
-		} else if (desFragment == Constant.NOTIFICATION_APP_NOTICE) {
+		} else if (desFragment == Constant.NOTIFICATION_NOTICE) {
 			Intent qnaIntent = new Intent(MainActivity.this, AppNoticeActivity.class);
 			qnaIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			this.startActivity(qnaIntent);
+		} else if (desFragment == Constant.NOTIFICATION_GEOFENCE) {
+
 		}
 	}
 

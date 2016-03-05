@@ -188,7 +188,7 @@ public class MyLocationService extends Service {
                 .setCircularRegion(
                         lat,   //latitude
                         lng,  //longitude
-                        500   //meter
+                        100   //meter
                 )
 
                         // Set the expiration duration of the geofence. This geofence gets automatically

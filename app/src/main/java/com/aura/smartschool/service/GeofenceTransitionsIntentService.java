@@ -66,7 +66,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             sendNoti();
         } else {
             // Log the error.
-            Log.e("LDK", getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+            Log.e("LDK", "geofence_transition_invalid_type");
         }
     }
 
@@ -133,7 +133,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                         R.drawable.school))
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
-                .setContentText(getString(R.string.geofence_transition_notification_text))
+                .setContentText("geofence_transition_notification_text")
                 .setContentIntent(notificationPendingIntent);
 
         // Dismiss notification once the user touches it.
