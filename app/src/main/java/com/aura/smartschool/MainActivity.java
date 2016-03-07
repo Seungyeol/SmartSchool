@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import com.aura.smartschool.dialog.ModifyFamilyNameDialogFragment;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
+import com.aura.smartschool.fragment.GeofenceFragment;
 import com.aura.smartschool.fragment.HelpViewFragment;
 import com.aura.smartschool.fragment.SchoolNoticePagerFragment;
 import com.aura.smartschool.fragment.WalkingPagerFragment;
@@ -546,7 +548,14 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 			qnaIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			this.startActivity(qnaIntent);
 		} else if (desFragment == Constant.NOTIFICATION_GEOFENCE) {
-
+			int member_id = intent.getIntExtra("member_id", 0);
+			Log.d("LDK", "member_id:" + member_id);
+			MemberVO memberVO = mLoginManager.findMemberByID(member_id);
+			if (memberVO != null) {
+				getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+						GeofenceFragment.newInstance(memberVO)
+				).addToBackStack(null).commitAllowingStateLoss();
+			}
 		}
 	}
 

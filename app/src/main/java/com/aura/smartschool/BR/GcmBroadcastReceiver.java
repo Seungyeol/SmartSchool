@@ -169,6 +169,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
             //지오펜스
             else if("geofence".equals(command)) {
+                int member_id = json.getInt("member_id");
                 int type = json.getInt("type");
                 String typeString = (type == 1 ? "들어왔습니다" : "나갔습니다");
                 String title = type == 1 ? "등교알림" : "하교알림";
@@ -180,6 +181,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                 int requestID = (int) System.currentTimeMillis();
 
                 activitIntent.putExtra(Constant.NOTIFCATION_DESTINATION_FRAGMENT, Constant.NOTIFICATION_GEOFENCE);
+                activitIntent.putExtra("member_id", member_id);
 
                 PendingIntent contentIntent = PendingIntent.getActivity(context, requestID, activitIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);

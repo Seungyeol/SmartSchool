@@ -78,15 +78,23 @@
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:padding="5dp"
         android:background="#77000000">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="5dp"
-            android:textColor="@color/white"
-            android:textSize="17dp"
-            android:textStyle="bold"
-            android:text="위치서비스 이용관련 안내사항"/>
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:text="위치서비스 이용관련 안내사항"/>
+            <ImageView
+                android:id="@+id/img_geofence"
+                android:layout_width="40dp" android:layout_height="40dp"
+                android:background="@drawable/geofence"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="위치 서비스는 외부에서 실행 시, 정확도가 더욱 높습니다."/>
+                android:text="위치 서비스는 오픈된 공간에 있을때 정확도가 높아집니다."/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,7 +138,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="핸드폰 기종에 따라 위치서비스의 정확도는 약간의 차이를 보일 수 있습니다."/>
+                android:text="핸드폰 기종에 따라 위치서비스의 정확도는 차이를 보일 수 있습니다."/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="4) "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="등하교 알림은 학교 반경 100m를 기준으로 합니다."/>
         </LinearLayout>
     </LinearLayout>
 

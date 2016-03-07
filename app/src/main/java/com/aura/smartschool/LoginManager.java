@@ -280,4 +280,14 @@ public class LoginManager {
 
         return null;
     }
+
+    public MemberVO findMemberByID(int member_id) {
+        for (MemberVO memberVO : mMemberList) {
+            if (memberVO.member_id == member_id) {
+                return memberVO;
+            }
+        }
+
+        return null;
+    }
 }

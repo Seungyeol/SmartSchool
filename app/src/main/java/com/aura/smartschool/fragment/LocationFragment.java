@@ -3,6 +3,7 @@ package com.aura.smartschool.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +84,7 @@ public class LocationFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = View.inflate(getActivity(), R.layout.fragment_location, null);
         mAq = new AQuery(mView);
+        ButterKnife.bind(this, mView);
 
         setUpMapIfNeeded();
 
@@ -294,5 +300,15 @@ public class LocationFragment extends Fragment {
         }
 
         mGoogleMap.setInfoWindowAdapter(new AreaInfoWindowAdapter(getActivity(), mAreaMap));
+    }
+
+    @OnClick(R.id.img_geofence)
+    public void imgGeofence() {
+        if (TextUtils.isEmpty(mMember.mSchoolVO.lat)) {
+            Util.showAlertDialog(getActivity(), "설정된 학교 정보가 없습니다.\n" +
+                    "등하교 서비스는 당사와 학교가 협의 후 이용 가능합니다.");
+        } else {
+            getFragmentManager().beginTransaction().replace(R.id.content_frame, GeofenceFragment.newInstance(mMember)).addToBackStack(null).commit();
+        }
     }
 }
