@@ -72,7 +72,7 @@ public class SmokeFragment extends Fragment {
         tv_ppm_title.setText(Html.fromHtml("<u>ppm</u>"));
         tv_cohb_title.setText(Html.fromHtml("<u>COHB</u>"));
 
-        float ppm = 0;
+        /*float ppm = 0;
         float cohb = 0;
         try {
             ppm = Float.parseFloat(mMember.mMeasureSummaryVO.ppm);
@@ -84,18 +84,37 @@ public class SmokeFragment extends Fragment {
         tv_ppm.setText(String.format("%.1f", ppm));
         tv_cohb.setText(String.format("%.1f", cohb));
 
-        if(ppm <= 2) {
+        if(ppm <= 4) {
             iv_smoke.setImageResource(R.drawable.smoking1);
             iv_smoke1.setBackgroundResource(R.drawable.point_type_1);
-        } else if(ppm <= 4) {
+        } else if(ppm <= 6) {
             iv_smoke.setImageResource(R.drawable.smoking2);
             iv_smoke2.setBackgroundResource(R.drawable.point_type_2);
-        } else if(ppm <= 6) {
+        } else if(ppm <= 10) {
             iv_smoke.setImageResource(R.drawable.smoking3);
             iv_smoke3.setBackgroundResource(R.drawable.point_type_3);
         } else {
             iv_smoke.setImageResource(R.drawable.smoking4);
             iv_smoke4.setBackgroundResource(R.drawable.point_type_4);
+        }*/
+
+        //2016-03-10 수정 : ppm 수치 하드코딩을 수정
+        String smokeStatus = mMember.mMeasureSummaryVO.smokeStatus;
+        if("비흡연".equals(smokeStatus)) {
+            iv_smoke.setImageResource(R.drawable.smoking1);
+            iv_smoke1.setBackgroundResource(R.drawable.point_type_1);
+        } else if("간접".equals(smokeStatus)) {
+            iv_smoke.setImageResource(R.drawable.smoking2);
+            iv_smoke2.setBackgroundResource(R.drawable.point_type_2);
+        } else if("흡연중".equals(smokeStatus)) {
+            iv_smoke.setImageResource(R.drawable.smoking3);
+            iv_smoke3.setBackgroundResource(R.drawable.point_type_3);
+        } else if("과다흡연".equals(smokeStatus)) {
+            iv_smoke.setImageResource(R.drawable.smoking4);
+            iv_smoke4.setBackgroundResource(R.drawable.point_type_4);
+        } else {
+            iv_smoke.setImageResource(R.drawable.smoking1);
+            iv_smoke1.setBackgroundResource(R.drawable.point_type_1);
         }
 
         tv_help_left.setOnClickListener(mClick);
