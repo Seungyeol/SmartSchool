@@ -98,6 +98,7 @@ public class SmokeFragment extends Fragment {
             iv_smoke4.setBackgroundResource(R.drawable.point_type_4);
         }*/
 
+
         //2016-03-10 수정 : ppm 수치 하드코딩을 수정
         String smokeStatus = mMember.mMeasureSummaryVO.smokeStatus;
         if("비흡연".equals(smokeStatus)) {
