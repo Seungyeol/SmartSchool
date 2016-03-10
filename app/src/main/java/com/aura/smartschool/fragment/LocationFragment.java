@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,12 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = View.inflate(getActivity(), R.layout.fragment_location, null);
+        try {
+            mView = View.inflate(getActivity(), R.layout.fragment_location, null);
+        } catch (InflateException e) {
+
+        }
+
         mAq = new AQuery(mView);
         ButterKnife.bind(this, mView);
 
