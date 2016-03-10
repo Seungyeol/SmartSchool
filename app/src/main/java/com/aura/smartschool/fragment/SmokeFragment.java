@@ -72,7 +72,7 @@ public class SmokeFragment extends Fragment {
         tv_ppm_title.setText(Html.fromHtml("<u>ppm</u>"));
         tv_cohb_title.setText(Html.fromHtml("<u>COHB</u>"));
 
-        /*float ppm = 0;
+        float ppm = 0;
         float cohb = 0;
         try {
             ppm = Float.parseFloat(mMember.mMeasureSummaryVO.ppm);
@@ -84,6 +84,7 @@ public class SmokeFragment extends Fragment {
         tv_ppm.setText(String.format("%.1f", ppm));
         tv_cohb.setText(String.format("%.1f", cohb));
 
+        /*
         if(ppm <= 4) {
             iv_smoke.setImageResource(R.drawable.smoking1);
             iv_smoke1.setBackgroundResource(R.drawable.point_type_1);

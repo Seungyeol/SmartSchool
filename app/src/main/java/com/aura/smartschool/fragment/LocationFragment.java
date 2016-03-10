@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,18 +77,26 @@ public class LocationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        mMember = (MemberVO) args.getSerializable("member");
+        Log.d("LDK", "onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        try {
-            mView = View.inflate(getActivity(), R.layout.fragment_location, null);
-        } catch (InflateException e) {
-
+        Bundle args = getArguments();
+        mMember = (MemberVO) args.getSerializable("member");
+        Log.d("LDK", "onCreateView:" + mMember);
+/*        if (mView != null) {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (parent != null) {
+                parent.removeView(mView);
+            }
         }
+        try {*/
+            mView = View.inflate(getActivity(), R.layout.fragment_location, null);
+/*        } catch (InflateException e) {
+            Log.d("LDK", e.getMessage());
+        }*/
 
         mAq = new AQuery(mView);
         ButterKnife.bind(this, mView);
@@ -115,16 +124,18 @@ public class LocationFragment extends Fragment {
 
     private void setUpMapIfNeeded() {
         // check if we have got the googleMap already
-        if (mGoogleMap == null) {
+        //if (mGoogleMap == null) {
+            Log.d("LDK", "mGoogleMap is " + mGoogleMap);
             mMapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
             mGoogleMap = mMapFragment.getMap();
-        }
+        //}
     }
 
     @Override
     public void onDestroyView() {
+        Log.d("LDK", "onDestroyView");
         if(mMapFragment != null) {
-            getFragmentManager().beginTransaction().remove(mMapFragment).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(mMapFragment).commit();
         }
         super.onDestroy();
     }
@@ -150,7 +161,7 @@ public class LocationFragment extends Fragment {
                         if (status.getCode() != 200) {
                             return;
                         }
-                        SchoolLog.d("LDK", "result:" + object.toString(1));
+                       // SchoolLog.d("LDK", "result:" + object.toString(1));
 
                         if (object.getInt("result") == 0) {
                             JSONArray array = object.getJSONArray("data");
@@ -250,9 +261,10 @@ public class LocationFragment extends Fragment {
             mGoogleMap.addPolyline(new PolylineOptions()
                     .add(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng),
                             new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng))
-                    .width(15).color(Color.TRANSPARENT).geodesic(true));
+                    .width(15).color(Color.TRANSPARENT).geodesic(true));  //transparent로 안그리게 하기
 
             if(i==(mLocationList.size()-2)) {
+                Log.d("LDK", "mLocationList size:" + mLocationList.size());
                 long term = Util.getLastedMinuteToCurrent( mLocationList.get(i+1).created_date);
                 String title = Util.convertLongToDate(term) + " 전";
                 Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
