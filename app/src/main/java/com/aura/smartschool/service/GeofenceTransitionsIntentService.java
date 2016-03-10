@@ -63,17 +63,17 @@ public class GeofenceTransitionsIntentService extends IntentService {
             //sendNotification(geofenceTransitionDetails);
             //Log.i("LDK", geofenceTransitionDetails);
             //부모에게 통지한다.
-            sendNoti();
+            sendNoti(geofenceTransition);
         } else {
             // Log the error.
             Log.e("LDK", "geofence_transition_invalid_type");
         }
     }
 
-    private void sendNoti() {
+    private void sendNoti(int type) {
         AQuery aq = new AQuery(getApplicationContext());
 
-        String url = Constant.HOST + Constant.API_ADD_LOCATION;
+        String url = Constant.HOST + Constant.API_ADD_GEOFENCE;
         JSONObject json = new JSONObject();
         try {
             int member_id = PreferenceUtil.getInstance(this).getMemberId();
@@ -82,6 +82,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             }
 
             json.put("member_id", member_id);
+            json.put("type", type);
 
             aq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>() {
                 @Override
@@ -89,7 +90,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                     //update or insert
                     try {
                         if (object.getInt("result") == 0) {
-                            //Log.d("LDK", "result:" + object.toString(1));
+                            Log.d("LDK", "result:" + object.toString(1));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
