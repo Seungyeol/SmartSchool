@@ -10,8 +10,7 @@
             android:id="@+id/area"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/area_bucheon"/>
+            android:layout_marginTop="30dp" />
 
         <ImageView
             android:layout_width="wrap_content" android:layout_height="wrap_content"
