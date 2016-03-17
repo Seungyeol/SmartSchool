@@ -34,8 +34,10 @@ import com.aura.smartschool.adapter.DrawerAdapter;
 import com.aura.smartschool.database.ConsultType;
 import com.aura.smartschool.dialog.LoadingDialog;
 import com.aura.smartschool.dialog.LoginDialog;
+import com.aura.smartschool.dialog.IntroDialog;
 import com.aura.smartschool.dialog.ModifyFamilyNameDialogFragment;
 import com.aura.smartschool.dialog.RegisterDialogActivity;
+import com.aura.smartschool.exception.LoginMemberNullpointerException;
 import com.aura.smartschool.fragment.ConsultChattingFragment;
 import com.aura.smartschool.fragment.FamilyMembersFragment;
 import com.aura.smartschool.fragment.GeofenceFragment;
@@ -376,13 +378,16 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 	};
 
 	private void requestLogin(MemberVO memberVO) {
-		LoadingDialog.showLoading(this);
+		//2016-03-17 로고 보여주기
+		//LoadingDialog.showLoading(this);
+		IntroDialog.showLoading(this);
+
 		mLoginManager.doLogIn(memberVO, this, this);
 	}
 
 	@Override
 	public void onSuccess() {
-		LoadingDialog.hideLoading();
+		//LoadingDialog.hideLoading();
 		hideLoginDialog();
 
 		setLayoutVisibility(true);
@@ -409,11 +414,35 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
 				startService(sosIntent);
 			}
 		}
+
+		//지역 구분 로고를 보여준다. 부천, 시흥, none
+		int area = 0;
+		try {
+			for(MemberVO member: LoginManager.getInstance().getMemberList()) {
+                if (member.is_parent == 0) {
+					String gugun = member.mSchoolVO.gugun;
+					Log.d("LDK", "gugun:" + gugun);
+					if ("부천시".equals(gugun)) {
+						area = 1;
+						break;
+					}
+					if ("시흥시".equals(gugun)) {
+						area = 2;
+						break;
+					}
+				}
+            }
+		} catch (LoginMemberNullpointerException e) {
+		}
+
+		IntroDialog.showArea(area);
 	}
 
 	@Override
 	public void onFail() {
-		LoadingDialog.hideLoading();
+		//LoadingDialog.hideLoading();
+		IntroDialog.hideLoading();
+
 		PreferenceUtil.getInstance(this).putHomeId("");
 		Toast.makeText(this, "홈아이디가 존재하지 않거나 가족등록이 되지 않았습니다.", Toast.LENGTH_SHORT).show();
 		showLoginDialog();
