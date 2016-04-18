@@ -14,6 +14,7 @@ public class IntroDialog {
     private static Dialog mIntroDialog = null;
     private static final int MSG_DISAPPEAR = 0;
     private static ImageView ivArea;
+    private static View areaContainer;
     private static Context mContext;
 
     public static void showLoading(Context context){
@@ -22,6 +23,7 @@ public class IntroDialog {
         if(mIntroDialog == null){
             mIntroDialog = new Dialog(context, android.R.style.Theme_Holo_Light_NoActionBar);
             View layout = View.inflate(context, R.layout.dialog_intro, null);
+            areaContainer = layout.findViewById(R.id.areaContainer);
             ivArea = (ImageView) layout.findViewById(R.id.area);
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mIntroDialog.addContentView(layout, params);
@@ -39,10 +41,12 @@ public class IntroDialog {
                 break;
             case 1:
                 ivArea.setBackgroundResource(R.drawable.area_bucheon);
+                areaContainer.setVisibility(View.VISIBLE);
                 mHandler.sendEmptyMessageDelayed(MSG_DISAPPEAR, 2000);
                 break;
             case 2:
                 ivArea.setBackgroundResource(R.drawable.area_siheung);
+                areaContainer.setVisibility(View.VISIBLE);
                 mHandler.sendEmptyMessageDelayed(MSG_DISAPPEAR, 2000);
                 break;
         }

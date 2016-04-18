@@ -422,10 +422,10 @@ public class MainActivity extends FragmentActivity implements LoginManager.Resul
                 if (member.is_parent == 0) {
 					String gugun = member.mSchoolVO.gugun;
 					Log.d("LDK", "gugun:" + gugun);
-					if ("부천시".equals(gugun)) {
+/*					if ("부천시".equals(gugun)) {
 						area = 1;
 						break;
-					}
+					}*/
 					if ("시흥시".equals(gugun)) {
 						area = 2;
 						break;
