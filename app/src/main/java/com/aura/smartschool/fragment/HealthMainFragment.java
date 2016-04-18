@@ -358,6 +358,14 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_growth:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
+
+                case R.id.rl_ranking:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(1, mMember)).addToBackStack(null).commit();
+                    break;
+
+                case R.id.rl_magazine:
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(2, mMember)).addToBackStack(null).commit();
+                    break;
             }
         }
     };
