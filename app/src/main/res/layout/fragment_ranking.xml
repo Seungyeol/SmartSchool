@@ -3,8 +3,17 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <WebView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/webView" />
+        android:layout_height="match_parent">
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/webView" />
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressBar" />
+    </RelativeLayout>
 </LinearLayout>

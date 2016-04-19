@@ -358,14 +358,6 @@ public class HealthMainFragment extends Fragment {
                 case R.id.rl_growth:
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, GrowthFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
-
-                case R.id.rl_ranking:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(1, mMember)).addToBackStack(null).commit();
-                    break;
-
-                case R.id.rl_magazine:
-                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(2, mMember)).addToBackStack(null).commit();
-                    break;
             }
         }
     };
@@ -378,14 +370,14 @@ public class HealthMainFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, MealListFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_ranking:
-                    Util.showAlertDialog(getActivity(), "업데이트 예정");
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(1, mMember)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_brain:
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
                     break;
 
                 case R.id.rl_magazine:
-                    Util.showAlertDialog(getActivity(), "업데이트 예정");
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(2, mMember)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_map:
                     if(mMember.lat != 0) {

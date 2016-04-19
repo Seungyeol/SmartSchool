@@ -6,8 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.aura.smartschool.R;
 import com.aura.smartschool.utils.PreferenceUtil;
@@ -23,6 +26,8 @@ public class WebFragment extends Fragment {
 
     private int mUrlType;
     private MemberVO mMember;
+
+    private ProgressBar mProgress;
 
     public WebFragment() {
         // Required empty public constructor
@@ -53,6 +58,7 @@ public class WebFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ranking, container, false);
         WebView webView = (WebView) view.findViewById(R.id.webView);
+        mProgress = (ProgressBar) view.findViewById(R.id.progressBar);
 
         String url = "";
         switch(mUrlType) {
@@ -68,7 +74,15 @@ public class WebFragment extends Fragment {
         webSettings.setJavaScriptEnabled(true);
         webView.loadUrl(String.format(url, mMember.home_id, mMember.mdn));
 
-        return inflater.inflate(R.layout.fragment_ranking, container, false);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                mProgress.setVisibility(View.GONE);
+                super.onPageFinished(view, url);
+            }
+        });
+
+        return view;
     }
 
 
