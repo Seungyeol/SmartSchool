@@ -246,38 +246,42 @@ public class LocationFragment extends Fragment {
     }
 
     private void drawPath() {
-        //출발지부터 현재지점부터 라인 그리기
-        for(int i = 0; i < mLocationList.size() - 1; ++i) {
-            //출발지점 marker는 그리지 않는다.
-/*            if(i==0) {
-                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng))
-                        .title("start")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
-                        .snippet(Util.getAddress(getActivity(), mLocationList.get(i).lat, mLocationList.get(i).lng)));
-                startMarker.showInfoWindow();
-            }*/
+        //출발지점 marker는 그리지 않는다.
+        /*        if(mLocationList.size() >= 2) {
+            LocationVO firstLocation = mLocationList.get(0);
+            Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(firstLocation.lat, firstLocation.lng))
+                    .title("start")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
+                    .snippet(Util.getAddress(getActivity(), firstLocation.lat, firstLocation.lng)));
+            startMarker.showInfoWindow();
+        }*/
 
+        //출발지부터 현재지점부터 라인 그리기
+/*        for(int i = 0; i < mLocationList.size() -1 ; ++i) {
+            SchoolLog.d("LDK", "location: " + mLocationList.get(i).created_date);
             mGoogleMap.addPolyline(new PolylineOptions()
                     .add(new LatLng(mLocationList.get(i).lat, mLocationList.get(i).lng),
                             new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng))
-                    .width(15).color(Color.TRANSPARENT).geodesic(true));  //transparent로 안그리게 하기
+                    .width(5).color(Color.RED).geodesic(true));  //transparent로 안그리게 하기
+        }*/
 
-            if(i==(mLocationList.size()-2)) {
-                Log.d("LDK", "mLocationList size:" + mLocationList.size());
-                long term = Util.getLastedMinuteToCurrent( mLocationList.get(i+1).created_date);
-                String title = Util.convertLongToDate(term) + " 전";
-                Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng))
-                        .title(title)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
-                        .snippet(Util.getAddress(getActivity(), mLocationList.get(i+1).lat, mLocationList.get(i+1).lng)));
-                endMarker.showInfoWindow();
+        //맨 마지막 좌표에 마커 그리기
+        if (mLocationList.size() > 0) {
+            Log.d("LDK", "mLocationList size:" + mLocationList.size());
+            LocationVO lastLocation = mLocationList.get(mLocationList.size() - 1);
+            long term = Util.getLastedMinuteToCurrent(lastLocation.created_date);
+            String title = Util.convertLongToDate(term) + " 전";
+            Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lastLocation.lat, lastLocation.lng))
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))
+                    .snippet(Util.getAddress(getActivity(), lastLocation.lat, lastLocation.lng)));
+            endMarker.showInfoWindow();
 
-                //카메라 움직이기
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(mLocationList.get(i + 1).lat, mLocationList.get(i + 1).lng), 16));
-            }
+            //카메라 움직이기
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(lastLocation.lat, lastLocation.lng), 16));
         }
     }
 
