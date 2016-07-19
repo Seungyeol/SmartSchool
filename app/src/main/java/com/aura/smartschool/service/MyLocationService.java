@@ -67,6 +67,43 @@ public class MyLocationService extends Service {
 
             //Geofencing 시작
             try {
+                //GeoPencing setting
+                String strLat = PreferenceUtil.getInstance(MyLocationService.this).getSchool_lat();
+                String strLng = PreferenceUtil.getInstance(MyLocationService.this).getSchool_lng();
+
+                if(TextUtils.isEmpty(strLat)) {
+                    return;
+                }
+                double lat = 0;
+                double lng = 0;
+
+                lat = Double.parseDouble(strLat);
+                lng = Double.parseDouble(strLng);
+
+                mGeofenceList.add(new Geofence.Builder()
+                        // Set the request ID of the geofence. This is a string to identify this
+                        // geofence.
+                        .setRequestId("School")
+
+                                // Set the circular region of this geofence.
+                        .setCircularRegion(
+                                lat,   //latitude
+                                lng,  //longitude
+                                100   //meter
+                        )
+
+                                // Set the expiration duration of the geofence. This geofence gets automatically
+                                // removed after this period of time.
+                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
+
+                                // Set the transition types of interest. Alerts are only generated for these
+                                // transition. We track entry and exit transitions in this sample.
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                                Geofence.GEOFENCE_TRANSITION_EXIT)
+
+                                // Create the geofence.
+                        .build());
+
                 LocationServices.GeofencingApi.addGeofences(
                         mGoogleApiClient,
                         // The GeofenceRequest object.
@@ -76,6 +113,10 @@ public class MyLocationService extends Service {
                         // transition is observed.
                         getGeofencePendingIntent()
                 ).setResultCallback(mResultCallback); // Result processed in onResult().
+            } catch (NumberFormatException e) {
+
+            } catch (IllegalArgumentException e) {
+
             } catch (SecurityException securityException) {
                 // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
                 logSecurityException(securityException);
@@ -140,9 +181,6 @@ public class MyLocationService extends Service {
         mLocationRequest.setFastestInterval(1000 * 60 * 10);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        //GeoPencing setting
-        populateGeofenceList();
-
         super.onCreate();
     }
 
@@ -161,47 +199,6 @@ public class MyLocationService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    public void populateGeofenceList() {
-        String strLat = PreferenceUtil.getInstance(this).getSchool_lat();
-        String strLng = PreferenceUtil.getInstance(this).getSchool_lng();
-
-        if(TextUtils.isEmpty(strLat)) {
-            return;
-        }
-        double lat = 0;
-        double lng = 0;
-        try {
-            lat = Double.parseDouble(strLat);
-            lng = Double.parseDouble(strLng);
-        } catch (NumberFormatException e) {
-            return;
-        }
-
-        mGeofenceList.add(new Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this
-                // geofence.
-                .setRequestId("School")
-
-                        // Set the circular region of this geofence.
-                .setCircularRegion(
-                        lat,   //latitude
-                        lng,  //longitude
-                        100   //meter
-                )
-
-                        // Set the expiration duration of the geofence. This geofence gets automatically
-                        // removed after this period of time.
-                .setExpirationDuration(24 * 60 * 60 * 1000 * 365)
-
-                        // Set the transition types of interest. Alerts are only generated for these
-                        // transition. We track entry and exit transitions in this sample.
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-
-                        // Create the geofence.
-                .build());
     }
 
     private GeofencingRequest getGeofencingRequest() {
