@@ -93,4 +93,6 @@
 
     <string name="geofences_added">Geofences added</string>
     <string name="geofences_removed">Geofences removed</string>
+
+    <string name="spinner_year">측정년도</string>
 </resources>

@@ -336,7 +336,8 @@ public class HeightFragment extends Fragment {
                     break;
 
                 case R.id.iv_detail:
-                    Util.showToast(getActivity(), "두번 이상 측정하셔야 제공됩니다.");
+                    //Util.showToast(getActivity(), "두번 이상 측정하셔야 제공됩니다.");
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, HeightHistoryFragment.newInstance(mMember, mType)).addToBackStack(null).commit();
                     break;
             }
         }
