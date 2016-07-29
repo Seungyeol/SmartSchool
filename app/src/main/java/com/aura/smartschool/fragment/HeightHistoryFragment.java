@@ -111,7 +111,7 @@ public class HeightHistoryFragment extends Fragment {
         if(mType == 1) {
             tv_title.setText("키 상세이력");
         } else {
-            tv_title.setText("몸무게 상세세이력");
+            tv_title.setText("몸무게 상세이력");
        }
 
         mChart = (BarChart) mView.findViewById(R.id.heightChart);
