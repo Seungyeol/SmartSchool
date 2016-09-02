@@ -370,8 +370,7 @@ public class HealthMainFragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, MealListFragment.newInstance(mMember)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_ranking:
-                    Util.showAlertDialog(getActivity(), "업데이트 예정");
-                    //getFragmentManager().beginTransaction().replace(R.id.content_frame, WebFragment.newInstance(1, mMember)).addToBackStack(null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_frame, RankingHeight.newInstance(mMember,1)).addToBackStack(null).commit();
                     break;
                 case R.id.rl_brain:
                     Util.showAlertDialog(getActivity(), "업데이트 예정");
