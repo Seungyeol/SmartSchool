@@ -28,23 +28,23 @@ public class SchoolApi {
      * 지역 관할 교육청 코드
      */
     public static class Country {
-        public static final String SEOUL = "hes.sen.go.kr";
-        public static final String ULSAN = "hes.use.go.kr";
-        public static final String JEONBUK = "hes.jbe.go.kr";
-        public static final String BUSAN = "hes.pen.go.kr";
-        public static final String SEJONG = "hes.sje.go.kr";
-        public static final String JEONNAM = "hes.jne.go.kr";
-        public static final String DAEGU = "hes.dge.go.kr";
-        public static final String GYEONGGI = "hes.goe.go.kr";
-        public static final String GYEONGBUK = "hes.gbe.go.kr";
-        public static final String INCHEON = "hes.ice.go.kr";
-        public static final String KANGWON = "hes.kwe.go.kr";
-        public static final String GYEONGNAM = "hes.gne.go.kr";
-        public static final String GWANGJU = "hes.gen.go.kr";
-        public static final String CHUNGBUK = "hes.cbe.go.kr";
-        public static final String JEJU = "hes.jje.go.kr";
-        public static final String DAEJEON = "hes.dje.go.kr";
-        public static final String CHUNGNAM = "hes.cne.go.kr";
+        public static final String SEOUL = "stu.sen.go.kr";
+        public static final String ULSAN = "stu.use.go.kr";
+        public static final String JEONBUK = "stu.jbe.go.kr";
+        public static final String BUSAN = "stu.pen.go.kr";
+        public static final String SEJONG = "stu.sje.go.kr";
+        public static final String JEONNAM = "stu.jne.go.kr";
+        public static final String DAEGU = "stu.dge.go.kr";
+        public static final String GYEONGGI = "stu.goe.go.kr";
+        public static final String GYEONGBUK = "stu.gbe.go.kr";
+        public static final String INCHEON = "stu.ice.go.kr";
+        public static final String KANGWON = "stu.kwe.go.kr";
+        public static final String GYEONGNAM = "stu.gne.go.kr";
+        public static final String GWANGJU = "stu.gen.go.kr";
+        public static final String CHUNGBUK = "stu.cbe.go.kr";
+        public static final String JEJU = "stu.jje.go.kr";
+        public static final String DAEJEON = "stu.dje.go.kr";
+        public static final String CHUNGNAM = "stu.cne.go.kr";
     }
 
     /**
